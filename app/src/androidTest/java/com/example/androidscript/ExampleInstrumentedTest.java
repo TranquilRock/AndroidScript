@@ -1,4 +1,4 @@
-package com.example.autoscript;
+package com.example.androidscript;
 
 import android.content.Context;
 
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        assertEquals("com.example.autoscript", appContext.getPackageName());
+        assertEquals("com.example.androidscript", appContext.getPackageName());
     }
 }

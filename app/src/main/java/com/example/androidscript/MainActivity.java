@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.androidscript;
 
 import android.os.Bundle;
 
@@ -13,7 +13,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.myapplication.databinding.ActivityMainBinding;
+import com.example.androidscript.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
