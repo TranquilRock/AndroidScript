@@ -30,4 +30,14 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@android:drawable/ic_dialog_email" />
 
+    <Button
+        android:id="@+id/btn_toflt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="To Floating Activity"
+        android:translationX="100dp"
+        android:translationY="100dp"
+        android:translationZ="50dp"/>
+
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
