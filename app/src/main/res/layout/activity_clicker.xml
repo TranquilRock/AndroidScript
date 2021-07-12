@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ClickerActivity">
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="clicktester"
+        android:text="Button"
+        android:translationX="150dp"
+        android:translationY="350dp"
+        android:translationZ="50dp" />
+
+    <Button
+        android:id="@+id/Autoclick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="Autoclick_swipe"
+        android:text="Autoclick"
+        android:translationX="75dp"
+        android:translationY="200dp"
+        android:translationZ="50dp" />
+</LinearLayout>
