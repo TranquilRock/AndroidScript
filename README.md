@@ -1,7 +1,3 @@
 # AndroidScript
-- 寫腳本打遊戲
-qqqqqqqqqqq
-rrrrrrr
-sss
-tt
-456789
+- ScreenCrop(int upperleftx,int upperlefty,int lowerrightx,int lowerrighty)
+  - return java.awt.Image  
