@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     private Button mbtn_toflt;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,14 +46,7 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        mbtn_toflt = (Button)findViewById(R.id.btn_toflt);
-        mbtn_toflt.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, FloatingTest.class);
-                startActivity(intent);
-            }
-        }));
+        mbtn_toflt = BtnMaker.jump(R.id.btn_toflt,this,FloatingTest.class);
     }
 
     @Override
