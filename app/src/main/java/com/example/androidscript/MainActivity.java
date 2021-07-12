@@ -1,5 +1,6 @@
 package com.example.androidscript;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.android.material.snackbar.Snackbar;
@@ -17,11 +18,13 @@ import com.example.androidscript.databinding.ActivityMainBinding;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
+    private Button mbtn_toflt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,10 +42,11 @@ public class MainActivity extends AppCompatActivity {
         binding.fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "In MainActivity", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
+        mbtn_toflt = BtnMaker.jump(R.id.btn_toflt,this,FloatingTest.class);
     }
 
     @Override

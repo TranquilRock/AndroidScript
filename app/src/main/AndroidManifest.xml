@@ -9,18 +9,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidScript">
-        <activity android:name=".ClickerActivity">
+        <activity
+            android:name=".FloatingTest"
+            android:label="@string/title_activity_floating_test"
+            android:theme="@style/Theme.AndroidScript.NoActionBar"></activity>
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AndroidScript.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.AndroidScript.NoActionBar">
-
         </activity>
     </application>
 
