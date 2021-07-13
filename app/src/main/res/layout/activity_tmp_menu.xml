@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Test.TmpMenu">
+
     <Button
         android:id="@+id/button_to_menu"
         android:layout_width="wrap_content"
@@ -13,4 +14,16 @@
         android:translationX="150dp"
         android:translationY="350dp"
         android:translationZ="50dp" />
+
+    <Button
+        android:id="@+id/create_floating_widget"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="createFloatingWidget"
+        android:text="bang"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:translationX="-50dp"
+        android:translationY="400dp" />
+
 </LinearLayout>
