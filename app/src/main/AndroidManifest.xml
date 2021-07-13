@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidScript">
-        <activity android:name=".Menu.EditActivity"></activity>
+        <activity android:name=".Menu.EditActivity" android:parentActivityName=".Menu.MenuActivity"></activity>
         <activity android:name=".Test.TmpMenu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

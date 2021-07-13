@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -29,6 +30,19 @@ public class MenuActivity extends AppCompatActivity {
         etNewName = (EditText) findViewById(R.id.et_New_Name);
         btnToLoad = BtnMaker.performIntent(R.id.btn_To_Load,this, Intent.ACTION_GET_CONTENT);
         output = (TextView) findViewById(R.id.output);
+        btnToCreate = (Button)(this.findViewById(R.id.btn_To_Create));
+        btnToCreate.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(etNewName.getText() != null && !etNewName.getText().equals("")){
+                    switchToEdit(etNewName.getText().toString());
+                    //Also Check if exist or invalid
+                }
+                else{
+                    output.setText("必須輸入檔名");
+                }
+            }
+        }));
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){

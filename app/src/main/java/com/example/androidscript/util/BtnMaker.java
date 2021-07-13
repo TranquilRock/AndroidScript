@@ -9,6 +9,8 @@ import android.widget.Button;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.function.Function;
+
 public class BtnMaker {
     public static Button jump(int id, AppCompatActivity from, Class to){
         Button btn = (Button)(from.findViewById(id));
@@ -28,6 +30,15 @@ public class BtnMaker {
             public void onClick(View v) {
                 Intent intent = new Intent(command);
                 from.startActivityForResult(intent,0);
+            }
+        }));
+        return btn;
+    }
+    public static Button doAction(int id, AppCompatActivity from){
+        Button btn = (Button)(from.findViewById(id));
+        btn.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
             }
         }));
         return btn;
