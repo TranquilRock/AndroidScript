@@ -29,7 +29,7 @@
             <!-- </intent-filter> -->
         </activity>
         <activity
-            android:name=".Test.ClickerActivity"
+            android:name=".Test.TestActivity"
             android:theme="@style/Theme.AndroidScript.NoActionBar" />
         <service
             android:name=".Test.FloatingWidgetService"
