@@ -11,17 +11,19 @@
         android:theme="@style/Theme.AndroidScript">
 
         <activity
-            android:name=".Test.ClickerActivity"
-            android:theme="@style/Theme.AndroidScript.NoActionBar"></activity>
-        <activity
-            android:name=".Menu.MainActivity"
-            android:label="@string/app_name"
+            android:name=".Test.TestActivity"
             android:theme="@style/Theme.AndroidScript.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".Menu.MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.AndroidScript.NoActionBar">
+
         </activity>
     </application>
 

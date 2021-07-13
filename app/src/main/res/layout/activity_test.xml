@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Test.TestActivity">
+
+    <Button
+        android:id="@+id/scnshot"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="scnShot"
+        android:text="@string/shot"
+        android:translationX="100dp"
+        android:translationY="600dp"
+        android:translationZ="50dp" />
+
+    <Button
+        android:id="@+id/Autoclick"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="Autoclick_swipe"
+        android:text="Autoclick"
+        android:translationX="200dp"
+        android:translationY="600dp"
+        android:translationZ="50dp" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="clicktester"
+        android:text="Button"
+        android:translationX="200dp"
+        android:translationY="100dp"
+        android:translationZ="50dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_launcher_background" />
+
+</LinearLayout>
