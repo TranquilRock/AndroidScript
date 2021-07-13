@@ -9,10 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidScript">
-        <activity
-            android:name=".FloatingTest"
-            android:label="@string/title_activity_floating_test"
-            android:theme="@style/Theme.AndroidScript.NoActionBar"></activity>
+
         <activity
             android:name=".Test.ClickerActivity"
             android:theme="@style/Theme.AndroidScript.NoActionBar"></activity>
