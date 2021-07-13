@@ -16,6 +16,7 @@ import com.example.androidscript.util.BtnMaker;
 import static android.content.ContentValues.TAG;
 
 public class MenuActivity extends AppCompatActivity {
+    public static final String EXTRA_MESSAGE = "com.example.androidscript.Menu";
     private Button btnToCreate;
     private Button btnToLoad;
     private EditText etNewName;
@@ -33,10 +34,14 @@ public class MenuActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data){
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK && data.getData()!= null){
-            output.setText(data.getDataString());
+            String FileName = data.getDataString();
+            output.setText(FileName);
+            switchToEdit(FileName);
         }
-        else{
-            Log.d(TAG, "onTEQ: ");
-        }
+    }
+    protected void switchToEdit(String FileName){
+        Intent intent = new Intent(this, EditActivity.class);
+        intent.putExtra(EXTRA_MESSAGE, FileName);
+        startActivity(intent);
     }
 }
