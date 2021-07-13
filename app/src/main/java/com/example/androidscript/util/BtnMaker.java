@@ -1,4 +1,4 @@
-package com.example.androidscript;
+package com.example.androidscript.util;
 
 import android.app.Activity;
 import android.content.Context;

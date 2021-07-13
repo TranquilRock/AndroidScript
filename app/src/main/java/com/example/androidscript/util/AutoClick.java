@@ -1,4 +1,4 @@
-package com.example.androidscript;
+package com.example.androidscript.util;
 
 public class AutoClick {
 

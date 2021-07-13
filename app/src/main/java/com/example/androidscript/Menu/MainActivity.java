@@ -1,8 +1,10 @@
-package com.example.androidscript;
+package com.example.androidscript.Menu;
 
 import android.content.Intent;
 import android.os.Bundle;
 
+import com.example.androidscript.R;
+import com.example.androidscript.util.BtnMaker;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -24,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
     private ActivityMainBinding binding;
-    private Button mbtn_toflt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,6 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
-        mbtn_toflt = BtnMaker.jump(R.id.btn_toflt,this,FloatingTest.class);
     }
 
     @Override

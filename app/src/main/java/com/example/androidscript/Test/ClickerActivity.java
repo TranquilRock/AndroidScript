@@ -1,14 +1,14 @@
-package com.example.androidscript;
+package com.example.androidscript.Test;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
+import com.example.androidscript.util.AutoClick;
+import com.example.androidscript.R;
+
 public class ClickerActivity extends AppCompatActivity {
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
