@@ -37,6 +37,15 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     private boolean isLeft = true;
 
     public FloatingWidgetService() {
+        for(int i =0;i < 100;i++){
+            try{
+                AutoClick.autoClickPos(620, 1400, 620, 500);
+                Thread.sleep(100);
+            }
+            catch (Exception e){
+
+            }
+        }
     }
 
     @Nullable
