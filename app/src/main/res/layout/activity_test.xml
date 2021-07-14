@@ -18,10 +18,10 @@
         android:translationZ="50dp" />
 
     <Button
-        android:id="@+id/Autoclick"
+        android:id="@+id/AutoClick"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="Autoclick_swipe"
+        android:onClick="AutoClick_swipe"
         android:text="Autoclick"
         android:translationX="200dp"
         android:translationY="600dp"
@@ -31,7 +31,7 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="clicktester"
+        android:onClick="ClickTester"
         android:text="Button"
         android:translationX="200dp"
         android:translationY="100dp"

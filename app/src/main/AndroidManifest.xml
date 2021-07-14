@@ -13,11 +13,7 @@
         android:theme="@style/Theme.AndroidScript">
         <activity android:name=".Menu.EditActivity" android:parentActivityName=".Menu.MenuActivity"></activity>
         <activity android:name=".Test.TmpMenu">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".Menu.MenuActivity">
 
@@ -30,7 +26,13 @@
         </activity>
         <activity
             android:name=".Test.TestActivity"
-            android:theme="@style/Theme.AndroidScript.NoActionBar" />
+            android:theme="@style/Theme.AndroidScript.NoActionBar" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <service
             android:name=".Test.FloatingWidgetService"
             android:enabled="true"
