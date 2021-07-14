@@ -99,10 +99,10 @@ public class TmpMenu extends AppCompatActivity {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + getPackageName()));
             startActivityForResult(intent, DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE);
-        } else
+        } else {
             //If permission is granted start floating widget service
             startFloatingWidgetService();
-
+        }
     }
 
     /*  Start Floating widget service and finish current activity */

@@ -14,7 +14,7 @@ import android.widget.TextView;
 import com.example.androidscript.R;
 import com.example.androidscript.util.BtnMaker;
 
-import static android.content.ContentValues.TAG;
+
 
 public class MenuActivity extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.androidscript.Menu";
@@ -54,6 +54,7 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
     protected void switchToEdit(String FileName){
+
         Intent intent = new Intent(this, EditActivity.class);
         intent.putExtra(EXTRA_MESSAGE, FileName);
         startActivity(intent);
