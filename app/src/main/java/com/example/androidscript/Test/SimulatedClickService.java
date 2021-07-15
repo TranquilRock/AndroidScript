@@ -22,7 +22,7 @@ import androidx.annotation.RequiresApi;
  * @since 2019-12-14
  */
 public class SimulatedClickService extends AccessibilityService {
-    private int x=840, y=1723;
+    private int x=525, y=1850;
     private Point point = new Point(x, y);
 
 
@@ -61,6 +61,11 @@ public class SimulatedClickService extends AccessibilityService {
         Log.v("pp", "CREATE");
         for(int i=0; i<10; i++){
             click(point);
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
     }
     @RequiresApi(api = Build.VERSION_CODES.N)
