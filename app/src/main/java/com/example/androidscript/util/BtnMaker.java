@@ -34,13 +34,4 @@ public class BtnMaker {
         }));
         return btn;
     }
-    public static Button doAction(int id, AppCompatActivity from){
-        Button btn = (Button)(from.findViewById(id));
-        btn.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-            }
-        }));
-        return btn;
-    }
 }
