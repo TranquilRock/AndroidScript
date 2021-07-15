@@ -48,18 +48,21 @@ public class SimulatedClickService extends AccessibilityService {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        Log.v("kk", "CLKLAUNCH");
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
     }
 
     @Override
     public void onInterrupt() {
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onCreate(){
+        Log.v("pp", "CREATE");
+        for(int i=0; i<10; i++){
+            click(point);
+        }
+    }
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onServiceConnected() {
@@ -70,7 +73,7 @@ public class SimulatedClickService extends AccessibilityService {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void click(Point point) {
-        //只有7.0才可以用
+        Log.v("pp", "CLICK");
         GestureDescription.Builder builder = new GestureDescription.Builder();
         Path path = new Path();
         path.moveTo((float) point.x, (float) point.y);
