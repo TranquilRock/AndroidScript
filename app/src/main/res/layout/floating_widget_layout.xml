@@ -91,6 +91,24 @@
                 android:padding="10dp"
                 android:src="@drawable/ic_close_black_24dp" />
 
+            <!--  Run Script  -->
+            <ImageView
+                android:id="@+id/run_script"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:src="@drawable/ic_baseline_play_arrow_24" />
+
+            <!--  Stop Script  -->
+            <ImageView
+                android:id="@+id/stop_script"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:src="@drawable/ic_baseline_stop_24" />
+
             <!--  ImageView to Open Activity  -->
             <ImageView
                 android:id="@+id/open_activity_button"

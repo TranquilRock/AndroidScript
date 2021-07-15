@@ -1,10 +1,8 @@
 package com.example.androidscript.Test;
 
-import android.accessibilityservice.GestureDescription;
 import android.app.Service;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.Build;
@@ -13,21 +11,14 @@ import android.os.Handler;
 import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import com.example.androidscript.util.AutoClick;
 import com.example.androidscript.R;
-import com.example.androidscript.util.ScreenShot;
 
-/**
- * Created by sonu on 28/03/17.
- */
 
 public class FloatingWidgetService extends Service implements View.OnClickListener {
     private WindowManager mWindowManager;
@@ -37,19 +28,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     private View removeFloatingWidgetView;
 
     private int x_init_cord, y_init_cord, x_init_margin, y_init_margin;
-    public Point point = new Point(622, 1895);
-
-    //Variable to check if the Floating widget view is on left side or in right side
-    // initially we are displaying Floating widget view to Left side so set it to true
     private boolean isLeft = true;
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-
-
-
-    public FloatingWidgetService() {
-
-    }
 
     @Nullable
     @Override
@@ -330,6 +309,8 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         mFloatingWidgetView.findViewById(R.id.close_floating_view).setOnClickListener(this);
         mFloatingWidgetView.findViewById(R.id.close_expanded_view).setOnClickListener(this);
         mFloatingWidgetView.findViewById(R.id.open_activity_button).setOnClickListener(this);
+        mFloatingWidgetView.findViewById(R.id.run_script).setOnClickListener(this);
+        mFloatingWidgetView.findViewById(R.id.stop_script).setOnClickListener(this);
     }
 
 
@@ -338,27 +319,22 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.close_floating_view:
-                //close the service and remove the from from the window
                 stopSelf();
                 break;
             case R.id.close_expanded_view:
-//                collapsedView.setVisibility(View.VISIBLE);
-//                expandedView.setVisibility(View.GONE);
-                //AutoClick.autoClickPos(620, 1400, 620, 500);
-                //622 1895
-                //AutoClick.autoClickPos(51, 241, 1012, 241);
-                //SimulatedClickService.click(point);
-                Log.v("ll", "FLTBTN");
-                //startService(new Intent(FloatingWidgetService.this, SimulatedClickService.class));
+                collapsedView.setVisibility(View.VISIBLE);
+                expandedView.setVisibility(View.GONE);
                 break;
             case R.id.open_activity_button:
-                //open the activity and stop service
                 Intent intent = new Intent(FloatingWidgetService.this, TmpMenu.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-
-                //close the service and remove view from the view hierarchy
                 stopSelf();
+                break;
+            case R.id.run_script:
+                SimulatedClickService.mService.Click(849, 1709);
+                break;
+            case R.id.stop_script:
                 break;
         }
     }

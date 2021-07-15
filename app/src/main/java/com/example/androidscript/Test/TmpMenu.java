@@ -89,6 +89,14 @@ public class TmpMenu extends AppCompatActivity {
 
         btnToMenu = BtnMaker.jump(R.id.button_to_menu,this,MenuActivity.class);
 
+        if (!SimulatedClickService.isStart()) {
+            try {
+                this.startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+            } catch (Exception e) {
+                this.startActivity(new Intent(Settings.ACTION_SETTINGS));
+                e.printStackTrace();
+            }
+        }
     }
 
     /*  start floating widget service  */
