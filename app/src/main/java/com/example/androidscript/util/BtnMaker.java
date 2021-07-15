@@ -17,7 +17,6 @@ public class BtnMaker {
         btn.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AutoClick.autoClickPos(620, 1400, 620, 500);
                 Intent intent = new Intent(from, to);
                 from.startActivity(intent);
             }
