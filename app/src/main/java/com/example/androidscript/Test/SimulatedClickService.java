@@ -45,9 +45,15 @@ public class SimulatedClickService extends AccessibilityService {
                 .addStroke(new GestureDescription.StrokeDescription(path, 0, 100)).build(),null, null);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        Log.v("mm", "CLKLAUNCH");
+        Log.v("kk", "CLKLAUNCH");
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -58,8 +64,7 @@ public class SimulatedClickService extends AccessibilityService {
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
-        Log.v("kk", "CLKLAUNCH");
-        click(point);
+
 
     }
 

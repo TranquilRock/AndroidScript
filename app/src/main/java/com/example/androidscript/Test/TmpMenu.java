@@ -85,6 +85,8 @@ public class TmpMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tmp_menu);
+
+
         btnToMenu = BtnMaker.jump(R.id.button_to_menu,this,MenuActivity.class);
 
     }
