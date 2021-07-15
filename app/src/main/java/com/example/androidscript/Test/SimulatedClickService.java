@@ -49,11 +49,6 @@ public class SimulatedClickService extends AccessibilityService {
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         Log.v("kk", "CLKLAUNCH");
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -64,8 +59,6 @@ public class SimulatedClickService extends AccessibilityService {
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
-
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

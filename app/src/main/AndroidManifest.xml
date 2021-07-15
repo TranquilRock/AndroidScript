@@ -4,8 +4,8 @@
     package="com.example.androidscript">
 
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 
     <application
@@ -15,9 +15,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidScript">
-        <activity
-            android:name=".Menu.EditActivity"
-            android:parentActivityName=".Menu.MenuActivity"></activity>
+
         <activity android:name=".Test.TmpMenu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,39 +23,39 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Menu.MenuActivity">
 
+
+        <activity
+            android:name=".Menu.EditActivity"
+            android:parentActivityName=".Menu.MenuActivity" />
+        <activity android:name=".Menu.MenuActivity">
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
-
-
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
         <activity
             android:name=".Test.TestActivity"
             android:theme="@style/Theme.AndroidScript.NoActionBar">
-
         </activity>
 
         <service
             android:name=".Test.FloatingWidgetService"
             android:enabled="true"
-            android:label="FLWTEST">
-        </service>
+            android:label="FLWTEST"></service>
 
         <service
             android:name=".Test.SimulatedClickService"
             android:enabled="true"
             android:label="CLSTEST"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE" >
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
 
             </intent-filter>
             <meta-data
                 android:name="android.accessibilityservice"
-                android:resource="@xml/accessibility_service_config"/>
+                android:resource="@xml/accessibility_service_config" />
 
         </service>
 
