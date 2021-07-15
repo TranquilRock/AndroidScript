@@ -349,7 +349,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                 //AutoClick.autoClickPos(51, 241, 1012, 241);
                 //SimulatedClickService.click(point);
                 Log.v("ll", "FLTBTN");
-                startService(new Intent(FloatingWidgetService.this, SimulatedClickService.class));
+                //startService(new Intent(FloatingWidgetService.this, SimulatedClickService.class));
                 break;
             case R.id.open_activity_button:
                 //open the activity and stop service
