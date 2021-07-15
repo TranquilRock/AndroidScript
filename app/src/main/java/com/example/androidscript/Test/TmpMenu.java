@@ -86,6 +86,7 @@ public class TmpMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tmp_menu);
         btnToMenu = BtnMaker.jump(R.id.button_to_menu,this,MenuActivity.class);
+
     }
 
     /*  start floating widget service  */

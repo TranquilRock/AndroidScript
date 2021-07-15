@@ -1,8 +1,10 @@
 package com.example.androidscript.Test;
 
+import android.accessibilityservice.GestureDescription;
 import android.app.Service;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.Build;
@@ -10,6 +12,9 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -18,6 +23,7 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import com.example.androidscript.util.AutoClick;
 import com.example.androidscript.R;
+import com.example.androidscript.util.ScreenShot;
 
 /**
  * Created by sonu on 28/03/17.
@@ -31,10 +37,15 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     private View removeFloatingWidgetView;
 
     private int x_init_cord, y_init_cord, x_init_margin, y_init_margin;
+    public Point point = new Point(622, 1895);
 
     //Variable to check if the Floating widget view is on left side or in right side
     // initially we are displaying Floating widget view to Left side so set it to true
     private boolean isLeft = true;
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+
+
 
     public FloatingWidgetService() {
         for(int i =0;i < 100;i++){
@@ -330,6 +341,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -340,7 +352,12 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
             case R.id.close_expanded_view:
 //                collapsedView.setVisibility(View.VISIBLE);
 //                expandedView.setVisibility(View.GONE);
-                AutoClick.autoClickPos(620, 1400, 620, 500);
+                //AutoClick.autoClickPos(620, 1400, 620, 500);
+                //622 1895
+                //AutoClick.autoClickPos(51, 241, 1012, 241);
+                //SimulatedClickService.click(point);
+                Log.v("ll", "FLTBTN");
+                startService(new Intent(FloatingWidgetService.this, SimulatedClickService.class));
                 break;
             case R.id.open_activity_button:
                 //open the activity and stop service
