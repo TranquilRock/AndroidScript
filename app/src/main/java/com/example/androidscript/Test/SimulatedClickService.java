@@ -47,5 +47,6 @@ public class SimulatedClickService extends AccessibilityService {
         dispatchGesture(new GestureDescription.Builder().addStroke(new GestureDescription.StrokeDescription
                 (path, 0, 100)).build(), null, null);
     }
+    
 
 }

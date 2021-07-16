@@ -311,6 +311,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         mFloatingWidgetView.findViewById(R.id.open_activity_button).setOnClickListener(this);
         mFloatingWidgetView.findViewById(R.id.run_script).setOnClickListener(this);
         mFloatingWidgetView.findViewById(R.id.stop_script).setOnClickListener(this);
+        mFloatingWidgetView.findViewById(R.id.pause_script).setOnClickListener(this);
     }
 
 
@@ -335,6 +336,8 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                 SimulatedClickService.mService.Click(849, 1709);
                 break;
             case R.id.stop_script:
+                break;
+            case R.id.pause_script:_script:
                 break;
         }
     }
