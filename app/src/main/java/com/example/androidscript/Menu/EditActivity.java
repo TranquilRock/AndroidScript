@@ -24,6 +24,7 @@ public class EditActivity extends AppCompatActivity {
     private TextView output;
     protected String FileName;
     protected String folderPath;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,20 +42,23 @@ public class EditActivity extends AppCompatActivity {
         writeScript();
         readScript();
     }
-    public void setPermission(){
-        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE,Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        requestPermissions(permissions,100);
+
+    public void setPermission() {
+        String[] permissions = {Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        requestPermissions(permissions, 100);
     }
-    public void setDir(){
+
+    public void setDir() {
         File folder = new File(folderPath);
-        if (!folder.exists()){
+        if (!folder.exists()) {
             folder.mkdir();
         }
     }
-    protected void readScript(){
-        try{
+
+    protected void readScript() {
+        try {
             File scriptFile = new File(FileName);
-            if (scriptFile.exists()){
+            if (scriptFile.exists()) {
                 Scanner myReader = new Scanner(scriptFile);
                 while (myReader.hasNextLine()) {
                     String data = myReader.nextLine();
@@ -62,14 +66,15 @@ public class EditActivity extends AppCompatActivity {
                 }
                 myReader.close();
             }
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    protected void writeScript(){
-        try{
+
+    protected void writeScript() {
+        try {
             File scriptFile = new File(FileName);
-            if (!scriptFile.exists()){
+            if (!scriptFile.exists()) {
                 scriptFile.createNewFile();
             }
             FileWriter fileWriter = new FileWriter(this.FileName, false);
@@ -77,11 +82,12 @@ public class EditActivity extends AppCompatActivity {
             bufferedWriter.write("Test Write Message");
             bufferedWriter.newLine();
             bufferedWriter.close();
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    private void setOutput(String out){
+
+    private void setOutput(String out) {
         output.setText(out);
     }
 }

@@ -68,6 +68,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     public static final String SUPPORTED_FILE_NAME_PATTERN = "([A-Za-z0-9_-]*).txt";
+
     protected boolean parseFile(String path) {
         return Pattern.matches(SUPPORTED_FILE_NAME_PATTERN, path);
     }
