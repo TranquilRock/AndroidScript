@@ -9,15 +9,19 @@ import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.IBinder;
+
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
 import com.example.androidscript.R;
+import com.example.androidscript.util.AutoClick;
 
 
 public class FloatingWidgetService extends Service implements View.OnClickListener {
@@ -70,7 +74,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                     WindowManager.LayoutParams.TYPE_PHONE,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSLUCENT);
-        }else{
+        } else {
             paramRemove = new WindowManager.LayoutParams(
                     WindowManager.LayoutParams.WRAP_CONTENT,
                     WindowManager.LayoutParams.WRAP_CONTENT,
@@ -105,7 +109,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                     WindowManager.LayoutParams.TYPE_PHONE,
                     WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
                     PixelFormat.TRANSLUCENT);
-        }else{
+        } else {
             params = new WindowManager.LayoutParams(
                     WindowManager.LayoutParams.WRAP_CONTENT,
                     WindowManager.LayoutParams.WRAP_CONTENT,
@@ -333,11 +337,12 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                 stopSelf();
                 break;
             case R.id.run_script:
-                SimulatedClickService.mService.Click(849, 1709);
+                AutoClick.mService.Click(849, 1709);
                 break;
             case R.id.stop_script:
                 break;
-            case R.id.pause_script:_script:
+            case R.id.pause_script:
+                _script:
                 break;
         }
     }

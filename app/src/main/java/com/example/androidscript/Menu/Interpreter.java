@@ -1,6 +1,9 @@
 package com.example.androidscript.Menu;
 
 import android.graphics.Bitmap;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.example.androidscript.util.*;
 
@@ -79,12 +82,13 @@ public class Interpreter {//Only Support Integer Var
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void Run(String FileName, String[] argv, int depth) throws RuntimeException {//Run code that is already read in MyCode
         if (depth > 3) {
             throw new RuntimeException("Too deep, panic to avoid stackoverflow!\n");
         }
         Map<String, String> LocalVar = new HashMap<>();
-        LocalVar.put("$R","0");
+        LocalVar.put("$R", "0");
         int argCount = 1;
         for (String arg : argv) {
             LocalVar.put("$" + String.valueOf(argCount), arg);
@@ -100,24 +104,25 @@ public class Interpreter {//Only Support Integer Var
             }
             switch (command[0]) {
                 case "Click":
-                    AutoClick.autoClickPos(Double.valueOf(command[1]), Double.valueOf(command[2]), Double.valueOf(command[3]), Double.valueOf(command[4]));
-                    LocalVar.put("$R","0");
+                    //autoClickPos(, Double.valueOf(command[3]), Double.valueOf(command[4]));
+                    AutoClick.mService.Click(Integer.valueOf(command[1]), Integer.valueOf(command[2]));
+                    LocalVar.put("$R", "0");
                     break;
                 case "Compare":
                     System.out.println("Not Done Yet!\n");
-                    LocalVar.put("$R","0");
+                    LocalVar.put("$R", "0");
                     break;
                 case "JumpToLine":
                     commandIndex = Integer.valueOf(command[1]);
-                    LocalVar.put("$R","0");
+                    LocalVar.put("$R", "0");
                     break;
                 case "Wait":
                     try {
                         Thread.sleep(Integer.valueOf(command[1]));
-                        LocalVar.put("$R","0");
+                        LocalVar.put("$R", "0");
                     } catch (InterruptedException e) {
                         System.out.println("Waked up unexpected!\n");
-                        LocalVar.put("$R","1");
+                        LocalVar.put("$R", "1");
                     }
                     break;
                 case "Call":
@@ -127,34 +132,31 @@ public class Interpreter {//Only Support Integer Var
                             nextArgv[j - 2] = command[j];
                         }
                         Run(command[1], nextArgv, depth + 1);
-                        LocalVar.put("$R","0");
-                    }
-                    else{
-                        LocalVar.put("$R","1");
+                        LocalVar.put("$R", "0");
+                    } else {
+                        LocalVar.put("$R", "1");
                     }
                     break;
                 case "IfGreater":
-                    if(Integer.valueOf(command[1]) <= Integer.valueOf(command[2])){//Failed, skip next line
+                    if (Integer.valueOf(command[1]) <= Integer.valueOf(command[2])) {//Failed, skip next line
                         commandIndex++;
-                        LocalVar.put("$R","1");
-                    }
-                    else{
-                        LocalVar.put("$R","0");
+                        LocalVar.put("$R", "1");
+                    } else {
+                        LocalVar.put("$R", "0");
                     }
                     break;
                 case "IfSmaller":
-                    if(Integer.valueOf(command[1]) >= Integer.valueOf(command[2])){//Failed, skip next line
+                    if (Integer.valueOf(command[1]) >= Integer.valueOf(command[2])) {//Failed, skip next line
                         commandIndex++;
-                        LocalVar.put("$R","1");
-                    }
-                    else{
-                        LocalVar.put("$R","0");
+                        LocalVar.put("$R", "1");
+                    } else {
+                        LocalVar.put("$R", "0");
                     }
                     break;
                 case "Var":
-                    assert(command[1].charAt(0) == '$');
-                    LocalVar.put(command[1],command[2]);
-                    LocalVar.put("$R","0");
+                    assert (command[1].charAt(0) == '$');
+                    LocalVar.put(command[1], command[2]);
+                    LocalVar.put("$R", "0");
                     break;
                 default:
                     throw new RuntimeException("Cannot Recognize " + command[0]);

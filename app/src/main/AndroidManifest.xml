@@ -39,10 +39,10 @@
         <service
             android:name=".Test.FloatingWidgetService"
             android:enabled="true"
-            android:label="FLWTEST"></service>
+            android:label="FLWTEST"/>
 
         <service
-            android:name=".Test.SimulatedClickService"
+            android:name=".util.SimulatedClickService"
             android:enabled="true"
             android:label="CLSTEST"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
