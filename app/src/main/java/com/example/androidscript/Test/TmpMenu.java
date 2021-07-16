@@ -80,6 +80,7 @@ public class TmpMenu extends AppCompatActivity {
     /*  Permission request code to draw over other apps  */
     private static final int DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE = 1222;
     private Button btnToMenu;
+    private Button btnToTest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +89,7 @@ public class TmpMenu extends AppCompatActivity {
 
 
         btnToMenu = BtnMaker.jump(R.id.button_to_menu,this,MenuActivity.class);
+        btnToTest = BtnMaker.jump(R.id.button_to_test,this,TestActivity.class);
 
         if (!SimulatedClickService.isStart()) {
             try {
