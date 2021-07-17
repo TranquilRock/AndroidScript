@@ -3,7 +3,11 @@ package com.example.androidscript.Menu;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Point;
+import android.media.projection.MediaProjectionManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,6 +16,8 @@ import android.widget.TextView;
 
 import com.example.androidscript.R;
 import com.example.androidscript.util.BtnMaker;
+import com.example.androidscript.util.ScreenShot;
+import com.example.androidscript.util.SaveImg;
 
 import java.util.regex.Pattern;
 
@@ -29,6 +35,7 @@ public class MenuActivity extends AppCompatActivity {
         etNewName = (EditText) findViewById(R.id.et_New_Name);
         btnToLoad = BtnMaker.performIntent(R.id.btn_To_Load, this, Intent.ACTION_GET_CONTENT);
         output = (TextView) findViewById(R.id.output);
+
         btnToCreate = (Button) (this.findViewById(R.id.btn_To_Create));
         btnToCreate.setOnClickListener((new View.OnClickListener() {
             @Override
@@ -41,6 +48,7 @@ public class MenuActivity extends AppCompatActivity {
                 }
             }
         }));
+        SaveImg.bitmap(ScreenShot.instance.Shot(),"Image");
     }
 
     @Override

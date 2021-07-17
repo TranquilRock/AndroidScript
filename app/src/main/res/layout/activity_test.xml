@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/a"
     tools:context=".Test.TestActivity">
 
     <Button
@@ -14,7 +15,7 @@
         android:onClick="scnShot"
         android:text="@string/shot"
         android:translationX="100dp"
-        android:translationY="600dp"
+        android:translationY="200dp"
         android:translationZ="50dp" />
 
     <Button

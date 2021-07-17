@@ -3,6 +3,7 @@ package com.example.androidscript.Test;
 import android.app.Service;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.Build;
@@ -22,6 +23,8 @@ import android.widget.ImageView;
 
 import com.example.androidscript.R;
 import com.example.androidscript.util.AutoClick;
+import com.example.androidscript.util.SaveImg;
+import com.example.androidscript.util.ScreenShot;
 
 
 public class FloatingWidgetService extends Service implements View.OnClickListener {
@@ -337,6 +340,11 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                 stopSelf();
                 break;
             case R.id.run_script:
+                System.out.println("Maybe\n");
+                Bitmap gg = ScreenShot.instance.Shot();
+                System.out.println("Food\n");
+                SaveImg.bitmap(gg,"Image");
+                System.out.println("Good\n");
                 AutoClick.mService.Click(849, 1709);
                 break;
             case R.id.stop_script:
