@@ -55,6 +55,7 @@
                 android:resource="@xml/accessibility_service_config" />
 
         </service>
+        <service android:name=".util.CastService" android:exported="false" />
 
     </application>
 
