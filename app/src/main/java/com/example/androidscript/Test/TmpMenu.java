@@ -58,16 +58,17 @@ public class TmpMenu extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
-        Service gg = new Service() {
-            @Nullable
-            @Override
-            public IBinder onBind(Intent intent) {
-                return null;
-            }
-        };
-        gg.startForeground(1,1);
 
-        setPermission();
+//        Service gg = new Service() {
+//            @Nullable
+//            @Override
+//            public IBinder onBind(Intent intent) {
+//                return null;
+//            }
+//        };
+//        gg.startForeground(1,1);
+//
+//        setPermission();
 
 
         mediaProjectionManager = (MediaProjectionManager) this.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
