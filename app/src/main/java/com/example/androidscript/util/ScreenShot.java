@@ -12,6 +12,7 @@ import android.content.res.Resources;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
 import android.media.projection.MediaProjection;
+import android.os.Handler;
 
 import java.nio.ByteBuffer;
 
@@ -69,6 +70,18 @@ public class ScreenShot {
     }
 
     private void StartDisplay() {
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                virtualDisplay = mediaProjection.createVirtualDisplay("screen-mirror",
+//                        TargetWidth,
+//                        TargetHeight,
+//                        Resources.getSystem().getDisplayMetrics().densityDpi,
+//                        DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+//                        imageReader.getSurface(), null, null);
+//            }
+//        }, 1);
+
         this.virtualDisplay = mediaProjection.createVirtualDisplay("screen-mirror",
                 this.TargetWidth,
                 this.TargetHeight,
