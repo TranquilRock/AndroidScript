@@ -13,5 +13,7 @@
 .externalNativeBuild
 .cxx
 local.properties
-Test/
-!Test/TmpMenu.java
+/app/src/main/java/com/example/androidscript/Test/
+!/app/src/main/java/com/example/androidscript/Test/TmpMenu.java
+
+

@@ -23,14 +23,13 @@ import com.example.androidscript.R;
 import com.example.androidscript.util.AutoClick;
 import com.example.androidscript.util.SaveImg;
 import com.example.androidscript.util.ScreenShot;
-
+//Test
 public class TmpMenu extends AppCompatActivity {
 
     /*  Permission request code to draw over other apps  */
     private static final int DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE = 1222;
     private Button btnToMenu;
     private MediaProjectionManager mpm;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

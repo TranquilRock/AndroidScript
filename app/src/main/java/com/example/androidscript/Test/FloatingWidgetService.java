@@ -26,7 +26,7 @@ import com.example.androidscript.util.AutoClick;
 import com.example.androidscript.util.SaveImg;
 import com.example.androidscript.util.ScreenShot;
 
-
+//Test
 public class FloatingWidgetService extends Service implements View.OnClickListener {
     private WindowManager mWindowManager;
     private View mFloatingWidgetView, collapsedView, expandedView;
