@@ -3,7 +3,6 @@ package com.example.androidscript.util;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.GestureDescription;
 import android.graphics.Path;
-import android.os.Build;
 import android.view.accessibility.AccessibilityEvent;
 
 import androidx.annotation.RequiresApi;
@@ -11,15 +10,16 @@ import androidx.annotation.RequiresApi;
 public class AutoClick extends AccessibilityService {
 
     public static AutoClick mService;
+    static{
+        AutoClick.mService = new AutoClick();
+    }
 
     @Override
     protected void onServiceConnected() {
         super.onServiceConnected();
-        mService = this;
         System.out.println("onServiceConnected\n");
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         System.out.println("onAccessibilityEvent\n");
@@ -27,7 +27,7 @@ public class AutoClick extends AccessibilityService {
 
     @Override
     public void onInterrupt() {
-        mService = null;
+        System.out.println("AutoClick Interrupted\n");
     }
 
     @Override
@@ -45,6 +45,15 @@ public class AutoClick extends AccessibilityService {
         Path path = new Path();
         path.moveTo(x - 1, y - 1);
         path.lineTo(x + 1, y + 1);
+        dispatchGesture(new GestureDescription.Builder().addStroke(new GestureDescription.StrokeDescription
+                (path, 0, 100)).build(), null, null);
+    }
+
+    @RequiresApi(24)
+    public void Swipe(int x1, int y1,int x2,int y2) {
+        Path path = new Path();
+        path.moveTo(x1, y1);
+        path.lineTo(x2, y2);
         dispatchGesture(new GestureDescription.Builder().addStroke(new GestureDescription.StrokeDescription
                 (path, 0, 100)).build(), null, null);
     }

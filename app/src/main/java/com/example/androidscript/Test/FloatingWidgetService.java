@@ -340,7 +340,9 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                 break;
             case R.id.run_script:
                 SaveImg.bitmap(ScreenShot.instance.Shot(),"Image");
-                AutoClick.mService.Click(849, 1709);
+                AutoClick.mService.Click(508, 1875);
+                AutoClick.mService.Swipe(508, 1875,550,1875);
+
                 break;
             case R.id.stop_script:
                 break;

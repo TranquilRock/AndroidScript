@@ -41,14 +41,14 @@ public class TmpMenu extends AppCompatActivity {
         btnToTest = BtnMaker.jump(R.id.button_to_test, this, TestActivity.class);
 
 
-        if (!AutoClick.isStart()) {//Set Floating Accessibility
+//        if (!AutoClick.isStart()) {//Set Floating Accessibility
             try {
                 this.startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
             } catch (Exception e) {
                 this.startActivity(new Intent(Settings.ACTION_SETTINGS));
                 e.printStackTrace();
             }
-        }
+//        }
 
 
         mpm = (MediaProjectionManager) this.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
