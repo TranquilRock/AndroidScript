@@ -6,7 +6,9 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +18,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidScript">
 
+        <!--Will be removed -->
         <activity android:name=".Test.TmpMenu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,17 +26,20 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".Menu.MenuActivity">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
+        </activity>
 
         <activity
             android:name=".Menu.EditActivity"
             android:parentActivityName=".Menu.MenuActivity" />
-        <activity android:name=".Menu.MenuActivity">
 
-        </activity>
         <activity
             android:name=".Test.TestActivity"
-            android:theme="@style/Theme.AndroidScript.NoActionBar">
-        </activity>
+            android:theme="@style/Theme.AndroidScript.NoActionBar" />
 
         <service
             android:name=".Test.FloatingWidgetService"

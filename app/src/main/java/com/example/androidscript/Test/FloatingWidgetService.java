@@ -3,7 +3,6 @@ package com.example.androidscript.Test;
 import android.app.Service;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
 import android.os.Build;
@@ -45,20 +44,13 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     @Override
     public void onCreate() {
         super.onCreate();
-
-        //init WindowManager
         mWindowManager = (WindowManager) getSystemService(WINDOW_SERVICE);
-
         getWindowManagerDefaultDisplay();
-
-        //Init LayoutInflater
         LayoutInflater inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
-
         addRemoveView(inflater);
         addFloatingWidgetView(inflater);
         implementClickListeners();
         implementTouchListenerToFloatingWidgetView();
-
     }
 
 
@@ -339,15 +331,16 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                 stopSelf();
                 break;
             case R.id.run_script:
-                SaveImg.bitmap(ScreenShot.instance.Shot(),"Image");
-                try{
-                    Thread.sleep(500);
+//                SaveImg.bitmap(ScreenShot.instance.Shot(),"Image");
+                for(int z = 0;z<20;z++){
+                    try{
+                        Thread.sleep(500);
 
-                }catch (Exception e){
+                    }catch (Exception e){
 
+                    }
+                    AutoClick.mService.Click(508 - 10 * z, 1875);
                 }
-                AutoClick.mService.Click(508, 1875);
-                AutoClick.mService.Swipe(508, 1875,550,1875);
                 break;
             case R.id.stop_script:
                 break;
@@ -365,8 +358,6 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         //get x and y coordinates of remove view
         int x_cord = (szWindow.x - removeFloatingWidgetView.getWidth()) / 2;
         int y_cord = szWindow.y - (removeFloatingWidgetView.getHeight() + getStatusBarHeight());
-
-
         removeParams.x = x_cord;
         removeParams.y = y_cord;
 
@@ -451,48 +442,35 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         return value;
     }
 
-
     /*  Detect if the floating view is collapsed or expanded */
     private boolean isViewCollapsed() {
         return mFloatingWidgetView == null || mFloatingWidgetView.findViewById(R.id.collapse_view).getVisibility() == View.VISIBLE;
     }
-
 
     /*  return status bar height on basis of device display metrics  */
     private int getStatusBarHeight() {
         return (int) Math.ceil(25 * getApplicationContext().getResources().getDisplayMetrics().density);
     }
 
-
     /*  Update Floating Widget view coordinates on Configuration change  */
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-
         getWindowManagerDefaultDisplay();
-
         WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) mFloatingWidgetView.getLayoutParams();
-
         if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-
-
             if (layoutParams.y + (mFloatingWidgetView.getHeight() + getStatusBarHeight()) > szWindow.y) {
                 layoutParams.y = szWindow.y - (mFloatingWidgetView.getHeight() + getStatusBarHeight());
                 mWindowManager.updateViewLayout(mFloatingWidgetView, layoutParams);
             }
-
             if (layoutParams.x != 0 && layoutParams.x < szWindow.x) {
                 resetPosition(szWindow.x);
             }
-
         } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-
             if (layoutParams.x > szWindow.x) {
                 resetPosition(szWindow.x);
             }
-
         }
-
     }
 
     /*  on Floating widget click show expanded view  */
@@ -503,23 +481,17 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
             //and expanded view will become visible.
             collapsedView.setVisibility(View.GONE);
             expandedView.setVisibility(View.VISIBLE);
-
         }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-
-        /*  on destroy remove both view from window manager */
-
-        if (mFloatingWidgetView != null)
+        if (mFloatingWidgetView != null){
             mWindowManager.removeView(mFloatingWidgetView);
-
-        if (removeFloatingWidgetView != null)
+        }
+        if (removeFloatingWidgetView != null){
             mWindowManager.removeView(removeFloatingWidgetView);
-
+        }
     }
-
-
 }

@@ -36,7 +36,7 @@ public class ScreenShot {
     @SuppressLint("WrongConstant")
     private ScreenShot(int width, int height, Point Offset, MediaProjection mediaProjection) {
         this.mediaProjection = mediaProjection;
-        this.imageReader = ImageReader.newInstance(width, height, PixelFormat.RGBA_8888, 10);
+        this.imageReader = ImageReader.newInstance(width, height, PixelFormat.RGBA_8888, 1);
         this.TargetOffset = Offset;
         this.TargetHeight = height;
         this.TargetWidth = width;

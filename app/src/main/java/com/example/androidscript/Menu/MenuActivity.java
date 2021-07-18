@@ -29,7 +29,7 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         etNewName = (EditText) findViewById(R.id.et_New_Name);
-        btnToLoad = BtnMaker.performIntent(R.id.btn_To_Load, this, Intent.ACTION_GET_CONTENT);
+        btnToLoad = BtnMaker.performIntent(R.id.btn_To_Load, this, Intent.ACTION_PICK);
         output = (TextView) findViewById(R.id.output);
 
         btnToCreate = (Button) (this.findViewById(R.id.btn_To_Create));
@@ -44,7 +44,6 @@ public class MenuActivity extends AppCompatActivity {
                 }
             }
         }));
-        SaveImg.bitmap(ScreenShot.instance.Shot(),"Image");
     }
 
     @Override
