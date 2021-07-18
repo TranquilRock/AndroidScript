@@ -13,3 +13,5 @@
 .externalNativeBuild
 .cxx
 local.properties
+Test/
+!Test/TmpMenu.java
