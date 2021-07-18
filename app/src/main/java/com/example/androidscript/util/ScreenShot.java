@@ -1,21 +1,17 @@
 package com.example.androidscript.util;
 
 import android.annotation.SuppressLint;
-import android.graphics.PixelFormat;
 
-import android.annotation.TargetApi;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.ImageFormat;
+import android.media.Image;
 import android.graphics.Point;
+import android.graphics.Bitmap;
+import android.media.ImageReader;
+import android.util.DisplayMetrics;
+import android.graphics.PixelFormat;
+import android.content.res.Resources;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
-import android.media.Image;
-import android.media.ImageReader;
 import android.media.projection.MediaProjection;
-import android.os.Build;
-import android.os.DeadSystemException;
-import android.util.DisplayMetrics;
 
 import java.nio.ByteBuffer;
 
@@ -25,7 +21,7 @@ public class ScreenShot {
     public static ScreenShot Instance(int width, int height, Point Offset, MediaProjection mediaProjection) {
         if (ScreenShot.instance == null) {
             ScreenShot.instance = new ScreenShot(width, height, Offset, mediaProjection);
-            System.out.println("Init\n");
+            System.out.println("Screen Shot Init Succeeded.\n");
         }
         return ScreenShot.instance;
     }
@@ -46,11 +42,11 @@ public class ScreenShot {
         this.TargetWidth = width;
     }
 
-    public Bitmap Shot(){
+    public Bitmap Shot() {
         StartDisplay();
 
         Image img = imageReader.acquireLatestImage();
-        if(img == null) {
+        if (img == null) {
             System.out.println("GG\n");
             return null;
         }
@@ -73,16 +69,16 @@ public class ScreenShot {
     }
 
     private void StartDisplay() {
-       this.virtualDisplay = mediaProjection.createVirtualDisplay("screen-mirror",
-               this.TargetWidth,
-               this.TargetHeight,
-               Resources.getSystem().getDisplayMetrics().densityDpi,
-               DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-               imageReader.getSurface(), null, null);
+        this.virtualDisplay = mediaProjection.createVirtualDisplay("screen-mirror",
+                this.TargetWidth,
+                this.TargetHeight,
+                Resources.getSystem().getDisplayMetrics().densityDpi,
+                DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+                imageReader.getSurface(), null, null);
     }
 
-    private void EndDisplay(){
-        if(this.virtualDisplay != null){
+    private void EndDisplay() {
+        if (this.virtualDisplay != null) {
             this.virtualDisplay.release();
             this.virtualDisplay = null;
         }

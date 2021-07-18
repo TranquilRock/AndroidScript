@@ -41,14 +41,14 @@ public class TmpMenu extends AppCompatActivity {
         btnToTest = BtnMaker.jump(R.id.button_to_test, this, TestActivity.class);
 
 
-//        if (!AutoClick.isStart()) {//Set Floating Accessibility
+        if (!AutoClick.isStart()) {//Set Floating Accessibility
             try {
                 this.startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
             } catch (Exception e) {
                 this.startActivity(new Intent(Settings.ACTION_SETTINGS));
                 e.printStackTrace();
             }
-//        }
+        }
 
 
         mpm = (MediaProjectionManager) this.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
@@ -83,7 +83,6 @@ public class TmpMenu extends AppCompatActivity {
         if (requestCode == 123) {
             ScreenShot.Instance(1000, 1000, new Point(0, 0), this.mpm.getMediaProjection(Activity.RESULT_OK, data));
             SaveImg.bitmap(ScreenShot.instance.Shot(), "Image");
-            System.out.println("Alive\n");
         } else if (requestCode == DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE && resultCode == RESULT_OK) {
             startFloatingWidgetService();
         } else {
