@@ -47,5 +47,4 @@ public class TestActivity extends AppCompatActivity {
 //        ImageView igShow = findViewById(R.id.imageView);
 //        igShow.setImageBitmap(scn);
     }
-
 }

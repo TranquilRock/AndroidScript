@@ -29,17 +29,19 @@ public class TmpMenu extends AppCompatActivity {
     /*  Permission request code to draw over other apps  */
     private static final int DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE = 1222;
     private Button btnToMenu;
+    private Button btnToTest;
+
     private MediaProjectionManager mpm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tmp_menu);
 
-//        btnToMenu = BtnMaker.jump(R.id.button_to_menu, this, MenuActivity.class);
         btnToMenu = BtnMaker.jump(R.id.button_to_menu, this, MenuActivity.class);
+        btnToTest = BtnMaker.jump(R.id.button_to_test, this, TestActivity.class);
 
 
-        if (!AutoClick.isStart()) {
+        if (!AutoClick.isStart()) {//Set Floating Accessibility
             try {
                 this.startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
             } catch (Exception e) {
@@ -50,7 +52,7 @@ public class TmpMenu extends AppCompatActivity {
 
 
         mpm = (MediaProjectionManager) this.getSystemService(Context.MEDIA_PROJECTION_SERVICE);
-        startActivityForResult(this.mpm.createScreenCaptureIntent(), 123);
+        startActivityForResult(this.mpm.createScreenCaptureIntent(), 123);//Set Screen Mirror
     }
 
     /*  start floating widget service  */

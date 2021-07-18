@@ -16,12 +16,13 @@ public class AutoClick extends AccessibilityService {
     protected void onServiceConnected() {
         super.onServiceConnected();
         mService = this;
+        System.out.println("onServiceConnected\n");
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-
+        System.out.println("onAccessibilityEvent\n");
     }
 
     @Override
@@ -47,6 +48,4 @@ public class AutoClick extends AccessibilityService {
         dispatchGesture(new GestureDescription.Builder().addStroke(new GestureDescription.StrokeDescription
                 (path, 0, 100)).build(), null, null);
     }
-    
-
 }

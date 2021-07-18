@@ -26,7 +26,6 @@ import com.example.androidscript.util.AutoClick;
 import com.example.androidscript.util.SaveImg;
 import com.example.androidscript.util.ScreenShot;
 
-//Test
 public class FloatingWidgetService extends Service implements View.OnClickListener {
     private WindowManager mWindowManager;
     private View mFloatingWidgetView, collapsedView, expandedView;
@@ -340,11 +339,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                 stopSelf();
                 break;
             case R.id.run_script:
-                System.out.println("Maybe\n");
-                Bitmap gg = ScreenShot.instance.Shot();
-                System.out.println("Food\n");
-                SaveImg.bitmap(gg,"Image");
-                System.out.println("Good\n");
+                SaveImg.bitmap(ScreenShot.instance.Shot(),"Image");
                 AutoClick.mService.Click(849, 1709);
                 break;
             case R.id.stop_script:
