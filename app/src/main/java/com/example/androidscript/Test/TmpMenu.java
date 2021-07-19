@@ -7,6 +7,7 @@ import com.example.androidscript.Menu.MenuActivity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Point;
 import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
@@ -15,6 +16,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+
+import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
@@ -22,6 +25,10 @@ import android.widget.Button;
 
 import com.example.androidscript.R;
 import com.example.androidscript.util.*;
+
+import java.io.File;
+
+import static android.system.Os.mkdir;
 
 public class TmpMenu extends AppCompatActivity {
 
@@ -46,6 +53,8 @@ public class TmpMenu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mm = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+                System.out.println("LLLLLLLLLLGGGGG");
+
                 startActivityForResult((mm).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
             }
         }));
@@ -55,12 +64,12 @@ public class TmpMenu extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String DABEN = getFilesDir().getAbsolutePath() + "/AndroidScript/";
+                File f = new File(DABEN);
+                f.mkdir();
                 SaveImg.bitmap(ScreenShot.Shot(),DABEN + "image.jpg");
-
             }
         }));
 
-        this.startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
     }
 
     public void setPermission() {
@@ -83,8 +92,9 @@ public class TmpMenu extends AppCompatActivity {
         }
     }
 
-    /*  Start Floating widget service and finish current activity */
     private void startFloatingWidgetService() {
+        this.startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
+
         startService(new Intent(TmpMenu.this, FloatingWidgetService.class));
         finish();
     }
@@ -96,7 +106,7 @@ public class TmpMenu extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ScreenShot.pass( (Intent) data.clone() , mm);
+                    ScreenShot.pass((Intent)data.clone(),mm);
                     startService(new Intent(getApplicationContext(),ScreenShot.class));
                 }
             }, 1);

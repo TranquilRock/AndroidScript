@@ -2,20 +2,15 @@ package com.example.androidscript.FloatingWidget;
 
 import android.accessibilityservice.AccessibilityService;
 import android.app.Activity;
-import android.app.Service;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.PixelFormat;
 import android.graphics.Point;
-import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.os.IBinder;
-
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
 import android.view.Gravity;
@@ -31,36 +26,34 @@ import com.example.androidscript.Test.TmpMenu;
 import com.example.androidscript.util.*;
 
 public class FloatingWidgetService extends AccessibilityService implements View.OnClickListener {
+
     private WindowManager mWindowManager;
     private View mFloatingWidgetView, collapsedView, expandedView;
     private ImageView remove_image_view;
     private Point szWindow = new Point();
     private View removeFloatingWidgetView;
     private LayoutInflater inflater;
-
     private int x_init_cord, y_init_cord, x_init_margin, y_init_margin;
     private boolean isLeft = true;
 
-//    public static MediaProjectionManager mediaProjectionManager;
     public static FloatingWidgetService instance;
 
     @Override
-    public void onServiceConnected(){
+    public void onServiceConnected() {
         super.onServiceConnected();
         FloatingWidgetService.instance = this;
         System.out.println("FloatingWidgetService::onServiceConnected\n");
         Object a = FloatingWidgetService.instance.getWindows().get(0);
-
     }
 
-
-    public Bitmap Screenshot(Activity tmp){
+    public Bitmap Screenshot(Activity tmp) {
         View view = tmp.getWindow().getDecorView().getRootView();
         Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
         return bitmap;
     }
+
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
         System.out.println("FloatingWidgetService::onAccessibilityEvent\n");
@@ -234,7 +227,7 @@ public class FloatingWidgetService extends AccessibilityService implements View.
                         if (Math.abs(x_diff) < 5 && Math.abs(y_diff) < 5) {
                             time_end = System.currentTimeMillis();
                             //Also check the difference between start time and end time should be less than 300ms
-                            if ((time_end - time_start) < 300){
+                            if ((time_end - time_start) < 300) {
                                 onFloatingWidgetClick();
                             }
                         }
@@ -360,7 +353,8 @@ public class FloatingWidgetService extends AccessibilityService implements View.
             case R.id.stop_script:
                 break;
             case R.id.pause_script:
-                _script://What is this?
+                _script:
+//What is this?
                 break;
         }
     }
@@ -476,11 +470,11 @@ public class FloatingWidgetService extends AccessibilityService implements View.
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (mFloatingWidgetView != null){
+        if (mFloatingWidgetView != null) {
             mWindowManager.removeView(mFloatingWidgetView);
             mFloatingWidgetView = null;
         }
-        if (removeFloatingWidgetView != null){
+        if (removeFloatingWidgetView != null) {
             mWindowManager.removeView(removeFloatingWidgetView);
             removeFloatingWidgetView = null;
         }

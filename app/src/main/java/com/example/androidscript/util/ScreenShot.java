@@ -22,6 +22,9 @@ import android.content.res.Resources;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
 import android.media.projection.MediaProjection;
+import android.view.Surface;
+import android.view.View;
+
 import androidx.annotation.Nullable;
 import androidx.core.content.res.ResourcesCompat;
 
@@ -55,6 +58,7 @@ public class ScreenShot extends Service {
             System.out.println("No Img in Screenshot\n");
             return null;
         }
+        System.out.println("Yesssssssssssss\n");
         //TODO:Clarify following.
         int width = img.getWidth();
         int height = img.getHeight();
@@ -81,8 +85,6 @@ public class ScreenShot extends Service {
                     Resources.getSystem().getDisplayMetrics().densityDpi,
                     DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
                     ScreenShot.imageReader.getSurface(), null, null);
-            System.out.println("ININININ\n");
-//            virtualDisplay.setSurface(ScreenShot.imageReader.getSurface());
         }
     }
 
@@ -111,24 +113,21 @@ public class ScreenShot extends Service {
         return Math.max(screenWidth / (double) screenHeight, screenHeight / (double) screenWidth);
     }
 
-
     private void createNotificationChannel() {
         Notification.Builder builder = new Notification.Builder(getApplicationContext()); //获取一个Notification构造器
-        Intent nfIntent = new Intent(this, TmpMenu.class); //点击后跳转的界面，可以设置跳转数据
-
-        builder.setContentIntent(PendingIntent.getActivity(this, 0, nfIntent, 0)) // 设置PendingIntent
-                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher)) // 设置下拉列表中的图标(大图标)
-                .setContentTitle("AndroidScript啟動中") // 设置下拉列表里的标题
-                .setSmallIcon(R.mipmap.ic_launcher) // 设置状态栏内的小图标
-                .setContentText("AndroidScript正在擷取螢幕"); // 设置上下文内容
-//                .setWhen(System.currentTimeMillis()); // 设置该通知发生的时间
-
+        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, TmpMenu.class),0))
+//                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher))
+//                .setContentTitle("AndroidScript啟動中")
+//                .setSmallIcon(R.mipmap.ic_launcher)
+//                .setContentText("AndroidScript正在擷取螢幕")
+//                .setWhen(System.currentTimeMillis())
+                ;
         /*以下是对Android 8.0的适配*/
         //普通notification适配
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setChannelId("notification_id");
             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-            NotificationChannel channel = new NotificationChannel("notification_id", "notification_name", NotificationManager.IMPORTANCE_LOW);
+            NotificationChannel channel = new NotificationChannel("notification_id", "notification_name", NotificationManager.IMPORTANCE_HIGH);
             notificationManager.createNotificationChannel(channel);
         }
 
@@ -146,9 +145,13 @@ public class ScreenShot extends Service {
     @SuppressLint("WrongConstant")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        System.out.println("Before\n");
         createNotificationChannel();
+        System.out.println("After\n");
         ScreenShot.mediaProjection = ScreenShot.mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, ScreenShot.Permission);
+        System.out.println("A\n");
         ScreenShot.imageReader = ImageReader.newInstance(getScreenWidth(), getScreenHeight(), PixelFormat.RGBA_8888, 10);
+        System.out.println("B\n");
         ScreenShot.TargetOffset = new Point(0, 0);
         ScreenShot.TargetHeight = getScreenHeight();
         ScreenShot.TargetWidth = getScreenWidth();

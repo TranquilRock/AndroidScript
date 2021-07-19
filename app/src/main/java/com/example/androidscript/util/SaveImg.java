@@ -10,7 +10,9 @@ import java.io.FileOutputStream;
 public class SaveImg extends Activity {
     public static void bitmap(Bitmap bm,String FileName) {
         if(bm == null) return;
-        String fileName = FileName + ".jpg";
+        String fileName = FileName;
+        System.out.println(fileName);
+
         File file = new File(fileName);
         if (file.exists())
             file.delete();
