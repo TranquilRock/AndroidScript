@@ -5,11 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.Settings;
 import android.widget.TextView;
 
 import com.example.androidscript.R;
@@ -28,7 +24,8 @@ public class EditActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.folderPath = Environment.getExternalStorageDirectory() + "/AndroidScript/";
+        this.folderPath = getFilesDir().getAbsolutePath() + "/AndroidScript/";//Environment.getExternalStorageDirectory()
+//        this.folderPath = "/sdcard/Android/media/AndroidScript/";//Environment.getExternalStorageDirectory()
 
         setContentView(R.layout.activity_edit);
         output = (TextView) findViewById(R.id.edit_output);
@@ -55,8 +52,10 @@ public class EditActivity extends AppCompatActivity {
 
     public void setDir() {
         File folder = new File(folderPath);
+        System.out.println("SetDir\n");
         if (!folder.exists()) {
             folder.mkdir();
+            System.out.println("SetDirSuccess\n");
         }
     }
 
@@ -80,6 +79,8 @@ public class EditActivity extends AppCompatActivity {
         try {
             File scriptFile = new File(FileName);
             if (!scriptFile.exists()) {
+//                scriptFile.getParentFile().mkdirs();
+                System.out.println(FileName);
                 scriptFile.createNewFile();
             }
             FileWriter fileWriter = new FileWriter(this.FileName, false);

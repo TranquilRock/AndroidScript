@@ -11,4 +11,8 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_floating_test">FloatingTest</string>
     <string name="shot">Shot</string>
+    <string name="test">Test</string>
+    <string name="rocket">Rocket</string>
+    <string name="start">Start</string>
+    <string name="menu">Menu</string>
 </resources>

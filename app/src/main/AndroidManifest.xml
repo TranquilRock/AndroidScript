@@ -8,58 +8,56 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-<!--    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION" />-->
-
 
     <application
-        android:foregroundServiceType="mediaProjection"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidScript">
-
-        <!--Will be removed -->
+        <!-- Will be removed -->
         <activity android:name=".Test.TmpMenu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity android:name=".Menu.MenuActivity">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-        </activity>
 
+            <!-- <intent-filter> -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
+        </activity>
         <activity
             android:name=".Menu.EditActivity"
             android:parentActivityName=".Menu.MenuActivity" />
-
         <activity
             android:name=".Test.TestActivity"
             android:theme="@style/Theme.AndroidScript.NoActionBar" />
 
         <service
-            android:name=".Test.FloatingWidgetService"
+            android:name=".FloatingWidget.FloatingWidgetService"
             android:enabled="true"
-            android:label="FLWTEST"/>
-
-        <service
-            android:name=".util.AutoClick"
-            android:enabled="true"
-            android:label="CLSTEST"
+            android:label="FloatingWidgetService"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
+
             <meta-data
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config" />
         </service>
+
+
+        <service
+            android:name=".util.ScreenShot"
+            android:enabled="true"
+            android:foregroundServiceType="mediaProjection"
+            android:label="ScreenShot" />
     </application>
 
 </manifest>

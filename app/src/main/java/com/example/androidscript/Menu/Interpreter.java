@@ -104,8 +104,7 @@ public class Interpreter {//Only Support Integer Var
             }
             switch (command[0]) {
                 case "Click":
-                    //autoClickPos(, Double.valueOf(command[3]), Double.valueOf(command[4]));
-                    AutoClick.mService.Click(Integer.valueOf(command[1]), Integer.valueOf(command[2]));
+//                    AutoClick.mService.Click(Integer.valueOf(command[1]), Integer.valueOf(command[2]));
                     LocalVar.put("$R", "0");
                     break;
                 case "Compare":
