@@ -3,9 +3,13 @@ package com.example.androidscript.Menu;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.media.projection.MediaProjectionManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.widget.Button;
 import android.content.Intent;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -22,10 +26,14 @@ public class MenuActivity extends AppCompatActivity {
     private String root;
     private Button btnToCreate;
     private Button btnToLoad;
+    private ImageButton btnStartService;
+    private MediaProjectionManager mediaProjectionManager;
+
     private EditText etNewName;
     private TextView output;
     private Spinner selectScript;
     private Vector<String> availableFile = new Vector<>();
+    public static final int PROJECTION_REQUEST_CODE = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +55,11 @@ public class MenuActivity extends AppCompatActivity {
             }
         }));
         selectScript = SpnMaker.fromString(R.id.spinner_Select_Script, this, availableFile);
+       btnStartService = findViewById(R.id.btn_Start_Service);
+       btnStartService.setOnClickListener(v -> {
+           mediaProjectionManager = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+           startActivityForResult((mediaProjectionManager).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
+       });
     }
 
     @Override
@@ -56,6 +69,14 @@ public class MenuActivity extends AppCompatActivity {
             String FileName = data.getDataString();
             output.setText(FileName);
             switchToEdit(FileName);
+        }else if (requestCode == PROJECTION_REQUEST_CODE) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    ScreenShot.pass((Intent)data,mediaProjectionManager);
+                    startService(new Intent(getApplicationContext(),ScreenShot.class));
+                }
+            }, 1);
         }
     }
 

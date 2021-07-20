@@ -40,4 +40,16 @@
         android:layout_marginTop="10dp"
         android:text="@string/newScript"
         android:layout_gravity="center"/>
+
+    <ImageButton
+        android:id="@+id/btn_Start_Service"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginTop="300dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/background_round_button"
+        android:rotationX="0"
+        android:src="@drawable/ic_baseline_cast_24" />
 </LinearLayout>

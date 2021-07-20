@@ -37,16 +37,19 @@ public class ScreenShot extends Service {
     private static VirtualDisplay virtualDisplay = null;
     private static MediaProjection mediaProjection = null;
     private static MediaProjectionManager mediaProjectionManager = null;
-
-    public static void pass(Intent shit, MediaProjectionManager mm) {
+    public static boolean ServiceStart = false;
+    public static void pass(Intent intent, MediaProjectionManager mm) {
         if (ScreenShot.mediaProjectionManager == null) {
-            ScreenShot.Permission = (Intent) shit.clone();
+            ScreenShot.Permission = intent;
             ScreenShot.mediaProjectionManager = mm;
         }
     }
 
     public static Bitmap Shot() {
         StartDisplay();
+        if(!ServiceStart){
+            return null;
+        }
         Image img = imageReader.acquireLatestImage();
         if (img == null) {
             System.out.println("No Img in Screenshot\n");
@@ -70,13 +73,20 @@ public class ScreenShot extends Service {
     }
 
     private static void StartDisplay() {
-        if (ScreenShot.virtualDisplay == null) {
-            ScreenShot.virtualDisplay = ScreenShot.mediaProjection.createVirtualDisplay("Screenshot",
-                    ScreenShot.TargetWidth,
-                    ScreenShot.TargetHeight,
-                    Resources.getSystem().getDisplayMetrics().densityDpi,
-                    DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-                    ScreenShot.imageReader.getSurface(), null, null);
+        //TODO always check if the permission is cancelled
+        if (ServiceStart) {
+            try{
+                ScreenShot.virtualDisplay = ScreenShot.mediaProjection.createVirtualDisplay("Screenshot",
+                        ScreenShot.TargetWidth,
+                        ScreenShot.TargetHeight,
+                        Resources.getSystem().getDisplayMetrics().densityDpi,
+                        DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+                        ScreenShot.imageReader.getSurface(), null, null);
+            }
+            catch (SecurityException e){
+                ServiceStart = false;
+                e.printStackTrace();
+            }
         }
     }
 
@@ -127,16 +137,14 @@ public class ScreenShot extends Service {
     @SuppressLint("WrongConstant")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        System.out.println("Before\n");
         createNotificationChannel();
-        System.out.println("After\n");
         ScreenShot.mediaProjection = ScreenShot.mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, ScreenShot.Permission);
-        System.out.println("A\n");
         ScreenShot.imageReader = ImageReader.newInstance(getScreenWidth(), getScreenHeight(), PixelFormat.RGBA_8888, 10);
-        System.out.println("B\n");
         ScreenShot.TargetOffset = new Point(0, 0);
         ScreenShot.TargetHeight = getScreenHeight();
         ScreenShot.TargetWidth = getScreenWidth();
+        ScreenShot.ServiceStart = true;
+        System.out.println("Start Screen Casting\n");
         return 0;
     }
 //    public static Double ScreenRatio() {
