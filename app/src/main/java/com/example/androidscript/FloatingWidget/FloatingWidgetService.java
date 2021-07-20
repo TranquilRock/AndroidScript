@@ -332,16 +332,14 @@ public class FloatingWidgetService extends AccessibilityService implements View.
                 stopSelf();
                 break;
             case R.id.run_script:
-//                FileOperation.bitmap(ScreenShot.instance.Shot(),"Image");
-//                for(int z = 0;z<20;z++){
-//                    try{
-//                        Thread.sleep(500);
-//
-//                    }catch (Exception e){
-//
-//                    }
-//                    AutoClick.mService.Click(508 - 10 * z, 1875);
-//                }
+                FileOperation.instance.saveBitmapAsJPG(ScreenShot.Shot(),"Image2.jpg");
+                for(int z = 0;z<10;z++){
+                    try{
+                        AutoClick.Click(this,508 - 20 * z, 1875);
+                        Thread.sleep(500);
+                    }catch (Exception e){
+                    }
+                }
                 break;
             case R.id.stop_script:
                 break;

@@ -19,15 +19,4 @@
     <string name="newScript">建立腳本</string>
     <string name="scriptName">請輸入名稱</string>
 
-
-    <string-array name="planets_array">
-        <item>Mercury</item>
-        <item>Venus</item>
-        <item>Earth</item>
-        <item>Mars</item>
-        <item>Jupiter</item>
-        <item>Saturn</item>
-        <item>Uranus</item>
-        <item>Neptune</item>
-    </string-array>
 </resources>

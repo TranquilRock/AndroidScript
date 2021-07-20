@@ -14,37 +14,29 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Objects;
 import java.util.Scanner;
 
+@Deprecated
 public class EditActivity extends AppCompatActivity {
     private TextView output;
     protected String FileName;
-    protected String folderPath;
+    protected String folder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.folderPath = getFilesDir().getAbsolutePath() + "/AndroidScript/";//Environment.getExternalStorageDirectory()
+        this.folder = "AndroidScript/";
 
         setContentView(R.layout.activity_edit);
         output = (TextView) findViewById(R.id.edit_output);
 
-        Intent intent = getIntent();
+        Intent intent = getIntent();//Get string passing by intent
         String FileName = intent.getStringExtra(MenuActivity.EXTRA_MESSAGE);
-        this.FileName = folderPath + FileName;
+        this.FileName = folder + FileName;
         setOutput(this.FileName);
-        setDir();
         writeScript();
         readScript();
-    }
-
-    public void setDir() {
-        File folder = new File(folderPath);
-        System.out.println("SetDir\n");
-        if (!folder.exists()) {
-            folder.mkdir();
-            System.out.println("SetDirSuccess\n");
-        }
     }
 
     protected void readScript() {
@@ -67,9 +59,7 @@ public class EditActivity extends AppCompatActivity {
         try {
             File scriptFile = new File(FileName);
             System.out.println(FileName);
-            if (!scriptFile.exists()) {
-                scriptFile.getParentFile().mkdirs();
-
+            if (!scriptFile.exists() || Objects.requireNonNull(scriptFile.getParentFile()).mkdir()) {
                 scriptFile.createNewFile();
             }
             FileWriter fileWriter = new FileWriter(this.FileName, false);

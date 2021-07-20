@@ -5,6 +5,7 @@ import com.example.androidscript.util.BtnMaker;
 import com.example.androidscript.Menu.MenuActivity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.projection.MediaProjectionManager;
@@ -40,6 +41,8 @@ public class TmpMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setPermission();
         setContentView(R.layout.activity_tmp_menu);
+        FileOperation.setUpFileOperation(getFilesDir().getAbsolutePath() + "/");
+
 
         btnToMenu = BtnMaker.jump(R.id.button_to_menu, this, MenuActivity.class);
         btnToTest = BtnMaker.jump(R.id.button_to_test, this, TestActivity.class);
@@ -47,7 +50,7 @@ public class TmpMenu extends AppCompatActivity {
             mm = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
             startActivityForResult((mm).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
         }));
-        btnDoScreenshot = BtnMaker.registerOnClick(R.id.button_tmp,this,(v -> FileOperation.saveBitmapAsJPG(ScreenShot.Shot(),"image.jpg")));
+        btnDoScreenshot = BtnMaker.registerOnClick(R.id.button_tmp,this,(v -> FileOperation.instance.saveBitmapAsJPG(ScreenShot.Shot(),"image.jpg")));
     }
 
     public void setPermission() {
