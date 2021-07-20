@@ -25,7 +25,6 @@ public class EditActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.folderPath = getFilesDir().getAbsolutePath() + "/AndroidScript/";//Environment.getExternalStorageDirectory()
-//        this.folderPath = "/sdcard/Android/media/AndroidScript/";//Environment.getExternalStorageDirectory()
 
         setContentView(R.layout.activity_edit);
         output = (TextView) findViewById(R.id.edit_output);
@@ -34,20 +33,9 @@ public class EditActivity extends AppCompatActivity {
         String FileName = intent.getStringExtra(MenuActivity.EXTRA_MESSAGE);
         this.FileName = folderPath + FileName;
         setOutput(this.FileName);
-        setPermission();
         setDir();
         writeScript();
         readScript();
-    }
-
-    public void setPermission() {
-        String[] permissions = {
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.FOREGROUND_SERVICE
-        };
-        requestPermissions(permissions, 100);
     }
 
     public void setDir() {
@@ -78,9 +66,10 @@ public class EditActivity extends AppCompatActivity {
     protected void writeScript() {
         try {
             File scriptFile = new File(FileName);
+            System.out.println(FileName);
             if (!scriptFile.exists()) {
-//                scriptFile.getParentFile().mkdirs();
-                System.out.println(FileName);
+                scriptFile.getParentFile().mkdirs();
+
                 scriptFile.createNewFile();
             }
             FileWriter fileWriter = new FileWriter(this.FileName, false);

@@ -3,18 +3,13 @@ package com.example.androidscript.util;
 import android.graphics.Path;
 import android.accessibilityservice.AccessibilityService;
 import android.accessibilityservice.GestureDescription;
-import android.view.accessibility.AccessibilityEvent;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 public class AutoClick{
-    @RequiresApi(24)
     public static void Click(@NonNull AccessibilityService service, int x, int y) {
         AutoClick.Swipe(service,x - 1, y - 1, x + 1, y + 1);
     }
 
-    @RequiresApi(24)
     public static void Swipe(@NonNull AccessibilityService service,int x1, int y1, int x2, int y2) {
         Path path = new Path();
         path.moveTo(x1, y1);

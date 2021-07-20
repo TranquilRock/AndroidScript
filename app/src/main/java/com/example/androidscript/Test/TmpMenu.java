@@ -7,9 +7,6 @@ import com.example.androidscript.Menu.MenuActivity;
 import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.Point;
-import android.media.projection.MediaProjection;
 import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
 import android.os.Build;
@@ -17,7 +14,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 
-import androidx.annotation.RequiresPermission;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
@@ -26,9 +22,8 @@ import android.widget.Button;
 import com.example.androidscript.R;
 import com.example.androidscript.util.*;
 
-import java.io.File;
-
-import static android.system.Os.mkdir;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TmpMenu extends AppCompatActivity {
 
@@ -48,38 +43,20 @@ public class TmpMenu extends AppCompatActivity {
 
         btnToMenu = BtnMaker.jump(R.id.button_to_menu, this, MenuActivity.class);
         btnToTest = BtnMaker.jump(R.id.button_to_test, this, TestActivity.class);
-        btnSetScreenshot = (Button) (findViewById(R.id.button_set_screenshot));
-        btnSetScreenshot.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mm = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
-                System.out.println("LLLLLLLLLLGGGGG");
-
-                startActivityForResult((mm).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
-            }
+        btnSetScreenshot = BtnMaker.registerOnClick(R.id.button_set_screenshot,this,(v -> {
+            mm = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+            startActivityForResult((mm).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
         }));
-
-        btnDoScreenshot = (Button) (findViewById(R.id.button_tmp));
-        btnDoScreenshot.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String DABEN = getFilesDir().getAbsolutePath() + "/AndroidScript/";
-                File f = new File(DABEN);
-                f.mkdir();
-                SaveImg.bitmap(ScreenShot.Shot(),DABEN + "image.jpg");
-            }
-        }));
-
+        btnDoScreenshot = BtnMaker.registerOnClick(R.id.button_tmp,this,(v -> FileOperation.saveBitmapAsJPG(ScreenShot.Shot(),"image.jpg")));
     }
 
     public void setPermission() {
-        String[] permissions = {
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                Manifest.permission.READ_PHONE_STATE,
-                Manifest.permission.FOREGROUND_SERVICE,
-        };
-        requestPermissions(permissions, 100);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
+            List<String> requestedPermissions = new ArrayList<>();
+            requestedPermissions.add(Manifest.permission.FOREGROUND_SERVICE);
+            String[] requests = new String[requestedPermissions.size()];
+            requestPermissions(requests, 100);
+        }
     }
 
     public void createFloatingWidget(View view) {
@@ -94,7 +71,6 @@ public class TmpMenu extends AppCompatActivity {
 
     private void startFloatingWidgetService() {
         this.startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
-
         startService(new Intent(TmpMenu.this, FloatingWidgetService.class));
         finish();
     }

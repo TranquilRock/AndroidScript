@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.androidscript">
 
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -17,25 +14,29 @@
         android:theme="@style/Theme.AndroidScript">
         <!-- Will be removed -->
         <activity android:name=".Test.TmpMenu">
+            <!-- Will be removed -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <!-- Will be removed -->
         </activity>
-        <activity android:name=".Menu.MenuActivity">
+        <!-- Will be removed -->
+        <activity
+            android:name=".Test.TestActivity"
+            android:theme="@style/Theme.AndroidScript.NoActionBar" />
+        <!-- Will be removed -->
 
+        <activity android:name=".Menu.MenuActivity">
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
+
         <activity
             android:name=".Menu.EditActivity"
             android:parentActivityName=".Menu.MenuActivity" />
-        <activity
-            android:name=".Test.TestActivity"
-            android:theme="@style/Theme.AndroidScript.NoActionBar" />
 
         <service
             android:name=".FloatingWidget.FloatingWidgetService"
@@ -56,8 +57,8 @@
             android:name=".util.ScreenShot"
             android:enabled="true"
             android:foregroundServiceType="mediaProjection"
-
             android:label="ScreenShot" />
+
     </application>
 
 </manifest>

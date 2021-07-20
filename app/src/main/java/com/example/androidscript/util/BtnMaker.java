@@ -9,26 +9,25 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class BtnMaker {
     public static Button jump(int id, AppCompatActivity from, Class to) {
-        Button btn = (Button) (from.findViewById(id));
-        btn.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(from, to);
-                from.startActivity(intent);
-            }
+        Button btn = from.findViewById(id);
+        btn.setOnClickListener((v -> {
+            Intent intent = new Intent(from, to);
+            from.startActivity(intent);
         }));
         return btn;
     }
 
-    public static Button performIntent(int id, AppCompatActivity from, String command) {
-        Button btn = (Button) (from.findViewById(id));
-        btn.setOnClickListener((new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(command);
-                from.startActivityForResult(intent, 0);
-            }
+    public static Button performIntentForResult(int id, AppCompatActivity from, Intent intent,int requestCode) {
+        Button btn = from.findViewById(id);
+        btn.setOnClickListener((v -> {
+            from.startActivityForResult(intent, requestCode);
         }));
+        return btn;
+    }
+
+    public static Button registerOnClick(int id, AppCompatActivity from,View.OnClickListener listener) {
+        Button btn = from.findViewById(id);
+        btn.setOnClickListener(listener);
         return btn;
     }
 }

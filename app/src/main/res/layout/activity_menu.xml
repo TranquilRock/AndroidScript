@@ -12,17 +12,23 @@
         android:layout_height="wrap_content"
         android:id="@+id/output"/>
 
+    <Spinner
+        android:id="@+id/spinner_Select_Script"
+        android:layout_width="97dp"
+        android:layout_height="88dp" />
     <Button
         android:id="@+id/btn_To_Load"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="選擇腳本"
-        android:layout_gravity="center"/>
+        android:text="@string/loadScript"
+        android:layout_gravity="center"
+        />
 
     <EditText
         android:id="@+id/et_New_Name"
         android:layout_width="200dp"
+        android:hint="@string/scriptName"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
@@ -32,6 +38,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="建立腳本"
+        android:text="@string/newScript"
         android:layout_gravity="center"/>
 </LinearLayout>

@@ -1,11 +1,9 @@
-package com.example.androidscript.Menu;
+package com.example.androidscript.util;
 
 import android.graphics.Bitmap;
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
-
-import com.example.androidscript.util.*;
 
 import java.util.HashMap;
 import java.util.Map;

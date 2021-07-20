@@ -8,7 +8,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.media.Image;
 import android.graphics.Point;
 import android.graphics.Bitmap;
@@ -22,13 +21,8 @@ import android.content.res.Resources;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
 import android.media.projection.MediaProjection;
-import android.view.Surface;
-import android.view.View;
 
 import androidx.annotation.Nullable;
-import androidx.core.content.res.ResourcesCompat;
-
-import com.example.androidscript.R;
 import com.example.androidscript.Test.TmpMenu;
 
 import java.nio.ByteBuffer;
@@ -58,21 +52,19 @@ public class ScreenShot extends Service {
             System.out.println("No Img in Screenshot\n");
             return null;
         }
-        System.out.println("Yesssssssssssss\n");
         //TODO:Clarify following.
         int width = img.getWidth();
         int height = img.getHeight();
         final Image.Plane[] planes = img.getPlanes();
         final ByteBuffer buffer = planes[0].getBuffer();
-        int pixelStride = planes[0].getPixelStride();//每个像素的间距
-        int rowStride = planes[0].getRowStride();//总的间距
+        int pixelStride = planes[0].getPixelStride();//像素間距
+        int rowStride = planes[0].getRowStride();//總間距
         int rowPadding = rowStride - pixelStride * width;
         Bitmap bitmap = Bitmap.createBitmap(width + rowPadding / pixelStride, height,
-                Bitmap.Config.ARGB_8888);//虽然这个色彩比较费内存但是 兼容性更好
+                Bitmap.Config.ARGB_8888);
         bitmap.copyPixelsFromBuffer(buffer);
         bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height);
         img.close();
-
         EndDisplay();
         return bitmap;
     }
@@ -96,34 +88,24 @@ public class ScreenShot extends Service {
     }
 
     public static int getScreenWidth() {
-//        return Resources.getSystem().getDisplayMetrics().widthPixels;
-            return 1000;
+        return Resources.getSystem().getDisplayMetrics().widthPixels;
     }
 
     public static int getScreenHeight() {
-//        return Resources.getSystem().getDisplayMetrics().heightPixels;
-        return 1000;
+        return Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
-    public static Double ScreenRatio() {
-        DisplayMetrics dm = new DisplayMetrics();
-        dm = Resources.getSystem().getDisplayMetrics();
-        int screenWidth = dm.widthPixels;
-        int screenHeight = dm.heightPixels;
-        return Math.max(screenWidth / (double) screenHeight, screenHeight / (double) screenWidth);
-    }
 
     private void createNotificationChannel() {
         Notification.Builder builder = new Notification.Builder(getApplicationContext()); //获取一个Notification构造器
         builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, TmpMenu.class),0))
+                .setContentTitle("AndroidScript啟動中")
+                .setContentText("AndroidScript正在擷取螢幕")
+                .setWhen(System.currentTimeMillis())
 //                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher))
-//                .setContentTitle("AndroidScript啟動中")
 //                .setSmallIcon(R.mipmap.ic_launcher)
-//                .setContentText("AndroidScript正在擷取螢幕")
-//                .setWhen(System.currentTimeMillis())
-                ;
-        /*以下是对Android 8.0的适配*/
-        //普通notification适配
+        ;
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setChannelId("notification_id");
             NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -131,8 +113,8 @@ public class ScreenShot extends Service {
             notificationManager.createNotificationChannel(channel);
         }
 
-        Notification notification = builder.build(); // 获取构建好的Notification
-        notification.defaults = Notification.DEFAULT_SOUND; //设置为默认的声音
+        Notification notification = builder.build();
+        notification.defaults = Notification.DEFAULT_SOUND;
         startForeground(13, notification);
     }
 
@@ -157,4 +139,11 @@ public class ScreenShot extends Service {
         ScreenShot.TargetWidth = getScreenWidth();
         return 0;
     }
+//    public static Double ScreenRatio() {
+//        DisplayMetrics dm = new DisplayMetrics();
+//        dm = Resources.getSystem().getDisplayMetrics();
+//        int screenWidth = dm.widthPixels;
+//        int screenHeight = dm.heightPixels;
+//        return Math.max(screenWidth / (double) screenHeight, screenHeight / (double) screenWidth);
+//    }
 }

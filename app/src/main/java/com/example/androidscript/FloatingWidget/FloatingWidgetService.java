@@ -11,6 +11,7 @@ import android.graphics.Point;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.os.Handler;
+
 import androidx.annotation.RequiresApi;
 
 import android.view.Gravity;
@@ -27,12 +28,13 @@ import com.example.androidscript.util.*;
 
 public class FloatingWidgetService extends AccessibilityService implements View.OnClickListener {
 
-    private WindowManager mWindowManager;
-    private View mFloatingWidgetView, collapsedView, expandedView;
-    private ImageView remove_image_view;
+    private boolean ServiceOnRun = false;
+    private WindowManager mWindowManager = null;
+    private View mFloatingWidgetView = null, collapsedView = null, expandedView = null;
+    private ImageView remove_image_view = null;
     private Point szWindow = new Point();
-    private View removeFloatingWidgetView;
-    private LayoutInflater inflater;
+    private View removeFloatingWidgetView = null;
+    private LayoutInflater inflater = null;
     private int x_init_cord, y_init_cord, x_init_margin, y_init_margin;
     private boolean isLeft = true;
 
@@ -41,17 +43,7 @@ public class FloatingWidgetService extends AccessibilityService implements View.
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
-        FloatingWidgetService.instance = this;
         System.out.println("FloatingWidgetService::onServiceConnected\n");
-        Object a = FloatingWidgetService.instance.getWindows().get(0);
-    }
-
-    public Bitmap Screenshot(Activity tmp) {
-        View view = tmp.getWindow().getDecorView().getRootView();
-        Bitmap bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        view.draw(canvas);
-        return bitmap;
     }
 
     @Override
@@ -74,6 +66,7 @@ public class FloatingWidgetService extends AccessibilityService implements View.
         addFloatingWidgetView();
         implementClickListeners();
         implementTouchListenerToFloatingWidgetView();
+        FloatingWidgetService.instance = this;
     }
 
     /*  Add Remove View to Window Manager  */
@@ -339,7 +332,7 @@ public class FloatingWidgetService extends AccessibilityService implements View.
                 stopSelf();
                 break;
             case R.id.run_script:
-//                SaveImg.bitmap(ScreenShot.instance.Shot(),"Image");
+//                FileOperation.bitmap(ScreenShot.instance.Shot(),"Image");
 //                for(int z = 0;z<20;z++){
 //                    try{
 //                        Thread.sleep(500);

@@ -1,21 +1,25 @@
 package com.example.androidscript.util;
 
 import android.app.Activity;
-import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 
 import java.io.File;
 import java.io.FileOutputStream;
 
-public class SaveImg extends Activity {
-    public static void bitmap(Bitmap bm,String FileName) {
+public class FileOperation extends Activity {
+    static String root;
+    {
+        root = getFilesDir().getAbsolutePath();
+    }
+    public static void saveBitmapAsJPG(Bitmap bm,String FileName) {
         if(bm == null) return;
-        String fileName = FileName;
-        System.out.println(fileName);
-
-        File file = new File(fileName);
-        if (file.exists())
+        System.out.println("Saving File: " + FileName);
+        File file = new File(FileName);
+        file.getParentFile().mkdir();
+        if (file.exists()){
             file.delete();
+        }
+
         try {
             FileOutputStream out = new FileOutputStream(file);
             bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
@@ -24,5 +28,8 @@ public class SaveImg extends Activity {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    public static void WriteToFile(String FileName){
+
     }
 }
