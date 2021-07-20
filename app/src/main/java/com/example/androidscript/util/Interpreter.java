@@ -106,7 +106,7 @@ public class Interpreter {//Only Support Integer Var
                     LocalVar.put("$R", "0");
                     break;
                 case "Compare":
-                    System.out.println("Not Done Yet!\n");
+                    DebugMessage.set("Not Done Yet!\n");
                     LocalVar.put("$R", "0");
                     break;
                 case "JumpToLine":
@@ -118,7 +118,7 @@ public class Interpreter {//Only Support Integer Var
                         Thread.sleep(Integer.valueOf(command[1]));
                         LocalVar.put("$R", "0");
                     } catch (InterruptedException e) {
-                        System.out.println("Waked up unexpected!\n");
+                        DebugMessage.set("Waked up unexpected!\n");
                         LocalVar.put("$R", "1");
                     }
                     break;

@@ -1,32 +1,28 @@
 package com.example.androidscript.FloatingWidget;
 
-import android.accessibilityservice.AccessibilityService;
-import android.app.Activity;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.PixelFormat;
-import android.graphics.Point;
-import android.os.Build;
-import android.os.CountDownTimer;
-import android.os.Handler;
-
 import androidx.annotation.RequiresApi;
 
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
+import android.os.Build;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.accessibility.AccessibilityEvent;
+import android.os.Handler;
+import android.view.Gravity;
+import android.content.Intent;
+import android.graphics.Point;
+import android.view.MotionEvent;
 import android.widget.ImageView;
+import android.os.CountDownTimer;
+import android.view.WindowManager;
+import android.view.LayoutInflater;
+import android.graphics.PixelFormat;
+import android.content.res.Configuration;
+import android.view.accessibility.AccessibilityEvent;
+import android.accessibilityservice.AccessibilityService;
 
+import com.example.androidscript.Menu.MenuActivity;
 import com.example.androidscript.R;
-import com.example.androidscript.Test.TmpMenu;
 import com.example.androidscript.util.*;
 
-public class FloatingWidgetService extends AccessibilityService implements View.OnClickListener {
+public class FloatingWidgetService extends AccessibilityService implements View.OnClickListener {//TODO closing event is missing
 
     private boolean ServiceOnRun = false;
     private WindowManager mWindowManager = null;
@@ -43,17 +39,17 @@ public class FloatingWidgetService extends AccessibilityService implements View.
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();
-        System.out.println("FloatingWidgetService::onServiceConnected\n");
+        DebugMessage.set("FloatingWidgetService::onServiceConnected\n");
     }
 
     @Override
     public void onAccessibilityEvent(AccessibilityEvent event) {
-        System.out.println("FloatingWidgetService::onAccessibilityEvent\n");
+        DebugMessage.set("FloatingWidgetService::onAccessibilityEvent\n");
     }
 
     @Override
     public void onInterrupt() {
-        System.out.println("FloatingWidgetService::onInterrupt\n");
+        DebugMessage.set("FloatingWidgetService::onInterrupt\n");
     }
 
     @Override
@@ -297,7 +293,7 @@ public class FloatingWidgetService extends AccessibilityService implements View.
                         mWindowManager.updateViewLayout(mFloatingWidgetView, layoutParams);
                         return true;
                     default:
-                        System.out.println("Unrecognized in " + this.getClass().toString() + " implementTouchListenerToFloatingWidgetView\n");
+                        DebugMessage.set("Unrecognized in " + this.getClass().toString() + " implementTouchListenerToFloatingWidgetView\n");
                 }
                 return false;
             }
@@ -326,26 +322,26 @@ public class FloatingWidgetService extends AccessibilityService implements View.
                 expandedView.setVisibility(View.GONE);
                 break;
             case R.id.open_activity_button:
-                Intent intent = new Intent(FloatingWidgetService.this, TmpMenu.class);
+                Intent intent = new Intent(FloatingWidgetService.this, MenuActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 stopSelf();
                 break;
             case R.id.run_script:
-                FileOperation.instance.saveBitmapAsJPG(ScreenShot.Shot(),"Image2.jpg");
-                for(int z = 0;z<10;z++){
-                    try{
-                        AutoClick.Click(this,508 - 20 * z, 1875);
+                FileOperation.instance.saveBitmapAsJPG(ScreenShot.Shot(), "Image2.jpg");
+                for (int z = 0; z < 10; z++) {
+                    try {
+                        AutoClick.Click(this, 508 - 20 * z, 1875);
                         Thread.sleep(500);
-                    }catch (Exception e){
+                    } catch (Exception e) {
+                        DebugMessage.printStackTrace(e);
                     }
                 }
                 break;
             case R.id.stop_script:
                 break;
             case R.id.pause_script:
-                _script:
-//What is this?
+                _script: //What is this?
                 break;
         }
     }

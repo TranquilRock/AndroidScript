@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.androidscript.R;
+import com.example.androidscript.util.DebugMessage;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -46,19 +47,19 @@ public class EditActivity extends AppCompatActivity {
                 Scanner myReader = new Scanner(scriptFile);
                 while (myReader.hasNextLine()) {
                     String data = myReader.nextLine();
-                    System.out.println(data);
+                    DebugMessage.set(data);
                 }
                 myReader.close();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            DebugMessage.printStackTrace(e);
         }
     }
 
     protected void writeScript() {
         try {
             File scriptFile = new File(FileName);
-            System.out.println(FileName);
+            DebugMessage.set(FileName);
             if (!scriptFile.exists() || Objects.requireNonNull(scriptFile.getParentFile()).mkdir()) {
                 scriptFile.createNewFile();
             }
@@ -68,7 +69,7 @@ public class EditActivity extends AppCompatActivity {
             bufferedWriter.newLine();
             bufferedWriter.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            DebugMessage.printStackTrace(e);
         }
     }
 

@@ -41,7 +41,7 @@ public class FileOperation extends Activity {
             out.flush();
             out.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            DebugMessage.printStackTrace(e);
         }
     }
 
@@ -55,7 +55,7 @@ public class FileOperation extends Activity {
             }
             bufferedWriter.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            DebugMessage.printStackTrace(e);
         }
     }
 
@@ -71,7 +71,7 @@ public class FileOperation extends Activity {
                 myReader.close();
                 return content;
             } catch (IOException e) {
-                e.printStackTrace();
+                DebugMessage.printStackTrace(e);
             }
         }
         return null;
@@ -79,12 +79,12 @@ public class FileOperation extends Activity {
 
     public File createFileAndParent(String FileName) {
         FileName = root + FileName;
-        System.out.println("Writing File: " + FileName);
+        DebugMessage.set("Writing File: " + FileName);
         File file = new File(FileName);
         if (file.exists() && file.delete()) {
-            System.out.println("Overwriting " + FileName);
+            DebugMessage.set("Overwriting " + FileName);
         } else if (file.getParentFile() != null && (file.getParentFile()).mkdir()) {
-            System.out.println("Creating Parent Dir of " + FileName);
+            DebugMessage.set("Creating Parent Dir of " + FileName);
         }
         return file;
     }

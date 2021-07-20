@@ -15,7 +15,6 @@ import android.media.ImageReader;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.DisplayMetrics;
 import android.graphics.PixelFormat;
 import android.content.res.Resources;
 import android.hardware.display.DisplayManager;
@@ -28,7 +27,6 @@ import com.example.androidscript.Test.TmpMenu;
 import java.nio.ByteBuffer;
 
 public class ScreenShot extends Service {
-    private static boolean initialized = false;
     private static ImageReader imageReader = null;
     private static int TargetHeight = 0;
     private static int TargetWidth = 0;
@@ -52,7 +50,7 @@ public class ScreenShot extends Service {
         }
         Image img = imageReader.acquireLatestImage();
         if (img == null) {
-            System.out.println("No Img in Screenshot\n");
+            DebugMessage.set("No Img in Screenshot\n");
             return null;
         }
         //TODO:Clarify following.
@@ -85,7 +83,7 @@ public class ScreenShot extends Service {
             }
             catch (SecurityException e){
                 ServiceStart = false;
-                e.printStackTrace();
+                DebugMessage.printStackTrace(e);
             }
         }
     }
@@ -144,7 +142,7 @@ public class ScreenShot extends Service {
         ScreenShot.TargetHeight = getScreenHeight();
         ScreenShot.TargetWidth = getScreenWidth();
         ScreenShot.ServiceStart = true;
-        System.out.println("Start Screen Casting\n");
+        DebugMessage.set("Start Screen Casting\n");
         return 0;
     }
 //    public static Double ScreenRatio() {
