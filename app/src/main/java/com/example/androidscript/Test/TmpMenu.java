@@ -40,7 +40,7 @@ public class TmpMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setPermission();
         setContentView(R.layout.activity_tmp_menu);
-        FileOperation.setUpFileOperation(getFilesDir().getAbsolutePath() + "/");
+        FileOperation.setUpFileRoot(getFilesDir().getAbsolutePath() + "/");
 
 
         btnToMenu = BtnMaker.jump(R.id.button_to_menu, this, MenuActivity.class);

@@ -19,7 +19,7 @@ public class FileOperation extends Activity {
     public static FileOperation instance = null;
     private String root;
 
-    public static void setUpFileOperation(String root) {
+    public static void setUpFileRoot(String root) {
         if (FileOperation.instance == null) {
             new FileOperation(root);
         }

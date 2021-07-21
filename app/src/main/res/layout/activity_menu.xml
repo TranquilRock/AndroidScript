@@ -41,6 +41,11 @@
         android:text="@string/newScript"
         android:layout_gravity="center"/>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="160dp"
+        android:layout_height="31dp"
+        android:id="@+id/testing">
+    </androidx.recyclerview.widget.RecyclerView>
     <ImageButton
         android:id="@+id/btn_Start_Service"
         android:layout_width="70dp"

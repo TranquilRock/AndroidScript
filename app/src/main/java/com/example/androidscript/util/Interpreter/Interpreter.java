@@ -1,42 +1,30 @@
-package com.example.androidscript.util;
+package com.example.androidscript.util.Interpreter;
 
+import android.accessibilityservice.AccessibilityService;
 import android.graphics.Bitmap;
-import android.os.Build;
 
-import androidx.annotation.RequiresApi;
+import com.example.androidscript.util.AutoClick;
+import com.example.androidscript.util.DebugMessage;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
-public class Interpreter {//Only Support Integer Var
-    public static final String ImgFormat = "([A-Za-z0-9_-]*).(jpg|png)";
-    public static final String SptFormat = "([A-Za-z0-9_-]*).txt";
-    public static final String VarFormat = "\\$([A-Za-z0-9_-]*)";
-    public static final String IntFormat = "[0-9]*";
-    public static final String IntVarFormat = "(" + IntFormat + "||" + VarFormat + ")";
-    public static final String ImgVarFormat = "(" + ImgFormat + "||" + VarFormat + ")";
+public abstract class Interpreter extends Thread {//Every child only need to specify where and how to fetch files, as well as what kind of commands are accepted;
 
-    public static final String[] SUPPORTED_COMMAND = {
-            "Click " + IntVarFormat + " " + IntVarFormat,
-            "Compare " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat + " " + ImgVarFormat,
-            "JumpToLine " + IntVarFormat,
-            "Wait " + IntVarFormat,
-            "Call " + SptFormat + " *",//Allow passing arguments, but only crafted dependency
-            "IfGreater " + IntVarFormat + " " + IntVarFormat,
-            "IfSmaller " + IntVarFormat + " " + IntVarFormat,
-            "Var " + VarFormat + " " + IntFormat,//Declare Initial Value of Variable
-    };
+    protected abstract String ReadCodeFromFile(String FileName);
+
+    protected abstract Bitmap ReadImgFromFile(String FileName);
 
     public static class INVALID_CODE_EXCEPTION extends Exception {
     }
 
-    public class Code {
-        public Vector<String[]> codes = new Vector<String[]>();
-        public Vector<String> dependency = new Vector<String>();
+    public class Code {//Every instance would be a valid code that interpreter can recognize
+        public Vector<String[]> codes = new Vector<>();
+        public Vector<String> dependency = new Vector<>();
 
-        public Code(String RawCode) throws INVALID_CODE_EXCEPTION {
+        public Code(String[] SUPPORTED_COMMAND, String RawCode) throws INVALID_CODE_EXCEPTION {
             String[] UncheckedCode = RawCode.split("\n");
             for (String line : UncheckedCode) {
                 boolean valid = false;
@@ -58,31 +46,46 @@ public class Interpreter {//Only Support Integer Var
         }
     }
 
-    public static String ReadCodeFromFile(String FileName) {
-        //TODO read code under "Environment.getExternalStorageDirectory() + /Target/"
-        return "";
-    }
 
-    public static Bitmap ReadImgFromFile(String FileName) {
-        //TODO read image under "Environment.getExternalStorageDirectory() + /Target/"
-        return null;
-    }
+    protected Map<String, Interpreter.Code> MyCode = new HashMap<>();
 
-    private Map<String, Code> MyCode = new HashMap<>();
-
-    public void Interpret(String FileName) throws INVALID_CODE_EXCEPTION {//Construct MyCode Object
+    public void Interpret(String[] SUPPORTED_COMMAND, String FileName) throws Interpreter.INVALID_CODE_EXCEPTION {
         String Command = ReadCodeFromFile(FileName);
-        MyCode.put(FileName, new Code(Command));
+        MyCode.put(FileName, new Interpreter.Code(SUPPORTED_COMMAND, Command));
         for (String depend : MyCode.get(FileName).dependency) {
             if (!MyCode.containsKey(depend)) {
-                Interpret(depend);
+                Interpret(SUPPORTED_COMMAND, depend);
             }
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public void Run(String FileName, String[] argv, int depth) throws RuntimeException {//Run code that is already read in MyCode
-        if (depth > 3) {
+    //==========================================
+    protected String run_arg_FileName = "";
+    protected String[] run_arg_argv = null;
+    protected int run_arg_depth = 0;
+    protected AccessibilityService accessibilityService;
+    public final void run(AccessibilityService accessibilityService, String FileName, String[] argv) throws RuntimeException {
+        this.run_arg_FileName = FileName;
+        this.run_arg_argv = argv;
+        this.run_arg_depth = 0;
+        this.accessibilityService = accessibilityService;
+        this.start();
+        run_arg_FileName = "";
+        run_arg_argv = null;
+        run_arg_depth = 0;
+        this.accessibilityService = null;
+    }
+
+    @Override
+    public final void run() {
+        if (this.run_arg_FileName.equals("")) {
+            throw new RuntimeException("No code to run");
+        }
+        this.run(run_arg_FileName, run_arg_argv, run_arg_depth);
+    }
+
+    public void run(String FileName, String[] argv, int depth) throws RuntimeException {//Run code that is already read in MyCode
+        if (depth > 3 || !MyCode.containsKey(FileName)) {
             throw new RuntimeException("Too deep, panic to avoid stackoverflow!\n");
         }
         Map<String, String> LocalVar = new HashMap<>();
@@ -95,27 +98,27 @@ public class Interpreter {//Only Support Integer Var
         int codeLength = MyCode.get(FileName).codes.size();
         for (int commandIndex = 0; commandIndex < codeLength; commandIndex++) {
             String[] command = MyCode.get(FileName).codes.get(commandIndex);
-            for (int i = 1; i < command.length; i++) {//Substitude
+            for (int i = 1; i < command.length; i++) {//Substitution
                 if (command[i].charAt(0) == '$' && LocalVar.containsKey(command[i])) {
                     command[i] = LocalVar.get(i);
                 }
             }
             switch (command[0]) {
                 case "Click":
-//                    AutoClick.mService.Click(Integer.valueOf(command[1]), Integer.valueOf(command[2]));
+                    AutoClick.Click(accessibilityService,Integer.parseInt(command[1]), Integer.parseInt(command[2]));
                     LocalVar.put("$R", "0");
                     break;
                 case "Compare":
-                    DebugMessage.set("Not Done Yet!\n");
+                    DebugMessage.set("Interpreter Screenshot not done yet!\n");
                     LocalVar.put("$R", "0");
                     break;
                 case "JumpToLine":
-                    commandIndex = Integer.valueOf(command[1]);
+                    commandIndex = Integer.parseInt(command[1]);
                     LocalVar.put("$R", "0");
                     break;
                 case "Wait":
                     try {
-                        Thread.sleep(Integer.valueOf(command[1]));
+                        Thread.sleep(Integer.parseInt(command[1]));
                         LocalVar.put("$R", "0");
                     } catch (InterruptedException e) {
                         DebugMessage.set("Waked up unexpected!\n");
@@ -128,14 +131,14 @@ public class Interpreter {//Only Support Integer Var
                         for (int j = 2; j < command.length; j++) {
                             nextArgv[j - 2] = command[j];
                         }
-                        Run(command[1], nextArgv, depth + 1);
+                        run(command[1], nextArgv, depth + 1);
                         LocalVar.put("$R", "0");
                     } else {
                         LocalVar.put("$R", "1");
                     }
                     break;
                 case "IfGreater":
-                    if (Integer.valueOf(command[1]) <= Integer.valueOf(command[2])) {//Failed, skip next line
+                    if (Integer.parseInt(command[1]) <= Integer.parseInt(command[2])) {//Failed, skip next line
                         commandIndex++;
                         LocalVar.put("$R", "1");
                     } else {
@@ -143,7 +146,7 @@ public class Interpreter {//Only Support Integer Var
                     }
                     break;
                 case "IfSmaller":
-                    if (Integer.valueOf(command[1]) >= Integer.valueOf(command[2])) {//Failed, skip next line
+                    if (Integer.parseInt(command[1]) >= Integer.parseInt(command[2])) {//Failed, skip next line
                         commandIndex++;
                         LocalVar.put("$R", "1");
                     } else {
