@@ -16,13 +16,11 @@ import android.provider.Settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.androidscript.R;
 import com.example.androidscript.util.*;
-import com.getkeepsafe.relinker.ReLinker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,35 +41,15 @@ public class TmpMenu extends AppCompatActivity {
         setPermission();
         setContentView(R.layout.activity_tmp_menu);
         FileOperation.setUpFileRoot(getFilesDir().getAbsolutePath() + "/");
+
+
         btnToMenu = BtnMaker.jump(R.id.button_to_menu, this, MenuActivity.class);
         btnToTest = BtnMaker.jump(R.id.button_to_test, this, TestActivity.class);
         btnSetScreenshot = BtnMaker.registerOnClick(R.id.button_set_screenshot,this,(v -> {
             mm = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
             startActivityForResult((mm).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
         }));
-//        btnDoScreenshot = BtnMaker.registerOnClick(R.id.button_tmp,this,(v -> FileOperation.instance.saveBitmapAsJPG(ScreenShot.Shot(),"image.jpg")));
-
-
-
-
-
-
-
-
-
-
-        ReLinker.Logger logger = message -> Log.v("Relink", "(relinker) " + message);
-        Context context = this.getApplicationContext();
-        ReLinker.log(logger).recursively().loadLibrary(context, "jniopencv_core");
-        ReLinker.log(logger).recursively().loadLibrary(context, "opencv_core");
-        ReLinker.log(logger).recursively().loadLibrary(context, "jniopencv_imgcodecs");
-        ReLinker.log(logger).recursively().loadLibrary(context, "opencv_imgcodecs");
-        ReLinker.log(logger).recursively().loadLibrary(context, "jniopencv_imgproc");
-        ReLinker.log(logger).recursively().loadLibrary(context, "opencv_imgproc");
-        btnDoScreenshot = BtnMaker.registerOnClick(R.id.button_tmp,this,(v -> OpenCVTest.isPictureMatch(ScreenShot.Shot())));
-
-
-
+        btnDoScreenshot = BtnMaker.registerOnClick(R.id.button_tmp,this,(v -> FileOperation.instance.saveBitmapAsJPG(ScreenShot.Shot(),"image.jpg")));
     }
 
     public void setPermission() {
