@@ -22,6 +22,8 @@ import android.widget.Button;
 import com.example.androidscript.R;
 import com.example.androidscript.util.*;
 
+import org.opencv.android.OpenCVLoader;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,6 +52,9 @@ public class TmpMenu extends AppCompatActivity {
             startActivityForResult((mm).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
         }));
         btnDoScreenshot = BtnMaker.registerOnClick(R.id.button_tmp,this,(v -> FileOperation.instance.saveBitmapAsJPG(ScreenShot.Shot(),"image.jpg")));
+        if(OpenCVLoader.initDebug()){
+            System.out.println("Mission Accomplished\n");
+        }
     }
 
     public void setPermission() {

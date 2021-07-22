@@ -1,2 +1,3 @@
 rootProject.name = "AndroidScript"
 include ':app'
+include ':openCVLibrary3415'
