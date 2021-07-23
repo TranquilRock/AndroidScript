@@ -2,84 +2,83 @@ package com.example.androidscript.util;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.util.Log;
 
-import org.opencv.android.OpenCVLoader.*;
+import com.google.android.gms.common.Feature;
+
 import org.opencv.android.Utils;
 import org.opencv.core.CvException;
 import org.opencv.core.DMatch;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfDMatch;
 import org.opencv.core.MatOfKeyPoint;
+import org.opencv.core.Size;
 import org.opencv.features2d.DescriptorMatcher;
 import org.opencv.features2d.ORB;
 import org.opencv.imgproc.Imgproc;
 
 public class ImageHandler {
-    private static Mat getGrayMat(Bitmap bm) {
-        Mat srcMat = new Mat();
-        Utils.bitmapToMat(bm, srcMat);
-        Mat grayMat = new Mat();
-        Imgproc.cvtColor(srcMat, grayMat, Imgproc.COLOR_RGB2GRAY);
-        return grayMat;
+    private static Mat grayScale(Bitmap bitmap) {
+        Mat tmp = new Mat();
+        Utils.bitmapToMat(bitmap, tmp);
+        Mat ret = new Mat();
+        Imgproc.cvtColor(tmp, ret, Imgproc.COLOR_RGB2GRAY);
+        return ret;
     }
 
-    public static boolean isPictureMatchLuckyMoney(Bitmap bmInput) throws CvException {
-        if(bmInput == null){
-            return false;
-        }
-//        String TargetPath = "";
-//        Bitmap bmLocal = BitmapFactory.decodeFile(TargetPath);
+    private static Mat featureExtraction(Bitmap bitmap) {//KeyPoint detection and extraction
+        ORB orb = ORB.create(1000);
+        Mat grayBitmap = grayScale(bitmap);
+        MatOfKeyPoint keyPoint = new MatOfKeyPoint();
+        orb.detect(grayBitmap, keyPoint);
+        Mat ret = new Mat();
+        orb.compute(grayBitmap, keyPoint, ret);
+        return ret;
+    }
 
-        Mat inputGrayMat = getGrayMat(bmInput);
-        Mat localGrayMat = getGrayMat(bmInput);
-
-
-        //特征点提取
-        ORB orb = ORB.create(1000);                           //精度越小越准确
-        MatOfKeyPoint kptsInput = new MatOfKeyPoint();
-        MatOfKeyPoint kptsLocal = new MatOfKeyPoint();
-        orb.detect(inputGrayMat, kptsInput);
-        orb.detect(localGrayMat, kptsLocal);
-
-        //特征点描述,采用ORB默认的描述算法
-        Mat descInput = new Mat();
-        Mat descLocal = new Mat();
-        orb.compute(inputGrayMat, kptsInput, descInput);
-        orb.compute(localGrayMat, kptsLocal, descLocal);
-
-        //BFMatcher matcher = new BFMatcher(BFMatcher.BRUTEFORCE_HAMMING, false);
-        DescriptorMatcher matcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE_HAMMING);
-        MatOfDMatch matchPoints = new MatOfDMatch();
-        //Log.e("matchoutput", "--start---");
-        //matcher.knnMatch(descInput,descLocal,matchPointsList,2);
+    private static MatOfDMatch featureMatch(Mat screenDescriptor, Mat targetDescriptor) {
         try {
-            matcher.match(descInput, descLocal, matchPoints);
+            MatOfDMatch ret = new MatOfDMatch();
+            //BFMatcher matcher = new BFMatcher(BFMatcher.BRUTEFORCE_HAMMING, false);
+            //matcher.knnMatch(descInput,descLocal,matchPointsList,2);
+            DescriptorMatcher matcher = DescriptorMatcher.create(DescriptorMatcher.BRUTEFORCE_HAMMING);
+            matcher.match(screenDescriptor, targetDescriptor, ret);
+            return ret;
         } catch (CvException ex) {
-            DebugMessage.set("matchoutput" + ex.toString());
+            DebugMessage.set("Matching failed " + ex.toString());
+            return null;
+        }
+    }
+
+    public static boolean matchPicture(Bitmap screenshot, Bitmap target) {
+        if (screenshot == null || target == null) {
+            DebugMessage.set("Null in matchPicture");
             return false;
         }
 
-        float min_dist = 0;
+        Mat screenDescriptor = featureExtraction(screenshot); // Size:(totalFeatures, 32)
+        Mat targetDescriptor = featureExtraction(target);
 
-        DMatch[] arrays = matchPoints.toArray();
+        DMatch[] matchPoints = featureMatch(screenDescriptor, targetDescriptor).toArray();//Length: totalFeatures
+        DebugMessage.set("Num of features: " + matchPoints.length + "\n");
 
-        for (int i = 0; i < descInput.rows(); ++i) {
-            float dist = arrays[i].distance;
-            if (dist < min_dist) min_dist = dist;
-        }
+        float minDistance = 0;
+        int matchCount = 0;
 
-        int goodMatchPointNum = 0;
-
-        //筛选特征点
-        float compareNum = Math.max(min_dist * 2, 30.0f);
-
-        for (int j = 0; j < descInput.rows(); j++) {
-            if (arrays[j].distance <= compareNum) {
-                goodMatchPointNum++;
+        for (DMatch match : matchPoints) {
+            if (minDistance > match.distance) {
+                minDistance = match.distance;
             }
         }
-        DebugMessage.set(goodMatchPointNum + "\n");
-        return goodMatchPointNum > 10;
+
+        minDistance = Math.max(2 * minDistance, 30.0f);
+
+        for (int z = 0; z < screenDescriptor.rows(); z++) {
+            if (matchPoints[z].distance <= minDistance) {
+                matchCount++;
+            }
+        }
+
+        DebugMessage.set("Match " + matchCount + " points\n");
+        return 100 * matchCount > 80 * matchPoints.length;
     }
 }

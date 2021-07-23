@@ -20,9 +20,11 @@ import android.content.res.Resources;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
 import android.media.projection.MediaProjection;
+import android.util.DisplayMetrics;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+
 import com.example.androidscript.Test.TmpMenu;
 
 import java.nio.ByteBuffer;
@@ -36,7 +38,16 @@ public class ScreenShot extends Service {
     private static VirtualDisplay virtualDisplay = null;
     private static MediaProjection mediaProjection = null;
     private static MediaProjectionManager mediaProjectionManager = null;
+    private static int screenHeight = 0;
+    private static int screenWidth = 0;
     public static boolean ServiceStart = false;
+
+    static {
+        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+
+    }
+
     public static void pass(Intent intent, MediaProjectionManager mm) {
         if (ScreenShot.mediaProjectionManager == null) {
             ScreenShot.Permission = intent;
@@ -46,11 +57,16 @@ public class ScreenShot extends Service {
 
     public static Bitmap Shot() {
         StartDisplay();
-        if(!ServiceStart){
+        if (!ServiceStart) {
             DebugMessage.set("Service unavailable.\n");
             return null;
         }
-        for(int z = 0; z < 3; z++){
+        for (int z = 0; z < 3; z++) {//Auto restart at most three times.
+            try {
+                Thread.sleep(50);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             Image img = imageReader.acquireLatestImage();
             if (img == null) {
                 DebugMessage.set(z + "::No Img in Screenshot\n");
@@ -77,15 +93,14 @@ public class ScreenShot extends Service {
 
     private static void StartDisplay() {
         if (ServiceStart) {
-            try{
+            try {
                 ScreenShot.virtualDisplay = ScreenShot.mediaProjection.createVirtualDisplay("Screenshot",
                         ScreenShot.TargetWidth,
                         ScreenShot.TargetHeight,
                         Resources.getSystem().getDisplayMetrics().densityDpi,
                         DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
                         ScreenShot.imageReader.getSurface(), null, null);
-            }
-            catch (SecurityException e){
+            } catch (SecurityException e) {
                 ServiceStart = false;
                 DebugMessage.printStackTrace(e);
             }
@@ -100,23 +115,20 @@ public class ScreenShot extends Service {
     }
 
     public static int getScreenWidth() {
-        return Resources.getSystem().getDisplayMetrics().widthPixels;
+        return ScreenShot.screenWidth;
     }
 
     public static int getScreenHeight() {
-        return Resources.getSystem().getDisplayMetrics().heightPixels;
+        return ScreenShot.screenHeight;
     }
 
 
     private void createNotificationChannel() {
         Notification.Builder builder = new Notification.Builder(getApplicationContext()); //获取一个Notification构造器
-        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, TmpMenu.class),0))
+        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, TmpMenu.class), 0))
                 .setContentTitle("AndroidScript啟動中")
                 .setContentText("AndroidScript正在擷取螢幕")
-                .setWhen(System.currentTimeMillis())
-//                .setLargeIcon(BitmapFactory.decodeResource(this.getResources(), R.mipmap.ic_launcher))
-//                .setSmallIcon(R.mipmap.ic_launcher)
-        ;
+                .setWhen(System.currentTimeMillis());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setChannelId("notification_id");
@@ -146,14 +158,8 @@ public class ScreenShot extends Service {
         ScreenShot.TargetHeight = getScreenHeight();
         ScreenShot.TargetWidth = getScreenWidth();
         ScreenShot.ServiceStart = true;
-        DebugMessage.set("Start Screen Casting\n");
+        DebugMessage.set("Start Screen Casting on (" + screenHeight + "," + screenWidth + ") device\n");
         return 0;
     }
-//    public static Double ScreenRatio() {
-//        DisplayMetrics dm = new DisplayMetrics();
-//        dm = Resources.getSystem().getDisplayMetrics();
-//        int screenWidth = dm.widthPixels;
-//        int screenHeight = dm.heightPixels;
-//        return Math.max(screenWidth / (double) screenHeight, screenHeight / (double) screenWidth);
-//    }
+
 }
