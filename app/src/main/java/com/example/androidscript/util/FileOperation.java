@@ -2,16 +2,14 @@ package com.example.androidscript.util;
 
 import android.app.Activity;
 import android.graphics.Bitmap;
-
-import androidx.annotation.NonNull;
+import android.graphics.BitmapFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.Objects;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -75,6 +73,14 @@ public class FileOperation extends Activity {
             }
         }
         return null;
+    }
+
+    public Bitmap readJPGasBitmap(String FileName)throws FileNotFoundException{
+        Bitmap ret = BitmapFactory.decodeFile(FileName);
+        if(ret == null){
+            throw new FileNotFoundException();
+        }
+        return ret;
     }
 
     public File createFileAndParent(String FileName) {

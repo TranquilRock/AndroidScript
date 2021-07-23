@@ -1,9 +1,6 @@
 package com.example.androidscript.util;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-
-import com.google.android.gms.common.Feature;
 
 import org.opencv.android.Utils;
 import org.opencv.core.CvException;
@@ -11,7 +8,6 @@ import org.opencv.core.DMatch;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfDMatch;
 import org.opencv.core.MatOfKeyPoint;
-import org.opencv.core.Size;
 import org.opencv.features2d.DescriptorMatcher;
 import org.opencv.features2d.ORB;
 import org.opencv.imgproc.Imgproc;
