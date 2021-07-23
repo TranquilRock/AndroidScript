@@ -51,7 +51,8 @@ public class TmpMenu extends AppCompatActivity {
             mm = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
             startActivityForResult((mm).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
         }));
-        btnDoScreenshot = BtnMaker.registerOnClick(R.id.button_tmp,this,(v -> FileOperation.instance.saveBitmapAsJPG(ScreenShot.Shot(),"image.jpg")));
+//        btnDoScreenshot = BtnMaker.registerOnClick(R.id.button_tmp,this,(v -> FileOperation.instance.saveBitmapAsJPG(ScreenShot.Shot(),"image.jpg")));
+        btnDoScreenshot = BtnMaker.registerOnClick(R.id.button_tmp,this,(v -> ImageHandler.isPictureMatchLuckyMoney(ScreenShot.Shot())));
         if(OpenCVLoader.initDebug()){
             System.out.println("Mission Accomplished\n");
         }

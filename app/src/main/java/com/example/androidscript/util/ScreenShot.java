@@ -20,6 +20,7 @@ import android.content.res.Resources;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
 import android.media.projection.MediaProjection;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import com.example.androidscript.Test.TmpMenu;
@@ -46,32 +47,35 @@ public class ScreenShot extends Service {
     public static Bitmap Shot() {
         StartDisplay();
         if(!ServiceStart){
+            DebugMessage.set("Service unavailable.\n");
             return null;
         }
-        Image img = imageReader.acquireLatestImage();
-        if (img == null) {
-            DebugMessage.set("No Img in Screenshot\n");
-            return null;
+        for(int z = 0; z < 3; z++){
+            Image img = imageReader.acquireLatestImage();
+            if (img == null) {
+                DebugMessage.set(z + "::No Img in Screenshot\n");
+                continue;
+            }
+            //TODO:Clarify following.
+            int width = img.getWidth();
+            int height = img.getHeight();
+            final Image.Plane[] planes = img.getPlanes();
+            final ByteBuffer buffer = planes[0].getBuffer();
+            int pixelStride = planes[0].getPixelStride();//像素間距
+            int rowStride = planes[0].getRowStride();//總間距
+            int rowPadding = rowStride - pixelStride * width;
+            Bitmap bitmap = Bitmap.createBitmap(width + rowPadding / pixelStride, height,
+                    Bitmap.Config.ARGB_8888);
+            bitmap.copyPixelsFromBuffer(buffer);
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height);
+            img.close();
+            EndDisplay();
+            return bitmap;
         }
-        //TODO:Clarify following.
-        int width = img.getWidth();
-        int height = img.getHeight();
-        final Image.Plane[] planes = img.getPlanes();
-        final ByteBuffer buffer = planes[0].getBuffer();
-        int pixelStride = planes[0].getPixelStride();//像素間距
-        int rowStride = planes[0].getRowStride();//總間距
-        int rowPadding = rowStride - pixelStride * width;
-        Bitmap bitmap = Bitmap.createBitmap(width + rowPadding / pixelStride, height,
-                Bitmap.Config.ARGB_8888);
-        bitmap.copyPixelsFromBuffer(buffer);
-        bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height);
-        img.close();
-        EndDisplay();
-        return bitmap;
+        return null;
     }
 
     private static void StartDisplay() {
-        //TODO always check if the permission is cancelled
         if (ServiceStart) {
             try{
                 ScreenShot.virtualDisplay = ScreenShot.mediaProjection.createVirtualDisplay("Screenshot",
