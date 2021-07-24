@@ -92,7 +92,7 @@ public class MenuActivity extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ScreenShot.pass((Intent) data, mediaProjectionManager);
+                    ScreenShot.pass((Intent) data, mediaProjectionManager,true);
                     startService(new Intent(getApplicationContext(), ScreenShot.class));
                 }
             }, 1);

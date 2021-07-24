@@ -2,6 +2,7 @@ package com.example.androidscript.FloatingWidget;
 
 import androidx.annotation.RequiresApi;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.view.View;
 import android.os.Handler;
@@ -21,10 +22,11 @@ import android.accessibilityservice.AccessibilityService;
 import com.example.androidscript.Menu.MenuActivity;
 import com.example.androidscript.R;
 import com.example.androidscript.util.*;
+import com.example.androidscript.util.Interpreter.ArkKnightsInterpreter;
+import com.example.androidscript.util.Interpreter.Interpreter;
 
 public class FloatingWidgetService extends AccessibilityService implements View.OnClickListener {//TODO closing event is missing
 
-    private boolean ServiceOnRun = false;
     private WindowManager mWindowManager = null;
     private View mFloatingWidgetView = null, collapsedView = null, expandedView = null;
     private ImageView remove_image_view = null;
@@ -32,8 +34,9 @@ public class FloatingWidgetService extends AccessibilityService implements View.
     private View removeFloatingWidgetView = null;
     private LayoutInflater inflater = null;
     private int x_init_cord, y_init_cord, x_init_margin, y_init_margin;
-    private boolean isLeft = true;
+    private String ScriptName;
 
+    @SuppressLint("StaticFieldLeak")
     public static FloatingWidgetService instance;
 
     @Override
@@ -63,10 +66,20 @@ public class FloatingWidgetService extends AccessibilityService implements View.
         implementClickListeners();
         implementTouchListenerToFloatingWidgetView();
         FloatingWidgetService.instance = this;
+        DebugMessage.set("FloatingWidgetService::onCreate\n");
+
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
+        ScriptName = (String) intent.getExtras().get("FileName");
+        DebugMessage.set("FloatingWidgetService::onStartCommand\n" + ScriptName);
+        return flags;
     }
 
     /*  Add Remove View to Window Manager  */
-    private View addRemoveView() {
+    private void addRemoveView() {
         //Inflate the removing view layout we created
         removeFloatingWidgetView = this.inflater.inflate(R.layout.remove_floating_widget_layout, null);
 
@@ -95,7 +108,6 @@ public class FloatingWidgetService extends AccessibilityService implements View.
 
         //Add the view to the window
         mWindowManager.addView(removeFloatingWidgetView, paramRemove);
-        return remove_image_view;
     }
 
     /*  Add Floating Widget View to Window Manager  */
@@ -121,9 +133,8 @@ public class FloatingWidgetService extends AccessibilityService implements View.
                     PixelFormat.TRANSLUCENT);
         }
 
-
         //Specify the view position
-        params.gravity = Gravity.TOP | Gravity.LEFT;
+        params.gravity = Gravity.TOP | Gravity.START;
 
         //Initially view will be added to top-left corner, you change x-y coordinates according to your need
         params.x = 0;
@@ -149,22 +160,21 @@ public class FloatingWidgetService extends AccessibilityService implements View.
             boolean inBounded = false;//variable to judge if floating view is bounded to remove view
             int remove_img_width = 0, remove_img_height = 0;
 
-            Handler handler_longClick = new Handler();
-            Runnable runnable_longClick = new Runnable() {//On Floating Widget Long Click
-                @Override
-                public void run() {
-                    isLongClick = true;
-                    removeFloatingWidgetView.setVisibility(View.VISIBLE);
-                    //Get remove Floating view params
-                    WindowManager.LayoutParams removeParams = (WindowManager.LayoutParams) removeFloatingWidgetView.getLayoutParams();
-                    //get x and y coordinates of remove view
-                    removeParams.x = (szWindow.x - removeFloatingWidgetView.getWidth()) / 2;
-                    removeParams.y = szWindow.y - (removeFloatingWidgetView.getHeight() + getStatusBarHeight());
-                    //Update Remove view params
-                    mWindowManager.updateViewLayout(removeFloatingWidgetView, removeParams);
-                }
+            final Handler handler_longClick = new Handler();
+            //On Floating Widget Long Click
+            final Runnable runnable_longClick = () -> {
+                isLongClick = true;
+                removeFloatingWidgetView.setVisibility(View.VISIBLE);
+                //Get remove Floating view params
+                WindowManager.LayoutParams removeParams = (WindowManager.LayoutParams) removeFloatingWidgetView.getLayoutParams();
+                //get x and y coordinates of remove view
+                removeParams.x = (szWindow.x - removeFloatingWidgetView.getWidth()) / 2;
+                removeParams.y = szWindow.y - (removeFloatingWidgetView.getHeight() + getStatusBarHeight());
+                //Update Remove view params
+                mWindowManager.updateViewLayout(removeFloatingWidgetView, removeParams);
             };
 
+            @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 //Get Floating widget view params
@@ -328,20 +338,19 @@ public class FloatingWidgetService extends AccessibilityService implements View.
                 stopSelf();
                 break;
             case R.id.run_script:
-                FileOperation.instance.saveBitmapAsJPG(ScreenShot.Shot(), "Image2.jpg");
-                for (int z = 0; z < 10; z++) {
-                    try {
-                        AutoClick.Click(this, 508 - 20 * z, 1875);
-                        Thread.sleep(500);
-                    } catch (Exception e) {
-                        DebugMessage.printStackTrace(e);
-                    }
+                Interpreter Ark = new ArkKnightsInterpreter();
+                Ark.Interpret(ScriptName);
+                try{
+                    Ark.run(this,ScriptName,null);
+                }catch (Exception e){
+                    DebugMessage.printStackTrace(e);
                 }
                 break;
             case R.id.stop_script:
                 break;
             case R.id.pause_script:
-                _script: //What is this?
+                _script:
+                //What is this?
                 break;
         }
     }
@@ -349,14 +358,11 @@ public class FloatingWidgetService extends AccessibilityService implements View.
     /*  Reset position of Floating Widget view on dragging  */
     private void resetPosition(int x_cord_now) {
         if (x_cord_now <= szWindow.x / 2) {
-            isLeft = true;
             moveToLeft(x_cord_now);
         } else {
-            isLeft = false;
             moveToRight(x_cord_now);
         }
     }
-
 
     /*  Method to move the Floating widget view to Left  */
     private void moveToLeft(final int current_x_cord) {
@@ -369,7 +375,7 @@ public class FloatingWidgetService extends AccessibilityService implements View.
             public void onTick(long t) {
                 long step = (500 - t) / 5;
 
-                mParams.x = 0 - (int) (current_x_cord * current_x_cord * step);
+                mParams.x = -(int) (current_x_cord * current_x_cord * step);
 
                 //If you want bounce effect uncomment below line and comment above line
                 // mParams.x = 0 - (int) (double) bounceValue(step, x);
@@ -392,7 +398,7 @@ public class FloatingWidgetService extends AccessibilityService implements View.
 
         new CountDownTimer(500, 5) {
             //get params of Floating Widget view
-            WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) mFloatingWidgetView.getLayoutParams();
+            final WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) mFloatingWidgetView.getLayoutParams();
 
             public void onTick(long t) {
                 long step = (500 - t) / 5;

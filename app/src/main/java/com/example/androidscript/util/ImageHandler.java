@@ -3,6 +3,7 @@ package com.example.androidscript.util;
 import android.graphics.Bitmap;
 
 import org.opencv.android.Utils;
+import org.opencv.core.Core;
 import org.opencv.core.CvException;
 import org.opencv.core.DMatch;
 import org.opencv.core.Mat;
@@ -11,6 +12,8 @@ import org.opencv.core.MatOfKeyPoint;
 import org.opencv.features2d.DescriptorMatcher;
 import org.opencv.features2d.ORB;
 import org.opencv.imgproc.Imgproc;
+
+import static java.lang.Math.min;
 
 public class ImageHandler {
     private static Mat grayScale(Bitmap bitmap) {
@@ -21,9 +24,8 @@ public class ImageHandler {
         return ret;
     }
 
-    private static Mat featureExtraction(Bitmap bitmap) {//KeyPoint detection and extraction
+    private static Mat featureExtraction(Mat grayBitmap) {//KeyPoint detection and extraction
         ORB orb = ORB.create(1000);
-        Mat grayBitmap = grayScale(bitmap);
         MatOfKeyPoint keyPoint = new MatOfKeyPoint();
         orb.detect(grayBitmap, keyPoint);
         Mat ret = new Mat();
@@ -46,16 +48,17 @@ public class ImageHandler {
     }
 
     public static boolean matchPicture(Bitmap screenshot, Bitmap target) {
+
         if (screenshot == null || target == null) {
             DebugMessage.set("Null in matchPicture");
             return false;
         }
+        Mat sourceMat = grayScale(screenshot);
+        Mat targetMat = grayScale(target);
+        Mat screenDescriptor = featureExtraction(sourceMat); // Size:(totalFeatures, 32)
+        Mat targetDescriptor = featureExtraction(targetMat);
 
-        Mat screenDescriptor = featureExtraction(screenshot); // Size:(totalFeatures, 32)
-        Mat targetDescriptor = featureExtraction(target);
-
-        DMatch[] matchPoints = featureMatch(screenDescriptor, targetDescriptor).toArray();//Length: totalFeatures
-        DebugMessage.set("Num of features: " + matchPoints.length + "\n");
+        DMatch[] matchPoints = featureMatch(screenDescriptor, targetDescriptor).toArray();//Length: max(AFeatures,B)
 
         float minDistance = 0;
         int matchCount = 0;
@@ -75,6 +78,6 @@ public class ImageHandler {
         }
 
         DebugMessage.set("Match " + matchCount + " points\n");
-        return 100 * matchCount > 80 * matchPoints.length;
+        return 7 * matchCount > min(screenDescriptor.height(), targetDescriptor.height());
     }
 }

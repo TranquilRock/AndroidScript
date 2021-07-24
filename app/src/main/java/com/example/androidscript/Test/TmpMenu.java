@@ -35,6 +35,7 @@ public class TmpMenu extends AppCompatActivity {
     private Button btnToTest;
     private Button btnSetScreenshot;
     private Button btnDoScreenshot;
+
     public static final int PROJECTION_REQUEST_CODE = 123;
     private MediaProjectionManager mm;
     @Override
@@ -44,18 +45,14 @@ public class TmpMenu extends AppCompatActivity {
         setContentView(R.layout.activity_tmp_menu);
         FileOperation.setUpFileRoot(getFilesDir().getAbsolutePath() + "/");
 
-
         btnToMenu = BtnMaker.jump(R.id.button_to_menu, this, MenuActivity.class);
         btnToTest = BtnMaker.jump(R.id.button_to_test, this, TestActivity.class);
         btnSetScreenshot = BtnMaker.registerOnClick(R.id.button_set_screenshot,this,(v -> {
             mm = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
             startActivityForResult((mm).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
         }));
-//        btnDoScreenshot = BtnMaker.registerOnClick(R.id.button_tmp,this,(v -> FileOperation.instance.saveBitmapAsJPG(ScreenShot.Shot(),"image.jpg")));
-        btnDoScreenshot = BtnMaker.registerOnClick(R.id.button_tmp,this,(v -> ImageHandler.matchPicture(ScreenShot.Shot(), ScreenShot.Shot())));
-        if(OpenCVLoader.initDebug()){
-            System.out.println("Mission Accomplished\n");
-        }
+        btnDoScreenshot = BtnMaker.registerOnClick(R.id.button_tmp,this,(v -> FileOperation.instance.saveBitmapAsJPG(ScreenShot.Shot(false),"image.jpg")));
+        OpenCVLoader.initDebug();
     }
 
     public void setPermission() {
@@ -78,8 +75,10 @@ public class TmpMenu extends AppCompatActivity {
     }
 
     private void startFloatingWidgetService() {
-        this.startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
-        startService(new Intent(TmpMenu.this, FloatingWidgetService.class));
+        this.startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));//Get permission
+        Intent startFloatingWidgetService = new Intent(TmpMenu.this, FloatingWidgetService.class);
+        startFloatingWidgetService.putExtra("FileName","Test.txt");
+        startService(startFloatingWidgetService);
         finish();
     }
 
@@ -90,7 +89,7 @@ public class TmpMenu extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ScreenShot.pass((Intent)data.clone(),mm);
+                    ScreenShot.pass((Intent)data.clone(),mm,true);
                     startService(new Intent(getApplicationContext(),ScreenShot.class));
                 }
             }, 1);

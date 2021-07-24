@@ -24,13 +24,17 @@ import android.media.projection.MediaProjection;
 import androidx.annotation.Nullable;
 
 import com.example.androidscript.Test.TmpMenu;
+import com.example.androidscript.util.Interpreter.Interpreter;
+
+import org.opencv.core.Core;
 
 import java.nio.ByteBuffer;
 
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
 public class ScreenShot extends Service {
     private static ImageReader imageReader = null;
-    private static int TargetHeight = 0;
-    private static int TargetWidth = 0;
     private static Intent Permission = null;
     private static Point TargetOffset = null;//Todo make screenshot range start from offset
     private static VirtualDisplay virtualDisplay = null;
@@ -43,17 +47,28 @@ public class ScreenShot extends Service {
     static {
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
         screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
-
     }
 
-    public static void pass(Intent intent, MediaProjectionManager mm) {
+    @SuppressLint("WrongConstant")
+    public static void pass(Intent intent, MediaProjectionManager mm, boolean transpose) {
         if (ScreenShot.mediaProjectionManager == null) {
             ScreenShot.Permission = intent;
             ScreenShot.mediaProjectionManager = mm;
         }
+        int tmp;
+        if (transpose) {
+            tmp = max(screenWidth, screenHeight);
+            screenHeight = min(screenWidth, screenHeight);
+            screenWidth = tmp;
+        } else {
+            tmp = min(screenWidth, screenHeight);
+            screenHeight = max(screenWidth, screenHeight);
+            screenWidth = tmp;
+        }
+        ScreenShot.imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, 2);
     }
 
-    public static Bitmap Shot() {
+    public static Bitmap Shot(boolean transpose) {
         StartDisplay();
         if (!ServiceStart) {
             DebugMessage.set("Service unavailable.\n");
@@ -71,12 +86,21 @@ public class ScreenShot extends Service {
                 continue;
             }
             //TODO:Clarify following.
-            int width = img.getWidth();
-            int height = img.getHeight();
-            final Image.Plane[] planes = img.getPlanes();
-            final ByteBuffer buffer = planes[0].getBuffer();
-            int pixelStride = planes[0].getPixelStride();//像素間距
-            int rowStride = planes[0].getRowStride();//總間距
+            DebugMessage.set("IMAGE " + img.getWidth() + " " + img.getHeight());
+            int width;
+            int height;
+            if (transpose) {
+                width = max(img.getHeight(), img.getWidth());
+                height = Math.min(img.getHeight(), img.getWidth());
+            } else {
+                width = Math.min(img.getHeight(), img.getWidth());
+                height = max(img.getHeight(), img.getWidth());
+            }
+            final Image.Plane plane = img.getPlanes()[0];
+            final ByteBuffer buffer = plane.getBuffer();
+            buffer.rewind();
+            int pixelStride = plane.getPixelStride();//像素間距
+            int rowStride = plane.getRowStride();//總間距
             int rowPadding = rowStride - pixelStride * width;
             Bitmap bitmap = Bitmap.createBitmap(width + rowPadding / pixelStride, height,
                     Bitmap.Config.ARGB_8888);
@@ -93,8 +117,8 @@ public class ScreenShot extends Service {
         if (ServiceStart) {
             try {
                 ScreenShot.virtualDisplay = ScreenShot.mediaProjection.createVirtualDisplay("Screenshot",
-                        ScreenShot.TargetWidth,
-                        ScreenShot.TargetHeight,
+                        ScreenShot.screenWidth,
+                        ScreenShot.screenHeight,
                         Resources.getSystem().getDisplayMetrics().densityDpi,
                         DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
                         ScreenShot.imageReader.getSurface(), null, null);
@@ -112,17 +136,8 @@ public class ScreenShot extends Service {
         }
     }
 
-    public static int getScreenWidth() {
-        return ScreenShot.screenWidth;
-    }
-
-    public static int getScreenHeight() {
-        return ScreenShot.screenHeight;
-    }
-
-
     private void createNotificationChannel() {
-        Notification.Builder builder = new Notification.Builder(getApplicationContext()); //获取一个Notification构造器
+        Notification.Builder builder = new Notification.Builder(getApplicationContext());
         builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, TmpMenu.class), 0))
                 .setContentTitle("AndroidScript啟動中")
                 .setContentText("AndroidScript正在擷取螢幕")
@@ -151,13 +166,17 @@ public class ScreenShot extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         createNotificationChannel();
         ScreenShot.mediaProjection = ScreenShot.mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, ScreenShot.Permission);
-        ScreenShot.imageReader = ImageReader.newInstance(getScreenWidth(), getScreenHeight(), PixelFormat.RGBA_8888, 10);
         ScreenShot.TargetOffset = new Point(0, 0);
-        ScreenShot.TargetHeight = getScreenHeight();
-        ScreenShot.TargetWidth = getScreenWidth();
         ScreenShot.ServiceStart = true;
         DebugMessage.set("Start Screen Casting on (" + screenHeight + "," + screenWidth + ") device\n");
         return 0;
     }
 
+    public static boolean compare(Bitmap Target, int x1, int y1, int x2, int y2, boolean transpose) {
+        return ImageHandler.matchPicture(Bitmap.createBitmap(Shot(transpose), x1, y1, (x2 - x1), (y2 - y1)), Target);
+    }
+
+    public static boolean compare(Interpreter.TargetImage target, boolean transpose) {
+        return ImageHandler.matchPicture(Bitmap.createBitmap(Shot(transpose), target.x1, target.y1, (target.x2 - target.x1), (target.y2 - target.y1)), target.source);
+    }
 }

@@ -39,5 +39,5 @@
         android:id="@+id/button_tmp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="SHOHOHOHOHOHT" />
+        android:text="ScreenShot" />
 </LinearLayout>

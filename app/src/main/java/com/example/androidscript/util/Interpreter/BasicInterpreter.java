@@ -2,6 +2,13 @@ package com.example.androidscript.util.Interpreter;
 
 import android.graphics.Bitmap;
 
+import com.example.androidscript.util.DebugMessage;
+import com.example.androidscript.util.FileOperation;
+
+import java.io.FileNotFoundException;
+import java.nio.file.NoSuchFileException;
+import java.util.Vector;
+
 
 public class BasicInterpreter extends Interpreter {
     public static final String ImgFormat = "([A-Za-z0-9_-]*).(jpg|png)";
@@ -10,7 +17,7 @@ public class BasicInterpreter extends Interpreter {
     public static final String IntFormat = "[0-9]*";
     public static final String IntVarFormat = "(" + IntFormat + "||" + VarFormat + ")";
     public static final String ImgVarFormat = "(" + ImgFormat + "||" + VarFormat + ")";
-
+    public static final String FileRoot = "basic/";
     public static final String[] SUPPORTED_COMMAND = {
             "Click " + IntVarFormat + " " + IntVarFormat,
             "Compare " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat + " " + ImgVarFormat,
@@ -22,16 +29,20 @@ public class BasicInterpreter extends Interpreter {
             "Var " + VarFormat + " " + IntFormat,//Declare Initial Value of Variable
     };
 
+
     @Override
-    public String ReadCodeFromFile(String FileName) {
-        //TODO read code under "Environment.getExternalStorageDirectory() + /Target/"
-        return "";
+    public Vector<String> ReadCodeFromFile(String FileName) {
+        return FileOperation.instance.readFromFileLines(FileRoot + FileName);
     }
 
     @Override
     public Bitmap ReadImgFromFile(String FileName) {
-        //TODO read image under "Environment.getExternalStorageDirectory() + /Target/"
-        return null;
+        return FileOperation.instance.readPicAsBitmap(FileRoot + FileName);
+    }
+
+    @Override
+    public void Interpret(String FileName) {
+
     }
 
 }

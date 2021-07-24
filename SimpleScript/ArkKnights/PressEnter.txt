@@ -1,0 +1,5 @@
+Check EnterOperation
+IfGreater $R 0
+JumpToLine 0
+Click 2730 1260
+Wait 2000

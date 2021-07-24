@@ -1,6 +1,5 @@
 package com.example.androidscript.util.Interpreter;
 
-import android.accessibilityservice.AccessibilityService;
 import android.graphics.Bitmap;
 
 import com.example.androidscript.util.AutoClick;
@@ -11,112 +10,60 @@ import com.example.androidscript.util.ScreenShot;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
-import java.util.regex.Pattern;
-
-public abstract class Interpreter extends Thread {//Every child only need to specify where and how to fetch files, as well as what kind of commands are accepted;
-
-    protected abstract Vector<String> ReadCodeFromFile(String FileName);
-
-    protected abstract Bitmap ReadImgFromFile(String FileName);
-
-    public static class INVALID_CODE_EXCEPTION extends Exception {
-        public INVALID_CODE_EXCEPTION(String s){
-            DebugMessage.set(s);
-        }
-        public INVALID_CODE_EXCEPTION(){}
-    }
-
-    public class TargetImage {
-        public Bitmap source;
-        public int x1;//Starting point in whole graph
-        public int y1;
-        public int x2;
-        public int y2;
-
-        public TargetImage(Bitmap source, int x1, int y1, int x2, int y2) {
-            this.source = source;
-            this.x1 = x1;
-            this.y1 = y1;
-            this.x2 = x2;
-            this.y2 = y2;
-        }
-    }
-
-    public class Code {//Every instance would be a valid code that interpreter can recognize
-        public Vector<String[]> codes = new Vector<>();
-        public Vector<String> dependency = new Vector<>();
-
-        public Code(String[] SUPPORTED_COMMAND, Vector<String> RawCode) throws INVALID_CODE_EXCEPTION {
-            for (String line : RawCode) {
-                boolean valid = false;
-                for (String format : SUPPORTED_COMMAND) {
-                    if (Pattern.matches(format, line)) {
-                        valid = true;
-                        String[] command = line.split(" ");
-                        if (command[0].equals("Call")) {
-                            dependency.add(command[1]);
-                        }
-                        codes.add(command);
-                        break;
-                    }
-                }
-                if (!valid) {
-
-                    throw new INVALID_CODE_EXCEPTION("Invalid " + line);
-                }
-            }
-        }
-    }
 
 
-    protected Map<String, Interpreter.Code> MyCode = new HashMap<>();
+public class ArkKnightsInterpreter extends Interpreter {
+    public static final String StrFormat = "([A-Za-z0-9_-]*)";
+    public static final String ImgFormat = "([A-Za-z0-9_-]*).(jpg|png)";
+    public static final String SptFormat = "([A-Za-z0-9_-]*).txt";
+    public static final String VarFormat = "\\$([A-Za-z0-9_-]*)";
+    public static final String IntFormat = "[0-9]*";
+    public static final String IntVarFormat = "(" + IntFormat + "||" + VarFormat + ")";
+    public static final String ImgVarFormat = "(" + ImgFormat + "||" + VarFormat + ")";
+    public static final String AnyFormat = "[a-zA-Z0-9 $]*";
+    public static final String FileRoot = "ArkKnights/";
+    public static final String[] SUPPORTED_COMMAND = {
+            "Click " + IntVarFormat + " " + IntVarFormat,
+            "Compare " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat + " " + ImgVarFormat,
+            "Check " + StrFormat,
+            "JumpToLine " + IntVarFormat,
+            "Wait " + IntVarFormat,
+            "Call " + SptFormat + " " + AnyFormat,//Allow passing arguments, but only crafted dependency
+            "Call " + SptFormat,
+            "IfGreater " + IntVarFormat + " " + IntVarFormat,
+            "IfSmaller " + IntVarFormat + " " + IntVarFormat,
+            "Var " + VarFormat + " " + IntFormat,//Declare Initial Value of Variable
+    };
+    public Map<String, TargetImage> ArkKnights = new HashMap<>();
 
-    public abstract void Interpret(String FileName);
-
-    protected void Interpret(String[] SUPPORTED_COMMAND, String FileName) throws Interpreter.INVALID_CODE_EXCEPTION {
-        Vector<String> Command = ReadCodeFromFile(FileName);
-        MyCode.put(FileName, new Interpreter.Code(SUPPORTED_COMMAND, Command));
-        for (String depend : MyCode.get(FileName).dependency) {
-            if (!MyCode.containsKey(depend)) {
-                Interpret(SUPPORTED_COMMAND, depend);
-            }
-        }
-    }
-
-    //==========================================
-    protected String run_arg_FileName = "";
-    protected String[] run_arg_argv = null;
-    protected int run_arg_depth = 0;
-    protected AccessibilityService accessibilityService;
-
-    public final void run(AccessibilityService accessibilityService, String FileName, String[] argv) throws RuntimeException {
-        this.run_arg_FileName = FileName;
-        this.run_arg_argv = argv;
-        this.run_arg_depth = 0;
-        this.accessibilityService = accessibilityService;
-        this.start();
+    public ArkKnightsInterpreter() {
+        this.ArkKnights.put("EnterOperation", new TargetImage(this.ReadImgFromFile("EnterOperation.png"), 2510, 1120, 2960, 1400));
+        this.ArkKnights.put("StartOperation", new TargetImage(this.ReadImgFromFile("StartOperation.png"), 2300, 720, 2600, 1260));
+        this.ArkKnights.put("Operating", new TargetImage(this.ReadImgFromFile("Operating.png"), 1130, 1230, 1480, 1380));
+        this.ArkKnights.put("OperationEnd", new TargetImage(this.ReadImgFromFile("OperationEnd.png"), 90, 1130, 800, 1360));
     }
 
     @Override
-    public final void run() {
-        if (this.run_arg_FileName.equals("")) {
-            throw new RuntimeException("No code to run");
-        }
-        DebugMessage.set("RUN "+run_arg_FileName);
-        this.run(run_arg_FileName, run_arg_argv, run_arg_depth);
-    }
+    public void Interpret(String FileName) {
+        try {
+            super.Interpret(SUPPORTED_COMMAND, FileName);
 
-    protected void parseArguments(Map<String, String> LocalVar, String[] argv) {
-        LocalVar.put("$R", "0");
-        int argCount = 1;
-        if(argv != null){
-            for (String arg : argv) {
-                LocalVar.put("$" + argCount, arg);
-                argCount++;
-            }
+        } catch (Exception e) {
+            DebugMessage.printStackTrace(e);
         }
     }
 
+    @Override
+    public Vector<String> ReadCodeFromFile(String FileName) {
+        return FileOperation.instance.readFromFileLines(FileRoot + FileName);
+    }
+
+    @Override
+    public Bitmap ReadImgFromFile(String FileName) {
+        return FileOperation.instance.readPicAsBitmap(FileRoot + FileName);
+    }
+
+    @Override
     public void run(String FileName, String[] argv, int depth) throws RuntimeException {//Run code that is already read in MyCode
         assert (depth < 5);
         assert (MyCode.containsKey(FileName));
@@ -146,6 +93,17 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
                         LocalVar.put("$R", "0");
                     } else {
                         LocalVar.put("$R", "1");
+                    }
+                    break;
+                case "Check":
+                    if (ArkKnights.containsKey(command[1])) {
+                        if (ScreenShot.compare(ArkKnights.get(Arguments[0]), true)) {
+                            LocalVar.put("$R", "0");
+                        } else {
+                            LocalVar.put("$R", "1");
+                        }
+                    } else {
+                        throw new RuntimeException("Check failed " + Arguments[0]);
                     }
                     break;
                 case "JumpToLine":
@@ -193,12 +151,5 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
             }
         }
     }
-    protected void sleep(int ms){
-        try{
-            Thread.sleep(ms);
-        }
-        catch (Exception e){
-            DebugMessage.printStackTrace(e);
-        }
-    }
+
 }

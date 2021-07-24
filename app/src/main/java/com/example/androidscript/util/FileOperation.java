@@ -3,13 +3,17 @@ package com.example.androidscript.util;
 import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import java.nio.ByteBuffer;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -23,12 +27,13 @@ public class FileOperation extends Activity {
         }
     }
 
-    public FileOperation(String root) {
+    private FileOperation(String root) {
         this.root = root;
         FileOperation.instance = this;
     }
 
     public void saveBitmapAsJPG(Bitmap bm, String FileName) {
+        FileName = root + FileName;
         if (bm == null) {
             return;
         }
@@ -44,6 +49,7 @@ public class FileOperation extends Activity {
     }
 
     public void WriteToFile(String FileName, Vector<String> contents) {
+        FileName = root + FileName;
         try {
             File scriptFile = createFileAndParent(FileName);
             BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(scriptFile));
@@ -57,7 +63,8 @@ public class FileOperation extends Activity {
         }
     }
 
-    protected Vector<String> ReadFromFile(String FileName) {
+    public Vector<String> readFromFileLines(String FileName){
+        FileName = root + FileName;
         File file = new File(FileName);
         if (file.exists()) {
             try {
@@ -71,20 +78,42 @@ public class FileOperation extends Activity {
             } catch (IOException e) {
                 DebugMessage.printStackTrace(e);
             }
+        } else {
+            DebugMessage.set("File " + FileName + " not found");
         }
         return null;
     }
 
-    public Bitmap readJPGasBitmap(String FileName)throws FileNotFoundException{
+    public String readWholeFile(String FileName){
+        FileName = root + FileName;
+        File file = new File(FileName);
+        if (file.exists()) {
+            try {
+                FileInputStream fileInputStream = new FileInputStream(file);
+                byte[] data = new byte[(int) file.length()];
+                fileInputStream.read(data);
+                fileInputStream.close();
+                return new String(data, "UTF-8");
+
+            } catch (IOException e) {
+                DebugMessage.printStackTrace(e);
+            }
+        } else {
+            DebugMessage.set("File " + FileName + " not found");
+        }
+        return null;
+    }
+
+    public Bitmap readPicAsBitmap(String FileName) {
+        FileName = root + FileName;
         Bitmap ret = BitmapFactory.decodeFile(FileName);
-        if(ret == null){
-            throw new FileNotFoundException();
+        if (ret == null) {
+            DebugMessage.set("File " + FileName + " not found");
         }
         return ret;
     }
 
-    public File createFileAndParent(String FileName) {
-        FileName = root + FileName;
+    private File createFileAndParent(String FileName) {
         DebugMessage.set("Writing File: " + FileName);
         File file = new File(FileName);
         if (file.exists() && file.delete()) {
@@ -95,4 +124,17 @@ public class FileOperation extends Activity {
         return file;
     }
 
+    public void saveImage(Image img, String FileName){
+        FileName = root + FileName;
+        ByteBuffer buffer = img.getPlanes()[0].getBuffer();
+        byte[] bytes = new byte[buffer.remaining()];
+        buffer.get(bytes);
+        FileOutputStream output = null;
+        try {
+            output = new FileOutputStream(createFileAndParent(FileName));
+            output.write(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

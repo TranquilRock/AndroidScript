@@ -1,0 +1,4 @@
+Call PressEnter.txt
+Call PressStart.txt
+Call PressEnd.txt
+JumpToLine 0

@@ -1,0 +1,5 @@
+Check OperationEnd
+IfGreater $R 0
+JumpToLine 0
+Click 445 1245
+Wait 2000
