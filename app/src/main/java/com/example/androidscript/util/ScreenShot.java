@@ -179,4 +179,5 @@ public class ScreenShot extends Service {
     public static boolean compare(Interpreter.TargetImage target, boolean transpose) {
         return ImageHandler.matchPicture(Bitmap.createBitmap(Shot(transpose), target.x1, target.y1, (target.x2 - target.x1), (target.y2 - target.y1)), target.source);
     }
+
 }

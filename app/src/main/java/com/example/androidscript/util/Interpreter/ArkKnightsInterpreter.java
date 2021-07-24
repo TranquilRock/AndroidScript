@@ -76,10 +76,9 @@ public class ArkKnightsInterpreter extends Interpreter {
             String[] Arguments = new String[command.length - 1];
             for (int i = 1; i < command.length; i++) {//Substitution
                 if (command[i].charAt(0) == '$' && LocalVar.containsKey(command[i])) {//There might be Var command, that should replace $V
-                    Arguments[i -1] = LocalVar.get(command[i]);
-                }
-                else{
-                    Arguments[i -1] = command[i];
+                    Arguments[i - 1] = LocalVar.get(command[i]);
+                } else {
+                    Arguments[i - 1] = command[i];
                 }
             }
             sleep(300);
