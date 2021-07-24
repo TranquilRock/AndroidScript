@@ -1,6 +1,7 @@
 package com.example.androidscript.Test;
 
 import com.example.androidscript.FloatingWidget.FloatingWidgetService;
+import com.example.androidscript.UserInterface.TestRecyclerView;
 import com.example.androidscript.util.BtnMaker;
 import com.example.androidscript.Menu.MenuActivity;
 
@@ -24,6 +25,7 @@ import com.example.androidscript.util.*;
 
 import org.opencv.android.OpenCVLoader;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +37,7 @@ public class TmpMenu extends AppCompatActivity {
     private Button btnToTest;
     private Button btnSetScreenshot;
     private Button btnDoScreenshot;
+    private Button btnToRecyclerTest;
 
     public static final int PROJECTION_REQUEST_CODE = 123;
     private MediaProjectionManager mm;
@@ -47,6 +50,7 @@ public class TmpMenu extends AppCompatActivity {
 
         btnToMenu = BtnMaker.jump(R.id.button_to_menu, this, MenuActivity.class);
         btnToTest = BtnMaker.jump(R.id.button_to_test, this, TestActivity.class);
+        btnToRecyclerTest = BtnMaker.jump(R.id.button_to_Recycler, this, TestRecyclerView.class);
         btnSetScreenshot = BtnMaker.registerOnClick(R.id.button_set_screenshot,this,(v -> {
             mm = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
             startActivityForResult((mm).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
