@@ -4,9 +4,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Context;
 import android.media.projection.MediaProjectionManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
@@ -20,6 +22,8 @@ import android.widget.TextView;
 import com.example.androidscript.R;
 import com.example.androidscript.util.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
@@ -130,7 +134,13 @@ public class MenuActivity extends AppCompatActivity {
         } catch (Settings.SettingNotFoundException e) {
             DebugMessage.printStackTrace(e);
         }
-        //ScreenShot the rest parts are inside its class and onActivityResult
+        //ScreenShot, need to be foreground.(The rest parts are inside its class and onActivityResult.)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
+            List<String> requestedPermissions = new ArrayList<>();
+            requestedPermissions.add(Manifest.permission.FOREGROUND_SERVICE);
+            String[] requests = new String[requestedPermissions.size()];
+            requestPermissions(requests, 100);
+        }
         mediaProjectionManager = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
         startActivityForResult((mediaProjectionManager).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
     }

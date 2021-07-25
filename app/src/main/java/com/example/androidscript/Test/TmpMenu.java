@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.androidscript.R;
 import com.example.androidscript.util.*;
@@ -43,28 +44,21 @@ public class TmpMenu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setPermission();
         setContentView(R.layout.activity_tmp_menu);
-
         btnToMenu = BtnMaker.jump(R.id.button_to_menu, this, MenuActivity.class);
         btnToTest = BtnMaker.jump(R.id.button_to_test, this, TestActivity.class);
         btnToRecyclerTest = BtnMaker.jump(R.id.button_to_Recycler, this, TestRecyclerView.class);
         assert(OpenCVLoader.initDebug());
     }
 
-    public void setPermission() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
-            List<String> requestedPermissions = new ArrayList<>();
-            requestedPermissions.add(Manifest.permission.FOREGROUND_SERVICE);
-            String[] requests = new String[requestedPermissions.size()];
-            requestPermissions(requests, 100);
-        }
-    }
-
     public void createFloatingWidget(View view) {
-        Intent startFloatingWidgetService = new Intent(TmpMenu.this, FloatingWidgetService.class);
-        startFloatingWidgetService.putExtra("FileName","Test.txt");
-        startService(startFloatingWidgetService);
-        finish();
+        if (Settings.canDrawOverlays(getApplicationContext())) {
+            Intent startFloatingWidgetService = new Intent(TmpMenu.this, FloatingWidgetService.class);
+            startFloatingWidgetService.putExtra("FileName","Test.txt");
+            startService(startFloatingWidgetService);
+            finish();
+        }else{
+            Toast.makeText(getApplicationContext(),"Need permission!",Toast.LENGTH_LONG).show();
+        }
     }
 }

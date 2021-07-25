@@ -24,8 +24,8 @@ import com.example.androidscript.R;
 import com.example.androidscript.util.*;
 import com.example.androidscript.util.Interpreter.ArkKnightsInterpreter;
 import com.example.androidscript.util.Interpreter.Interpreter;
-
-public class FloatingWidgetService extends Service implements View.OnClickListener {//TODO closing event is missing
+//TODO Pass an Interpreter
+public class FloatingWidgetService extends Service implements View.OnClickListener {
 
     private WindowManager mWindowManager = null;
     private View mFloatingWidgetView = null, collapsedView = null, expandedView = null;
@@ -37,9 +37,6 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     private String ScriptName;
     private Interpreter Script;
 
-    @SuppressLint("StaticFieldLeak")
-//    public static FloatingWidgetService instance;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -50,17 +47,15 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         addFloatingWidgetView();
         implementClickListeners();
         implementTouchListenerToFloatingWidgetView();
-//        FloatingWidgetService.instance = this;
         DebugMessage.set("FloatingWidgetService::onCreate\n");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        ScriptName = (String) intent.getExtras().get("FileName");
-        //TODO Pass with bundle
-        Script = new ArkKnightsInterpreter();
-        Script.Interpret(ScriptName);
+//        ScriptName = (String) intent.getExtras().get("FileName");
+//        Script = new ArkKnightsInterpreter();
+//        Script.Interpret(ScriptName);
         DebugMessage.set("FloatingWidgetService::onStartCommand Script::" + ScriptName);
         return flags;
     }

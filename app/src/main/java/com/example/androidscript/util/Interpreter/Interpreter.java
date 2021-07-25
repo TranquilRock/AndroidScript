@@ -41,7 +41,7 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
         }
     }
 
-    public static class Code {//Every instance would be a valid code that interpreter can recognize
+    public static class Code {//Valid code that interpreter can recognize
         public Vector<String[]> codes = new Vector<>();
         public Vector<String> dependency = new Vector<>();
 
@@ -138,7 +138,7 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
                     LocalVar.put("$R", "0");
                     break;
                 case "Compare":
-                    if (ScreenShot.compare(FileOperation.instance.readPicAsBitmap(Arguments[4]), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]), true)) {
+                    if (ScreenShot.compare(FileOperation.readPicAsBitmap(Arguments[4]), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]), true)) {
                         LocalVar.put("$R", "0");
                     } else {
                         LocalVar.put("$R", "1");

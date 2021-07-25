@@ -18,7 +18,7 @@ import java.util.Scanner;
 import java.util.Vector;
 
 public class FileOperation extends Activity {
-    public static FileOperation instance = null;
+    private static FileOperation instance = null;
     private String root;
 
     public static void setUpFileRoot(String root) {
@@ -27,12 +27,36 @@ public class FileOperation extends Activity {
         }
     }
 
+    public static void saveImage(Image img, String FileName) {
+        instance.SaveImage(img, FileName);
+    }
+
+    public static Bitmap readPicAsBitmap(String FileName) {
+        return instance.ReadPicAsBitmap(FileName);
+    }
+
+    public static String readWholeFile(String FileName) {
+        return instance.ReadWholeFile(FileName);
+    }
+
+    public static Vector<String> readFromFileLines(String FileName) {
+        return instance.ReadFromFileLines(FileName);
+    }
+
+    public static void saveBitmapAsJPG(Bitmap bm, String FileName) {
+        instance.SaveBitmapAsJPG(bm, FileName);
+    }
+
+    public static void writeToFile(String FileName, Vector<String> contents) {
+        instance.WriteToFile(FileName, contents);
+    }
+
     private FileOperation(String root) {
         this.root = root;
         FileOperation.instance = this;
     }
 
-    public void saveBitmapAsJPG(Bitmap bm, String FileName) {
+    private void SaveBitmapAsJPG(Bitmap bm, String FileName) {
         FileName = root + FileName;
         if (bm == null) {
             return;
@@ -48,7 +72,7 @@ public class FileOperation extends Activity {
         }
     }
 
-    public void WriteToFile(String FileName, Vector<String> contents) {
+    private void WriteToFile(String FileName, Vector<String> contents) {
         FileName = root + FileName;
         try {
             File scriptFile = createFileAndParent(FileName);
@@ -63,7 +87,7 @@ public class FileOperation extends Activity {
         }
     }
 
-    public Vector<String> readFromFileLines(String FileName){
+    private Vector<String> ReadFromFileLines(String FileName) {
         FileName = root + FileName;
         File file = new File(FileName);
         if (file.exists()) {
@@ -84,7 +108,7 @@ public class FileOperation extends Activity {
         return null;
     }
 
-    public String readWholeFile(String FileName){
+    private String ReadWholeFile(String FileName) {
         FileName = root + FileName;
         File file = new File(FileName);
         if (file.exists()) {
@@ -104,7 +128,7 @@ public class FileOperation extends Activity {
         return null;
     }
 
-    public Bitmap readPicAsBitmap(String FileName) {
+    private Bitmap ReadPicAsBitmap(String FileName) {
         FileName = root + FileName;
         Bitmap ret = BitmapFactory.decodeFile(FileName);
         if (ret == null) {
@@ -124,7 +148,7 @@ public class FileOperation extends Activity {
         return file;
     }
 
-    public void saveImage(Image img, String FileName){
+    private void SaveImage(Image img, String FileName) {
         FileName = root + FileName;
         ByteBuffer buffer = img.getPlanes()[0].getBuffer();
         byte[] bytes = new byte[buffer.remaining()];

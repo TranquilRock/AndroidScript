@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-
 public final class ArkKnightsInterpreter extends Interpreter {
     public static final String StrFormat = "([A-Za-z0-9_-]*)";
     public static final String ImgFormat = "([A-Za-z0-9_-]*).(jpg|png)";
@@ -58,12 +57,12 @@ public final class ArkKnightsInterpreter extends Interpreter {
 
     @Override
     public Vector<String> ReadCodeFromFile(String FileName) {
-        return FileOperation.instance.readFromFileLines(FileRoot + FileName);
+        return FileOperation.readFromFileLines(FileRoot + FileName);
     }
 
     @Override
     public Bitmap ReadImgFromFile(String FileName) {
-        return FileOperation.instance.readPicAsBitmap(FileRoot + FileName);
+        return FileOperation.readPicAsBitmap(FileRoot + FileName);
     }
 
     @Override
@@ -92,7 +91,7 @@ public final class ArkKnightsInterpreter extends Interpreter {
                     break;
                 case "Compare":
                     delay();
-                    if (ScreenShot.compare(FileOperation.instance.readPicAsBitmap(Arguments[4]), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]), true)) {
+                    if (ScreenShot.compare(FileOperation.readPicAsBitmap(Arguments[4]), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]), true)) {
                         LocalVar.put("$R", "0");
                     } else {
                         LocalVar.put("$R", "1");
