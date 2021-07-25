@@ -87,7 +87,7 @@ public final class ArkKnightsInterpreter extends Interpreter {
             switch (command[0]) {
                 case "Click":
                     delay();
-                    AutoClick.Click(accessibilityService, Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]));
+                    AutoClick.Click(Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]));
                     LocalVar.put("$R", "0");
                     break;
                 case "Compare":

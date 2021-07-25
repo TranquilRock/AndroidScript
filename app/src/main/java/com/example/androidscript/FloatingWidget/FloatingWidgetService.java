@@ -1,8 +1,9 @@
 package com.example.androidscript.FloatingWidget;
 
 import android.annotation.SuppressLint;
+import android.app.Service;
 import android.os.Build;
-import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
 import android.os.Handler;
 import android.view.Gravity;
@@ -15,8 +16,8 @@ import android.view.WindowManager;
 import android.view.LayoutInflater;
 import android.graphics.PixelFormat;
 import android.content.res.Configuration;
-import android.view.accessibility.AccessibilityEvent;
-import android.accessibilityservice.AccessibilityService;
+
+import androidx.annotation.Nullable;
 
 import com.example.androidscript.Menu.MenuActivity;
 import com.example.androidscript.R;
@@ -24,7 +25,7 @@ import com.example.androidscript.util.*;
 import com.example.androidscript.util.Interpreter.ArkKnightsInterpreter;
 import com.example.androidscript.util.Interpreter.Interpreter;
 
-public class FloatingWidgetService extends AccessibilityService implements View.OnClickListener {//TODO closing event is missing
+public class FloatingWidgetService extends Service implements View.OnClickListener {//TODO closing event is missing
 
     private WindowManager mWindowManager = null;
     private View mFloatingWidgetView = null, collapsedView = null, expandedView = null;
@@ -35,25 +36,9 @@ public class FloatingWidgetService extends AccessibilityService implements View.
     private int x_init_cord, y_init_cord, x_init_margin, y_init_margin;
     private String ScriptName;
     private Interpreter Script;
-    private boolean IsWaiting = false;
+
     @SuppressLint("StaticFieldLeak")
-    public static FloatingWidgetService instance;
-
-    @Override
-    public void onServiceConnected() {
-        super.onServiceConnected();
-        DebugMessage.set("FloatingWidgetService::onServiceConnected\n");
-    }
-
-    @Override
-    public void onAccessibilityEvent(AccessibilityEvent event) {
-        DebugMessage.set("FloatingWidgetService::onAccessibilityEvent\n");
-    }
-
-    @Override
-    public void onInterrupt() {
-        DebugMessage.set("FloatingWidgetService::onInterrupt\n");
-    }
+//    public static FloatingWidgetService instance;
 
     @Override
     public void onCreate() {
@@ -65,7 +50,7 @@ public class FloatingWidgetService extends AccessibilityService implements View.
         addFloatingWidgetView();
         implementClickListeners();
         implementTouchListenerToFloatingWidgetView();
-        FloatingWidgetService.instance = this;
+//        FloatingWidgetService.instance = this;
         DebugMessage.set("FloatingWidgetService::onCreate\n");
     }
 
@@ -313,7 +298,7 @@ public class FloatingWidgetService extends AccessibilityService implements View.
         mFloatingWidgetView.findViewById(R.id.pause_script).setOnClickListener(this);
     }
 
-
+    private boolean IsWaiting = false;
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -338,7 +323,7 @@ public class FloatingWidgetService extends AccessibilityService implements View.
                     IsWaiting = false;
                 }else{
                     try{
-                        Script.run(this,ScriptName,null);
+                        Script.runCode(ScriptName, null);
                     }catch (Exception e){
                         DebugMessage.printStackTrace(e);
                     }
@@ -444,6 +429,12 @@ public class FloatingWidgetService extends AccessibilityService implements View.
                 resetPosition(szWindow.x);
             }
         }
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     /*  on Floating widget click show expanded view  */

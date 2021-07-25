@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
 
-import java.io.FileNotFoundException;
-import java.nio.file.NoSuchFileException;
 import java.util.Vector;
 
 

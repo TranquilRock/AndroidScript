@@ -1,6 +1,5 @@
 package com.example.androidscript.util.Interpreter;
 
-import android.accessibilityservice.AccessibilityService;
 import android.graphics.Bitmap;
 
 import com.example.androidscript.util.AutoClick;
@@ -23,9 +22,7 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
         public INVALID_CODE_EXCEPTION(String s) {
             DebugMessage.set(s);
         }
-
-        public INVALID_CODE_EXCEPTION() {
-        }
+        public INVALID_CODE_EXCEPTION() {}
     }
 
     public static class TargetImage {
@@ -89,13 +86,11 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
     protected String run_arg_FileName = "";
     protected String[] run_arg_argv = null;
     protected int run_arg_depth = 0;
-    protected AccessibilityService accessibilityService;
 
-    public final void run(AccessibilityService accessibilityService, String FileName, String[] argv) throws RuntimeException {
+    public final void runCode(String FileName, String[] argv) throws RuntimeException {
         this.run_arg_FileName = FileName;
         this.run_arg_argv = argv;
         this.run_arg_depth = 0;
-        this.accessibilityService = accessibilityService;
         this.start();
     }
 
@@ -139,7 +134,7 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
             sleep(300);
             switch (command[0]) {
                 case "Click":
-                    AutoClick.Click(accessibilityService, Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]));
+                    AutoClick.Click(Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]));
                     LocalVar.put("$R", "0");
                     break;
                 case "Compare":

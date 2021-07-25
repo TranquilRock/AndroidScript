@@ -1,19 +1,15 @@
 package com.example.androidscript.Menu;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.media.projection.MediaProjectionManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
+import android.provider.Settings;
 import android.widget.Button;
 import android.content.Intent;
 import android.widget.ImageButton;
@@ -24,15 +20,11 @@ import android.widget.TextView;
 import com.example.androidscript.R;
 import com.example.androidscript.util.*;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.Vector;
 import java.util.regex.Pattern;
 
 public class MenuActivity extends AppCompatActivity {
     public static final String SUPPORTED_FILE_NAME_PATTERN = "([A-Za-z0-9_-]*).txt";
-    public static final String EXTRA_MESSAGE = "com.example.androidscript.Menu";
-    private String root;
     private Button btnToCreate;
     private Button btnPickFile;
     private ImageButton btnStartService;
@@ -49,13 +41,10 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        root = getFilesDir().getAbsolutePath();
-        FileOperation.setUpFileRoot(root);
+        FileOperation.setUpFileRoot(getFilesDir().getAbsolutePath() + "/");
         browseAvailableFile();
-//        testing = findViewById(R.id.testing);
-//        ArrayAdapter<String> gg = (new ArrayAdapter<String>(this, android.R.layout.list_content,availableFile);
-//        testing.setAdapter(gg);
         setupElements();
+        SetUpPermissions();
     }
 
     private void setupElements() {
@@ -92,7 +81,7 @@ public class MenuActivity extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ScreenShot.pass((Intent) data, mediaProjectionManager,true);
+                    ScreenShot.pass((Intent) data, mediaProjectionManager, true);
                     startService(new Intent(getApplicationContext(), ScreenShot.class));
                 }
             }, 1);
@@ -105,7 +94,7 @@ public class MenuActivity extends AppCompatActivity {
         output.setText(FileName);
         if (parseFile(FileName)) {
             Intent intent = new Intent(this, EditActivity.class);
-            intent.putExtra(EXTRA_MESSAGE, FileName);
+            intent.putExtra("FileName", FileName);
             startActivity(intent);
         }
         output.setText("僅能包含英文字母、數字與底線\n且為txt檔案格式\n例如:a_1-B.txt");
@@ -127,5 +116,22 @@ public class MenuActivity extends AppCompatActivity {
         this.availableFile.add("GG1.txt");
         this.availableFile.add("GG2.txt");
         this.availableFile.add("GG3.txt");
+    }
+
+    public void SetUpPermissions() {
+        if (!Settings.canDrawOverlays(getApplicationContext())) {//Floating Widget
+            startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION));
+        }
+        //AutoClick
+        try {
+            if (Settings.Secure.getInt(getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED) > 0) {
+                this.startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));//Get permission
+            }
+        } catch (Settings.SettingNotFoundException e) {
+            DebugMessage.printStackTrace(e);
+        }
+        //ScreenShot the rest parts are inside its class and onActivityResult
+        mediaProjectionManager = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+        startActivityForResult((mediaProjectionManager).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
     }
 }
