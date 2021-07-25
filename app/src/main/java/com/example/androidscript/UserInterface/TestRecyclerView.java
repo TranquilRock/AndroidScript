@@ -9,7 +9,7 @@ public class TestRecyclerView extends UIActivity {
     public ArrayList<String> BlockData() {
         ArrayList<String> BlockInfo = new ArrayList<>();
         String count;
-        for (int i = 0;i < 10;i++){
+        for (int i = 0;i < 100;i++){
             count = String.valueOf(i+1);
             BlockInfo.add("第" + count + "個Block");
         }

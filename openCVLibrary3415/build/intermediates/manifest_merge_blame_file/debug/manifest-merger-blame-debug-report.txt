@@ -5,10 +5,18 @@
 5    android:versionName="3.4.15" >
 6
 7    <uses-sdk
+<<<<<<< HEAD
 7-->C:\Users\andy\AndroidStudioProjects\AndroidScript\openCVLibrary3415\src\main\AndroidManifest.xml:7:5-73
 8        android:minSdkVersion="1"
 8-->C:\Users\andy\AndroidStudioProjects\AndroidScript\openCVLibrary3415\src\main\AndroidManifest.xml:7:15-40
 9        android:targetSdkVersion="30" />
 9-->C:\Users\andy\AndroidStudioProjects\AndroidScript\openCVLibrary3415\src\main\AndroidManifest.xml:7:41-70
+=======
+7-->C:\Users\HY\AndroidStudioProjects\AndroidScript\openCVLibrary3415\src\main\AndroidManifest.xml:7:5-73
+8        android:minSdkVersion="1"
+8-->C:\Users\HY\AndroidStudioProjects\AndroidScript\openCVLibrary3415\src\main\AndroidManifest.xml:7:15-40
+9        android:targetSdkVersion="30" />
+9-->C:\Users\HY\AndroidStudioProjects\AndroidScript\openCVLibrary3415\src\main\AndroidManifest.xml:7:41-70
+>>>>>>> fad570f8150fa65de5295c954153ffe1c8f68a58
 10
 11</manifest>

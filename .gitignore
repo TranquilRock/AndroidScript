@@ -15,5 +15,5 @@
 local.properties
 /app/src/main/java/com/example/androidscript/Test/
 !/app/src/main/java/com/example/androidscript/Test/TmpMenu.java
-
+/openCVLibrary3415/build/intermediates/incremental/packageDebugAssets/merger.xml
 

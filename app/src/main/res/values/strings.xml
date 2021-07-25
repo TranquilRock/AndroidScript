@@ -19,4 +19,73 @@
     <string name="newScript">建立腳本</string>
     <string name="scriptName">請輸入名稱</string>
 
+    <string name="selectFriends">選擇好友</string>
+    <string name="selectCraft">選擇禮裝</string>
+    <string name="preStage">關卡前置</string>
+    <string name="eatApple">回復體力</string>
+    <string name="repeat">重複次數</string>
+    <string name="changeskl">換人技</string>
+    <string-array name="friends">
+        <item>第一位</item>
+        <item>CBA</item>
+        <item>孔明</item>
+    </string-array>
+    <string-array name="apples">
+        <item>聖晶石</item>
+        <item>金蘋果</item>
+        <item>銀蘋果</item>
+        <item>銅蘋果</item>
+        <item>自然回體</item>
+    </string-array>
+    <string-array name="craft">
+        <item>無</item>
+    </string-array>
+    <string-array name="skl">
+        <item>不使用</item>
+        <item>無對象</item>
+        <item>從者一</item>
+        <item>從者二</item>
+        <item>從者三</item>
+    </string-array>
+    <string-array name="lockenm">
+        <item>敵人一</item>
+        <item>敵人二</item>
+        <item>敵人三</item>
+    </string-array>
+    <string-array name="craftskl3">
+        <item>不使用</item>
+        <item>無對象</item>
+        <item>一四換</item>
+        <item>一五換</item>
+        <item>一六換</item>
+        <item>二四換</item>
+        <item>二五換</item>
+        <item>二六換</item>
+        <item>三四換</item>
+        <item>三五換</item>
+        <item>三六換</item>
+    </string-array>
+
+    <string-array name="scnshot">
+        <item>好友一</item>
+        <item>好友二</item>
+        <item>禮裝一</item>
+        <item>禮裝二</item>
+    </string-array>
+
+
+    <string name="servantSkills">從者技能</string>
+    <string name="craftSkills">魔術技能</string>
+    <string name="targetEnmy">魔術技能</string>
+    <string name="skill1">技能一</string>
+    <string name="skill2">技能二</string>
+    <string name="skill3">技能三</string>
+    <string name="servant1">從者一</string>
+    <string name="servant2">從者二</string>
+    <string name="servant3">從者三</string>
+
+    <string name="autoBattle">自動戰鬥</string>
+    <string name="endStage">關卡結束</string>
+    <string name="nobel">開寶具</string>
+    <string name="preference">優先度</string>
 </resources>
