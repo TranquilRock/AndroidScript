@@ -1,5 +1,6 @@
 *.iml
 .gradle
+/openCVLibrary3415/build/intermediates/incremental/packageDebugAssets/merger.xml
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -7,7 +8,6 @@
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
-/openCVLibrary3415/build/intermediates/incremental/packageDebugAssets/merger.xml
 .DS_Store
 /build
 /captures
