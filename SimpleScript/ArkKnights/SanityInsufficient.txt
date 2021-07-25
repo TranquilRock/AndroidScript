@@ -1,0 +1,4 @@
+Check SanityInsufficient
+IfGreater $R 0
+Return 0
+Return 1

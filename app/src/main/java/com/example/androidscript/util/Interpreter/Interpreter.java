@@ -20,13 +20,15 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
     protected abstract Bitmap ReadImgFromFile(String FileName);
 
     public static class INVALID_CODE_EXCEPTION extends Exception {
-        public INVALID_CODE_EXCEPTION(String s){
+        public INVALID_CODE_EXCEPTION(String s) {
             DebugMessage.set(s);
         }
-        public INVALID_CODE_EXCEPTION(){}
+
+        public INVALID_CODE_EXCEPTION() {
+        }
     }
 
-    public class TargetImage {
+    public static class TargetImage {
         public Bitmap source;
         public int x1;//Starting point in whole graph
         public int y1;
@@ -42,7 +44,7 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
         }
     }
 
-    public class Code {//Every instance would be a valid code that interpreter can recognize
+    public static class Code {//Every instance would be a valid code that interpreter can recognize
         public Vector<String[]> codes = new Vector<>();
         public Vector<String> dependency = new Vector<>();
 
@@ -75,7 +77,7 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
 
     protected void Interpret(String[] SUPPORTED_COMMAND, String FileName) throws Interpreter.INVALID_CODE_EXCEPTION {
         Vector<String> Command = ReadCodeFromFile(FileName);
-        MyCode.put(FileName, new Interpreter.Code(SUPPORTED_COMMAND, Command));
+        MyCode.put(FileName, new Code(SUPPORTED_COMMAND, Command));
         for (String depend : MyCode.get(FileName).dependency) {
             if (!MyCode.containsKey(depend)) {
                 Interpret(SUPPORTED_COMMAND, depend);
@@ -102,14 +104,14 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
         if (this.run_arg_FileName.equals("")) {
             throw new RuntimeException("No code to run");
         }
-        DebugMessage.set("RUN "+run_arg_FileName);
+        DebugMessage.set("RUN " + run_arg_FileName);
         this.run(run_arg_FileName, run_arg_argv, run_arg_depth);
     }
 
     protected void parseArguments(Map<String, String> LocalVar, String[] argv) {
         LocalVar.put("$R", "0");
         int argCount = 1;
-        if(argv != null){
+        if (argv != null) {
             for (String arg : argv) {
                 LocalVar.put("$" + argCount, arg);
                 argCount++;
@@ -117,7 +119,7 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
         }
     }
 
-    public void run(String FileName, String[] argv, int depth) throws RuntimeException {//Run code that is already read in MyCode
+    public int run(String FileName, String[] argv, int depth) throws RuntimeException {//Run code that is already read in MyCode
         assert (depth < 5);
         assert (MyCode.containsKey(FileName));
         Map<String, String> LocalVar = new HashMap<>();
@@ -129,10 +131,9 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
             String[] Arguments = new String[command.length - 1];
             for (int i = 1; i < command.length; i++) {//Substitution
                 if (command[i].charAt(0) == '$' && LocalVar.containsKey(command[i])) {//There might be Var command, that should replace $V
-                    Arguments[i -1] = LocalVar.get(command[i]);
-                }
-                else{
-                    Arguments[i -1] = command[i];
+                    Arguments[i - 1] = LocalVar.get(command[i]);
+                } else {
+                    Arguments[i - 1] = command[i];
                 }
             }
             sleep(300);
@@ -160,8 +161,8 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
                     if (MyCode.containsKey(Arguments[0])) {
                         String[] nextArgv = new String[command.length - 2];
                         System.arraycopy(Arguments, 1, nextArgv, 0, command.length - 2);
-                        run(Arguments[0], nextArgv, depth + 1);
-                        LocalVar.put("$R", "0");
+                        int result = run(Arguments[0], nextArgv, depth + 1);
+                        LocalVar.put("$R", String.valueOf(result));
                     } else {
                         LocalVar.put("$R", "1");
                     }
@@ -188,18 +189,29 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
                     LocalVar.put(Arguments[0], Arguments[1]);
                     LocalVar.put("$R", "0");
                     break;
+                case "Exit":
+                    Thread.currentThread().interrupt();
+                    break;
+                case "Return":
+                    return Integer.parseInt(Arguments[0]);
                 default:
                     throw new RuntimeException("Cannot Recognize " + command[0]);
             }
+
         }
+        return 0;
     }
 
-    protected void sleep(int ms){
-        try{
+    protected void sleep(int ms) {
+        try {
             Thread.sleep(ms);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             DebugMessage.printStackTrace(e);
         }
     }
+
+    protected void delay(){
+        sleep(500);
+    }
+
 }

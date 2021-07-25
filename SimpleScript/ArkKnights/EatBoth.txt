@@ -1,0 +1,6 @@
+Call EatMedicine.txt
+ifGreater $R 0
+Call EatStone.txt
+ifGreater $R 0
+Return 1
+Return 0
