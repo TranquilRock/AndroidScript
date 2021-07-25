@@ -1,4 +1,11 @@
 Call PressEnter.txt
-Call PressStart.txt
-Call PressEnd.txt
+IfGreater $R 0
 JumpToLine 0
+Call PressStart.txt
+IfGreater $R 0
+JumpToLine 3
+Call PressEnd.txt
+IfGreater $R 0
+JumpToLine 6
+JumpToLine 0
+Return 0

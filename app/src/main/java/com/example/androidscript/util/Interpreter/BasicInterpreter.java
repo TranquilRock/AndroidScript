@@ -10,7 +10,7 @@ import java.nio.file.NoSuchFileException;
 import java.util.Vector;
 
 
-public class BasicInterpreter extends Interpreter {
+public final class BasicInterpreter extends Interpreter {
     public static final String ImgFormat = "([A-Za-z0-9_-]*).(jpg|png)";
     public static final String SptFormat = "([A-Za-z0-9_-]*).txt";
     public static final String VarFormat = "\\$([A-Za-z0-9_-]*)";
@@ -27,6 +27,8 @@ public class BasicInterpreter extends Interpreter {
             "IfGreater " + IntVarFormat + " " + IntVarFormat,
             "IfSmaller " + IntVarFormat + " " + IntVarFormat,
             "Var " + VarFormat + " " + IntFormat,//Declare Initial Value of Variable
+            "Return " + IntVarFormat,
+            "Exit",
     };
 
 
@@ -42,7 +44,11 @@ public class BasicInterpreter extends Interpreter {
 
     @Override
     public void Interpret(String FileName) {
-
+        try {
+            super.Interpret(SUPPORTED_COMMAND, FileName);
+        } catch (Exception e) {
+            DebugMessage.printStackTrace(e);
+        }
     }
 
 }

@@ -1,5 +1,6 @@
+Wait 1000
 Check StartOperation
 IfGreater $R 0
-JumpToLine 0
+Return 1
 Click 2450 990
-Wait 2000
+Return 0

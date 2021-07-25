@@ -69,7 +69,7 @@ public class TmpMenu extends AppCompatActivity {
     }
 
     public void createFloatingWidget(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.canDrawOverlays(this)) { //Ask for the permission.(Default for API<23)
+        if (!Settings.canDrawOverlays(this)) { //Ask for the permission.(Default for API<23)
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + getPackageName()));
             startActivityForResult(intent, DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE);
