@@ -41,7 +41,7 @@ public final class ArkKnightsInterpreter extends Interpreter {
         this.ArkKnights.put("EnterOperation", new TargetImage(this.ReadImgFromFile("EnterOperation.png"), 2510, 1120, 2960, 1400,60));
         this.ArkKnights.put("StartOperation", new TargetImage(this.ReadImgFromFile("StartOperation.png"), 2300, 720, 2600, 1260,330));
         this.ArkKnights.put("Operating", new TargetImage(this.ReadImgFromFile("Operating.png"), 1130, 1230, 1480, 1380,20));
-        this.ArkKnights.put("OperationEnd", new TargetImage(this.ReadImgFromFile("OperationEnd.png"), 90, 1130, 800, 1360,300));
+        this.ArkKnights.put("OperationEnd", new TargetImage(this.ReadImgFromFile("OperationEnd.png"), 90, 1130, 800, 1360,280));
         this.ArkKnights.put("Medicine", new TargetImage(this.ReadImgFromFile("RestoreSanityMedicine.png"), 1430, 130, 2830, 1290,200));
         this.ArkKnights.put("Stone", new TargetImage(this.ReadImgFromFile("RestoreSanityStone.png"), 1430, 130, 2830, 1290,200));
         this.ArkKnights.put("SanityInsufficient", new TargetImage(this.ReadImgFromFile("SanityInsufficient.png"), 250, 310, 750, 750,50));
