@@ -13,6 +13,7 @@ import org.opencv.features2d.DescriptorMatcher;
 import org.opencv.features2d.ORB;
 import org.opencv.imgproc.Imgproc;
 
+import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 public class ImageHandler {
@@ -47,11 +48,9 @@ public class ImageHandler {
         }
     }
 
-    public static boolean matchPicture(Bitmap screenshot, Bitmap target) {
-
+    public static int matchPicture(Bitmap screenshot, Bitmap target) {
         if (screenshot == null || target == null) {
-            DebugMessage.set("Null in matchPicture");
-            return false;
+            return 0;
         }
         Mat sourceMat = grayScale(screenshot);
         Mat targetMat = grayScale(target);
@@ -69,7 +68,7 @@ public class ImageHandler {
             }
         }
 
-        minDistance = Math.max(2 * minDistance, 30.0f);
+        minDistance = max(2 * minDistance, 30.0f);
 
         for (int z = 0; z < screenDescriptor.rows(); z++) {
             if (matchPoints[z].distance <= minDistance) {
@@ -77,7 +76,7 @@ public class ImageHandler {
             }
         }
 
-        DebugMessage.set("Match " + matchCount + " points\n");
-        return 7 * matchCount > min(screenDescriptor.height(), targetDescriptor.height());
+        DebugMessage.set("Match " + matchCount + " points");
+        return matchCount;
     }
 }

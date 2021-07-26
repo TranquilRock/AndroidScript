@@ -1,6 +1,7 @@
-Wait 1000
+Wait 500
 Check EnterOperation
 IfGreater $R 0
 Return 1
 Click 2730 1260
+Wait 500
 Return 0

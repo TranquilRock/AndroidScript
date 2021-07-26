@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Service;
 import android.os.Build;
 import android.os.IBinder;
+import android.os.Parcel;
 import android.view.View;
 import android.os.Handler;
 import android.view.Gravity;
@@ -24,6 +25,7 @@ import com.example.androidscript.R;
 import com.example.androidscript.util.*;
 import com.example.androidscript.util.Interpreter.ArkKnightsInterpreter;
 import com.example.androidscript.util.Interpreter.Interpreter;
+
 //TODO Pass an Interpreter
 public class FloatingWidgetService extends Service implements View.OnClickListener {
 
@@ -34,8 +36,13 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     private View removeFloatingWidgetView = null;
     private LayoutInflater inflater = null;
     private int x_init_cord, y_init_cord, x_init_margin, y_init_margin;
-    private String ScriptName;
-    private Interpreter Script;
+    private static Interpreter Script;
+
+    public static void setScript(Interpreter script) {
+        if (Script == null) {
+            Script = script;
+        }
+    }
 
     @Override
     public void onCreate() {
@@ -48,16 +55,6 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         implementClickListeners();
         implementTouchListenerToFloatingWidgetView();
         DebugMessage.set("FloatingWidgetService::onCreate\n");
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        super.onStartCommand(intent, flags, startId);
-//        ScriptName = (String) intent.getExtras().get("FileName");
-//        Script = new ArkKnightsInterpreter();
-//        Script.Interpret(ScriptName);
-        DebugMessage.set("FloatingWidgetService::onStartCommand Script::" + ScriptName);
-        return flags;
     }
 
     /*  Add Remove View to Window Manager  */
@@ -294,12 +291,11 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     }
 
     private boolean IsWaiting = false;
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.close_floating_view:
-                DebugMessage.set("Close");
-                stopForeground(true);
                 stopSelf();
                 break;
             case R.id.close_expanded_view:
@@ -313,27 +309,28 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                 stopSelf();
                 break;
             case R.id.run_script:
-                if(IsWaiting){
+                if (IsWaiting) {
                     Script.notify();
                     IsWaiting = false;
-                }else{
-                    try{
-                        Script.runCode(ScriptName, null);
-                    }catch (Exception e){
+                } else {
+                    try {
+                        Script.runCode(null);
+                    } catch (Exception e) {
                         DebugMessage.printStackTrace(e);
                     }
                 }
+
                 break;
             case R.id.stop_script:
                 DebugMessage.set("Interrupt");
-                Script.interrupt();
+                while(Script.isAlive()){
+                    Script.interrupt();
+                }
                 break;
             case R.id.pause_script:
-                try{
-                    DebugMessage.set("Wait");
-                    IsWaiting = true;
+                try {
                     Script.wait();
-                }catch (Exception e){
+                } catch (Exception e) {
                     DebugMessage.printStackTrace(e);
                 }
                 break;
@@ -383,11 +380,13 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
 
         new CountDownTimer(500, 5) {
             final WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) mFloatingWidgetView.getLayoutParams();
+
             public void onTick(long t) {
                 long step = (500 - t) / 5;
                 mParams.x = (int) (szWindow.x + (current_x_cord * current_x_cord * step) - mFloatingWidgetView.getWidth());
                 mWindowManager.updateViewLayout(mFloatingWidgetView, mParams);
             }
+
             public void onFinish() {
                 mParams.x = szWindow.x - mFloatingWidgetView.getWidth();
                 mWindowManager.updateViewLayout(mFloatingWidgetView, mParams);

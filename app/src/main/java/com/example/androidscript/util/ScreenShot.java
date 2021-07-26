@@ -43,6 +43,7 @@ public class ScreenShot extends Service {
     private static int screenHeight = 0;
     private static int screenWidth = 0;
     public static boolean ServiceStart = false;
+    public static boolean Transposed;
 
     static {
         screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
@@ -50,7 +51,7 @@ public class ScreenShot extends Service {
     }
 
     @SuppressLint("WrongConstant")
-    public static void pass(Intent intent, MediaProjectionManager mm, boolean transpose) {
+    public static void setUpMediaProjectionManager(Intent intent, MediaProjectionManager mm, boolean transpose) {
         if (ScreenShot.mediaProjectionManager == null) {
             ScreenShot.Permission = intent;
             ScreenShot.mediaProjectionManager = mm;
@@ -59,29 +60,34 @@ public class ScreenShot extends Service {
         if (transpose) {
             tmp = max(screenWidth, screenHeight);
             screenHeight = min(screenWidth, screenHeight);
-            screenWidth = tmp;
         } else {
             tmp = min(screenWidth, screenHeight);
             screenHeight = max(screenWidth, screenHeight);
-            screenWidth = tmp;
         }
-        ScreenShot.imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, 2);
+        screenWidth = tmp;
+        Transposed = transpose;
+        ScreenShot.imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, 1);
     }
 
-    public static Bitmap Shot(boolean transpose) {
+    public static Bitmap Shot() {
         StartDisplay();
         if (!ServiceStart) {
             DebugMessage.set("Service unavailable.\n");
             return null;
         }
-        for (int z = 0; z < 3; z++) {//Auto restart at most three times.
+        for (int z = 0; z < 30; z++) {//Auto restart at most three times.
             try {
-                Thread.sleep(50);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             Image img = imageReader.acquireLatestImage();
             if (img == null) {
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 DebugMessage.set(z + "::No Img in Screenshot\n");
                 continue;
             }
@@ -89,7 +95,7 @@ public class ScreenShot extends Service {
             DebugMessage.set("IMAGE " + img.getWidth() + " " + img.getHeight());
             int width;
             int height;
-            if (transpose) {
+            if (Transposed) {
                 width = max(img.getHeight(), img.getWidth());
                 height = Math.min(img.getHeight(), img.getWidth());
             } else {
@@ -172,12 +178,12 @@ public class ScreenShot extends Service {
         return 0;
     }
 
-    public static boolean compare(Bitmap Target, int x1, int y1, int x2, int y2, boolean transpose) {
-        return ImageHandler.matchPicture(Bitmap.createBitmap(Shot(transpose), x1, y1, (x2 - x1), (y2 - y1)), Target);
+    public static int compare(Bitmap Target, int x1, int y1, int x2, int y2) {
+        return ImageHandler.matchPicture(Bitmap.createBitmap(Shot(), x1, y1, (x2 - x1), (y2 - y1)), Target);
     }
 
-    public static boolean compare(Interpreter.TargetImage target, boolean transpose) {
-        return ImageHandler.matchPicture(Bitmap.createBitmap(Shot(transpose), target.x1, target.y1, (target.x2 - target.x1), (target.y2 - target.y1)), target.source);
+    public static boolean compare(Interpreter.TargetImage target) {
+        return ImageHandler.matchPicture(Bitmap.createBitmap(Shot(), target.x1, target.y1, (target.x2 - target.x1), (target.y2 - target.y1)), target.source) >= target.threshold;
     }
 
 }

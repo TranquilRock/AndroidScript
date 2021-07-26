@@ -48,6 +48,7 @@ public class TmpMenu extends AppCompatActivity {
         btnToMenu = BtnMaker.jump(R.id.button_to_menu, this, MenuActivity.class);
         btnToTest = BtnMaker.jump(R.id.button_to_test, this, TestActivity.class);
         btnToRecyclerTest = BtnMaker.jump(R.id.button_to_Recycler, this, TestRecyclerView.class);
+
         assert(OpenCVLoader.initDebug());
     }
 

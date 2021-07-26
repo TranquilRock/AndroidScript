@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 public abstract class Interpreter extends Thread {//Every child only need to specify where and how to fetch files, as well as what kind of commands are accepted;
 
+
     protected abstract Vector<String> ReadCodeFromFile(String FileName);
 
     protected abstract Bitmap ReadImgFromFile(String FileName);
@@ -31,13 +32,14 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
         public int y1;
         public int x2;
         public int y2;
-
-        public TargetImage(Bitmap source, int x1, int y1, int x2, int y2) {
+        public int threshold;
+        public TargetImage(Bitmap source, int x1, int y1, int x2, int y2,int threshold) {
             this.source = source;
             this.x1 = x1;
             this.y1 = y1;
             this.x2 = x2;
             this.y2 = y2;
+            this.threshold = threshold;
         }
     }
 
@@ -60,21 +62,29 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
                     }
                 }
                 if (!valid) {
-
-                    throw new INVALID_CODE_EXCEPTION("Invalid " + line);
+                    throw new INVALID_CODE_EXCEPTION("Invalid code \"" + line+"\"");
                 }
             }
         }
     }
 
+    protected String ScriptName = null;
 
     protected Map<String, Interpreter.Code> MyCode = new HashMap<>();
 
     public abstract void Interpret(String FileName);
 
-    protected void Interpret(String[] SUPPORTED_COMMAND, String FileName) throws Interpreter.INVALID_CODE_EXCEPTION {
+    protected void Interpret(String[] SUPPORTED_COMMAND, String FileName){
+        if(ScriptName == null){
+            ScriptName = FileName;
+        }
         Vector<String> Command = ReadCodeFromFile(FileName);
-        MyCode.put(FileName, new Code(SUPPORTED_COMMAND, Command));
+        try {
+            MyCode.put(FileName, new Code(SUPPORTED_COMMAND, Command));
+        } catch (Exception e) {
+            DebugMessage.set("Bug in " + FileName);
+            DebugMessage.printStackTrace(e);
+        }
         for (String depend : MyCode.get(FileName).dependency) {
             if (!MyCode.containsKey(depend)) {
                 Interpret(SUPPORTED_COMMAND, depend);
@@ -83,12 +93,10 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
     }
 
     //==========================================
-    protected String run_arg_FileName = "";
     protected String[] run_arg_argv = null;
-    protected int run_arg_depth = 0;
+    protected int run_arg_depth = -1;
 
-    public final void runCode(String FileName, String[] argv) throws RuntimeException {
-        this.run_arg_FileName = FileName;
+    public final void runCode(String[] argv) throws RuntimeException {
         this.run_arg_argv = argv;
         this.run_arg_depth = 0;
         this.start();
@@ -96,11 +104,9 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
 
     @Override
     public final void run() {
-        if (this.run_arg_FileName.equals("")) {
-            throw new RuntimeException("No code to run");
-        }
-        DebugMessage.set("RUN " + run_arg_FileName);
-        this.run(run_arg_FileName, run_arg_argv, run_arg_depth);
+        assert(ScriptName != null);
+        assert(run_arg_depth != -1);
+        this.run(ScriptName, run_arg_argv, run_arg_depth);
     }
 
     protected void parseArguments(Map<String, String> LocalVar, String[] argv) {
@@ -138,11 +144,9 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
                     LocalVar.put("$R", "0");
                     break;
                 case "Compare":
-                    if (ScreenShot.compare(FileOperation.readPicAsBitmap(Arguments[4]), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]), true)) {
-                        LocalVar.put("$R", "0");
-                    } else {
-                        LocalVar.put("$R", "1");
-                    }
+                    delay();
+                    int Similarity = ScreenShot.compare(FileOperation.readPicAsBitmap(Arguments[4]), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]));
+                    LocalVar.put("$R", String.valueOf(Similarity));
                     break;
                 case "JumpToLine":
                     commandIndex = Integer.parseInt(Arguments[0]) - 1;//One-based

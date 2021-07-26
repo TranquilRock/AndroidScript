@@ -38,21 +38,18 @@ public final class ArkKnightsInterpreter extends Interpreter {
     public Map<String, TargetImage> ArkKnights = new HashMap<>();
 
     public ArkKnightsInterpreter() {
-        this.ArkKnights.put("EnterOperation", new TargetImage(this.ReadImgFromFile("EnterOperation.png"), 2510, 1120, 2960, 1400));
-        this.ArkKnights.put("StartOperation", new TargetImage(this.ReadImgFromFile("StartOperation.png"), 2300, 720, 2600, 1260));
-        this.ArkKnights.put("Operating", new TargetImage(this.ReadImgFromFile("Operating.png"), 1130, 1230, 1480, 1380));
-        this.ArkKnights.put("OperationEnd", new TargetImage(this.ReadImgFromFile("OperationEnd.png"), 90, 1130, 800, 1360));
-        this.ArkKnights.put("Medicine", new TargetImage(this.ReadImgFromFile("RestoreSanityMedicine.png"), 1430, 130, 2830, 290));
-        this.ArkKnights.put("Stone", new TargetImage(this.ReadImgFromFile("RestoreSanityStone.png"), 1430, 130, 2830, 290));
+        this.ArkKnights.put("EnterOperation", new TargetImage(this.ReadImgFromFile("EnterOperation.png"), 2510, 1120, 2960, 1400,60));
+        this.ArkKnights.put("StartOperation", new TargetImage(this.ReadImgFromFile("StartOperation.png"), 2300, 720, 2600, 1260,330));
+        this.ArkKnights.put("Operating", new TargetImage(this.ReadImgFromFile("Operating.png"), 1130, 1230, 1480, 1380,20));
+        this.ArkKnights.put("OperationEnd", new TargetImage(this.ReadImgFromFile("OperationEnd.png"), 90, 1130, 800, 1360,300));
+        this.ArkKnights.put("Medicine", new TargetImage(this.ReadImgFromFile("RestoreSanityMedicine.png"), 1430, 130, 2830, 1290,200));
+        this.ArkKnights.put("Stone", new TargetImage(this.ReadImgFromFile("RestoreSanityStone.png"), 1430, 130, 2830, 1290,200));
+        this.ArkKnights.put("SanityInsufficient", new TargetImage(this.ReadImgFromFile("SanityInsufficient.png"), 250, 310, 750, 750,50));
     }
 
     @Override
     public void Interpret(String FileName) {
-        try {
-            super.Interpret(SUPPORTED_COMMAND, FileName);
-        } catch (Exception e) {
-            DebugMessage.printStackTrace(e);
-        }
+        super.Interpret(SUPPORTED_COMMAND, FileName);
     }
 
     @Override
@@ -83,6 +80,7 @@ public final class ArkKnightsInterpreter extends Interpreter {
                     Arguments[i - 1] = command[i];
                 }
             }
+            DebugMessage.set(depth + ":" + FileName);
             switch (command[0]) {
                 case "Click":
                     delay();
@@ -91,16 +89,13 @@ public final class ArkKnightsInterpreter extends Interpreter {
                     break;
                 case "Compare":
                     delay();
-                    if (ScreenShot.compare(FileOperation.readPicAsBitmap(Arguments[4]), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]), true)) {
-                        LocalVar.put("$R", "0");
-                    } else {
-                        LocalVar.put("$R", "1");
-                    }
+                    int Similarity = ScreenShot.compare(FileOperation.readPicAsBitmap(Arguments[4]), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]));
+                    LocalVar.put("$R", String.valueOf(Similarity));
                     break;
                 case "Check":
                     delay();
                     if (ArkKnights.containsKey(command[1])) {
-                        if (ScreenShot.compare(ArkKnights.get(Arguments[0]), true)) {
+                        if (ScreenShot.compare(ArkKnights.get(Arguments[0]))) {
                             LocalVar.put("$R", "0");
                         } else {
                             LocalVar.put("$R", "1");
@@ -128,20 +123,13 @@ public final class ArkKnightsInterpreter extends Interpreter {
                     }
                     break;
                 case "IfGreater":
-                    DebugMessage.set(Arguments[0] + ":" + Integer.parseInt(Arguments[0]) + ">" + Arguments[1] + ":" + Integer.parseInt(Arguments[1]));
                     if (Integer.parseInt(Arguments[0]) <= Integer.parseInt(Arguments[1])) {//Failed, skip next line
                         commandIndex++;
-                        LocalVar.put("$R", "1");
-                    } else {
-                        LocalVar.put("$R", "0");
                     }
                     break;
                 case "IfSmaller":
                     if (Integer.parseInt(Arguments[0]) >= Integer.parseInt(Arguments[1])) {//Failed, skip next line
                         commandIndex++;
-                        LocalVar.put("$R", "1");
-                    } else {
-                        LocalVar.put("$R", "0");
                     }
                     break;
                 case "Var":
