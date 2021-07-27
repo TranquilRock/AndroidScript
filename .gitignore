@@ -1,6 +1,5 @@
 *.iml
 .gradle
-/openCVLibrary3415/build/intermediates/incremental/packageDebugAssets/merger.xml
 /local.properties
 /.idea/caches
 /.idea/libraries

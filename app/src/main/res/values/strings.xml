@@ -2,19 +2,12 @@
     <string name="app_name">AndroidScript</string>
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
-    <string name="title_activity_floating_test">FloatingTest</string>
-    <string name="shot">Shot</string>
     <string name="test">Test</string>
-    <string name="rocket">Rocket</string>
-    <string name="start">Start</string>
-    <string name="menu">Menu</string>
+    <string name="start">浮動視窗</string>
+    <string name="menu">主畫面</string>
     <string name="loadScript">匯入腳本</string>
     <string name="newScript">建立腳本</string>
     <string name="scriptName">請輸入名稱</string>

@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.androidscript.R;
 import com.example.androidscript.util.*;
@@ -35,7 +36,6 @@ public class TmpMenu extends AppCompatActivity {
     private static final int DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE = 1222;
     private Button btnToMenu;
     private Button btnToTest;
-    private Button btnSetScreenshot;
     private Button btnDoScreenshot;
     private Button btnToRecyclerTest;
 
@@ -44,61 +44,22 @@ public class TmpMenu extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setPermission();
         setContentView(R.layout.activity_tmp_menu);
-        FileOperation.setUpFileRoot(getFilesDir().getAbsolutePath() + "/");
-
         btnToMenu = BtnMaker.jump(R.id.button_to_menu, this, MenuActivity.class);
         btnToTest = BtnMaker.jump(R.id.button_to_test, this, TestActivity.class);
         btnToRecyclerTest = BtnMaker.jump(R.id.button_to_Recycler, this, TestRecyclerView.class);
-        btnSetScreenshot = BtnMaker.registerOnClick(R.id.button_set_screenshot,this,(v -> {
-            mm = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
-            startActivityForResult((mm).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
-        }));
-        btnDoScreenshot = BtnMaker.registerOnClick(R.id.button_tmp,this,(v -> FileOperation.instance.saveBitmapAsJPG(ScreenShot.Shot(false),"image.jpg")));
-        OpenCVLoader.initDebug();
-    }
 
-    public void setPermission() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
-            List<String> requestedPermissions = new ArrayList<>();
-            requestedPermissions.add(Manifest.permission.FOREGROUND_SERVICE);
-            String[] requests = new String[requestedPermissions.size()];
-            requestPermissions(requests, 100);
-        }
+        assert(OpenCVLoader.initDebug());
     }
 
     public void createFloatingWidget(View view) {
-        if (!Settings.canDrawOverlays(this)) { //Ask for the permission.(Default for API<23)
-            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
-                    Uri.parse("package:" + getPackageName()));
-            startActivityForResult(intent, DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE);
-        } else {
-            startFloatingWidgetService();
-        }
-    }
-
-    private void startFloatingWidgetService() {
-        this.startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));//Get permission
-        Intent startFloatingWidgetService = new Intent(TmpMenu.this, FloatingWidgetService.class);
-        startFloatingWidgetService.putExtra("FileName","Test.txt");
-        startService(startFloatingWidgetService);
-        finish();
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PROJECTION_REQUEST_CODE) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    ScreenShot.pass((Intent)data.clone(),mm,true);
-                    startService(new Intent(getApplicationContext(),ScreenShot.class));
-                }
-            }, 1);
-        } else if (requestCode == DRAW_OVER_OTHER_APP_PERMISSION_REQUEST_CODE && resultCode == RESULT_OK) {
-            startFloatingWidgetService();
+        if (Settings.canDrawOverlays(getApplicationContext())) {
+            Intent startFloatingWidgetService = new Intent(TmpMenu.this, FloatingWidgetService.class);
+            startFloatingWidgetService.putExtra("FileName","Test.txt");
+            startService(startFloatingWidgetService);
+            finish();
+        }else{
+            Toast.makeText(getApplicationContext(),"Need permission!",Toast.LENGTH_LONG).show();
         }
     }
 }

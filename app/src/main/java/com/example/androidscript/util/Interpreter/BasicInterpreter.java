@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
 
-import java.io.FileNotFoundException;
-import java.nio.file.NoSuchFileException;
 import java.util.Vector;
 
 
@@ -34,12 +32,12 @@ public final class BasicInterpreter extends Interpreter {
 
     @Override
     public Vector<String> ReadCodeFromFile(String FileName) {
-        return FileOperation.instance.readFromFileLines(FileRoot + FileName);
+        return FileOperation.readFromFileLines(FileRoot + FileName);
     }
 
     @Override
     public Bitmap ReadImgFromFile(String FileName) {
-        return FileOperation.instance.readPicAsBitmap(FileRoot + FileName);
+        return FileOperation.readPicAsBitmap(FileRoot + FileName);
     }
 
     @Override

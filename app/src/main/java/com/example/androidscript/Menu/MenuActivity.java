@@ -1,19 +1,17 @@
 package com.example.androidscript.Menu;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.Manifest;
 import android.content.Context;
-import android.database.DataSetObserver;
 import android.media.projection.MediaProjectionManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.content.Intent;
 import android.widget.ImageButton;
@@ -21,18 +19,20 @@ import android.widget.Spinner;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.example.androidscript.FloatingWidget.FloatingWidgetService;
 import com.example.androidscript.R;
 import com.example.androidscript.util.*;
+import com.example.androidscript.util.Interpreter.ArkKnightsInterpreter;
+import com.example.androidscript.util.Interpreter.Interpreter;
 
-import org.jetbrains.annotations.NotNull;
-
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
 public class MenuActivity extends AppCompatActivity {
     public static final String SUPPORTED_FILE_NAME_PATTERN = "([A-Za-z0-9_-]*).txt";
-    public static final String EXTRA_MESSAGE = "com.example.androidscript.Menu";
-    private String root;
     private Button btnToCreate;
     private Button btnPickFile;
     private ImageButton btnStartService;
@@ -49,17 +49,17 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        root = getFilesDir().getAbsolutePath();
-        FileOperation.setUpFileRoot(root);
+        FileOperation.setUpFileRoot(getFilesDir().getAbsolutePath() + "/");
+//        FileOperation.setUpFileRoot(getExternalFilesDir(null).getAbsolutePath() + "/"); This would lead to an invisible dir (from studio)
         browseAvailableFile();
-//        testing = findViewById(R.id.testing);
-//        ArrayAdapter<String> gg = (new ArrayAdapter<String>(this, android.R.layout.list_content,availableFile);
-//        testing.setAdapter(gg);
         setupElements();
+        SetUpPermissions();
+        Interpreter gg = new ArkKnightsInterpreter();
+        gg.Interpret("AutoFightEat.txt");
+        FloatingWidgetService.setScript(gg);
     }
 
     private void setupElements() {
-        //
         etNewName = findViewById(R.id.et_New_Name);
         output = findViewById(R.id.output);//Show some massage to user
         btnPickFile = BtnMaker.performIntentForResult(R.id.btn_To_Load, this, pickFileIntent(), 111);
@@ -86,13 +86,17 @@ public class MenuActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 111 && resultCode == RESULT_OK && data != null && data.getData() != null) {
             String FileName = data.getDataString();
+            File g = new File(FileName);
+            if(g.canRead()){
+                DebugMessage.set("Good");
+            }
             output.setText(FileName);
             switchToEdit(FileName);
         } else if (requestCode == PROJECTION_REQUEST_CODE) {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    ScreenShot.pass((Intent) data, mediaProjectionManager,true);
+                    ScreenShot.setUpMediaProjectionManager((Intent) data, mediaProjectionManager, true);
                     startService(new Intent(getApplicationContext(), ScreenShot.class));
                 }
             }, 1);
@@ -105,7 +109,7 @@ public class MenuActivity extends AppCompatActivity {
         output.setText(FileName);
         if (parseFile(FileName)) {
             Intent intent = new Intent(this, EditActivity.class);
-            intent.putExtra(EXTRA_MESSAGE, FileName);
+            intent.putExtra("FileName", FileName);
             startActivity(intent);
         }
         output.setText("僅能包含英文字母、數字與底線\n且為txt檔案格式\n例如:a_1-B.txt");
@@ -123,9 +127,33 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     protected void browseAvailableFile() {
-        //TODO complete here
-        this.availableFile.add("GG1.txt");
-        this.availableFile.add("GG2.txt");
-        this.availableFile.add("GG3.txt");
+        for(String s : FileOperation.readDir("")){
+            if(s.contains(".txt")){
+                availableFile.add(s);
+            }
+        }
+    }
+
+    public void SetUpPermissions() {
+        if (!Settings.canDrawOverlays(getApplicationContext())) {//Floating Widget
+            startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION));
+        }
+        //AutoClick
+        try {
+            if (Settings.Secure.getInt(getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED) == 0) {
+                this.startActivity(new Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));//Get permission
+            }
+        } catch (Settings.SettingNotFoundException e) {
+            DebugMessage.printStackTrace(e);
+        }
+        //ScreenShot, need to be foreground.(The rest parts are inside its class and onActivityResult.)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.P){
+            List<String> requestedPermissions = new ArrayList<>();
+            requestedPermissions.add(Manifest.permission.FOREGROUND_SERVICE);//Stub to add more permissions.
+            String[] requests = new String[requestedPermissions.size()];
+            requestPermissions(requests, 100);
+        }
+        mediaProjectionManager = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+        startActivityForResult((mediaProjectionManager).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
     }
 }

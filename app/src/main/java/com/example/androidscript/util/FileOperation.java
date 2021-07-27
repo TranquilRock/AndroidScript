@@ -18,21 +18,24 @@ import java.util.Scanner;
 import java.util.Vector;
 
 public class FileOperation extends Activity {
-    public static FileOperation instance = null;
-    private String root;
+    private static String root = null;
 
     public static void setUpFileRoot(String root) {
-        if (FileOperation.instance == null) {
-            new FileOperation(root);
+        if (FileOperation.root == null) {
+            FileOperation.root = root;
         }
     }
 
-    private FileOperation(String root) {
-        this.root = root;
-        FileOperation.instance = this;
+    public static String[] readDir(String PathName) {
+        PathName = root + PathName;
+        File dir = new File(PathName);
+        if(dir.isDirectory()){
+            return dir.list();
+        }
+        return null;
     }
 
-    public void saveBitmapAsJPG(Bitmap bm, String FileName) {
+    public static void saveBitmapAsJPG(Bitmap bm, String FileName) {
         FileName = root + FileName;
         if (bm == null) {
             return;
@@ -48,7 +51,7 @@ public class FileOperation extends Activity {
         }
     }
 
-    public void WriteToFile(String FileName, Vector<String> contents) {
+    public static void writeToFile(String FileName, Vector<String> contents) {
         FileName = root + FileName;
         try {
             File scriptFile = createFileAndParent(FileName);
@@ -63,7 +66,7 @@ public class FileOperation extends Activity {
         }
     }
 
-    public Vector<String> readFromFileLines(String FileName){
+    public static Vector<String> readFromFileLines(String FileName) {
         FileName = root + FileName;
         File file = new File(FileName);
         if (file.exists()) {
@@ -84,7 +87,7 @@ public class FileOperation extends Activity {
         return null;
     }
 
-    public String readWholeFile(String FileName){
+    public static String readWholeFile(String FileName) {
         FileName = root + FileName;
         File file = new File(FileName);
         if (file.exists()) {
@@ -104,7 +107,7 @@ public class FileOperation extends Activity {
         return null;
     }
 
-    public Bitmap readPicAsBitmap(String FileName) {
+    public static Bitmap readPicAsBitmap(String FileName) {
         FileName = root + FileName;
         Bitmap ret = BitmapFactory.decodeFile(FileName);
         if (ret == null) {
@@ -113,18 +116,7 @@ public class FileOperation extends Activity {
         return ret;
     }
 
-    private File createFileAndParent(String FileName) {
-        DebugMessage.set("Writing File: " + FileName);
-        File file = new File(FileName);
-        if (file.exists() && file.delete()) {
-            DebugMessage.set("Overwriting " + FileName);
-        } else if (file.getParentFile() != null && (file.getParentFile()).mkdir()) {
-            DebugMessage.set("Creating Parent Dir of " + FileName);
-        }
-        return file;
-    }
-
-    public void saveImage(Image img, String FileName){
+    public static void saveImage(Image img, String FileName) {
         FileName = root + FileName;
         ByteBuffer buffer = img.getPlanes()[0].getBuffer();
         byte[] bytes = new byte[buffer.remaining()];
@@ -136,5 +128,16 @@ public class FileOperation extends Activity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private static File createFileAndParent(String FileName) {
+        DebugMessage.set("Writing File: " + FileName);
+        File file = new File(FileName);
+        if (file.exists() && file.delete()) {
+            DebugMessage.set("Overwriting " + FileName);
+        } else if (file.getParentFile() != null && (file.getParentFile()).mkdir()) {
+            DebugMessage.set("Creating Parent Dir of " + FileName);
+        }
+        return file;
     }
 }

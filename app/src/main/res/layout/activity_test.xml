@@ -13,8 +13,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="scnShot"
-        android:text="@string/shot"
-        android:translationX="100dp"
+        android:text="Screenshot"
+        android:translationX="50dp"
         android:translationY="200dp"
         android:translationZ="50dp" />
 

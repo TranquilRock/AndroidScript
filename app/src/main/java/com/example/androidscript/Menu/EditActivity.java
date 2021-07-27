@@ -2,8 +2,6 @@ package com.example.androidscript.Menu;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
@@ -33,7 +31,7 @@ public class EditActivity extends AppCompatActivity {
         output = (TextView) findViewById(R.id.edit_output);
 
         Intent intent = getIntent();//Get string passing by intent
-        String FileName = intent.getStringExtra(MenuActivity.EXTRA_MESSAGE);
+        String FileName = intent.getStringExtra("FileName");
         this.FileName = folder + FileName;
         setOutput(this.FileName);
         writeScript();
