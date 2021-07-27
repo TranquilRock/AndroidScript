@@ -14,7 +14,6 @@ import java.util.regex.Pattern;
 
 public abstract class Interpreter extends Thread {//Every child only need to specify where and how to fetch files, as well as what kind of commands are accepted;
 
-
     protected abstract Vector<String> ReadCodeFromFile(String FileName);
 
     protected abstract Bitmap ReadImgFromFile(String FileName);

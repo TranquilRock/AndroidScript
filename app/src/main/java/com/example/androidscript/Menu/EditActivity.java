@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Scanner;
 
-@Deprecated
 public class EditActivity extends AppCompatActivity {
     private TextView output;
     protected String FileName;
