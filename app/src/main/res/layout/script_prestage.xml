@@ -88,6 +88,19 @@
             card_view:layout_constraintStart_toEndOf="@+id/friend"
             card_view:layout_constraintTop_toBottomOf="@+id/textView4" />
 
+        <EditText
+            android:id="@+id/repeatinput"
+            android:layout_width="110dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="0dp"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="@string/repeat"
+            android:textSize="5pt"
+            card_view:layout_constraintLeft_toRightOf="@+id/craft"
+            card_view:layout_constraintTop_toTopOf="@id/textView4"/>
+
         <ImageButton
             android:id="@+id/btn_close"
             android:layout_width="40dp"
