@@ -45,7 +45,7 @@
         <item>敵人二</item>
         <item>敵人三</item>
     </string-array>
-    <string-array name="craftskl3">
+    <string-array name="craft_skl_swap">
         <item>不使用</item>
         <item>無對象</item>
         <item>一四換</item>
@@ -59,7 +59,7 @@
         <item>三六換</item>
     </string-array>
 
-    <string-array name="scnshot">
+    <string-array name="scnshot" id="a">
         <item>好友一</item>
         <item>好友二</item>
         <item>禮裝一</item>

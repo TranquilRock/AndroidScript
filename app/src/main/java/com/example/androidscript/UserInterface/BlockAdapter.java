@@ -5,7 +5,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidscript.R;
@@ -13,44 +12,77 @@ import com.example.androidscript.R;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
-public class BlockAdapter extends RecyclerView.Adapter<BlockAdapter.BlockViewHolder> {
+public class BlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
 
-    public static class BlockViewHolder extends RecyclerView.ViewHolder {
-        private CardView cardView;
 
-        public BlockViewHolder(@NonNull View itemView) {
-            super(itemView);
-            this.cardView = cardView;
+    private ArrayList<Vector<String>> BlockType;
 
-            //if instanceof A ...
+    public BlockAdapter(ArrayList<Vector<String>> content) {
+        BlockType = content;
+    }
+
+    @Override
+    public @NotNull FGOViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view;
+        int id;
+        switch (viewType) {
+            case 0://Skill
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.script_skills, parent, false);
+                id = R.id.skills;
+                return new FGOViewHolder.SkillVH(view.findViewById(id));
+
+            case 1://NoblePhantasms
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.script_noble_phantasms, parent, false);
+                id = R.id.noble_phantasms;
+                return new FGOViewHolder.NoblePhantasmsVH(view.findViewById(id));
+
+            case 2://CraftSkill
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.script_craft_skills, parent, false);
+                id = R.id.craft_skills;
+                return new FGOViewHolder.CraftSkillVH(view.findViewById(id));
+            case 3://PreStage
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.script_prestage, parent, false);
+                id = R.id.pre_stage;
+                return new FGOViewHolder.PreStageVH(view.findViewById(id));
+            case 4://EndStage
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.script_endstage, parent, false);
+                id = R.id.end_stage;
+                return new FGOViewHolder.EndStageVH(view.findViewById(id));
         }
-    }
-
-    private ArrayList<Integer> BlockContent;
-
-    public BlockAdapter(ArrayList<Integer> content) {
-        this.BlockContent = content;
+        throw new RuntimeException("Invalid Type");
     }
 
     @Override
-    public @NotNull BlockViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.script_battlestage, parent, false);
-        return new BlockViewHolder(view.findViewById(R.id.battlestage));
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull @NotNull BlockAdapter.BlockViewHolder holder, int position) {
+    public void onBindViewHolder(@NotNull FGOViewHolder holder, int position) {//Do nothing
+        holder.onBind(BlockType.get(position));
     }
 
     @Override
     public int getItemViewType(int position) {
-        return 0;
+        switch (BlockType.get(position).get(0)) {
+            case "Skill":
+                return 0;
+            case "NoblePhantasms":
+                return 1;
+            case "CraftSkill":
+                return 2;
+            case "PreStage":
+                return 3;
+            case "EndStage":
+                return 4;
+        }
+        throw new RuntimeException("Invalid Type");
     }
 
     @Override
     public int getItemCount() {
-        return BlockContent.size();
+        return BlockType.size();
     }
 }

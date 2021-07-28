@@ -16,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 
 public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonViewHolder> {
-
     public static class ButtonViewHolder extends RecyclerView.ViewHolder {
         Button button;
         public ButtonViewHolder(@NonNull View itemView,Button button) {
@@ -35,6 +34,7 @@ public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonView
     public @NotNull ButtonViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.button_item, parent, false);
+
         return new ButtonViewHolder(view,view.findViewById(R.id.button_item));
     }
 

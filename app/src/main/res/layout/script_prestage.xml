@@ -7,7 +7,8 @@
     android:orientation="horizontal"
     card_view:cardCornerRadius="10dp"
     card_view:contentPadding="3dp"
-    card_view:cardBackgroundColor="@color/green" >
+    card_view:cardBackgroundColor="@color/green"
+    android:id="@+id/pre_stage">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -58,28 +59,31 @@
             card_view:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
-            android:id="@+id/spinner2"
+            android:id="@+id/stamina"
             android:layout_width="76dp"
             android:layout_height="22dp"
             android:layout_marginStart="7dp"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView2" />
+            card_view:layout_constraintTop_toBottomOf="@+id/textView2"
+            android:entries="@array/apples"/>
 
         <Spinner
-            android:id="@+id/spinner3"
+            android:id="@+id/friend"
             android:layout_width="76dp"
             android:layout_height="22dp"
             android:layout_marginStart="17dp"
-            card_view:layout_constraintStart_toEndOf="@+id/spinner2"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView3" />
+            card_view:layout_constraintStart_toEndOf="@+id/stamina"
+            card_view:layout_constraintTop_toBottomOf="@+id/textView3"
+            android:entries="@array/friends"/>
 
         <Spinner
-            android:id="@+id/spinner4"
+            android:id="@+id/craft"
             android:layout_width="76dp"
             android:layout_height="22dp"
             android:layout_marginStart="17dp"
-            card_view:layout_constraintStart_toEndOf="@+id/spinner3"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView4" />
+            card_view:layout_constraintStart_toEndOf="@+id/friend"
+            card_view:layout_constraintTop_toBottomOf="@+id/textView4"
+            android:entries="@array/craft"/>
 
         <ImageButton
             android:id="@+id/btn_close"
@@ -105,7 +109,6 @@
             card_view:layout_constraintEnd_toStartOf="@+id/btn_down"
             card_view:layout_constraintTop_toTopOf="parent"
             card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

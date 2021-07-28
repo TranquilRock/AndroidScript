@@ -7,13 +7,18 @@ import androidx.cardview.widget.CardView;
 import com.example.androidscript.R;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class TestRecyclerView extends UIActivity{
     @Override
-    public ArrayList<Integer> getBlockData() {
-        ArrayList<Integer> ret = new ArrayList<>();
+    public ArrayList<Vector<String>> getBlockData() {
+        ArrayList<Vector<String>> ret = new ArrayList<Vector<String>>();
         for (int i = 0; i < 10; i++) {
-            ret.add(0);
+            Vector<String> tmp = new Vector<>();
+            tmp.add("Skill");
+
+            tmp.add("PreStage");
+            ret.add(tmp);
         }
         return ret;
     }

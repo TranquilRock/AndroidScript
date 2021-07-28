@@ -1,7 +1,7 @@
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/craftskills"
+    android:id="@+id/craft_skills"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -97,33 +97,33 @@
             android:layout_width="76dp"
             android:layout_height="22dp"
             android:layout_marginStart="7dp"
-            android:prompt="@string/skill1"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView2" />
+            card_view:layout_constraintTop_toBottomOf="@+id/textView2"
+            android:entries="@array/skl"/>
 
         <Spinner
             android:id="@+id/spinner2"
             android:layout_width="76dp"
             android:layout_height="22dp"
-            android:prompt="@string/skill1"
             card_view:layout_constraintStart_toStartOf="@+id/textView5"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView5" />
+            card_view:layout_constraintTop_toBottomOf="@+id/textView5"
+            android:entries="@array/skl"/>
 
         <Spinner
             android:id="@+id/spinner3"
             android:layout_width="76dp"
             android:layout_height="22dp"
-            android:prompt="@string/skill1"
             card_view:layout_constraintStart_toStartOf="@+id/textView4"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView4" />
+            card_view:layout_constraintTop_toBottomOf="@+id/textView4"
+            android:entries="@array/skl"/>
 
         <Spinner
             android:id="@+id/spinner4"
             android:layout_width="76dp"
             android:layout_height="22dp"
-            android:prompt="@string/skill1"
             card_view:layout_constraintStart_toStartOf="@+id/textView6"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView6" />
+            card_view:layout_constraintTop_toBottomOf="@+id/textView6"
+            android:entries="@array/craft_skl_swap"/>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

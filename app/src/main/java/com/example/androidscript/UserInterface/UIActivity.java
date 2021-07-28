@@ -19,10 +19,11 @@ import com.example.androidscript.R;
 import com.example.androidscript.util.DebugMessage;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public abstract class UIActivity extends AppCompatActivity {
 
-    protected abstract ArrayList<Integer> getBlockData();
+    protected abstract ArrayList<Vector<String>> getBlockData();
 
     protected abstract ArrayList<String> getButtonData();
 
@@ -36,6 +37,7 @@ public abstract class UIActivity extends AppCompatActivity {
         setContentView(R.layout.activity_uiactivity);
         this.setRecycleBlock(getBlockData());
         this.setRecycleButton(getButtonData());
+
 //        mBlockAdapter.notifyItemInserted();
     }
 
@@ -46,11 +48,12 @@ public abstract class UIActivity extends AppCompatActivity {
         ButtonRecyclerView.setAdapter(mButtonAdapter);
     }
 
-    protected void setRecycleBlock(ArrayList<Integer> data){
+    protected void setRecycleBlock(ArrayList<Vector<String>> data){
         mRecyclerView = findViewById(R.id.recycleview);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mBlockAdapter = new BlockAdapter(data);
         mRecyclerView.setAdapter(mBlockAdapter);
+//        mRecyclerView.findViewHolderForAdapterPosition(0).
     }
 }
