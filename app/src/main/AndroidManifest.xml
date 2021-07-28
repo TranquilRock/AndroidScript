@@ -5,7 +5,6 @@
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
-
     <application
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
@@ -13,9 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidScript">
-        <activity android:name=".UserInterface.TestRecyclerView" />
-
-        <!-- Will be removed -->
+        <activity android:name=".UserInterface.ArknightUI"></activity>
+        <activity android:name=".UserInterface.TestRecyclerView" /> <!-- Will be removed -->
         <activity android:name=".Test.TmpMenu">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,16 +23,14 @@
         </activity>
         <activity
             android:name=".Test.TestActivity"
-            android:theme="@style/Theme.AndroidScript.NoActionBar" />
-        <!-- Will be removed -->
-
+            android:theme="@style/Theme.AndroidScript.NoActionBar" /> <!-- Will be removed -->
         <activity android:name=".Menu.MenuActivity">
+
             <!-- <intent-filter> -->
             <!-- <action android:name="android.intent.action.MAIN" /> -->
             <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
             <!-- </intent-filter> -->
         </activity>
-
         <activity
             android:name=".Menu.EditActivity"
             android:parentActivityName=".Menu.MenuActivity" />
@@ -52,17 +48,15 @@
                 android:name="android.accessibilityservice"
                 android:resource="@xml/accessibility_service_config" />
         </service>
-
         <service
             android:name=".FloatingWidget.FloatingWidgetService"
             android:enabled="true"
             android:label="FloatingWidgetService" />
-
         <service
             android:name=".util.ScreenShot"
             android:enabled="true"
             android:foregroundServiceType="mediaProjection"
             android:label="ScreenShot" />
-
     </application>
+
 </manifest>
