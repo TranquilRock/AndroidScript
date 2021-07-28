@@ -1,19 +1,18 @@
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/craft_skills"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    card_view:cardBackgroundColor="@color/green"
     card_view:cardCornerRadius="10dp"
-    card_view:contentPadding="3dp"
-    card_view:cardBackgroundColor="@color/green" >
+    card_view:contentPadding="3dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="110dp"
-        android:background="@drawable/corner_bg">
+        android:background="@color/craft_skills_bg">
 
         <TextView
             android:id="@+id/textView"
@@ -34,7 +33,7 @@
             android:layout_marginTop="16dp"
             android:text="@string/skill1"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView"/>
+            card_view:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <TextView
             android:id="@+id/textView5"
@@ -97,33 +96,37 @@
             android:layout_width="76dp"
             android:layout_height="22dp"
             android:layout_marginStart="7dp"
+            android:background="@color/craft_skills_bg"
+            android:entries="@array/skl"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView2"
-            android:entries="@array/skl"/>
+            card_view:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <Spinner
             android:id="@+id/skill_1_2"
             android:layout_width="76dp"
             android:layout_height="22dp"
+            android:background="@color/craft_skills_bg"
+            android:entries="@array/skl"
             card_view:layout_constraintStart_toStartOf="@+id/textView5"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView5"
-            android:entries="@array/skl"/>
+            card_view:layout_constraintTop_toBottomOf="@+id/textView5" />
 
         <Spinner
             android:id="@+id/skill_1_3"
             android:layout_width="76dp"
             android:layout_height="22dp"
+            android:background="@color/craft_skills_bg"
+            android:entries="@array/skl"
             card_view:layout_constraintStart_toStartOf="@+id/textView4"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView4"
-            android:entries="@array/skl"/>
+            card_view:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <Spinner
             android:id="@+id/skill_2_1"
             android:layout_width="76dp"
             android:layout_height="22dp"
+            android:background="@color/craft_skills_bg"
+            android:entries="@array/craft_skl_swap"
             card_view:layout_constraintStart_toStartOf="@+id/textView6"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView6"
-            android:entries="@array/craft_skl_swap"/>
+            card_view:layout_constraintTop_toBottomOf="@+id/textView6" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

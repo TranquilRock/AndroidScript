@@ -29,6 +29,14 @@
         <item>銀蘋果</item>
         <item>銅蘋果</item>
     </string-array>
+    <string-array name="preference">
+        <item>BAQ</item>
+        <item>BQA</item>
+        <item>ABQ</item>
+        <item>AQB</item>
+        <item>QAB</item>
+        <item>QBA</item>
+    </string-array>
     <string-array name="craft">
         <item>無</item>
     </string-array>

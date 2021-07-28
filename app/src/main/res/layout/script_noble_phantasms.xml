@@ -1,19 +1,18 @@
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:id="@+id/noble_phantasms"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    card_view:cardBackgroundColor="@color/green"
     card_view:cardCornerRadius="10dp"
-    card_view:contentPadding="3dp"
-    card_view:cardBackgroundColor="@color/green" >
+    card_view:contentPadding="3dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="108dp"
-        android:background="@drawable/corner_bg">
+        android:background="@color/noble_phantasms_bg">
 
         <TextView
             android:id="@+id/textView"
@@ -98,6 +97,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="7dp"
             android:text="@string/nobel"
+            android:textSize="16sp"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -106,6 +106,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nobel"
+            android:textSize="16sp"
             card_view:layout_constraintStart_toStartOf="@+id/textView3"
             card_view:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -114,6 +115,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/nobel"
+            android:textSize="16sp"
             card_view:layout_constraintStart_toStartOf="@+id/textView4"
             card_view:layout_constraintTop_toBottomOf="@+id/textView2" />
 
@@ -122,6 +124,8 @@
             android:layout_width="78dp"
             android:layout_height="26dp"
             android:layout_marginTop="1dp"
+            android:background="@color/noble_phantasms_bg"
+            android:entries="@array/preference"
             card_view:layout_constraintStart_toStartOf="@+id/textView5"
             card_view:layout_constraintTop_toBottomOf="@+id/textView5" />
 

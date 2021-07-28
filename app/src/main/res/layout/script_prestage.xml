@@ -90,14 +90,14 @@
             card_view:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <EditText
-            android:id="@+id/repeatinput"
+            android:id="@+id/n_repeat"
             android:layout_width="110dp"
             android:layout_height="41dp"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="@string/repeat"
-            android:inputType="textPersonName"
+            android:inputType="number"
             android:textSize="14sp"
             card_view:layout_constraintLeft_toRightOf="@+id/craft"
             card_view:layout_constraintTop_toTopOf="@id/textView4" />
