@@ -12,21 +12,47 @@ import com.example.androidscript.R;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Vector;
 
 public class BlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
 
+    private updateOrder onOrderChange;
 
-    private ArrayList<Vector<String>> BlockType;
+    protected interface updateOrder {
+        public void swap(int a, int b);
+        public void delete(int a);
+    }
+
+    private ArrayList<Vector<String>> Blocks;
 
     public BlockAdapter(ArrayList<Vector<String>> content) {
-        BlockType = content;
+        Blocks = content;
     }
 
     @Override
     public @NotNull FGOViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        this.onOrderChange = new updateOrder() {
+            @Override
+            public void swap(int a, int b) {
+                if(a > 0 && b < Blocks.size() && a < b){
+                    Collections.swap(Blocks, a, b);
+                    notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void delete(int a) {
+                if(a > 0 && a < Blocks.size()){
+                    Blocks.remove(a);
+                    notifyDataSetChanged();
+                }
+            }
+        };
+
         View view;
         int id;
+
         switch (viewType) {
             case 0://Skill
                 view = LayoutInflater.from(parent.getContext())
@@ -56,12 +82,12 @@ public class BlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
 
     @Override
     public void onBindViewHolder(@NotNull FGOViewHolder holder, int position) {//Do nothing
-        holder.onBind(BlockType.get(position));
+        holder.onBind(onOrderChange, position);
     }
 
     @Override
     public int getItemViewType(int position) {
-        switch (BlockType.get(position).get(0)) {
+        switch (Blocks.get(position).get(0)) {
             case "Skill":
                 return 0;
             case "NoblePhantasms":
@@ -76,6 +102,6 @@ public class BlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
 
     @Override
     public int getItemCount() {
-        return BlockType.size();
+        return Blocks.size();
     }
 }
