@@ -50,18 +50,13 @@ public class BlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
                         .inflate(R.layout.script_prestage, parent, false);
                 id = R.id.pre_stage;
                 return new FGOViewHolder.PreStageVH(view.findViewById(id));
-            case 4://EndStage
-                view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.script_endstage, parent, false);
-                id = R.id.end_stage;
-                return new FGOViewHolder.EndStageVH(view.findViewById(id));
         }
         throw new RuntimeException("Invalid Type");
     }
 
     @Override
     public void onBindViewHolder(@NotNull FGOViewHolder holder, int position) {//Do nothing
-//        holder.onBind(BlockType.get(position));
+        holder.onBind(BlockType.get(position));
     }
 
     @Override
@@ -75,8 +70,6 @@ public class BlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
                 return 2;
             case "PreStage":
                 return 3;
-            case "EndStage":
-                return 4;
         }
         throw new RuntimeException("Invalid Type");
     }

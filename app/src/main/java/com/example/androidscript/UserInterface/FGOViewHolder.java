@@ -1,12 +1,14 @@
 package com.example.androidscript.UserInterface;
 
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidscript.R;
+import com.example.androidscript.util.DebugMessage;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -43,17 +45,6 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-    public static class EndStageVH extends FGOViewHolder {
-        public EndStageVH(View v) {
-            super(v);
-        }
-
-        @Override
-        public void onBind(Vector<String> data) {
-
-        }
-    }
-
     public static class PreStageVH extends FGOViewHolder {
         Spinner Stamina;
         Spinner Friend;
@@ -68,6 +59,18 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
             Stamina = view.findViewById(R.id.stamina);
             Friend = view.findViewById(R.id.friend);
             Craft = view.findViewById(R.id.craft);
+            Stamina.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    DebugMessage.set((String)Stamina.getSelectedItem());
+                    DebugMessage.set(position + " " + id);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
         }
     }
 

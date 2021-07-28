@@ -13,23 +13,20 @@ public class TestRecyclerView extends UIActivity {
     @Override
     public ArrayList<Vector<String>> getBlockData() {
         ArrayList<Vector<String>> ret = new ArrayList<Vector<String>>();
-        for (int i = 1; i <= 5; i++) {
+        for (int i = 0; i <= 10; i++) {
             Vector<String> tmp = new Vector<>();
-            switch (i) {
-                case 2:
-                    tmp.add("Skill");
-                    break;
+            switch (i % 4 + 1) {
                 case 1:
                     tmp.add("PreStage");
+                    break;
+                case 2:
+                    tmp.add("Skill");
                     break;
                 case 3:
                     tmp.add("NoblePhantasms");
                     break;
                 case 4:
                     tmp.add("CraftSkill");
-                    break;
-                case 5:
-                    tmp.add("EndStage");
                     break;
             }
             ret.add(tmp);
