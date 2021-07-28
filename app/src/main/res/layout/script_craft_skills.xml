@@ -93,7 +93,7 @@
             card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24" />
 
         <Spinner
-            android:id="@+id/spinner1"
+            android:id="@+id/skill_1_1"
             android:layout_width="76dp"
             android:layout_height="22dp"
             android:layout_marginStart="7dp"
@@ -102,7 +102,7 @@
             android:entries="@array/skl"/>
 
         <Spinner
-            android:id="@+id/spinner2"
+            android:id="@+id/skill_1_2"
             android:layout_width="76dp"
             android:layout_height="22dp"
             card_view:layout_constraintStart_toStartOf="@+id/textView5"
@@ -110,7 +110,7 @@
             android:entries="@array/skl"/>
 
         <Spinner
-            android:id="@+id/spinner3"
+            android:id="@+id/skill_1_3"
             android:layout_width="76dp"
             android:layout_height="22dp"
             card_view:layout_constraintStart_toStartOf="@+id/textView4"
@@ -118,7 +118,7 @@
             android:entries="@array/skl"/>
 
         <Spinner
-            android:id="@+id/spinner4"
+            android:id="@+id/skill_2_1"
             android:layout_width="76dp"
             android:layout_height="22dp"
             card_view:layout_constraintStart_toStartOf="@+id/textView6"

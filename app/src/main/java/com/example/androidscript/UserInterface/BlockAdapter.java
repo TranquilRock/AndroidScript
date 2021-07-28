@@ -61,7 +61,7 @@ public class BlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
 
     @Override
     public void onBindViewHolder(@NotNull FGOViewHolder holder, int position) {//Do nothing
-        holder.onBind(BlockType.get(position));
+//        holder.onBind(BlockType.get(position));
     }
 
     @Override

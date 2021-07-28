@@ -1,20 +1,18 @@
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/skills"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    card_view:cardCornerRadius="10dp"
-    card_view:contentPadding="3dp"
     card_view:cardBackgroundColor="@color/green"
-    android:id="@+id/skills">
-
+    card_view:cardCornerRadius="10dp"
+    card_view:contentPadding="3dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="155dp"
-        android:background="@drawable/corner_bg">
+        android:background="@color/card_bg">
 
         <TextView
             android:id="@+id/textView"
@@ -34,8 +32,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="7dp"
             android:layout_marginTop="16dp"
-            android:textColor="@color/black"
             android:text="@string/servant1"
+            android:textColor="@color/black"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -45,8 +43,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="51dp"
             android:layout_marginTop="54dp"
-            android:textColor="@color/black"
             android:text="@string/servant2"
+            android:textColor="@color/black"
             card_view:layout_constraintStart_toEndOf="@+id/textView2"
             card_view:layout_constraintTop_toTopOf="parent" />
 
@@ -56,8 +54,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="51dp"
             android:layout_marginTop="54dp"
-            android:textColor="@color/black"
             android:text="@string/servant3"
+            android:textColor="@color/black"
             card_view:layout_constraintStart_toEndOf="@+id/textView3"
             card_view:layout_constraintTop_toTopOf="parent" />
 
@@ -85,95 +83,100 @@
             android:layout_height="40dp"
             card_view:layout_constraintEnd_toStartOf="@+id/btn_down"
             card_view:layout_constraintTop_toTopOf="parent"
-            card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24"
-            />
+            card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24" />
 
         <Spinner
-            android:id="@+id/spinner1"
+            android:id="@+id/skill_1_1"
             android:layout_width="76dp"
             android:layout_height="22dp"
             android:layout_marginStart="7dp"
-            android:prompt="@string/skill1"
-            android:background="#000000"
-        android:text="Test"
-        android:textColor="#ffffff"
-            card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView2"
-            android:entries="@array/skl"/>
-
-        <Spinner
-            android:id="@+id/spinner2"
-            android:layout_width="76dp"
-            android:layout_height="22dp"
-            android:layout_marginStart="4dp"
+            android:background="@color/card_bg"
             android:entries="@array/skl"
             android:prompt="@string/skill1"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/spinner1" />
+            card_view:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <Spinner
-            android:id="@+id/spinner3"
+            android:id="@+id/skill_1_2"
             android:layout_width="76dp"
             android:layout_height="22dp"
             android:layout_marginStart="7dp"
-            android:prompt="@string/skill1"
+            android:background="@color/card_bg"
+            android:entries="@array/skl"
+            android:prompt="@string/skill2"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/spinner2"
-            android:entries="@array/skl"/>
+            card_view:layout_constraintTop_toBottomOf="@+id/skill_1_1" />
 
         <Spinner
-            android:id="@+id/spinner4"
+            android:id="@+id/skill_1_3"
             android:layout_width="76dp"
             android:layout_height="22dp"
+            android:layout_marginStart="7dp"
+            android:background="@color/card_bg"
+            android:entries="@array/skl"
+            android:prompt="@string/skill3"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/skill_1_2" />
+
+        <Spinner
+            android:id="@+id/skill_2_1"
+            android:layout_width="76dp"
+            android:layout_height="22dp"
+            android:background="@color/card_bg"
+            android:entries="@array/skl"
             android:prompt="@string/skill1"
             card_view:layout_constraintStart_toStartOf="@+id/textView3"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView3"
-            android:entries="@array/skl"/>
+            card_view:layout_constraintTop_toBottomOf="@+id/textView3" />
 
         <Spinner
-            android:id="@+id/spinner5"
+            android:id="@+id/skill_2_2"
             android:layout_width="76dp"
             android:layout_height="22dp"
-            android:prompt="@string/skill1"
-            card_view:layout_constraintStart_toStartOf="@+id/spinner4"
-            card_view:layout_constraintTop_toBottomOf="@+id/spinner4"
-            android:entries="@array/skl"/>
+            android:background="@color/card_bg"
+            android:entries="@array/skl"
+            android:prompt="@string/skill2"
+            card_view:layout_constraintStart_toStartOf="@+id/skill_2_1"
+            card_view:layout_constraintTop_toBottomOf="@+id/skill_2_1" />
 
         <Spinner
-            android:id="@+id/spinner6"
+            android:id="@+id/skill_2_3"
             android:layout_width="76dp"
             android:layout_height="22dp"
-            android:prompt="@string/skill1"
-            card_view:layout_constraintStart_toStartOf="@+id/spinner5"
-            card_view:layout_constraintTop_toBottomOf="@+id/spinner5"
-            android:entries="@array/skl"/>
+            android:background="@color/card_bg"
+            android:entries="@array/skl"
+            android:prompt="@string/skill3"
+            card_view:layout_constraintStart_toStartOf="@+id/skill_2_2"
+            card_view:layout_constraintTop_toBottomOf="@+id/skill_2_2" />
 
         <Spinner
-            android:id="@+id/spinner7"
+            android:id="@+id/skill_3_1"
             android:layout_width="76dp"
             android:layout_height="22dp"
+            android:background="@color/card_bg"
+            android:entries="@array/skl"
             android:prompt="@string/skill1"
             card_view:layout_constraintStart_toStartOf="@+id/textView4"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView4"
-            android:entries="@array/skl"/>
+            card_view:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <Spinner
-            android:id="@+id/spinner8"
+            android:id="@+id/skill_3_2"
             android:layout_width="76dp"
             android:layout_height="22dp"
-            android:prompt="@string/skill1"
-            card_view:layout_constraintStart_toStartOf="@+id/spinner7"
-            card_view:layout_constraintTop_toBottomOf="@+id/spinner7"
-            android:entries="@array/skl"/>
+            android:background="@color/card_bg"
+            android:entries="@array/skl"
+            android:prompt="@string/skill2"
+            card_view:layout_constraintStart_toStartOf="@+id/skill_3_1"
+            card_view:layout_constraintTop_toBottomOf="@+id/skill_3_1" />
 
         <Spinner
-            android:id="@+id/spinner9"
+            android:id="@+id/skill_3_3"
             android:layout_width="76dp"
             android:layout_height="22dp"
-            android:prompt="@string/skill1"
-            card_view:layout_constraintStart_toStartOf="@+id/spinner8"
-            card_view:layout_constraintTop_toBottomOf="@+id/spinner8"
-            android:entries="@array/skl"/>
+            android:background="@color/card_bg"
+            android:entries="@array/skl"
+            android:prompt="@string/skill3"
+            card_view:layout_constraintStart_toStartOf="@+id/skill_3_2"
+            card_view:layout_constraintTop_toBottomOf="@+id/skill_3_2" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

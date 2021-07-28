@@ -9,15 +9,29 @@ import com.example.androidscript.R;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public class TestRecyclerView extends UIActivity{
+public class TestRecyclerView extends UIActivity {
     @Override
     public ArrayList<Vector<String>> getBlockData() {
         ArrayList<Vector<String>> ret = new ArrayList<Vector<String>>();
-        for (int i = 0; i < 10; i++) {
+        for (int i = 1; i <= 5; i++) {
             Vector<String> tmp = new Vector<>();
-            tmp.add("Skill");
-
-            tmp.add("PreStage");
+            switch (i) {
+                case 2:
+                    tmp.add("Skill");
+                    break;
+                case 1:
+                    tmp.add("PreStage");
+                    break;
+                case 3:
+                    tmp.add("NoblePhantasms");
+                    break;
+                case 4:
+                    tmp.add("CraftSkill");
+                    break;
+                case 5:
+                    tmp.add("EndStage");
+                    break;
+            }
             ret.add(tmp);
         }
         return ret;
@@ -25,7 +39,7 @@ public class TestRecyclerView extends UIActivity{
 
     @Override
     public ArrayList<String> getButtonData() {
-        ArrayList<String> ret  = new ArrayList<>();
+        ArrayList<String> ret = new ArrayList<>();
         ret.add("click");
         return ret;
     }
