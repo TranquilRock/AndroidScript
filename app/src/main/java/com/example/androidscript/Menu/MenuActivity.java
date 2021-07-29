@@ -31,28 +31,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import java.util.regex.Pattern;
+// {getExternalFilesDir(null).getAbsolutePath() + "/}This would lead to an invisible dir (from studio)
 
 public class MenuActivity extends AppCompatActivity {
     public static final String SUPPORTED_FILE_NAME_PATTERN = "([A-Za-z0-9_-]*).txt";
-    private Button btnToCreate;
-    private Button btnPickFile;
-    private ImageButton btnStartService;
     private MediaProjectionManager mediaProjectionManager;
 
     private EditText etNewName;
     private TextView output;
-    private Spinner selectScript;
-    private Vector<String> availableFile = new Vector<>();
+    private Vector<String> availableFile;
     public static final int PROJECTION_REQUEST_CODE = 123;
-    private RecyclerView testing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         FileOperation.setUpFileRoot(getFilesDir().getAbsolutePath() + "/");
-//        FileOperation.setUpFileRoot(getExternalFilesDir(null).getAbsolutePath() + "/"); This would lead to an invisible dir (from studio)
-        browseAvailableFile();
+        this.availableFile = FileOperation.browseAvailableFile("",".txt");
         setupElements();
         SetUpPermissions();
         Interpreter gg = new ArkKnightsInterpreter();
@@ -63,8 +58,8 @@ public class MenuActivity extends AppCompatActivity {
     private void setupElements() {
         etNewName = findViewById(R.id.et_New_Name);
         output = findViewById(R.id.output);//Show some massage to user
-        btnPickFile = BtnMaker.performIntentForResult(R.id.btn_To_Load, this, pickFileIntent(), 111);
-        btnToCreate = BtnMaker.registerOnClick(R.id.btn_To_Create, this, (v -> {
+        BtnMaker.performIntentForResult(R.id.btn_To_Load, this, pickFileIntent(), 111);
+        BtnMaker.registerOnClick(R.id.btn_To_Create, this, (v -> {
             String FileName = etNewName.getText().toString();
             if (!FileName.equals("")) {
                 switchToEdit(FileName);
@@ -72,11 +67,10 @@ public class MenuActivity extends AppCompatActivity {
                 output.setText("必須輸入檔名");
             }
         }));
-        selectScript = SpnMaker.fromString(R.id.spinner_Select_Script, this, availableFile);
+        SpnMaker.fromString(R.id.spinner_Select_Script, this, availableFile);
 
         //Set up media projection button
-        btnStartService = findViewById(R.id.btn_Start_Service);
-        btnStartService.setOnClickListener(v -> {
+        findViewById(R.id.btn_Start_Service).setOnClickListener(v -> {
             mediaProjectionManager = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
             startActivityForResult((mediaProjectionManager).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
         });
@@ -127,13 +121,6 @@ public class MenuActivity extends AppCompatActivity {
         return Pattern.matches(SUPPORTED_FILE_NAME_PATTERN, FileName);
     }
 
-    protected void browseAvailableFile() {
-        for(String s : FileOperation.readDir("")){
-            if(s.contains(".txt")){
-                availableFile.add(s);
-            }
-        }
-    }
 
     public void SetUpPermissions() {
         if (!Settings.canDrawOverlays(getApplicationContext())) {//Floating Widget

@@ -16,7 +16,7 @@ import org.opencv.imgproc.Imgproc;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-public class ImageHandler {
+public final class ImageHandler {
     private static Mat grayScale(Bitmap bitmap) {
         Mat tmp = new Mat();
         Utils.bitmapToMat(bitmap, tmp);

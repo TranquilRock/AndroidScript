@@ -1,6 +1,6 @@
 package com.example.androidscript.util;
 
-public class DebugMessage {//Turn these off when publish
+public final class DebugMessage {//Turn these off when publish
     public static void set(String output){
         System.out.println(output);
     }

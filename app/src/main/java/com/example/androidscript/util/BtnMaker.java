@@ -7,7 +7,7 @@ import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 
 
-public class BtnMaker {
+public final class BtnMaker {
     public static Button jump(int id, AppCompatActivity from, Class to) {
         Button btn = from.findViewById(id);
         btn.setOnClickListener((v -> {

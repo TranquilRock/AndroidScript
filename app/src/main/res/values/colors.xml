@@ -10,4 +10,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="green">#FF3DDC84</color>
     <color name="craft_skills_bg">#C19F3C</color>
+    <color name="floating_widget_bg">#E4A8A8</color>
 </resources>

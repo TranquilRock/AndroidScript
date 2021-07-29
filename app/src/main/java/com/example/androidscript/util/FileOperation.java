@@ -8,7 +8,6 @@ import android.media.Image;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,7 +16,7 @@ import java.nio.ByteBuffer;
 import java.util.Scanner;
 import java.util.Vector;
 
-public class FileOperation extends Activity {
+public final class FileOperation extends Activity {
     private static String root = null;
 
     public static void setUpFileRoot(String root) {
@@ -129,6 +128,18 @@ public class FileOperation extends Activity {
             e.printStackTrace();
         }
     }
+
+    public static Vector<String> browseAvailableFile(String Folder,String targetType) {
+        Folder = root + Folder;
+        Vector<String> ret = new Vector<>();
+        for(String s : FileOperation.readDir(Folder)){
+            if(s.contains(targetType)){
+                ret.add(s);
+            }
+        }
+        return ret;
+    }
+
 
     private static File createFileAndParent(String FileName) {
         DebugMessage.set("Writing File: " + FileName);

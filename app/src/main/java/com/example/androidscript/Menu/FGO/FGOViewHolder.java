@@ -1,4 +1,4 @@
-package com.example.androidscript.UserInterface;
+package com.example.androidscript.Menu.FGO;
 
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,11 +10,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidscript.R;
+import com.example.androidscript.UserInterface.BlockAdapter;
 import com.example.androidscript.util.DebugMessage;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Vector;
+
 public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
+
+    public abstract Vector<String> retrieveData();
+
     protected ImageButton Up;
     protected ImageButton Down;
     protected ImageButton Close;
@@ -46,6 +52,17 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         Spinner Friend;
         Spinner Craft;
         EditText Repeat;
+
+        @Override
+        public Vector<String> retrieveData() {
+            Vector<String> ret = new Vector<>();
+            ret.add((String) Stamina.getSelectedItem());
+            ret.add((String) Friend.getSelectedItem());
+            ret.add((String) Craft.getSelectedItem());
+            ret.add(Repeat.getText().toString());
+            return ret;
+        }
+
         public PreStageVH(View v) {
             super(v);
         }
@@ -74,6 +91,12 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
 
 
     public static class SkillVH extends FGOViewHolder {
+        @Override
+        public Vector<String> retrieveData() {
+            Vector<String> ret = new Vector<>();
+            return ret;
+        }
+
         public SkillVH(View v) {
             super(v);
         }
@@ -85,6 +108,12 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
     }
 
     public static class CraftSkillVH extends FGOViewHolder {
+        @Override
+        public Vector<String> retrieveData() {
+            Vector<String> ret = new Vector<>();
+            return ret;
+        }
+
         public CraftSkillVH(View v) {
             super(v);
         }
@@ -97,6 +126,12 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
 
 
     public static class NoblePhantasmsVH extends FGOViewHolder {
+        @Override
+        public Vector<String> retrieveData() {
+            Vector<String> ret = new Vector<>();
+            return ret;
+        }
+
         public NoblePhantasmsVH(View v) {
             super(v);
         }

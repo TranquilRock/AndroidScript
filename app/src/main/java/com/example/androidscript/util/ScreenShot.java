@@ -33,7 +33,7 @@ import java.nio.ByteBuffer;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-public class ScreenShot extends Service {
+public final class ScreenShot extends Service {
     private static ImageReader imageReader = null;
     private static Intent Permission = null;
     private static Point TargetOffset = null;//Todo make screenshot range start from offset

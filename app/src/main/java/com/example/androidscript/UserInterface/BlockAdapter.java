@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.androidscript.Menu.FGO.FGOViewHolder;
 import com.example.androidscript.R;
 
 import org.jetbrains.annotations.NotNull;
@@ -17,17 +18,21 @@ import java.util.Vector;
 
 public class BlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
 
+    public final ArrayList<Vector<String>> Data;
+
     private updateOrder onOrderChange;
 
-    protected interface updateOrder {
-        public void swap(int a, int b);
-        public void delete(int a);
+    public interface updateOrder {
+        void swap(int a, int b);
+
+        void delete(int a);
     }
 
-    private ArrayList<Vector<String>> Blocks;
+    private final ArrayList<String> Blocks;
 
-    public BlockAdapter(ArrayList<Vector<String>> content) {
+    public BlockAdapter(ArrayList<String> content) {
         Blocks = content;
+        Data = new ArrayList<>(content.size());
     }
 
     @Override
@@ -35,7 +40,7 @@ public class BlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
         this.onOrderChange = new updateOrder() {
             @Override
             public void swap(int a, int b) {
-                if(a > 0 && b < Blocks.size() && a < b){
+                if (a > 0 && b < Blocks.size() && a < b) {
                     Collections.swap(Blocks, a, b);
                     notifyDataSetChanged();
                 }
@@ -43,7 +48,7 @@ public class BlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
 
             @Override
             public void delete(int a) {
-                if(a > 0 && a < Blocks.size()){
+                if (a > 0 && a < Blocks.size()) {
                     Blocks.remove(a);
                     notifyDataSetChanged();
                 }
@@ -83,11 +88,12 @@ public class BlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
     @Override
     public void onBindViewHolder(@NotNull FGOViewHolder holder, int position) {//Do nothing
         holder.onBind(onOrderChange, position);
+        Data.set(position, holder.retrieveData());
     }
 
     @Override
     public int getItemViewType(int position) {
-        switch (Blocks.get(position).get(0)) {
+        switch (Blocks.get(position)) {
             case "Skill":
                 return 0;
             case "NoblePhantasms":
