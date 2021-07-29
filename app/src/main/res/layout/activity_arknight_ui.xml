@@ -6,4 +6,66 @@
     android:layout_height="match_parent"
     tools:context=".UserInterface.ArknightUI">
 
+    <TextView
+        android:id="@+id/announcement"
+        android:layout_width="315dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="90dp"
+        android:text="@string/Announcement"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/RepeatNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="@string/hint"
+        android:inputType="number"
+        app:layout_constraintStart_toStartOf="@+id/announcement"
+        app:layout_constraintTop_toBottomOf="@+id/announcement" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/tillEmpty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="15dp"
+        android:text="@string/TillEmpty"
+        app:layout_constraintStart_toEndOf="@+id/RepeatNumber"
+        app:layout_constraintTop_toBottomOf="@+id/announcement" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/EatMedicine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:text="@string/EatMedicine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/announcement" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/EatStone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/EatStone"
+        app:layout_constraintEnd_toEndOf="@+id/EatMedicine"
+        app:layout_constraintStart_toStartOf="@+id/EatMedicine"
+        app:layout_constraintTop_toBottomOf="@+id/EatMedicine" />
+
+    <Button
+        android:id="@+id/set_script"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/Confirm"
+        app:layout_constraintEnd_toEndOf="@+id/EatMedicine"
+        app:layout_constraintStart_toStartOf="@+id/EatMedicine"
+        app:layout_constraintTop_toBottomOf="@+id/EatStone" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

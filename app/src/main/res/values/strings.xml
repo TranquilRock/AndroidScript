@@ -91,4 +91,10 @@
     <string name="btn_down">Down</string>
     <string name="btn_del">Delete</string>
     <string name="btn_up">Up</string>
+    <string name="Announcement">說明</string>
+    <string name="hint">刷關次數</string>
+    <string name="TillEmpty">刷到乾</string>
+    <string name="EatMedicine">吃體力</string>
+    <string name="EatStone">吃石頭</string>
+    <string name="Confirm">確認</string>
 </resources>
