@@ -24,9 +24,6 @@ import android.media.projection.MediaProjection;
 import androidx.annotation.Nullable;
 
 import com.example.androidscript.Test.TmpMenu;
-import com.example.androidscript.util.Interpreter.Interpreter;
-
-import org.opencv.core.Core;
 
 import java.nio.ByteBuffer;
 

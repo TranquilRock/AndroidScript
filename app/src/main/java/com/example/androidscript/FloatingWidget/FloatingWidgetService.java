@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Service;
 import android.os.Build;
 import android.os.IBinder;
-import android.os.Parcel;
 import android.view.View;
 import android.os.Handler;
 import android.view.Gravity;
@@ -23,8 +22,7 @@ import androidx.annotation.Nullable;
 import com.example.androidscript.Menu.MenuActivity;
 import com.example.androidscript.R;
 import com.example.androidscript.util.*;
-import com.example.androidscript.util.Interpreter.ArkKnightsInterpreter;
-import com.example.androidscript.util.Interpreter.Interpreter;
+import com.example.androidscript.util.Interpreter;
 
 //TODO Pass an Interpreter
 public class FloatingWidgetService extends Service implements View.OnClickListener {

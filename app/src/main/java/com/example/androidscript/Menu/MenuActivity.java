@@ -2,29 +2,23 @@ package com.example.androidscript.Menu;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.media.projection.MediaProjectionManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.view.View;
-import android.widget.Button;
 import android.content.Intent;
-import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import com.example.androidscript.FloatingWidget.FloatingWidgetService;
 import com.example.androidscript.R;
 import com.example.androidscript.util.*;
-import com.example.androidscript.util.Interpreter.ArkKnightsInterpreter;
-import com.example.androidscript.util.Interpreter.Interpreter;
+import com.example.androidscript.Menu.ArkKnights.ArkKnightsInterpreter;
+import com.example.androidscript.util.Interpreter;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -47,7 +41,7 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         FileOperation.setUpFileRoot(getFilesDir().getAbsolutePath() + "/");
-        this.availableFile = FileOperation.browseAvailableFile("",".txt");
+        this.availableFile = FileOperation.browseAvailableFile("ArkKnights/",".txt");
         setupElements();
         SetUpPermissions();
         Interpreter gg = new ArkKnightsInterpreter();
