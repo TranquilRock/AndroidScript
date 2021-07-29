@@ -10,11 +10,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidscript.R;
-import com.example.androidscript.UserInterface.BlockAdapter;
 import com.example.androidscript.util.DebugMessage;
 
 import org.jetbrains.annotations.NotNull;
 
+import static com.example.androidscript.Menu.FGO.FGOBlockAdapter.updateOrder;
 import java.util.Vector;
 
 public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
@@ -31,7 +31,7 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         this.view = itemView;
     }
 
-    public void onBind(BlockAdapter.updateOrder order, int position) {
+    public void onBind(updateOrder order, int position) {
         Up = view.findViewById(R.id.btn_up);
         Up.setOnClickListener(v -> {
             order.swap(position - 1, position);
@@ -40,7 +40,7 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         Down.setOnClickListener(v -> {
             order.swap(position, position + 1);
         });
-        Close = view.findViewById(R.id.btn_close);
+        Close = view.findViewById(R.id.btn_del);
         Close.setOnClickListener(v -> {
             order.delete(position);
         });
@@ -68,7 +68,7 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(BlockAdapter.updateOrder order, int position) {
+        public void onBind(updateOrder order, int position) {
             Stamina = view.findViewById(R.id.stamina);
             Friend = view.findViewById(R.id.friend);
             Craft = view.findViewById(R.id.craft);
@@ -102,7 +102,7 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(BlockAdapter.updateOrder order, int position) {
+        public void onBind(updateOrder order, int position) {
             super.onBind(order, position);
         }
     }
@@ -119,7 +119,7 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(BlockAdapter.updateOrder order, int position) {
+        public void onBind(updateOrder order, int position) {
             super.onBind(order, position);
         }
     }
@@ -137,8 +137,22 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(BlockAdapter.updateOrder order, int position) {
+        public void onBind(updateOrder order, int position) {
             super.onBind(order, position);
+        }
+    }
+    public static class EndVH extends FGOViewHolder {
+        @Override
+        public Vector<String> retrieveData() {
+            return null;
+        }
+
+        public EndVH(View v) {
+            super(v);
+        }
+
+        @Override
+        public void onBind(updateOrder order, int position) {
         }
     }
 }

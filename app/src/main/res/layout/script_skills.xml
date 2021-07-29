@@ -61,21 +61,23 @@
 
 
         <ImageButton
-            android:id="@+id/btn_close"
+            android:id="@+id/btn_del"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginEnd="3dp"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintTop_toTopOf="parent"
-            card_view:srcCompat="@drawable/ic_close_white_24dp" />
+            card_view:srcCompat="@drawable/ic_close_white_24dp"
+            android:contentDescription="@string/btn_del"/>
 
         <ImageButton
             android:id="@+id/btn_down"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            card_view:layout_constraintEnd_toStartOf="@+id/btn_close"
+            card_view:layout_constraintEnd_toStartOf="@+id/btn_del"
             card_view:layout_constraintTop_toTopOf="parent"
-            card_view:srcCompat="@drawable/ic_baseline_arrow_drop_down_24" />
+            card_view:srcCompat="@drawable/ic_baseline_arrow_drop_down_24"
+            android:contentDescription="@string/btn_down"/>
 
         <ImageButton
             android:id="@+id/btn_up"
@@ -83,7 +85,8 @@
             android:layout_height="40dp"
             card_view:layout_constraintEnd_toStartOf="@+id/btn_down"
             card_view:layout_constraintTop_toTopOf="parent"
-            card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24" />
+            card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24"
+            android:contentDescription="@string/btn_up" />
 
         <Spinner
             android:id="@+id/skill_1_1"

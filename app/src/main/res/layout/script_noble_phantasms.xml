@@ -8,7 +8,6 @@
     card_view:cardCornerRadius="10dp"
     card_view:contentPadding="3dp">
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="108dp"
@@ -29,9 +28,11 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="8dp"
             android:text="@string/servant1"
+
+            android:textSize="16sp"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -39,9 +40,11 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="54dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="46dp"
             android:text="@string/servant2"
+
+            android:textSize="16sp"
             card_view:layout_constraintStart_toEndOf="@+id/textView2"
             card_view:layout_constraintTop_toTopOf="parent" />
 
@@ -49,9 +52,10 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="54dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="46dp"
             android:text="@string/servant3"
+            android:textSize="16sp"
             card_view:layout_constraintStart_toEndOf="@+id/textView3"
             card_view:layout_constraintTop_toTopOf="parent" />
 
@@ -67,21 +71,23 @@
 
 
         <ImageButton
-            android:id="@+id/btn_close"
+            android:id="@+id/btn_del"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_marginEnd="3dp"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintTop_toTopOf="parent"
-            card_view:srcCompat="@drawable/ic_close_white_24dp" />
+            card_view:srcCompat="@drawable/ic_close_white_24dp"
+            android:contentDescription="@string/btn_del" />
 
         <ImageButton
             android:id="@+id/btn_down"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            card_view:layout_constraintEnd_toStartOf="@+id/btn_close"
+            card_view:layout_constraintEnd_toStartOf="@+id/btn_del"
             card_view:layout_constraintTop_toTopOf="parent"
-            card_view:srcCompat="@drawable/ic_baseline_arrow_drop_down_24" />
+            card_view:srcCompat="@drawable/ic_baseline_arrow_drop_down_24"
+            android:contentDescription="@string/btn_down" />
 
         <ImageButton
             android:id="@+id/btn_up"
@@ -89,35 +95,38 @@
             android:layout_height="40dp"
             card_view:layout_constraintEnd_toStartOf="@+id/btn_down"
             card_view:layout_constraintTop_toTopOf="parent"
-            card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24" />
+            card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24"
+            android:contentDescription="@string/btn_up" />
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switch1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="7dp"
+            android:layout_width="90dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="4dp"
             android:text="@string/nobel"
             android:textSize="16sp"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switch2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="90dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="100dp"
             android:text="@string/nobel"
             android:textSize="16sp"
-            card_view:layout_constraintStart_toStartOf="@+id/textView3"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView2" />
+            card_view:layout_constraintStart_toStartOf="@+id/switch1"
+            card_view:layout_constraintTop_toBottomOf="@+id/textView3" />
 
-        <Switch
+        <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switch3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="90dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="100dp"
             android:text="@string/nobel"
             android:textSize="16sp"
-            card_view:layout_constraintStart_toStartOf="@+id/textView4"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView2" />
+            card_view:layout_constraintStart_toStartOf="@+id/switch2"
+            card_view:layout_constraintTop_toBottomOf="@+id/textView4" />
 
         <Spinner
             android:id="@+id/skill_1_2"

@@ -12,10 +12,10 @@ import java.util.Vector;
 
 public class FGOEditor extends UIActivity {
     @Override
-    public ArrayList<String> getBlockData() {
-        ArrayList<String> ret = new ArrayList<>();
+    public Vector<String> getBlockData() {
+        Vector<String> ret = new Vector<>();
         ret.add("PreStage");
-        for (int i = 0; i <= 10; i++) {
+        for (int i = 0; i <= 2; i++) {
             switch (i % 3) {
                 case 2:
                     ret.add("Skill");
@@ -28,12 +28,13 @@ public class FGOEditor extends UIActivity {
                     break;
             }
         }
+        ret.add("End");
         return ret;
     }
 
     @Override
-    public ArrayList<String> getButtonData() {
-        ArrayList<String> ret = new ArrayList<>();
+    public Vector<String> getButtonData() {
+        Vector<String> ret = new Vector<>();
         ret.add("click");
         return ret;
     }

@@ -14,20 +14,22 @@ import com.example.androidscript.R;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Vector;
 
 public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonViewHolder> {
+
     public static class ButtonViewHolder extends RecyclerView.ViewHolder {
-        Button button;
+        public Button button;
         public ButtonViewHolder(@NonNull View itemView,Button button) {
             super(itemView);
             this.button = button;
         }
     }
 
-    private ArrayList<String> ButtonText;
+    protected Vector<String> ButtonText;
 
-    public ButtonAdapter(ArrayList<String> a){
-        this.ButtonText = a;
+    public ButtonAdapter(Vector<String> _ButtonText){
+        this.ButtonText = _ButtonText;
     }
 
     @Override
