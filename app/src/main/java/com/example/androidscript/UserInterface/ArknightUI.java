@@ -11,8 +11,8 @@ import android.widget.Toast;
 
 import com.example.androidscript.FloatingWidget.FloatingWidgetService;
 import com.example.androidscript.R;
-import com.example.androidscript.util.Interpreter.ArkKnightsInterpreter;
-import com.example.androidscript.util.Interpreter.Interpreter;
+import com.example.androidscript.Menu.ArkKnights.ArkKnightsInterpreter;
+import com.example.androidscript.util.Interpreter;
 
 public class ArknightUI extends AppCompatActivity {
     SwitchCompat TillEmpty;
