@@ -75,8 +75,7 @@
 
 
     <string name="servantSkills">從者技能</string>
-    <string name="craftSkills">魔術技能</string>
-    <string name="targetEnmy">魔術技能</string>
+    <string name="craftSkills">御主技能</string>
     <string name="skill1">技能一</string>
     <string name="skill2">技能二</string>
     <string name="skill3">技能三</string>

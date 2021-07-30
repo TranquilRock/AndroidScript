@@ -19,23 +19,21 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
 
     public final ArrayList<Vector<String>> Data;
 
-    private updateOrder onOrderChange;
+    public updateOrder onOrderChange;
 
     public interface updateOrder {
         void swap(int a, int b);
 
         void delete(int a);
+
+        void insert();
     }
 
     private final Vector<String> Blocks;
 
-    public FGOBlockAdapter( Vector<String> content) {
+    public FGOBlockAdapter(Vector<String> content) {
         Blocks = content;
         Data = new ArrayList<>(content.size());
-    }
-
-    @Override
-    public @NotNull FGOViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         this.onOrderChange = new updateOrder() {
             @Override
             public void swap(int a, int b) {
@@ -52,7 +50,17 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
                     notifyDataSetChanged();
                 }
             }
+
+            @Override
+            public void insert() {
+                notifyDataSetChanged();
+            }
         };
+    }
+
+    @Override
+    public @NotNull FGOViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
 
         View view;
         switch (viewType) {
