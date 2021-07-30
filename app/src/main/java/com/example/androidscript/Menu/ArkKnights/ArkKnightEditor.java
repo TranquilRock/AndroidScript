@@ -1,4 +1,4 @@
-package com.example.androidscript.UserInterface;
+package com.example.androidscript.Menu.ArkKnights;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
@@ -9,12 +9,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.androidscript.FloatingWidget.FloatingWidgetService;
 import com.example.androidscript.R;
-import com.example.androidscript.Menu.ArkKnights.ArkKnightsInterpreter;
-import com.example.androidscript.util.Interpreter;
+import com.example.androidscript.UserInterface.Editor;
 
-public class ArknightUI extends AppCompatActivity {
+public class ArkKnightEditor extends AppCompatActivity implements Editor {
     SwitchCompat TillEmpty;
     SwitchCompat EatMedicine;
     SwitchCompat EatStone;
@@ -24,14 +22,20 @@ public class ArknightUI extends AppCompatActivity {
     private boolean isEatMedicine = false;
     private boolean isEatStone = false;
     private String SelectedScript;
-    private int RepeatNumber;
+    private int nRepetition;
 
+    private ArkKnightEditor(){
+        Repeat = findViewById(R.id.RepeatNumber);
+        TillEmpty = findViewById(R.id.tillEmpty);
+        EatMedicine = findViewById(R.id.EatMedicine);
+        EatStone = findViewById(R.id.EatStone);
+        SetScript = findViewById(R.id.set_script);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_arknight_ui);
-        Init();
         SetScript.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -51,9 +55,9 @@ public class ArknightUI extends AppCompatActivity {
                         Toast.makeText(getApplicationContext(), "Do", Toast.LENGTH_SHORT).show();
                     }
                 }else {//TODO: wait for script for limited times
-                    GetRepeatNumber();
+                    GetRepetition();
                     SelectedScript = "AutoFight.txt";
-                    Toast.makeText(getApplicationContext(), String.valueOf(RepeatNumber), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), String.valueOf(nRepetition), Toast.LENGTH_SHORT).show();
                 }
                 /*
                 Interpreter Do = new ArkKnightsInterpreter();
@@ -61,25 +65,14 @@ public class ArknightUI extends AppCompatActivity {
                 FloatingWidgetService.setScript(Do);*/
             }
         });
-
-
-
     }
 
-    private void Init(){
-        Repeat = (EditText) findViewById(R.id.RepeatNumber);
-        TillEmpty = (SwitchCompat) findViewById(R.id.tillEmpty);
-        EatMedicine = (SwitchCompat) findViewById(R.id.EatMedicine);
-        EatStone = (SwitchCompat) findViewById(R.id.EatStone);
-        SetScript = (Button) findViewById(R.id.set_script);
-    }
-
-    private void GetRepeatNumber(){
+    private void GetRepetition(){
         String tmp = Repeat.getText().toString();
         try {
-            RepeatNumber = Integer.parseInt(tmp);
+            nRepetition = Integer.parseInt(tmp);
         }catch (NumberFormatException e){
-            RepeatNumber = 0;
+            nRepetition = 0;
         }
     }
 
@@ -89,5 +82,8 @@ public class ArknightUI extends AppCompatActivity {
         isEatStone = EatStone.isChecked();
     }
 
-
+    @Override
+    public String getFolderName() {
+        return null;
+    }
 }
