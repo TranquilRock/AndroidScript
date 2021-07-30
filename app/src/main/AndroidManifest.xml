@@ -12,9 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidScript">
-        <activity android:name=".Menu.ArkKnights.ArkKnightEditor"></activity>
-        <activity android:name=".Menu.FGO.FGOEditor" /> <!-- Will be removed -->
-        <activity android:name=".Test.TmpMenu">
+        <activity android:name=".Menu.StartService"/>
+        <activity android:name=".Menu.ArkKnights.ArkKnightsEditor" />
+        <activity android:name=".Menu.FGO.FGOEditor"/>
+        <activity android:name=".Menu.Basic.BasicEditor"/>
+        <activity android:name=".Menu.MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,18 +24,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Test.TestActivity"
-            android:theme="@style/Theme.AndroidScript.NoActionBar" /> <!-- Will be removed -->
-        <activity android:name=".Menu.MenuActivity">
-
-            <!-- <intent-filter> -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
-        </activity>
+            android:name=".Menu.SelectFile"
+            android:parentActivityName=".Menu.MenuActivity" />
         <activity
             android:name=".Menu.EditActivity"
-            android:parentActivityName=".Menu.MenuActivity" />
+            android:parentActivityName=".Menu.SelectFile" />
 
         <service
             android:name=".util.AutoClick"
