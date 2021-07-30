@@ -320,7 +320,6 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
 
                 break;
             case R.id.stop_script:
-                DebugMessage.set("Interrupt");
                 while(Script.isAlive()){
                     Script.interrupt();
                 }

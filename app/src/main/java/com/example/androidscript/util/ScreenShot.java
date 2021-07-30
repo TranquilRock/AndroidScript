@@ -23,7 +23,7 @@ import android.media.projection.MediaProjection;
 
 import androidx.annotation.Nullable;
 
-import com.example.androidscript.Test.TmpMenu;
+import com.example.androidscript.Menu.MenuActivity;
 
 import java.nio.ByteBuffer;
 
@@ -141,7 +141,7 @@ public final class ScreenShot extends Service {
 
     private void createNotificationChannel() {
         Notification.Builder builder = new Notification.Builder(getApplicationContext());
-        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, TmpMenu.class), 0))
+        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MenuActivity.class), 0))
                 .setContentTitle("AndroidScript啟動中")
                 .setContentText("AndroidScript正在擷取螢幕")
                 .setWhen(System.currentTimeMillis());

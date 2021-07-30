@@ -6,7 +6,7 @@
     <string name="previous">Previous</string>
 
     <string name="test">Test</string>
-    <string name="start">浮動視窗</string>
+    <string name="start">Start Service</string>
     <string name="menu">主畫面</string>
     <string name="loadScript">匯入腳本</string>
     <string name="newScript">建立腳本</string>
@@ -96,4 +96,7 @@
     <string name="EatMedicine">吃體力</string>
     <string name="EatStone">吃石頭</string>
     <string name="Confirm">確認</string>
+    <string name="fgo">FGO</string>
+    <string name="arkknights">ArkKnights</string>
+    <string name="basic_editor">通用腳本</string>
 </resources>
