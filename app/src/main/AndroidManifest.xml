@@ -12,7 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidScript">
-        <activity android:name=".UserInterface.ArknightUI"></activity>
+        <activity android:name=".Menu.ArkKnights.ArkKnightEditor"></activity>
         <activity android:name=".Menu.FGO.FGOEditor" /> <!-- Will be removed -->
         <activity android:name=".Test.TmpMenu">
             <intent-filter>

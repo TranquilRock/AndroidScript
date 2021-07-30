@@ -2,7 +2,7 @@ package com.example.androidscript.Test;
 
 import com.example.androidscript.FloatingWidget.FloatingWidgetService;
 import com.example.androidscript.Menu.FGO.FGOEditor;
-import com.example.androidscript.UserInterface.ArknightUI;
+import com.example.androidscript.Menu.ArkKnights.ArkKnightEditor;
 import com.example.androidscript.util.BtnMaker;
 import com.example.androidscript.Menu.MenuActivity;
 
@@ -28,7 +28,7 @@ public class TmpMenu extends AppCompatActivity {
         BtnMaker.jump(R.id.button_to_menu, this, MenuActivity.class);
         BtnMaker.jump(R.id.button_to_test, this, TestActivity.class);
         BtnMaker.jump(R.id.button_to_Recycler, this, FGOEditor.class);
-        BtnMaker.jump(R.id.button_to_ArkUI, this, ArknightUI.class);
+        BtnMaker.jump(R.id.button_to_ArkUI, this, ArkKnightEditor.class);
         if (!OpenCVLoader.initDebug()){ throw new AssertionError("OpenCV unavailable!");}
     }
 
