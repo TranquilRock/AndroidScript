@@ -15,37 +15,31 @@ import com.example.androidscript.R;
 import java.util.ArrayList;
 import java.util.Vector;
 
-public abstract class UIActivity extends AppCompatActivity implements Editor{
+public abstract class UIActivity extends AppCompatActivity implements Editor {
 
     protected abstract Vector<String> getBlockData();
 
     protected abstract Vector<String> getButtonData();
 
+    protected abstract void setRecycleBlock();
+
+    protected abstract void setRecycleButton();
+
     protected RecyclerView BlockView;
     protected RecyclerView ButtonView;
-
+    protected Vector<String> BlockData = getBlockData();
+    protected Vector<String> ButtonData = getButtonData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_uiactivity);
-        Vector<String> BlockData = getBlockData();
-        Vector<String> ButtonData = getButtonData();
-
-        this.setRecycleBlock(BlockData);
-        this.setRecycleButton(BlockData, ButtonData);
+        this.BlockData = getBlockData();
+        this.ButtonData = getButtonData();
+        this.ButtonView = findViewById(R.id.buttongrid);
+        this.BlockView = findViewById(R.id.recycleview);
+        this.setRecycleBlock();
+        this.setRecycleButton();
     }
 
-    protected void setRecycleButton(Vector<String> BlockData,Vector<String> ButtonData){
-        ButtonView = findViewById(R.id.buttongrid);
-        ButtonView.setLayoutManager(new GridLayoutManager(this, 5));
-        ButtonView.setAdapter(new FGOButtonAdapter(BlockData,ButtonData));
-    }
-
-    protected void setRecycleBlock(Vector<String> data){
-        BlockView = findViewById(R.id.recycleview);
-        BlockView.setLayoutManager(new LinearLayoutManager(this));
-        BlockView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        BlockView.setAdapter(new FGOBlockAdapter(data));
-    }
 }
