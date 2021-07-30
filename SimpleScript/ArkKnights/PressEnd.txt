@@ -1,5 +1,5 @@
-Wait 4000
-Check OperationEnd
+Wait 3000
+Call CheckOperationEnd.txt
 IfGreater $R 0
 Return 1
 Wait 1000

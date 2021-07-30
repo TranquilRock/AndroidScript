@@ -1,0 +1,5 @@
+Wait 500
+Compare 1130 1230 1480 1380 Operating.png
+IfGreater $R 20
+Return 0
+Return 1

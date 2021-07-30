@@ -1,8 +1,8 @@
-Check Medicine
+Call CheckRestoreSanityMedicine.txt
 IfGreater $R 0
 Return 1
 Click 2415 1150
 Call PressEnter.txt
 IfGreater $R 0
 JumpToLine 4
-Return 1
+Return 0

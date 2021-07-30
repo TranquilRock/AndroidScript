@@ -1,0 +1,5 @@
+Wait 500
+Compare 1430 130 2830 1290 RestoreSanityStone.png
+IfGreater $R 200
+Return 0
+Return 1

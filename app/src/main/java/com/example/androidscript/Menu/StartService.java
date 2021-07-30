@@ -64,7 +64,6 @@ public class StartService extends AppCompatActivity {
         mediaProjectionManager = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
         startActivityForResult((mediaProjectionManager).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
 
-        setTmpScript();
     }
 
 
@@ -90,11 +89,5 @@ public class StartService extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Need permission!", Toast.LENGTH_LONG).show();
         }
         finish();//Exit anyway, since nothing to show;
-    }
-    @Deprecated
-    private void setTmpScript(){
-        Interpreter gg = new ArkKnightsInterpreter();
-        gg.Interpret("AutoFightEat.txt");
-        FloatingWidgetService.setScript(gg);
     }
 }

@@ -1,5 +1,4 @@
-Wait 1000
-Check StartOperation
+Call CheckStartOperation.txt
 IfGreater $R 0
 Return 1
 Click 2450 990

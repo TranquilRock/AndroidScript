@@ -69,6 +69,7 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
     public abstract void Interpret(String FileName);
 
     protected void Interpret(String[] SUPPORTED_COMMAND, String FileName){
+        DebugMessage.set(FileName);
         if(ScriptName == null){
             ScriptName = FileName;
         }
@@ -113,6 +114,7 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
         if (argv != null) {
             for (String arg : argv) {
                 LocalVar.put("$" + argCount, arg);
+                DebugMessage.set("Set Var $" + argCount + " " + arg);
                 argCount++;
             }
         }

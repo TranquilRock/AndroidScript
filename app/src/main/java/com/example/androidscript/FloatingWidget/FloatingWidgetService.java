@@ -35,10 +35,14 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     private LayoutInflater inflater = null;
     private int x_init_cord, y_init_cord, x_init_margin, y_init_margin;
     private static Interpreter Script;
-
-    public static void setScript(Interpreter script) {
+    private static String[] Argv;
+    public static void setScript(Interpreter _script,String[] _Argv) {
         if (Script == null) {
-            Script = script;
+            Script = _script;
+            Argv = _Argv;
+        }
+        else{
+            throw new RuntimeException("Reassign script");
         }
     }
 
@@ -312,7 +316,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                     IsWaiting = false;
                 } else {
                     try {
-                        Script.runCode(null);
+                        Script.runCode(Argv);
                     } catch (Exception e) {
                         DebugMessage.printStackTrace(e);
                     }

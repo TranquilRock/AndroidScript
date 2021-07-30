@@ -62,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
-        android:text="@string/Confirm"
+        android:text="@string/Start"
         app:layout_constraintEnd_toEndOf="@+id/EatMedicine"
         app:layout_constraintStart_toStartOf="@+id/EatMedicine"
         app:layout_constraintTop_toBottomOf="@+id/EatStone" />

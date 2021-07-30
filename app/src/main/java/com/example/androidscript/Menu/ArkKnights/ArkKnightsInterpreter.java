@@ -11,7 +11,7 @@ import com.example.androidscript.util.ScreenShot;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
-
+//TODO substitute of Var is buggy, need Cal function
 public final class ArkKnightsInterpreter extends Interpreter {
     public static final String StrFormat = "([A-Za-z0-9_-]*)";
     public static final String ImgFormat = "([A-Za-z0-9_-]*).(jpg|png)";
@@ -32,21 +32,12 @@ public final class ArkKnightsInterpreter extends Interpreter {
             "Call " + SptFormat,
             "IfGreater " + IntVarFormat + " " + IntVarFormat,
             "IfSmaller " + IntVarFormat + " " + IntVarFormat,
-            "Var " + VarFormat + " " + IntFormat,//Declare Initial Value of Variable
+            "Var " + VarFormat + " " + IntVarFormat,//Declare Initial Value of Variable
+            "Cal " + VarFormat + " += " + IntVarFormat,
+            "Cal " + VarFormat + " -= " + IntVarFormat,
             "Return " + IntVarFormat,
             "Exit",
     };
-    public Map<String, TargetImage> ArkKnights = new HashMap<>();
-
-    public ArkKnightsInterpreter() {
-        this.ArkKnights.put("EnterOperation", new TargetImage(this.ReadImgFromFile("EnterOperation.png"), 2510, 1120, 2960, 1400,60));
-        this.ArkKnights.put("StartOperation", new TargetImage(this.ReadImgFromFile("StartOperation.png"), 2300, 720, 2600, 1260,330));
-        this.ArkKnights.put("Operating", new TargetImage(this.ReadImgFromFile("Operating.png"), 1130, 1230, 1480, 1380,20));
-        this.ArkKnights.put("OperationEnd", new TargetImage(this.ReadImgFromFile("OperationEnd.png"), 90, 1130, 800, 1360,280));
-        this.ArkKnights.put("Medicine", new TargetImage(this.ReadImgFromFile("RestoreSanityMedicine.png"), 1430, 130, 2830, 1290,200));
-        this.ArkKnights.put("Stone", new TargetImage(this.ReadImgFromFile("RestoreSanityStone.png"), 1430, 130, 2830, 1290,200));
-        this.ArkKnights.put("SanityInsufficient", new TargetImage(this.ReadImgFromFile("SanityInsufficient.png"), 250, 310, 750, 750,50));
-    }
 
     @Override
     public void Interpret(String FileName) {
@@ -69,13 +60,14 @@ public final class ArkKnightsInterpreter extends Interpreter {
         assert (MyCode.containsKey(FileName));
         Map<String, String> LocalVar = new HashMap<>();
         parseArguments(LocalVar, argv);
-
         int codeLength = MyCode.get(FileName).codes.size();
         for (int commandIndex = 0; commandIndex < codeLength; commandIndex++) {
             String[] command = (MyCode.get(FileName).codes.get(commandIndex));
             String[] Arguments = new String[command.length - 1];
             for (int i = 1; i < command.length; i++) {//Substitution
-                if (command[i].charAt(0) == '$' && LocalVar.containsKey(command[i])) {//There might be Var command, that should replace $V
+                DebugMessage.set(command[i]);
+                if (command[i].charAt(0) == '$' && !(command[0].equals("Var") && i == 1) && !(command[0].equals("Cal") && (i == 1))) {//There might be Var command, that should replace $V
+                    DebugMessage.set("In");
                     Arguments[i - 1] = LocalVar.get(command[i]);
                 } else {
                     Arguments[i - 1] = command[i];
@@ -89,21 +81,8 @@ public final class ArkKnightsInterpreter extends Interpreter {
                     LocalVar.put("$R", "0");
                     break;
                 case "Compare":
-                    delay();
                     int Similarity = ScreenShot.compare(FileOperation.readPicAsBitmap(Arguments[4]), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]));
                     LocalVar.put("$R", String.valueOf(Similarity));
-                    break;
-                case "Check":
-                    delay();
-                    if (ArkKnights.containsKey(command[1])) {
-                        if (ScreenShot.compare(ArkKnights.get(Arguments[0]))) {
-                            LocalVar.put("$R", "0");
-                        } else {
-                            LocalVar.put("$R", "1");
-                        }
-                    } else {
-                        throw new RuntimeException("Check failed " + Arguments[0]);
-                    }
                     break;
                 case "JumpToLine":
                     commandIndex = Integer.parseInt(Arguments[0]) - 1;//One-based
@@ -138,6 +117,14 @@ public final class ArkKnightsInterpreter extends Interpreter {
                     LocalVar.put(Arguments[0], Arguments[1]);
                     LocalVar.put("$R", "0");
                     break;
+                case "Cal":
+                    assert (Arguments[0].charAt(0) == '$');
+                    if(Arguments[1].equals("+=")){
+                        LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(Arguments[2]) + Integer.parseInt(LocalVar.get(Arguments[0]))));
+                    }else if(Arguments[1].equals("-=")){
+                        LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(LocalVar.get(Arguments[0])) - Integer.parseInt(Arguments[2])));
+                    }
+                    break;
                 case "Exit":
                     Thread.currentThread().interrupt();
                     break;
@@ -149,5 +136,25 @@ public final class ArkKnightsInterpreter extends Interpreter {
         }
         return 0;
     }
-
 }
+//    public Map<String, TargetImage> ArkKnights = new HashMap<>();
+//    public ArkKnightsInterpreter() {
+//        this.ArkKnights.put("EnterOperation", new TargetImage(this.ReadImgFromFile("EnterOperation.png"), 2510, 1120, 2960, 1400,60));
+//        this.ArkKnights.put("StartOperation", new TargetImage(this.ReadImgFromFile("StartOperation.png"), 2300, 720, 2600, 1260,330));
+//        this.ArkKnights.put("Operating", new TargetImage(this.ReadImgFromFile("Operating.png"), 1130, 1230, 1480, 1380,20));
+//        this.ArkKnights.put("OperationEnd", new TargetImage(this.ReadImgFromFile("OperationEnd.png"), 90, 1130, 800, 1360,280));
+//        this.ArkKnights.put("Medicine", new TargetImage(this.ReadImgFromFile("RestoreSanityMedicine.png"), 1430, 130, 2830, 1290,200));
+//        this.ArkKnights.put("Stone", new TargetImage(this.ReadImgFromFile("RestoreSanityStone.png"), 1430, 130, 2830, 1290,200));
+//        this.ArkKnights.put("SanityInsufficient", new TargetImage(this.ReadImgFromFile("SanityInsufficient.png"), 250, 310, 750, 750,50));
+//    }
+//                case "Check":
+//                    if (ArkKnights.containsKey(command[1])) {
+//                        if (ScreenShot.compare(ArkKnights.get(Arguments[0]))) {
+//                            LocalVar.put("$R", "0");
+//                        } else {
+//                            LocalVar.put("$R", "1");
+//                        }
+//                    } else {
+//                        throw new RuntimeException("Check failed " + Arguments[0]);
+//                    }
+//                    break;

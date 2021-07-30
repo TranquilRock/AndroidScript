@@ -3,14 +3,19 @@ package com.example.androidscript.Menu.ArkKnights;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.androidscript.FloatingWidget.FloatingWidgetService;
+import com.example.androidscript.Menu.StartService;
 import com.example.androidscript.R;
 import com.example.androidscript.UserInterface.Editor;
+import com.example.androidscript.util.DebugMessage;
+import com.example.androidscript.util.Interpreter;
 
 public class ArkKnightsEditor extends AppCompatActivity implements Editor {
     SwitchCompat TillEmpty;
@@ -35,38 +40,35 @@ public class ArkKnightsEditor extends AppCompatActivity implements Editor {
         SetScript = findViewById(R.id.set_script);
         SetScript.setOnClickListener(v -> {
             CheckState();
-            if (isTillEmpty){
-                if(isEatMedicine && isEatStone){
-                    SelectedScript = "AutoFightEatBoth.txt";
-                    Toast.makeText(getApplicationContext() ,"EatBoth" , Toast.LENGTH_SHORT).show();
-                }else if (isEatMedicine){
-                    SelectedScript = "AutoFightEat.txt";
-                    Toast.makeText(getApplicationContext(), "EatMedicine", Toast.LENGTH_SHORT).show();
-                }else if (isEatStone){
-                    SelectedScript = "AutoFightEatStone.txt";
-                    Toast.makeText(getApplicationContext(), "EatStone", Toast.LENGTH_SHORT).show();
-                }else{
-                    SelectedScript = "AutoFight.txt";
-                    Toast.makeText(getApplicationContext(), "Do", Toast.LENGTH_SHORT).show();
-                }
-            }else {//TODO: wait for script for limited times
-                GetRepetition();
+            GetRepetition();
+            if(isEatStone){
+                SelectedScript = "AutoFightEatBoth.txt";
+                Toast.makeText(getApplicationContext() ,"EatBoth" , Toast.LENGTH_SHORT).show();
+            }else if (isEatMedicine){
+                SelectedScript = "AutoFightEatMedicine.txt";
+                Toast.makeText(getApplicationContext(), "EatMedicine", Toast.LENGTH_SHORT).show();
+            }else{
                 SelectedScript = "AutoFight.txt";
-                Toast.makeText(getApplicationContext(), String.valueOf(nRepetition), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Do", Toast.LENGTH_SHORT).show();
             }
-            /*
-            Interpreter Do = new ArkKnightsInterpreter();
-            Do.Interpret(SelectedScript);
-            FloatingWidgetService.setScript(Do);*/
+            String[] Argv = {String.valueOf(nRepetition)};
+            Interpreter Script = new ArkKnightsInterpreter();
+            Script.Interpret(SelectedScript);
+            FloatingWidgetService.setScript(Script,Argv);
+            startActivity(new Intent(this, StartService.class));
         });
     }
 
     private void GetRepetition(){
-        String tmp = Repeat.getText().toString();
-        try {
-            nRepetition = Integer.parseInt(tmp);
-        }catch (NumberFormatException e){
-            nRepetition = 0;
+        if(isTillEmpty){
+            nRepetition = 100000;
+        }else{
+            try {
+                nRepetition = Integer.parseInt(Repeat.getText().toString());
+            }catch (NumberFormatException e){
+
+                nRepetition = 0;
+            }
         }
     }
 
