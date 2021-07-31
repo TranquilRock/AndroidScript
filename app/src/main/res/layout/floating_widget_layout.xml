@@ -18,18 +18,18 @@
 
             <ImageView
                 android:id="@+id/collapsed_iv"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginTop="12dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginStart="3dp"
                 android:src="@mipmap/ic_launcher_round"
                 tools:ignore="ContentDescription" />
 
             <ImageView
                 android:id="@+id/close_floating_view"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="5dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="45dp"
                 android:background="@drawable/circle_shape"
                 android:src="@drawable/ic_close_white_24dp"
                 tools:ignore="ContentDescription" />
@@ -39,7 +39,7 @@
         <LinearLayout
             android:id="@+id/expanded_container"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:background="@color/floating_widget_bg"
             android:gravity="center"
             android:orientation="horizontal"
@@ -48,8 +48,8 @@
 
             <ImageView
                 android:id="@+id/floating_widget_image_view"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
                 android:src="@mipmap/ic_launcher" />
 
             <LinearLayout
@@ -58,24 +58,13 @@
                 android:layout_marginStart="5dp"
                 android:orientation="vertical" />
 
-
-            <!--  ImageView to Close Expanded View  -->
-            <ImageView
-                android:id="@+id/close_expanded_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:src="@drawable/ic_close_black_24dp" />
-
-
             <!--  Stop Script  -->
             <ImageView
                 android:id="@+id/stop_script"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="5dp"
+                android:padding="3dp"
                 android:src="@drawable/ic_baseline_stop_24" />
 
             <!--  Run Script  -->
@@ -84,7 +73,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="5dp"
+                android:padding="3dp"
                 android:src="@drawable/ic_baseline_play_arrow_24" />
 
             <!--  ImageView to Open Activity  -->
@@ -93,14 +82,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:padding="5dp"
+                android:padding="3dp"
                 android:src="@drawable/ic_baseline_settings_24" />
 
             <TextView
                 android:id="@+id/stateToast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
+                android:padding="3dp"
                 android:text="@string/state" />
 
         </LinearLayout>

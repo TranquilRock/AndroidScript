@@ -1,6 +1,11 @@
 package com.example.androidscript.util;
 
 import android.graphics.Bitmap;
+import android.widget.TextView;
+
+import com.example.androidscript.FloatingWidget.FloatingWidgetService;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,23 +21,6 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
     public static class INVALID_CODE_EXCEPTION extends Exception {
         public INVALID_CODE_EXCEPTION(String s) {
             DebugMessage.set(s);
-        }
-    }
-
-    public static class TargetImage {
-        public Bitmap source;
-        public int x1;//Starting point in whole graph
-        public int y1;
-        public int x2;
-        public int y2;
-        public int threshold;
-        public TargetImage(Bitmap source, int x1, int y1, int x2, int y2,int threshold) {
-            this.source = source;
-            this.x1 = x1;
-            this.y1 = y1;
-            this.x2 = x2;
-            this.y2 = y2;
-            this.threshold = threshold;
         }
     }
 
@@ -60,7 +48,6 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
             }
         }
     }
-
     public boolean running = false;
 
     protected String ScriptName = null;

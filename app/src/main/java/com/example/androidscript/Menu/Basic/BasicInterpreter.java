@@ -1,12 +1,15 @@
 package com.example.androidscript.Menu.Basic;
 
 import android.graphics.Bitmap;
+import android.widget.TextView;
 
 import com.example.androidscript.util.AutoClick;
 import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
 import com.example.androidscript.util.Interpreter;
 import com.example.androidscript.util.ScreenShot;
+
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -132,4 +135,6 @@ public final class BasicInterpreter extends Interpreter {
         }
         return 0;
     }
+
+
 }

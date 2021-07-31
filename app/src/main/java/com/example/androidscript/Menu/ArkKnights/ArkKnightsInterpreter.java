@@ -2,6 +2,7 @@ package com.example.androidscript.Menu.ArkKnights;
 
 import android.graphics.Bitmap;
 
+import com.example.androidscript.FloatingWidget.FloatingWidgetService;
 import com.example.androidscript.util.AutoClick;
 import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
@@ -38,6 +39,8 @@ public final class ArkKnightsInterpreter extends Interpreter {
             "Return " + IntVarFormat,
             "Exit",
     };
+
+
 
     public ArkKnightsInterpreter(String FileName){
         ScriptName = FileName;
@@ -79,7 +82,6 @@ public final class ArkKnightsInterpreter extends Interpreter {
                     Arguments[i - 1] = command[i];
                 }
             }
-
             switch (command[0]) {
                 case "Click":
                     delay();

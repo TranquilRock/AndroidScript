@@ -7,15 +7,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.androidscript.FloatingWidget.FloatingWidgetService;
 import com.example.androidscript.Menu.StartService;
 import com.example.androidscript.R;
 import com.example.androidscript.UserInterface.Editor;
-import com.example.androidscript.util.DebugMessage;
-import com.example.androidscript.util.Interpreter;
+import com.example.androidscript.util.BtnMaker;
 
 public class ArkKnightsEditor extends AppCompatActivity implements Editor {
     SwitchCompat TillEmpty;
@@ -33,40 +32,52 @@ public class ArkKnightsEditor extends AppCompatActivity implements Editor {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ark_knights_editor);
-        Repeat = findViewById(R.id.RepeatNumber);
+        Repeat = findViewById(R.id.Repetition);
         TillEmpty = findViewById(R.id.tillEmpty);
+        TillEmpty.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    Repeat.setVisibility(View.GONE);
+                } else {
+                    Repeat.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         EatMedicine = findViewById(R.id.EatMedicine);
         EatStone = findViewById(R.id.EatStone);
-        SetScript = findViewById(R.id.set_script);
-        SetScript.setOnClickListener(v -> {
+        BtnMaker.registerOnClick(R.id.set_service, this, v -> {
+            startActivity(new Intent(this, StartService.class));
+        });
+        BtnMaker.registerOnClick(R.id.set_script, this, v -> {
             CheckState();
             GetRepetition();
-            if(isEatStone){
+            if (isEatStone) {
                 SelectedScript = "AutoFightEatBoth.txt";
-            }else if (isEatMedicine){
+            } else if (isEatMedicine) {
                 SelectedScript = "AutoFightEatMedicine.txt";
-            }else{
+            } else {
                 SelectedScript = "AutoFight.txt";
             }
-            FloatingWidgetService.setScript(new ArkKnightsInterpreter(SelectedScript),new String[]{String.valueOf(nRepetition)});
-            startActivity(new Intent(this, StartService.class));
+            FloatingWidgetService.setScript(new ArkKnightsInterpreter(SelectedScript), new String[]{String.valueOf(nRepetition)});
+            StartService.startFloatingWidget(this);
         });
     }
 
-    private void GetRepetition(){
-        if(isTillEmpty){
+    private void GetRepetition() {
+        if (isTillEmpty) {
             nRepetition = 100000;
-        }else{
+        } else {
             try {
                 nRepetition = Integer.parseInt(Repeat.getText().toString());
-            }catch (NumberFormatException e){
+            } catch (NumberFormatException e) {
 
                 nRepetition = 0;
             }
         }
     }
 
-    private void CheckState(){
+    private void CheckState() {
         isTillEmpty = TillEmpty.isChecked();
         isEatMedicine = EatMedicine.isChecked();
         isEatStone = EatStone.isChecked();
