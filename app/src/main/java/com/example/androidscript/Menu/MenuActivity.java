@@ -27,7 +27,6 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
         FileOperation.setUpFileRoot(getFilesDir().getAbsolutePath() + "/");
 
-        BtnMaker.jump(R.id.start_service,this,StartService.class);
         BtnMaker.jump(R.id.button_to_ArkUI, this, ArkKnightsEditor.class);
         BtnMaker.jumpWithMessage(R.id.button_to_FGO, this, SelectFile.class, "next_destination", "com.example.androidscript.Menu.FGO.FGOEditor");
         BtnMaker.jumpWithMessage(R.id.button_to_basic, this, SelectFile.class, "next_destination", "com.example.androidscript.Menu.Basic.BasicEditor");
