@@ -43,18 +43,12 @@ public class ArkKnightsEditor extends AppCompatActivity implements Editor {
             GetRepetition();
             if(isEatStone){
                 SelectedScript = "AutoFightEatBoth.txt";
-                Toast.makeText(getApplicationContext() ,"EatBoth" , Toast.LENGTH_SHORT).show();
             }else if (isEatMedicine){
                 SelectedScript = "AutoFightEatMedicine.txt";
-                Toast.makeText(getApplicationContext(), "EatMedicine", Toast.LENGTH_SHORT).show();
             }else{
                 SelectedScript = "AutoFight.txt";
-                Toast.makeText(getApplicationContext(), "Do", Toast.LENGTH_SHORT).show();
             }
-            String[] Argv = {String.valueOf(nRepetition)};
-            Interpreter Script = new ArkKnightsInterpreter();
-            Script.Interpret(SelectedScript);
-            FloatingWidgetService.setScript(Script,Argv);
+            FloatingWidgetService.setScript(new ArkKnightsInterpreter(SelectedScript),new String[]{String.valueOf(nRepetition)});
             startActivity(new Intent(this, StartService.class));
         });
     }

@@ -26,7 +26,7 @@ public final class ImageHandler {
     }
 
     private static Mat featureExtraction(Mat grayBitmap) {//KeyPoint detection and extraction
-        ORB orb = ORB.create(1000);
+        ORB orb = ORB.create(100000);
         MatOfKeyPoint keyPoint = new MatOfKeyPoint();
         orb.detect(grayBitmap, keyPoint);
         Mat ret = new Mat();
@@ -78,5 +78,37 @@ public final class ImageHandler {
 
         DebugMessage.set("Match " + matchCount + " points");
         return matchCount;
+    }
+
+    public static boolean TestMatchPicture(Bitmap screenshot, Bitmap target) {
+        if (screenshot == null || target == null) {
+            return false;
+        }
+        Mat sourceMat = grayScale(screenshot);
+        Mat targetMat = grayScale(target);
+        Mat screenDescriptor = featureExtraction(sourceMat); // Size:(totalFeatures, 32)
+        Mat targetDescriptor = featureExtraction(targetMat);
+
+        DMatch[] matchPoints = featureMatch(screenDescriptor, targetDescriptor).toArray();//Length: max(AFeatures,B)
+
+        float minDistance = 0;
+        int matchCount = 0;
+
+        for (DMatch match : matchPoints) {
+            if (minDistance > match.distance) {
+                minDistance = match.distance;
+            }
+        }
+
+        minDistance = max(2 * minDistance, 30.0f);
+
+        for (int z = 0; z < screenDescriptor.rows(); z++) {
+            if (matchPoints[z].distance <= minDistance) {
+                matchCount++;
+            }
+        }
+
+        DebugMessage.set("Match " + matchCount + " points " + screenDescriptor.width() + " " + screenDescriptor.height() + " " + targetDescriptor.width() + " " + targetDescriptor.height());
+        return 2 * matchCount >= min(screenDescriptor.height(),targetDescriptor.height());
     }
 }

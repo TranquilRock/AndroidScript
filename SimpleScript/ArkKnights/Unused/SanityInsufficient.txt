@@ -1,5 +1,0 @@
-Wait 700
-Check SanityInsufficient
-IfGreater $R 0
-Return 1
-Return 0

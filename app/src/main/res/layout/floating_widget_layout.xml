@@ -4,13 +4,10 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-    <!--   Root container of Floating Widget View  -->
     <RelativeLayout
         android:id="@+id/root_container"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-        <!--  View while view is collapsed  -->
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:id="@+id/collapse_view"
@@ -19,7 +16,6 @@
             android:orientation="vertical"
             android:visibility="visible">
 
-            <!--   ImageView of floating widget  -->
             <ImageView
                 android:id="@+id/collapsed_iv"
                 android:layout_width="35dp"
@@ -28,7 +24,6 @@
                 android:src="@mipmap/ic_launcher_round"
                 tools:ignore="ContentDescription" />
 
-            <!--   Close button to close Floating Widget View  -->
             <ImageView
                 android:id="@+id/close_floating_view"
                 android:layout_width="15dp"
@@ -83,15 +78,6 @@
                 android:padding="5dp"
                 android:src="@drawable/ic_baseline_stop_24" />
 
-            <!--  Pause Script  -->
-            <ImageView
-                android:id="@+id/pause_script"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="5dp"
-                android:src="@drawable/ic_baseline_pause_24" />
-
             <!--  Run Script  -->
             <ImageView
                 android:id="@+id/run_script"
@@ -112,7 +98,7 @@
 
             <TextView
                 android:id="@+id/stateToast"
-                android:layout_width="75dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="5dp"
                 android:text="@string/state" />

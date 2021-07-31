@@ -17,7 +17,6 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
         public INVALID_CODE_EXCEPTION(String s) {
             DebugMessage.set(s);
         }
-        public INVALID_CODE_EXCEPTION() {}
     }
 
     public static class TargetImage {
@@ -62,6 +61,8 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
         }
     }
 
+    public boolean running = false;
+
     protected String ScriptName = null;
 
     protected Map<String, Interpreter.Code> MyCode = new HashMap<>();
@@ -69,10 +70,7 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
     public abstract void Interpret(String FileName);
 
     protected void Interpret(String[] SUPPORTED_COMMAND, String FileName){
-        DebugMessage.set(FileName);
-        if(ScriptName == null){
-            ScriptName = FileName;
-        }
+        DebugMessage.set("Interpreting:" + FileName);
         Vector<String> Command = ReadCodeFromFile(FileName);
         try {
             MyCode.put(FileName, new Code(SUPPORTED_COMMAND, Command));
@@ -91,9 +89,10 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
     private String[] run_arg_argv = null;
     private int run_arg_depth = -1;
 
-    public final void runCode(String[] argv) throws RuntimeException {
+    public final void runCode(String[] argv){
         this.run_arg_argv = argv;
         this.run_arg_depth = 0;
+        this.running = true;
         this.start();
     }
 
@@ -104,23 +103,22 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
         this.run(ScriptName, run_arg_argv, run_arg_depth);
     }
 
-    public abstract int run(String FileName, String[] argv, int depth) throws RuntimeException;
+    protected abstract int run(String FileName, String[] argv, int depth);
 
     //==========Helper=========================================
 
-    protected void parseArguments(Map<String, String> LocalVar, String[] argv) {
+    protected static void parseArguments(Map<String, String> LocalVar, String[] argv) {
         LocalVar.put("$R", "0");
         int argCount = 1;
         if (argv != null) {
             for (String arg : argv) {
                 LocalVar.put("$" + argCount, arg);
-                DebugMessage.set("Set Var $" + argCount + " " + arg);
                 argCount++;
             }
         }
     }
 
-    protected void sleep(int ms) {
+    protected static void sleep(int ms) {
         try {
             Thread.sleep(ms);
         } catch (Exception e) {
@@ -128,7 +126,7 @@ public abstract class Interpreter extends Thread {//Every child only need to spe
         }
     }
 
-    protected void delay(){
+    protected static void delay(){
         sleep(500);
     }
 

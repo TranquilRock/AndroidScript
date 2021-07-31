@@ -33,12 +33,11 @@ import static java.lang.Math.min;
 public final class ScreenShot extends Service {
     private static ImageReader imageReader = null;
     private static Intent Permission = null;
-    private static Point TargetOffset = null;//Todo make screenshot range start from offset
     private static VirtualDisplay virtualDisplay = null;
     private static MediaProjection mediaProjection = null;
     private static MediaProjectionManager mediaProjectionManager = null;
-    private static int screenHeight = 0;
-    private static int screenWidth = 0;
+    private static int screenHeight;
+    private static int screenWidth;
     public static boolean ServiceStart = false;
     public static boolean Transposed;
 
@@ -169,18 +168,19 @@ public final class ScreenShot extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         createNotificationChannel();
         ScreenShot.mediaProjection = ScreenShot.mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, ScreenShot.Permission);
-        ScreenShot.TargetOffset = new Point(0, 0);
         ScreenShot.ServiceStart = true;
         DebugMessage.set("Start Screen Casting on (" + screenHeight + "," + screenWidth + ") device\n");
         return 0;
     }
 
     public static int compare(Bitmap Target, int x1, int y1, int x2, int y2) {
-        return ImageHandler.matchPicture(Bitmap.createBitmap(Shot(), x1, y1, (x2 - x1), (y2 - y1)), Target);
-    }
-
-    public static boolean compare(Interpreter.TargetImage target) {
-        return ImageHandler.matchPicture(Bitmap.createBitmap(Shot(), target.x1, target.y1, (target.x2 - target.x1), (target.y2 - target.y1)), target.source) >= target.threshold;
+        if(ImageHandler.TestMatchPicture(Shot(),Target)){
+            return 10000;
+        }
+        else{
+            return 0;
+        }
+//        return ImageHandler.matchPicture(Bitmap.createBitmap(Shot(), x1, y1, (x2 - x1), (y2- y1)), Target);
     }
 
 }

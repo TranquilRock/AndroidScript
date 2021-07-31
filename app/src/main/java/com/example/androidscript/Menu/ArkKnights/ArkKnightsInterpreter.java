@@ -11,7 +11,7 @@ import com.example.androidscript.util.ScreenShot;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
-//TODO substitute of Var is buggy, need Cal function
+
 public final class ArkKnightsInterpreter extends Interpreter {
     public static final String StrFormat = "([A-Za-z0-9_-]*)";
     public static final String ImgFormat = "([A-Za-z0-9_-]*).(jpg|png)";
@@ -39,6 +39,11 @@ public final class ArkKnightsInterpreter extends Interpreter {
             "Exit",
     };
 
+    public ArkKnightsInterpreter(String FileName){
+        ScriptName = FileName;
+        this.Interpret(FileName);
+    }
+
     @Override
     public void Interpret(String FileName) {
         super.Interpret(SUPPORTED_COMMAND, FileName);
@@ -55,52 +60,46 @@ public final class ArkKnightsInterpreter extends Interpreter {
     }
 
     @Override
-    public int run(String FileName, String[] argv, int depth) throws RuntimeException {//Run code that is already read in MyCode
+    protected int run(String FileName, String[] argv, int depth) {//Run code that is already read in MyCode
         assert (depth < 5);
-        assert (MyCode.containsKey(FileName));
         Map<String, String> LocalVar = new HashMap<>();
         parseArguments(LocalVar, argv);
         int codeLength = MyCode.get(FileName).codes.size();
         for (int commandIndex = 0; commandIndex < codeLength; commandIndex++) {
+            if (!this.running) {
+                return 1;
+            }
+
             String[] command = (MyCode.get(FileName).codes.get(commandIndex));
             String[] Arguments = new String[command.length - 1];
             for (int i = 1; i < command.length; i++) {//Substitution
-                DebugMessage.set(command[i]);
                 if (command[i].charAt(0) == '$' && !(command[0].equals("Var") && i == 1) && !(command[0].equals("Cal") && (i == 1))) {//There might be Var command, that should replace $V
-                    DebugMessage.set("In");
                     Arguments[i - 1] = LocalVar.get(command[i]);
                 } else {
                     Arguments[i - 1] = command[i];
                 }
             }
-            DebugMessage.set(depth + ":" + FileName);
+
             switch (command[0]) {
                 case "Click":
                     delay();
                     AutoClick.Click(Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]));
-                    LocalVar.put("$R", "0");
                     break;
                 case "Compare":
-                    int Similarity = ScreenShot.compare(FileOperation.readPicAsBitmap(Arguments[4]), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]));
+                    int Similarity = ScreenShot.compare(ReadImgFromFile(Arguments[4]), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]));
                     LocalVar.put("$R", String.valueOf(Similarity));
                     break;
                 case "JumpToLine":
                     commandIndex = Integer.parseInt(Arguments[0]) - 1;//One-based
-                    LocalVar.put("$R", "0");
                     break;
                 case "Wait":
                     sleep(Integer.parseInt(Arguments[0]));
-                    LocalVar.put("$R", "0");
                     break;
                 case "Call":
-                    if (MyCode.containsKey(Arguments[0])) {
-                        String[] nextArgv = new String[command.length - 2];
-                        System.arraycopy(Arguments, 1, nextArgv, 0, command.length - 2);
-                        int result = run(Arguments[0], nextArgv, depth + 1);
-                        LocalVar.put("$R", String.valueOf(result));
-                    } else {
-                        LocalVar.put("$R", "1");
-                    }
+                    assert (MyCode.containsKey(Arguments[0]));
+                    String[] nextArgv = new String[command.length - 2];
+                    System.arraycopy(Arguments, 1, nextArgv, 0, command.length - 2);
+                    LocalVar.put("$R", String.valueOf(run(Arguments[0], nextArgv, depth + 1)));
                     break;
                 case "IfGreater":
                     if (Integer.parseInt(Arguments[0]) <= Integer.parseInt(Arguments[1])) {//Failed, skip next line
@@ -115,19 +114,18 @@ public final class ArkKnightsInterpreter extends Interpreter {
                 case "Var":
                     assert (Arguments[0].charAt(0) == '$');
                     LocalVar.put(Arguments[0], Arguments[1]);
-                    LocalVar.put("$R", "0");
                     break;
                 case "Cal":
                     assert (Arguments[0].charAt(0) == '$');
-                    if(Arguments[1].equals("+=")){
+                    if (Arguments[1].equals("+=")) {
                         LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(Arguments[2]) + Integer.parseInt(LocalVar.get(Arguments[0]))));
-                    }else if(Arguments[1].equals("-=")){
+                    } else if (Arguments[1].equals("-=")) {
                         LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(LocalVar.get(Arguments[0])) - Integer.parseInt(Arguments[2])));
                     }
                     break;
                 case "Exit":
-                    Thread.currentThread().interrupt();
-                    break;
+                    this.running = false;
+                    return 1;
                 case "Return":
                     return Integer.parseInt(Arguments[0]);
                 default:
@@ -137,24 +135,3 @@ public final class ArkKnightsInterpreter extends Interpreter {
         return 0;
     }
 }
-//    public Map<String, TargetImage> ArkKnights = new HashMap<>();
-//    public ArkKnightsInterpreter() {
-//        this.ArkKnights.put("EnterOperation", new TargetImage(this.ReadImgFromFile("EnterOperation.png"), 2510, 1120, 2960, 1400,60));
-//        this.ArkKnights.put("StartOperation", new TargetImage(this.ReadImgFromFile("StartOperation.png"), 2300, 720, 2600, 1260,330));
-//        this.ArkKnights.put("Operating", new TargetImage(this.ReadImgFromFile("Operating.png"), 1130, 1230, 1480, 1380,20));
-//        this.ArkKnights.put("OperationEnd", new TargetImage(this.ReadImgFromFile("OperationEnd.png"), 90, 1130, 800, 1360,280));
-//        this.ArkKnights.put("Medicine", new TargetImage(this.ReadImgFromFile("RestoreSanityMedicine.png"), 1430, 130, 2830, 1290,200));
-//        this.ArkKnights.put("Stone", new TargetImage(this.ReadImgFromFile("RestoreSanityStone.png"), 1430, 130, 2830, 1290,200));
-//        this.ArkKnights.put("SanityInsufficient", new TargetImage(this.ReadImgFromFile("SanityInsufficient.png"), 250, 310, 750, 750,50));
-//    }
-//                case "Check":
-//                    if (ArkKnights.containsKey(command[1])) {
-//                        if (ScreenShot.compare(ArkKnights.get(Arguments[0]))) {
-//                            LocalVar.put("$R", "0");
-//                        } else {
-//                            LocalVar.put("$R", "1");
-//                        }
-//                    } else {
-//                        throw new RuntimeException("Check failed " + Arguments[0]);
-//                    }
-//                    break;

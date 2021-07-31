@@ -8,10 +8,10 @@
     <string name="test">Test</string>
     <string name="start">Start Service</string>
     <string name="menu">主畫面</string>
-    <string name="loadScript">匯入腳本</string>
+    <string name="loadScript">選擇腳本</string>
     <string name="newScript">建立腳本</string>
-    <string name="scriptName">請輸入名稱</string>
-    <string name="state">處理中...</string>
+    <string name="scriptName">請輸入新檔案名稱</string>
+    <string name="state">CurCommand</string>
     <string name="selectFriends">選擇好友</string>
     <string name="selectCraft">選擇禮裝</string>
     <string name="preStage">關卡前置</string>
@@ -99,4 +99,5 @@
     <string name="fgo">FGO</string>
     <string name="arkknights">ArkKnights</string>
     <string name="basic_editor">通用腳本</string>
+    <string name="select_file_description">選擇現有腳本或是輸入新的腳本名稱</string>
 </resources>

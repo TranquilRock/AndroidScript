@@ -37,7 +37,7 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
         this.onOrderChange = new updateOrder() {
             @Override
             public void swap(int a, int b) {
-                if (a > 0 && b < Blocks.size() && a < b) {
+                if (a > 0 && b < Blocks.size() - 1 && a < b) {
                     Collections.swap(Blocks, a, b);
                     notifyDataSetChanged();
                 }
@@ -45,7 +45,7 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
 
             @Override
             public void delete(int a) {
-                if (a > 0 && a < Blocks.size()) {
+                if (a > 0 && a < Blocks.size() - 1) {
                     Blocks.remove(a);
                     notifyDataSetChanged();
                 }

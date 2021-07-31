@@ -33,8 +33,8 @@ import java.util.Vector;
 import java.util.regex.Pattern;
 
 public class StartService extends AppCompatActivity {
-    public static final int START_SERVICE_CODE = 321;
     public static final int PROJECTION_REQUEST_CODE = 123;
+    public static final int FOREGROUND_REQUEST_CODE = 111;
     private MediaProjectionManager mediaProjectionManager;
 
     @Override
@@ -58,14 +58,16 @@ public class StartService extends AppCompatActivity {
             List<String> requestedPermissions = new ArrayList<>();
             requestedPermissions.add(Manifest.permission.FOREGROUND_SERVICE);//Stub to add more permissions.
             String[] requests = new String[requestedPermissions.size()];
-            requestPermissions(requests, 100);
+            requestPermissions(requests, FOREGROUND_REQUEST_CODE);
         }
 
-        mediaProjectionManager = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
-        startActivityForResult((mediaProjectionManager).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
-
+        if(!ScreenShot.ServiceStart){
+            mediaProjectionManager = (MediaProjectionManager) getSystemService(Context.MEDIA_PROJECTION_SERVICE);
+            startActivityForResult((mediaProjectionManager).createScreenCaptureIntent(), PROJECTION_REQUEST_CODE);
+        }else{
+            finish();
+        }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -75,19 +77,23 @@ public class StartService extends AppCompatActivity {
                 ScreenShot.setUpMediaProjectionManager(data, mediaProjectionManager, true);
                 startService(new Intent(getApplicationContext(), ScreenShot.class));
             }, 1);
-            try {//Check all satisfied
-                if (Settings.canDrawOverlays(getApplicationContext()) && Settings.Secure.getInt(getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED) > 0) {
-                    startService(new Intent(this, FloatingWidgetService.class));
-                } else {
-                    Toast.makeText(getApplicationContext(), "Need permission!", Toast.LENGTH_LONG).show();
-                }
-            } catch (Settings.SettingNotFoundException e) {
-                DebugMessage.printStackTrace(e);
-            }
         }
         else{
-            Toast.makeText(getApplicationContext(), "Need permission!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Authentication failed!", Toast.LENGTH_LONG).show();
         }
-        finish();//Exit anyway, since nothing to show;
+        finish();
+    }
+
+    public static void startFloatingWidget(AppCompatActivity appCompatActivity){
+        try {
+            if (Settings.canDrawOverlays(appCompatActivity.getApplicationContext()) && Settings.Secure.getInt(appCompatActivity.getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED) > 0) {
+                appCompatActivity.startService(new Intent(appCompatActivity, FloatingWidgetService.class));
+                appCompatActivity.finishAffinity();
+            } else {
+                Toast.makeText(appCompatActivity.getApplicationContext(), "Need permission!", Toast.LENGTH_LONG).show();
+            }
+        } catch (Settings.SettingNotFoundException e) {
+            DebugMessage.printStackTrace(e);
+        }
     }
 }

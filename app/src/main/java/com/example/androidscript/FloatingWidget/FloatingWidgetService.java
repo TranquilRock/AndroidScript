@@ -30,19 +30,18 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     private WindowManager mWindowManager = null;
     private View mFloatingWidgetView = null, collapsedView = null, expandedView = null;
     private ImageView remove_image_view = null;
-    private Point szWindow = new Point();
+    private final Point szWindow = new Point();
     private View removeFloatingWidgetView = null;
     private LayoutInflater inflater = null;
     private int x_init_cord, y_init_cord, x_init_margin, y_init_margin;
     private static Interpreter Script;
     private static String[] Argv;
-    public static void setScript(Interpreter _script,String[] _Argv) {
-        if (Script == null) {
-            Script = _script;
-            Argv = _Argv;
-        }
-        else{
-            throw new RuntimeException("Reassign script");
+
+    public static void setScript(Interpreter _script, String[] _Argv) {
+        Script = _script;
+        Argv = _Argv;
+        if (Script != null) {
+            DebugMessage.set("Reassign script");
         }
     }
 
@@ -289,10 +288,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         mFloatingWidgetView.findViewById(R.id.open_activity_button).setOnClickListener(this);
         mFloatingWidgetView.findViewById(R.id.run_script).setOnClickListener(this);
         mFloatingWidgetView.findViewById(R.id.stop_script).setOnClickListener(this);
-        mFloatingWidgetView.findViewById(R.id.pause_script).setOnClickListener(this);
     }
-
-    private boolean IsWaiting = false;
 
     @Override
     public void onClick(View v) {
@@ -311,29 +307,12 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                 stopSelf();
                 break;
             case R.id.run_script:
-                if (IsWaiting) {
-                    Script.notify();
-                    IsWaiting = false;
-                } else {
-                    try {
-                        Script.runCode(Argv);
-                    } catch (Exception e) {
-                        DebugMessage.printStackTrace(e);
-                    }
+                if (!Script.running) {
+                    Script.runCode(Argv);
                 }
-
                 break;
             case R.id.stop_script:
-                while(Script.isAlive()){
-                    Script.interrupt();
-                }
-                break;
-            case R.id.pause_script:
-                try {
-                    Script.wait();
-                } catch (Exception e) {
-                    DebugMessage.printStackTrace(e);
-                }
+                Script.running = false;
                 break;
         }
     }
