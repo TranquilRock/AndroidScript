@@ -3,8 +3,8 @@
     android:id="@+id/remove_relativelayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp">
-
+    android:padding="10dp"
+    android:gravity="center">
     <ImageView
         android:id="@+id/remove_img"
         android:layout_width="60dp"

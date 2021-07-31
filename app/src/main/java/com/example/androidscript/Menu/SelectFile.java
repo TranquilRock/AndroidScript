@@ -8,6 +8,7 @@ import android.media.projection.MediaProjectionManager;
 import android.os.Bundle;
 import android.content.Intent;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.androidscript.R;
@@ -22,8 +23,9 @@ public class SelectFile extends AppCompatActivity {
     public static final String SUPPORTED_FILE_NAME_PATTERN = "([A-Za-z0-9_-]*).txt";
     private EditText etNewName;
     private TextView output;
+    private Spinner select;
     private Vector<String> availableFile;
-    public static final int SELECT_FILE_CODE  = 111;
+//    public static final int SELECT_FILE_CODE  = 111;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +38,17 @@ public class SelectFile extends AppCompatActivity {
     private void setupElements() {
         etNewName = findViewById(R.id.et_New_Name);
         output = findViewById(R.id.output);//Show some massage to user
-        BtnMaker.performIntentForResult(R.id.btn_To_Load, this, pickFileIntent(), SELECT_FILE_CODE);
+        select = SpnMaker.fromString(R.id.spinner_Select_Script, this, availableFile);
+
+        BtnMaker.registerOnClick(R.id.btn_To_Load, this, (v -> {
+            String FileName = select.getSelectedItem().toString();
+            if (!FileName.equals("")) {
+                switchToEdit(FileName);
+            } else {
+                output.setText("必須輸入檔名");
+            }
+        }));
+
         BtnMaker.registerOnClick(R.id.btn_To_Create, this, (v -> {
             String FileName = etNewName.getText().toString();
             if (!FileName.equals("")) {
@@ -45,22 +57,21 @@ public class SelectFile extends AppCompatActivity {
                 output.setText("必須輸入檔名");
             }
         }));
-        SpnMaker.fromString(R.id.spinner_Select_Script, this, availableFile);
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == SELECT_FILE_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            String FileName = data.getDataString();
-            File g = new File(FileName);
-            if(g.canRead()){
-                DebugMessage.set("Can read file.");
-            }
-            output.setText(FileName);
-            switchToEdit(FileName);
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+////        if (requestCode == SELECT_FILE_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
+////            String FileName = data.getDataString();
+////            File g = new File(FileName);
+////            if(g.canRead()){
+////                DebugMessage.set("Can read file.");
+////            }
+////            output.setText(FileName);
+////            switchToEdit(FileName);
+////        }
+//    }
 
     protected void switchToEdit(String FileName){
         String[] tmp = FileName.split("/");
@@ -81,12 +92,12 @@ public class SelectFile extends AppCompatActivity {
         }
     }
 
-    private static Intent pickFileIntent() {
-        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-        chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
-        chooseFile.setType("file/*");
-        return Intent.createChooser(chooseFile, "Choose a file");
-    }
+//    private static Intent pickFileIntent() {
+//        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
+//        chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
+//        chooseFile.setType("file/*");
+//        return Intent.createChooser(chooseFile, "Choose a file");
+//    }
 
     protected boolean checkFilename(String FileName) {
         return Pattern.matches(SUPPORTED_FILE_NAME_PATTERN, FileName);

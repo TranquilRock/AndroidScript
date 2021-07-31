@@ -79,7 +79,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                     PixelFormat.TRANSLUCENT);
         }
 
-        paramRemove.gravity = Gravity.TOP | Gravity.START;//Set position
+        paramRemove.gravity = Gravity.CENTER_HORIZONTAL;//Set position
         removeFloatingWidgetView.setVisibility(View.GONE);//Invisible
         remove_image_view = (ImageView) removeFloatingWidgetView.findViewById(R.id.remove_img);
         mWindowManager.addView(removeFloatingWidgetView, paramRemove);
