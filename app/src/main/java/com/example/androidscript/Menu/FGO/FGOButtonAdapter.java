@@ -54,6 +54,8 @@ public class FGOButtonAdapter extends ButtonAdapter {
                     onInsert.insert();
                 });
                 break;
+
+
             default:
                 throw new RuntimeException("Unrecognized button!");
         }

@@ -18,6 +18,7 @@ public final class AutoClick extends AccessibilityService{
                 (path, 0, 100)).build(), null, null);
     }
 
+
     @Override
     public void onServiceConnected() {
         super.onServiceConnected();

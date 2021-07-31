@@ -1,6 +1,7 @@
 package com.example.androidscript.Menu.FGO;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -46,6 +47,7 @@ public class FGOEditor extends UIActivity {
             }
         }
         ret.add("End");
+
         return ret;
     }
 

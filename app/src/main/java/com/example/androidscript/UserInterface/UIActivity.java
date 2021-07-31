@@ -44,8 +44,10 @@ public abstract class UIActivity extends AppCompatActivity implements Editor {
         this.BlockView = findViewById(R.id.recycleview);
         BtnMaker.registerOnClick(R.id.start_service, this, v -> startActivity(new Intent(this, StartService.class)));
         BtnMaker.registerOnClick(R.id.start_floating, this, v -> StartService.startFloatingWidget(this));
+
         this.setRecycleBlock();
         this.setRecycleButton();
+
     }
 
 }

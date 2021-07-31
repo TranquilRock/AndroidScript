@@ -4,9 +4,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.media.projection.MediaProjectionManager;
 import android.os.Bundle;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -31,7 +33,11 @@ public class SelectFile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_file);
-        this.availableFile = FileOperation.browseAvailableFile("ArkKnights/",".txt");
+        this.availableFile = new Vector<>();
+        this.availableFile.add("123");
+
+
+        //this.availableFile = FileOperation.browseAvailableFile("ArkKnights/",".txt");
         setupElements();
     }
 

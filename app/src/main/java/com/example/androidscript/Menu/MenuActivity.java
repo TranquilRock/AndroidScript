@@ -7,11 +7,13 @@ import com.example.androidscript.Menu.ArkKnights.ArkKnightsEditor;
 import com.example.androidscript.util.BtnMaker;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.Settings;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -19,6 +21,7 @@ import com.example.androidscript.R;
 import com.example.androidscript.util.FileOperation;
 
 import org.opencv.android.OpenCVLoader;
+import com.example.androidscript.util.ScreenShot;
 
 public class MenuActivity extends AppCompatActivity {
     @Override
