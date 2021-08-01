@@ -105,7 +105,7 @@ public class FGOEditor extends UIActivity {
             m = h/1200;
         }
 
-        Vector<String> save=null;
+        Vector<String> save = new Vector<String>();
 
         for(int i=0; i<data.size(); i++){
             switch (data.get(i).get(0)){
