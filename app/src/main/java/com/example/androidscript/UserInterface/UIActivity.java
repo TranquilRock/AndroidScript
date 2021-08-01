@@ -20,6 +20,7 @@ import com.example.androidscript.Menu.StartService;
 import com.example.androidscript.R;
 import com.example.androidscript.util.BtnMaker;
 import com.example.androidscript.util.DebugMessage;
+import com.example.androidscript.util.FileOperation;
 import com.example.androidscript.util.SpnMaker;
 
 import java.util.ArrayList;
@@ -60,11 +61,11 @@ public abstract class UIActivity extends AppCompatActivity implements Editor {
                 @Override
                 public void onClick(View v) {
                     FGOBlockAdapter adp = (FGOBlockAdapter) BlockView.getAdapter();
-                    adp.notifyDataSetChanged();
                     Vector<Vector<String>> data = adp.Data;
                     for(int i=0; i<data.size(); i++){
                         Log.d("kkk", String.valueOf(data.get(i)));
                     }
+                    //FileOperation.writeToFile(String FileName, data);
                 }
             });
         }
