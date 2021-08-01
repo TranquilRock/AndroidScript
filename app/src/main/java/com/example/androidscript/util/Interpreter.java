@@ -25,11 +25,13 @@ public class Interpreter extends Thread {//Every child only need to specify wher
     public static final String[] SUPPORTED_COMMAND = {
             "Click " + IntVarFormat + " " + IntVarFormat,
             "Compare " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat + " " + ImgVarFormat,
+            "Contain " + ImgVarFormat,
             "Check " + StrFormat,
             "JumpToLine " + IntVarFormat,
             "Wait " + IntVarFormat,
             "Call " + SptFormat + " " + AnyFormat,//Allow passing arguments, but only crafted dependency
             "Call " + SptFormat,
+            "Swipe "  + IntVarFormat + IntVarFormat + IntVarFormat + IntVarFormat,
             "IfGreater " + IntVarFormat + " " + IntVarFormat,
             "IfSmaller " + IntVarFormat + " " + IntVarFormat,
             "Var " + VarFormat + " " + IntVarFormat,//Declare Initial Value of Variable
@@ -148,9 +150,19 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     delay();
                     AutoClick.Click(Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]));
                     break;
+                case "Swipe":
+                    delay();
+                    AutoClick.Swipe(Integer.parseInt(Arguments[0]),Integer.parseInt(Arguments[1]),Integer.parseInt(Arguments[2]),Integer.parseInt(Arguments[3]));
                 case "Compare":
                     int Similarity = ScreenShot.compare(ReadImgFromFile(Arguments[4]), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]));
                     LocalVar.put("$R", String.valueOf(Similarity));
+                    break;
+                case "Contain":
+                    if(ScreenShot.contain(ReadImgFromFile(Arguments[0]))){
+                        LocalVar.put("$R", "0");
+                    }else{
+                        LocalVar.put("$R", "1");
+                    }
                     break;
                 case "JumpToLine":
                     commandIndex = Integer.parseInt(Arguments[0]) - 1;//One-based

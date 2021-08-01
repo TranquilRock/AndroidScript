@@ -80,7 +80,7 @@ public final class ImageHandler {
         return matchCount;
     }
 
-    public static boolean TestMatchPicture(Bitmap screenshot, Bitmap target) {
+    public static boolean TestPictureContain(Bitmap screenshot, Bitmap target) {
         if (screenshot == null || target == null) {
             return false;
         }
@@ -109,6 +109,6 @@ public final class ImageHandler {
         }
 
         DebugMessage.set("Match " + matchCount + " points " + screenDescriptor.width() + " " + screenDescriptor.height() + " " + targetDescriptor.width() + " " + targetDescriptor.height());
-        return 2 * matchCount >= min(screenDescriptor.height(),targetDescriptor.height());
+        return ((float)ScreenShot.getHeight() * ScreenShot.getWidth() / 1920 / 1080) * 3.2 * matchCount >= min(screenDescriptor.height(), targetDescriptor.height());
     }
 }

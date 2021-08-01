@@ -9,7 +9,6 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.media.Image;
-import android.graphics.Point;
 import android.graphics.Bitmap;
 import android.media.ImageReader;
 import android.media.projection.MediaProjectionManager;
@@ -20,7 +19,6 @@ import android.content.res.Resources;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
 import android.media.projection.MediaProjection;
-import android.util.DisplayMetrics;
 
 import androidx.annotation.Nullable;
 
@@ -40,7 +38,7 @@ public final class ScreenShot extends Service {
     private static int screenHeight = 0;
     private static int screenWidth = 0;
     public static boolean ServiceStart = false;
-    public static boolean Transposed;
+    public static boolean Transposed = false;
 
     public static int getHeight(){
         return screenHeight;
@@ -48,19 +46,25 @@ public final class ScreenShot extends Service {
     public static int getWidth(){
         return screenWidth;
     }
-    public static void setUpScreenDimension(int _height,int _width, boolean transpose){
-        Transposed = transpose;
-        if (transpose) {
-            screenWidth = max(_width, _height);
-            screenHeight = min(_width, _height);
-        } else {
-            screenWidth = min(_width, _height);
-            screenHeight = max(_width, _height);
-        }
+    public static void setUpScreenDimension(int _height,int _width){
+        screenWidth = _width;
+        screenHeight = _height;
 //        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
 //        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
+    public static void setShotOrientation(boolean transpose){
+        Transposed = transpose;
+        int tmp;
+        if (transpose) {
+            tmp = max(screenHeight,screenWidth);
+            screenHeight = min(screenHeight,screenWidth);
+        } else {
+            tmp = min(screenHeight,screenWidth);
+            screenHeight = max(screenHeight,screenWidth);
+        }
+        screenWidth = tmp;
+    }
     @SuppressLint("WrongConstant")
     public static void setUpMediaProjectionManager(Intent intent, MediaProjectionManager mm) {
         if (ScreenShot.mediaProjectionManager == null) {
@@ -180,13 +184,10 @@ public final class ScreenShot extends Service {
     }
 
     public static int compare(Bitmap Target, int x1, int y1, int x2, int y2) {
-        if(ImageHandler.TestMatchPicture(Shot(),Target)){
-            return 10000;
-        }
-        else{
-            return 0;
-        }
-//        return ImageHandler.matchPicture(Bitmap.createBitmap(Shot(), x1, y1, (x2 - x1), (y2- y1)), Target);
+        return ImageHandler.matchPicture(Bitmap.createBitmap(Shot(), x1, y1, (x2 - x1), (y2- y1)), Target);
     }
 
+    public static boolean contain(Bitmap Target){
+        return ImageHandler.TestPictureContain(Shot(),Target);
+    }
 }

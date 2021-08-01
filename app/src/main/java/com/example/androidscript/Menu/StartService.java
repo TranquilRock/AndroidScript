@@ -41,10 +41,7 @@ public class StartService extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_service);
-
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
-        ScreenShot.setUpScreenDimension(displayMetrics.heightPixels,displayMetrics.widthPixels,getIntent().getStringExtra("Orientation").equals("Landscape"));
+        ScreenShot.setShotOrientation(getIntent().getStringExtra("Orientation").equals("Landscape"));
 
         if (!Settings.canDrawOverlays(getApplicationContext())) {//Floating Widget
             startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION));
