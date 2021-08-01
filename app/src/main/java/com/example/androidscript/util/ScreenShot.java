@@ -24,6 +24,8 @@ import androidx.annotation.Nullable;
 
 import com.example.androidscript.Menu.MenuActivity;
 
+import org.opencv.android.OpenCVLoader;
+
 import java.nio.ByteBuffer;
 
 import static java.lang.Math.max;
@@ -176,6 +178,9 @@ public final class ScreenShot extends Service {
     @SuppressLint("WrongConstant")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (!OpenCVLoader.initDebug()) {
+            throw new AssertionError("OpenCV unavailable!");
+        }
         createNotificationChannel();
         ScreenShot.mediaProjection = ScreenShot.mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, ScreenShot.Permission);
         ScreenShot.ServiceStart = true;
