@@ -15,12 +15,12 @@ import com.example.androidscript.Menu.StartService;
 import com.example.androidscript.R;
 import com.example.androidscript.UserInterface.Editor;
 import com.example.androidscript.util.BtnMaker;
+import com.example.androidscript.util.Interpreter;
 
 public class ArkKnightsEditor extends AppCompatActivity implements Editor {
     SwitchCompat TillEmpty;
     SwitchCompat EatMedicine;
     SwitchCompat EatStone;
-    Button SetScript;
     EditText Repeat;
     private boolean isTillEmpty = false;
     private boolean isEatMedicine = false;
@@ -34,14 +34,11 @@ public class ArkKnightsEditor extends AppCompatActivity implements Editor {
         setContentView(R.layout.activity_ark_knights_editor);
         Repeat = findViewById(R.id.Repetition);
         TillEmpty = findViewById(R.id.tillEmpty);
-        TillEmpty.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    Repeat.setVisibility(View.GONE);
-                } else {
-                    Repeat.setVisibility(View.VISIBLE);
-                }
+        TillEmpty.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                Repeat.setVisibility(View.GONE);
+            } else {
+                Repeat.setVisibility(View.VISIBLE);
             }
         });
         EatMedicine = findViewById(R.id.EatMedicine);
@@ -59,7 +56,7 @@ public class ArkKnightsEditor extends AppCompatActivity implements Editor {
             } else {
                 SelectedScript = "AutoFight.txt";
             }
-            FloatingWidgetService.setScript(new ArkKnightsInterpreter(SelectedScript), new String[]{String.valueOf(nRepetition)});
+            FloatingWidgetService.setScript(new Interpreter("ArkKnights/",SelectedScript), new String[]{String.valueOf(nRepetition)});
             StartService.startFloatingWidget(this);
         });
     }
