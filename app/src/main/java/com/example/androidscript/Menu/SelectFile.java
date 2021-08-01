@@ -33,11 +33,13 @@ public class SelectFile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_file);
-        this.availableFile = new Vector<>();
-        this.availableFile.add("123");
-
-
-        //this.availableFile = FileOperation.browseAvailableFile("ArkKnights/",".txt");
+        try{
+            this.availableFile = FileOperation.browseAvailableFile("ArkKnights/",".txt");
+        }catch (Exception e){
+            DebugMessage.printStackTrace(e);
+            this.availableFile = new Vector<>();
+            this.availableFile.add("123");
+        }
         setupElements();
     }
 

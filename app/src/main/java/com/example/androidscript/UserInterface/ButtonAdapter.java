@@ -25,7 +25,6 @@ public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonView
             this.button = button;
         }
     }
-
     protected Vector<String> ButtonText;
 
     public ButtonAdapter(Vector<String> _ButtonText){

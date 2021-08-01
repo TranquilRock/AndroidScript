@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.Image;
+import android.os.Environment;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,9 +20,9 @@ import java.util.Vector;
 public final class FileOperation extends Activity {
     private static String root = null;
 
-    public static void setUpFileRoot(String root) {
+    public static void fileRootInit(String _root) {
         if (FileOperation.root == null) {
-            FileOperation.root = root;
+            FileOperation.root = _root;
         }
     }
 

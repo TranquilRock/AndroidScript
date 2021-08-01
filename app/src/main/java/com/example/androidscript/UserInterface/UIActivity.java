@@ -15,6 +15,7 @@ import com.example.androidscript.Menu.FGO.FGOButtonAdapter;
 import com.example.androidscript.Menu.StartService;
 import com.example.androidscript.R;
 import com.example.androidscript.util.BtnMaker;
+import com.example.androidscript.util.DebugMessage;
 
 import java.util.ArrayList;
 import java.util.Vector;
@@ -47,7 +48,7 @@ public abstract class UIActivity extends AppCompatActivity implements Editor {
 
         this.setRecycleBlock();
         this.setRecycleButton();
-
+        DebugMessage.set("Still Alive");
     }
 
 }
