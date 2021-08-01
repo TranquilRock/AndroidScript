@@ -1,5 +1,6 @@
 package com.example.androidscript.Menu.FGO;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -8,8 +9,10 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.androidscript.Menu.StartService;
 import com.example.androidscript.R;
 import com.example.androidscript.UserInterface.UIActivity;
+import com.example.androidscript.util.BtnMaker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,6 +49,12 @@ public class FGOEditor extends UIActivity {
         return Integer.toString((int)h0+(h0/1200)*(y-1200));
     }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        BtnMaker.registerOnClick(R.id.start_service, this, v -> startActivity(new Intent(this, StartService.class).putExtra("Orientation","Landscape")));
+        BtnMaker.registerOnClick(R.id.start_floating, this, v -> StartService.startFloatingWidget(this));
+    }
     @Override
     protected void setRecycleButton() {
         this.ButtonView.setLayoutManager(new GridLayoutManager(this, 4));
@@ -84,9 +93,9 @@ public class FGOEditor extends UIActivity {
     @Override
     public Vector<String> getButtonData() {
         Vector<String> ret = new Vector<>();
-        ret.add("自動選卡");
-        ret.add("御主技能");
-        ret.add("從者技能");
+        ret.add("SelectCard");
+        ret.add("CraftSkill");
+        ret.add("ServantSkill");
         return ret;
     }
 

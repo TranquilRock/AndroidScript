@@ -1,17 +1,31 @@
 package com.example.androidscript.Menu.Basic;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.androidscript.Menu.FGO.FGOBlockAdapter;
 import com.example.androidscript.Menu.FGO.FGOButtonAdapter;
+import com.example.androidscript.Menu.StartService;
+import com.example.androidscript.R;
 import com.example.androidscript.UserInterface.UIActivity;
+import com.example.androidscript.util.BtnMaker;
 
 import java.util.Objects;
 import java.util.Vector;
 
 public class BasicEditor extends UIActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        BtnMaker.registerOnClick(R.id.start_service, this, v -> startActivity(new Intent(this, StartService.class).putExtra("Orientation","vertical")));
+        BtnMaker.registerOnClick(R.id.start_floating, this, v -> StartService.startFloatingWidget(this));
+    }
+
     @Override
     protected Vector<Vector<String>> getBlockData() {
         Vector<Vector<String>> ret = new Vector<>();
