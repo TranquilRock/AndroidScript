@@ -21,6 +21,7 @@ import com.example.androidscript.R;
 import com.example.androidscript.util.BtnMaker;
 import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
+import com.example.androidscript.util.ScreenShot;
 import com.example.androidscript.util.SpnMaker;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ public abstract class UIActivity extends AppCompatActivity implements Editor {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        String filename = getIntent().getStringExtra("FileName");
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_uiactivity);
         this.BlockData = getBlockData();
@@ -61,7 +63,8 @@ public abstract class UIActivity extends AppCompatActivity implements Editor {
                     for(int i=0; i<data.size(); i++){
                         Log.d("kkk", String.valueOf(data.get(i)));
                     }
-                    //FileOperation.writeToFile(String FileName, data);
+
+                    FGOEditor.savetointp(filename, data, ScreenShot.getWidth(), ScreenShot.getHeight());
                 }
             });
         }
