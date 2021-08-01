@@ -6,7 +6,7 @@ import java.util.Vector;
 
 public class BasicEditor extends UIActivity {
     @Override
-    protected Vector<String> getBlockData() {
+    protected Vector<Vector<String>> getBlockData() {
         return null;
     }
 

@@ -17,9 +17,7 @@ import java.util.Vector;
 
 public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
 
-    public final ArrayList<Vector<String>> Data;
-
-
+    public Vector<Vector<String>> Data;
 
     public updateOrder onOrderChange;
 
@@ -31,24 +29,21 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
         void insert();
     }
 
-    private final Vector<String> Blocks;
-
-    public FGOBlockAdapter(Vector<String> content) {
-        Blocks = content;
-        Data = new ArrayList<>(content.size());
+    public FGOBlockAdapter(Vector<Vector<String>> _Data) {
+        Data = _Data;
         this.onOrderChange = new updateOrder() {
             @Override
             public void swap(int a, int b) {
-                if (a > 0 && b < Blocks.size() - 1 && a < b) {
-                    Collections.swap(Blocks, a, b);
+                if (a > 0 && b < Data.size() - 1 && a < b) {
+                    Collections.swap(Data, a, b);
                     notifyDataSetChanged();
                 }
             }
 
             @Override
             public void delete(int a) {
-                if (a > 0 && a < Blocks.size() - 1) {
-                    Blocks.remove(a);
+                if (a > 0 && a < Data.size() - 1) {
+                    Data.remove(a);
                     notifyDataSetChanged();
                 }
             }
@@ -104,7 +99,7 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        switch (Blocks.get(position)) {
+        switch (Data.get(position).get(0)) {
             case "Skill":
                 return 0;
             case "NoblePhantasms":
@@ -116,11 +111,11 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
             case "End":
                 return 4;
         }
-        throw new RuntimeException("Invalid Type");
+        throw new RuntimeException("Invalid Type " + Data.get(position).get(0));
     }
 
     @Override
     public int getItemCount() {
-        return Blocks.size();
+        return Data.size();
     }
 }

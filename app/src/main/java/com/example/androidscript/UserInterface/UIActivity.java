@@ -27,7 +27,7 @@ import java.util.Vector;
 
 public abstract class UIActivity extends AppCompatActivity implements Editor {
 
-    protected abstract Vector<String> getBlockData();
+    protected abstract Vector<Vector<String>> getBlockData();
 
     protected abstract Vector<String> getButtonData();
 
@@ -37,8 +37,8 @@ public abstract class UIActivity extends AppCompatActivity implements Editor {
 
     protected RecyclerView BlockView;
     protected RecyclerView ButtonView;
-    protected Vector<String> BlockData = getBlockData();
-    protected Vector<String> ButtonData = getButtonData();
+    protected Vector<Vector<String>> BlockData;
+    protected Vector<String> ButtonData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +60,7 @@ public abstract class UIActivity extends AppCompatActivity implements Editor {
                 @Override
                 public void onClick(View v) {
                     FGOBlockAdapter adp = (FGOBlockAdapter) BlockView.getAdapter();
-                    ArrayList<Vector<String>> data = adp.Data;
+                    Vector<Vector<String>> data = adp.Data;
                     adp.notifyDataSetChanged();
                     for(int i=0; i<data.size(); i++){
                         Log.d("kkk", String.valueOf(data.get(i)));
@@ -71,4 +71,9 @@ public abstract class UIActivity extends AppCompatActivity implements Editor {
         }
     }
 
+    public Vector<String> makeVector(String tmp){
+        Vector<String> ret = new Vector<>();
+        ret.add(tmp);
+        return ret;
+    }
 }

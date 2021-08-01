@@ -29,26 +29,25 @@ public class FGOEditor extends UIActivity {
         this.BlockView.setAdapter(new FGOBlockAdapter(BlockData));
     }
 
-
-
     @Override
-    public Vector<String> getBlockData() {
-        Vector<String> ret = new Vector<>();
-        ret.add("PreStage");
+    public Vector<Vector<String>> getBlockData() {
+        Vector<Vector<String>> ret = new Vector<>();
+
+        ret.add(makeVector("PreStage"));
         for (int i = 0; i <= 2; i++) {
             switch (i % 3) {
                 case 2:
-                    ret.add("Skill");
+                    ret.add(makeVector("Skill"));
                     break;
                 case 1:
-                    ret.add("NoblePhantasms");
+                    ret.add(makeVector("NoblePhantasms"));
                     break;
                 case 0:
-                    ret.add("CraftSkill");
+                    ret.add(makeVector("CraftSkill"));
                     break;
             }
         }
-        ret.add("End");
+        ret.add(makeVector("End"));
 
         return ret;
     }

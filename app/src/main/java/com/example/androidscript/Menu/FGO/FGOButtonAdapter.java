@@ -19,11 +19,11 @@ import java.util.ArrayList;
 import java.util.Vector;
 
 public class FGOButtonAdapter extends ButtonAdapter {
-    private final Vector<String> BlockContent;
+    private final Vector<Vector<String>> BlockContent;
     private static final int insertPosition = 1;
     FGOBlockAdapter.updateOrder onInsert;
 
-    public FGOButtonAdapter(Vector<String> _BlockContent, Vector<String> _ButtonText, FGOBlockAdapter.updateOrder _onInsert) {
+    public FGOButtonAdapter(Vector<Vector<String>> _BlockContent, Vector<String> _ButtonText, FGOBlockAdapter.updateOrder _onInsert) {
         super(_ButtonText);
         this.ButtonText = _ButtonText;
         this.BlockContent = _BlockContent;
@@ -36,25 +36,30 @@ public class FGOButtonAdapter extends ButtonAdapter {
         switch (ButtonText.get(position)) {
             case "從者技能":
                 holder.button.setOnClickListener(v -> {
-                    BlockContent.insertElementAt("Skill", insertPosition);
+                    Vector<String> tmp = (new Vector<>());
+                    tmp.add("Skill");
+                    BlockContent.insertElementAt(tmp, insertPosition);
                     onInsert.insert();
                 });
                 break;
 
             case "自動選卡":
                 holder.button.setOnClickListener(v -> {
-                    BlockContent.insertElementAt("NoblePhantasms", insertPosition);
+                    Vector<String> tmp = (new Vector<>());
+                    tmp.add("NoblePhantasms");
+                    BlockContent.insertElementAt(tmp, insertPosition);
                     onInsert.insert();
                 });
                 break;
 
             case "御主技能":
                 holder.button.setOnClickListener(v -> {
-                    BlockContent.insertElementAt("CraftSkill", insertPosition);
+                    Vector<String> tmp = (new Vector<>());
+                    tmp.add("CraftSkill");
+                    BlockContent.insertElementAt(tmp, insertPosition);
                     onInsert.insert();
                 });
                 break;
-
 
             default:
                 throw new RuntimeException("Unrecognized button!");
