@@ -35,6 +35,9 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         FileOperation.fileRootInit(getExternalMediaDirs()[0].getAbsolutePath() + "/");
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+        ScreenShot.setUpScreenDimension(displayMetrics.heightPixels,displayMetrics.widthPixels);
         setContentView(R.layout.activity_menu);
         BtnMaker.jump(R.id.button_to_ArkUI, this, ArkKnightsEditor.class);
         BtnMaker.jumpWithMessage(R.id.button_to_FGO, this, SelectFile.class, "next_destination", "com.example.androidscript.Menu.FGO.FGOEditor");
