@@ -17,7 +17,7 @@ import java.util.Vector;
 
 public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
 
-    public abstract Vector<String> retrieveData();
+    public abstract void retrieveData(Vector<Vector<String>> Data,int position);
 
     protected ImageButton Up;
     protected ImageButton Down;
@@ -52,10 +52,10 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         EditText LeftInput;
         EditText RightInput;
 
+
         @Override
-        public Vector<String> retrieveData(){
-            Vector<String> ret = new Vector<>();
-            return ret;
+        public void retrieveData(Vector<Vector<String>> Data, int position) {
+
         }
 
         public TwoVarVH(View view) {
@@ -81,9 +81,8 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
 
 
         @Override
-        public Vector<String> retrieveData() {
-            Vector<String> ret = new Vector<>();
-            return ret;
+        public void retrieveData(Vector<Vector<String>> Data, int position) {
+
         }
 
         public OneVarVH (View view){
@@ -106,9 +105,8 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         EditText RightPositionY;
 
         @Override
-        public Vector<String> retrieveData() {
-            Vector<String> ret = new Vector<>();
-            return ret;
+        public void retrieveData(Vector<Vector<String>> Data, int position) {
+
         }
 
         public CompareVH (View view){

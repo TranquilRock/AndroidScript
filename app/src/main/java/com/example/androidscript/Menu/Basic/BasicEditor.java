@@ -13,18 +13,18 @@ import java.util.Vector;
 
 public class BasicEditor extends UIActivity {
     @Override
-    protected Vector<String> getBlockData() {
-        Vector<String> ret = new Vector<>();
-        ret.add("Click");
-        ret.add("Compare");
-        ret.add("Var");
-        ret.add("IfGreater");
-        ret.add("Call");
-        ret.add("Wait");
-        ret.add("JumpToLine");
-        ret.add("Exit");
-        ret.add("IfSmaller");
-        ret.add("Return");
+    protected Vector<Vector<String>> getBlockData() {
+        Vector<Vector<String>> ret = new Vector<>();
+        ret.add(makeVector("Click"));
+        ret.add(makeVector("Compare"));
+        ret.add(makeVector("Var"));
+        ret.add(makeVector("IfGreater"));
+        ret.add(makeVector("Call"));
+        ret.add(makeVector("Wait"));
+        ret.add(makeVector("JumpToLine"));
+        ret.add(makeVector("Exit"));
+        ret.add(makeVector("IfSmaller"));
+        ret.add(makeVector("Return"));
         return ret;
     }
 

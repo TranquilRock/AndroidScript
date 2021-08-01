@@ -18,7 +18,7 @@ import java.util.Vector;
 
 public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
 
-    public final ArrayList<Vector<String>> BasicData;
+    public final Vector<Vector<String>> BasicData;
 
     public BasicBlockAdapter.updateOrder onOrderChange;
 
@@ -30,24 +30,21 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
         void insert();
     }
 
-    private final Vector<String> Blocks;
-
-    public BasicBlockAdapter (Vector<String> content){
-        Blocks = content;
-        BasicData = new ArrayList<>(content.size());
-        this.onOrderChange = new updateOrder(){
+    public BasicBlockAdapter(Vector<Vector<String>> content) {
+        BasicData = content;
+        this.onOrderChange = new updateOrder() {
             @Override
             public void swap(int a, int b) {
-                if (a >= 0 && b < Blocks.size() - 1 && a < b) {
-                    Collections.swap(Blocks, a, b);
+                if (a >= 0 && b < BasicData.size()&& a < b) {
+                    Collections.swap(BasicData, a, b);
                     notifyDataSetChanged();
                 }
             }
 
             @Override
             public void delete(int a) {
-                if (a >= 0 && a <= Blocks.size() - 1) {
-                    Blocks.remove(a);
+                if (a >= 0 && a <= BasicData.size() - 1) {
+                    BasicData.remove(a);
                     notifyDataSetChanged();
                 }
             }
@@ -62,7 +59,7 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
     @Override
     public @NotNull BasicViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view;
-        switch (viewType){
+        switch (viewType) {
             case 0://TwoVarFormat
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.script_two_var_format, parent, false);
@@ -82,7 +79,7 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull @NotNull BasicViewHolder holder, int position) {
         holder.onBind(onOrderChange, position);
-        switch (Blocks.get(position)) {
+        switch (BasicData.get(position).get(0)) {
             //TwoVarFormat
             case "Click":
                 ((BasicViewHolder.TwoVarVH) holder).Title.setText("Click");
@@ -131,7 +128,7 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
-        switch (Blocks.get(position)) {
+        switch (BasicData.get(position).get(0)) {
             case "Click":
             case "IfGreater":
             case "IfSmaller":
@@ -151,6 +148,6 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
 
     @Override
     public int getItemCount() {
-        return Blocks.size();
+        return BasicData.size();
     }
 }
