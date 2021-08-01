@@ -30,7 +30,7 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
     }
 
     public FGOBlockAdapter(Vector<Vector<String>> _Data) {
-        Data = _Data;
+        this.Data = _Data;
         this.onOrderChange = new updateOrder() {
             @Override
             public void swap(int a, int b) {
