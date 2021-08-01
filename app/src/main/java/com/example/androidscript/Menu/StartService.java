@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidscript.FloatingWidget.FloatingWidgetService;
-import com.example.androidscript.Menu.ArkKnights.ArkKnightsInterpreter;
 import com.example.androidscript.R;
 import com.example.androidscript.util.BtnMaker;
 import com.example.androidscript.util.DebugMessage;

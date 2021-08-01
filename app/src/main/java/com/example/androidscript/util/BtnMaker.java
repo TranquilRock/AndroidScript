@@ -24,7 +24,7 @@ public final class BtnMaker {
         Button btn = from.findViewById(id);
         btn.setOnClickListener((v -> {
             Intent intent = new Intent(from, to);
-            intent.putExtra("next_destination", message);
+            intent.putExtra(name, message);
             from.startActivity(intent);
         }));
     }

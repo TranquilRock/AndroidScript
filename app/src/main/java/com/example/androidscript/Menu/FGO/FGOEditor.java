@@ -12,10 +12,18 @@ import com.example.androidscript.R;
 import com.example.androidscript.UserInterface.UIActivity;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Vector;
 
 public class FGOEditor extends UIActivity {
+
+    public static final String[] PreStageBlock = {"PreStage", "0", "0", "0", ""};
+    public static final String[] SkillBlock = {"Skill", "0", "0", "0", "0", "0", "0", "0", "0", "0"};
+    public static final String[] CraftSkillBlock = {"CraftSkill", "0", "0", "0", "0"};
+    public static final String[] NoblePhantasmsBlock = {"NoblePhantasms", "0", "0", "0", "0"};
+    public static final String[] EndBlock = {"End"};
+
     @Override
     protected void setRecycleButton() {
         this.ButtonView.setLayoutManager(new GridLayoutManager(this, 4));
@@ -32,22 +40,21 @@ public class FGOEditor extends UIActivity {
     @Override
     public Vector<Vector<String>> getBlockData() {
         Vector<Vector<String>> ret = new Vector<>();
-
-        ret.add(makeVector("PreStage"));
+        ret.add(new Vector<>(Arrays.asList(PreStageBlock)));
         for (int i = 0; i <= 2; i++) {
             switch (i % 3) {
                 case 2:
-                    ret.add(makeVector("Skill"));
+                    ret.add(new Vector<>(Arrays.asList(SkillBlock)));
                     break;
                 case 1:
-                    ret.add(makeVector("NoblePhantasms"));
+                    ret.add(new Vector<>(Arrays.asList(NoblePhantasmsBlock)));
                     break;
                 case 0:
-                    ret.add(makeVector("CraftSkill"));
+                    ret.add(new Vector<>(Arrays.asList(CraftSkillBlock)));
                     break;
             }
         }
-        ret.add(makeVector("End"));
+        ret.add(new Vector<>(Arrays.asList(EndBlock)));
 
         return ret;
     }
@@ -60,8 +67,6 @@ public class FGOEditor extends UIActivity {
         ret.add("從者技能");
         return ret;
     }
-
-
 
     @Override
     public String getFolderName() {

@@ -16,6 +16,7 @@ import com.example.androidscript.UserInterface.ButtonAdapter;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Vector;
 
 public class FGOButtonAdapter extends ButtonAdapter {
@@ -36,27 +37,21 @@ public class FGOButtonAdapter extends ButtonAdapter {
         switch (ButtonText.get(position)) {
             case "從者技能":
                 holder.button.setOnClickListener(v -> {
-                    Vector<String> tmp = (new Vector<>());
-                    tmp.add("Skill");
-                    BlockContent.insertElementAt(tmp, insertPosition);
+                    BlockContent.insertElementAt(new Vector<>(Arrays.asList(FGOEditor.SkillBlock)), insertPosition);
                     onInsert.insert();
                 });
                 break;
 
             case "自動選卡":
                 holder.button.setOnClickListener(v -> {
-                    Vector<String> tmp = (new Vector<>());
-                    tmp.add("NoblePhantasms");
-                    BlockContent.insertElementAt(tmp, insertPosition);
+                    BlockContent.insertElementAt(new Vector<>(Arrays.asList(FGOEditor.NoblePhantasmsBlock)), insertPosition);
                     onInsert.insert();
                 });
                 break;
 
             case "御主技能":
                 holder.button.setOnClickListener(v -> {
-                    Vector<String> tmp = (new Vector<>());
-                    tmp.add("CraftSkill");
-                    BlockContent.insertElementAt(tmp, insertPosition);
+                    BlockContent.insertElementAt(new Vector<>(Arrays.asList(FGOEditor.CraftSkillBlock)), insertPosition);
                     onInsert.insert();
                 });
                 break;

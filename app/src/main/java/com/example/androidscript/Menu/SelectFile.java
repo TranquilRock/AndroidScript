@@ -66,20 +66,6 @@ public class SelectFile extends AppCompatActivity {
         }));
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-////        if (requestCode == SELECT_FILE_CODE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-////            String FileName = data.getDataString();
-////            File g = new File(FileName);
-////            if(g.canRead()){
-////                DebugMessage.set("Can read file.");
-////            }
-////            output.setText(FileName);
-////            switchToEdit(FileName);
-////        }
-//    }
-
     protected void switchToEdit(String FileName){
         String[] tmp = FileName.split("/");
         FileName = tmp[tmp.length - 1];

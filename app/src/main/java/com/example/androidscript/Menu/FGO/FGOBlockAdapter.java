@@ -57,8 +57,6 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
 
     @Override
     public @NotNull FGOViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-
         View view;
         switch (viewType) {
             case 0://Skill
@@ -89,8 +87,7 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
 
     @Override
     public void onBindViewHolder(@NotNull FGOViewHolder holder, int position) {//Do nothing
-        holder.onBind(onOrderChange, position);
-        holder.retrieveData(Data,position);
+        holder.onBind(onOrderChange, position,Data);
     }
 
     @Override
