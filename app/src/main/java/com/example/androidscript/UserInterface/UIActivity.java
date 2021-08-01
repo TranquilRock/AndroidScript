@@ -60,12 +60,10 @@ public abstract class UIActivity extends AppCompatActivity implements Editor {
                 @Override
                 public void onClick(View v) {
                     FGOBlockAdapter adp = (FGOBlockAdapter) BlockView.getAdapter();
-                    Vector<Vector<String>> data = adp.Data;
                     adp.notifyDataSetChanged();
+                    Vector<Vector<String>> data = adp.Data;
                     for(int i=0; i<data.size(); i++){
                         Log.d("kkk", String.valueOf(data.get(i)));
-
-
                     }
                 }
             });

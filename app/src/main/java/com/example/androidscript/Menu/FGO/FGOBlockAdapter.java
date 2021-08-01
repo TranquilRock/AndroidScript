@@ -90,12 +90,7 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
     @Override
     public void onBindViewHolder(@NotNull FGOViewHolder holder, int position) {//Do nothing
         holder.onBind(onOrderChange, position);
-        if (position < Data.size()) {
-            Data.set(position, holder.retrieveData());
-
-        } else {
-            Data.add(holder.retrieveData());
-        }
+        holder.retrieveData(Data,position);
     }
 
     @Override
