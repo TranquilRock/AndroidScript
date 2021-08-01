@@ -21,6 +21,7 @@ import com.example.androidscript.R;
 import com.example.androidscript.util.BtnMaker;
 import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
+import com.example.androidscript.util.ScreenShot;
 import com.example.androidscript.util.SpnMaker;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public abstract class UIActivity extends AppCompatActivity implements Editor {
                         Log.d("kkk", String.valueOf(data.get(i)));
                     }
 
-                    FGOEditor.savetointp(filename, data);
+                    FGOEditor.savetointp(filename, data, ScreenShot.getWidth(), ScreenShot.getHeight());
                 }
             });
         }
