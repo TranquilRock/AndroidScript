@@ -37,11 +37,17 @@ public final class ScreenShot extends Service {
     private static VirtualDisplay virtualDisplay = null;
     private static MediaProjection mediaProjection = null;
     private static MediaProjectionManager mediaProjectionManager = null;
-    private static int screenHeight;
-    private static int screenWidth;
+    private static int screenHeight = 0;
+    private static int screenWidth = 0;
     public static boolean ServiceStart = false;
     public static boolean Transposed;
 
+    public static int getHeight(){
+        return screenHeight;
+    }
+    public static int getWidth(){
+        return screenWidth;
+    }
     public static void setUpScreenDimension(int _height,int _width, boolean transpose){
         Transposed = transpose;
         if (transpose) {
