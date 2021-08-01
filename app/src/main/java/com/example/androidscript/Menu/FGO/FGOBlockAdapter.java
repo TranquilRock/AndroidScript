@@ -19,6 +19,8 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
 
     public final ArrayList<Vector<String>> Data;
 
+
+
     public updateOrder onOrderChange;
 
     public interface updateOrder {

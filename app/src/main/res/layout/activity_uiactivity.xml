@@ -17,23 +17,30 @@
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="5sp"
+                android:layout_marginEnd="5pt"
                 android:id="@+id/start_service"
                 android:text="啟動服務" />
 
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="5sp"
+                android:layout_marginEnd="5pt"
                 android:id="@+id/start_floating"
                 android:text="浮動視窗" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5pt"
+                android:id="@+id/save_file"
+                android:text="儲存" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/buttongrid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"/>
+            android:layout_width="303dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center" />
     </LinearLayout>
 
 

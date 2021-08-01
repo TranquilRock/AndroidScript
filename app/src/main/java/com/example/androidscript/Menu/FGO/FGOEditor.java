@@ -29,6 +29,8 @@ public class FGOEditor extends UIActivity {
         this.BlockView.setAdapter(new FGOBlockAdapter(BlockData));
     }
 
+
+
     @Override
     public Vector<String> getBlockData() {
         Vector<String> ret = new Vector<>();
@@ -59,6 +61,8 @@ public class FGOEditor extends UIActivity {
         ret.add("從者技能");
         return ret;
     }
+
+
 
     @Override
     public String getFolderName() {
