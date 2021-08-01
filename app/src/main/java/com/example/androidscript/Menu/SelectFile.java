@@ -27,7 +27,6 @@ public class SelectFile extends AppCompatActivity {
     private TextView output;
     private Spinner select;
     private Vector<String> availableFile;
-//    public static final int SELECT_FILE_CODE  = 111;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

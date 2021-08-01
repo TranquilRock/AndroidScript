@@ -19,7 +19,7 @@ import java.util.Vector;
 
 public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
 
-    public abstract Vector<String> retrieveData();
+    public abstract void retrieveData(Vector<Vector<String>> Data,int position);
 
     protected ImageButton Up;
     protected ImageButton Down;
@@ -53,14 +53,22 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         Spinner Craft;
         EditText Repeat;
 
+
         @Override
-        public Vector<String> retrieveData() {
-            Vector<String> ret = new Vector<>();
-            ret.add((String) Stamina.getSelectedItem());
-            ret.add((String) Friend.getSelectedItem());
-            ret.add((String) Craft.getSelectedItem());
-            ret.add(Repeat.getText().toString());
-            return ret;
+        public void retrieveData(Vector<Vector<String>> Data, int position) {
+            Vector<String> ret = Data.get(position);
+            if(ret.size() == 1){
+                ret.add((String) Stamina.getSelectedItem());
+                ret.add((String) Friend.getSelectedItem());
+                ret.add((String) Craft.getSelectedItem());
+                ret.add(Repeat.getText().toString());
+            }
+            else{
+                ret.set(1,(String) Stamina.getSelectedItem());
+                ret.set(2,(String) Friend.getSelectedItem());
+                ret.set(3,(String) Craft.getSelectedItem());
+                ret.set(4,Repeat.getText().toString());
+            }
         }
 
         public PreStageVH(View v) {
@@ -91,27 +99,58 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
 
 
     public static class SkillVH extends FGOViewHolder {
+        Spinner Skl11;
+        Spinner Skl12;
+        Spinner Skl13;
+        Spinner Skl21;
+        Spinner Skl22;
+        Spinner Skl23;
+        Spinner Skl31;
+        Spinner Skl32;
+        Spinner Skl33;
+
+//        @Override
+//        public Vector<String> retrieveData() {
+//            Vector<String> ret = new Vector<>();
+//            ret.add((String) Skl11.getSelectedItem());
+//            ret.add((String) Skl12.getSelectedItem());
+//            ret.add((String) Skl13.getSelectedItem());
+//            ret.add((String) Skl21.getSelectedItem());
+//            ret.add((String) Skl22.getSelectedItem());
+//            ret.add((String) Skl23.getSelectedItem());
+//            ret.add((String) Skl31.getSelectedItem());
+//            ret.add((String) Skl32.getSelectedItem());
+//            ret.add((String) Skl33.getSelectedItem());
+//            return ret;
+//        }
+
         @Override
-        public Vector<String> retrieveData() {
-            Vector<String> ret = new Vector<>();
-            return ret;
+        public void retrieveData(Vector<Vector<String>> Data, int position) {
+
         }
 
-        public SkillVH(View v) {
-            super(v);
-        }
+        public SkillVH(View v) {super(v);}
 
         @Override
         public void onBind(updateOrder order, int position) {
-            super.onBind(order, position);
+            Skl11 = view.findViewById(R.id.skill_1_1);
+            Skl12 = view.findViewById(R.id.skill_1_2);
+            Skl13 = view.findViewById(R.id.skill_1_3);
+            Skl21 = view.findViewById(R.id.skill_2_1);
+            Skl22 = view.findViewById(R.id.skill_2_2);
+            Skl23 = view.findViewById(R.id.skill_2_3);
+            Skl31 = view.findViewById(R.id.skill_3_1);
+            Skl32 = view.findViewById(R.id.skill_3_2);
+            Skl33 = view.findViewById(R.id.skill_3_3);
+
         }
     }
 
     public static class CraftSkillVH extends FGOViewHolder {
+
         @Override
-        public Vector<String> retrieveData() {
-            Vector<String> ret = new Vector<>();
-            return ret;
+        public void retrieveData(Vector<Vector<String>> Data, int position) {
+
         }
 
         public CraftSkillVH(View v) {
@@ -126,10 +165,11 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
 
 
     public static class NoblePhantasmsVH extends FGOViewHolder {
+
+
         @Override
-        public Vector<String> retrieveData() {
-            Vector<String> ret = new Vector<>();
-            return ret;
+        public void retrieveData(Vector<Vector<String>> Data, int position) {
+
         }
 
         public NoblePhantasmsVH(View v) {
@@ -142,9 +182,10 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         }
     }
     public static class EndVH extends FGOViewHolder {
+
         @Override
-        public Vector<String> retrieveData() {
-            return null;
+        public void retrieveData(Vector<Vector<String>> Data, int position) {
+
         }
 
         public EndVH(View v) {
