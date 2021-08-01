@@ -92,6 +92,7 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
         holder.onBind(onOrderChange, position);
         if (position < Data.size()) {
             Data.set(position, holder.retrieveData());
+
         } else {
             Data.add(holder.retrieveData());
         }

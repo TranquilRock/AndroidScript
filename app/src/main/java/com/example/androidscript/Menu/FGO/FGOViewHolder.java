@@ -91,19 +91,45 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
 
 
     public static class SkillVH extends FGOViewHolder {
+        Spinner Skl11;
+        Spinner Skl12;
+        Spinner Skl13;
+        Spinner Skl21;
+        Spinner Skl22;
+        Spinner Skl23;
+        Spinner Skl31;
+        Spinner Skl32;
+        Spinner Skl33;
+
         @Override
         public Vector<String> retrieveData() {
             Vector<String> ret = new Vector<>();
+            ret.add((String) Skl11.getSelectedItem());
+            ret.add((String) Skl12.getSelectedItem());
+            ret.add((String) Skl13.getSelectedItem());
+            ret.add((String) Skl21.getSelectedItem());
+            ret.add((String) Skl22.getSelectedItem());
+            ret.add((String) Skl23.getSelectedItem());
+            ret.add((String) Skl31.getSelectedItem());
+            ret.add((String) Skl32.getSelectedItem());
+            ret.add((String) Skl33.getSelectedItem());
             return ret;
         }
 
-        public SkillVH(View v) {
-            super(v);
-        }
+        public SkillVH(View v) {super(v);}
 
         @Override
         public void onBind(updateOrder order, int position) {
-            super.onBind(order, position);
+            Skl11 = view.findViewById(R.id.skill_1_1);
+            Skl12 = view.findViewById(R.id.skill_1_2);
+            Skl13 = view.findViewById(R.id.skill_1_3);
+            Skl21 = view.findViewById(R.id.skill_2_1);
+            Skl22 = view.findViewById(R.id.skill_2_2);
+            Skl23 = view.findViewById(R.id.skill_2_3);
+            Skl31 = view.findViewById(R.id.skill_3_1);
+            Skl32 = view.findViewById(R.id.skill_3_2);
+            Skl33 = view.findViewById(R.id.skill_3_3);
+
         }
     }
 

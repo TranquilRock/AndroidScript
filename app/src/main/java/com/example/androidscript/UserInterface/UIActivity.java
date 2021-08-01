@@ -65,6 +65,7 @@ public abstract class UIActivity extends AppCompatActivity implements Editor {
                     for(int i=0; i<data.size(); i++){
                         Log.d("kkk", String.valueOf(data.get(i)));
 
+
                     }
                 }
             });
