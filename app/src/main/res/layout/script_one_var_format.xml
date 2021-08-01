@@ -16,7 +16,7 @@
         android:background="#96F">
 
         <TextView
-            android:id="@+id/Title"
+            android:id="@+id/OneVarTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title"
@@ -26,53 +26,13 @@
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/SubTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="SubTitle"
-            android:textColor="#FFF"
-            android:layout_marginStart="20dp"
-            card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintStart_toEndOf="@+id/Title"
-            card_view:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/Title1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Text1"
-            android:textColor="#FFF"
-            android:layout_marginStart="10dp"
-            card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintStart_toEndOf="@+id/SubTitle"
-            card_view:layout_constraintTop_toTopOf="parent" />
-
         <EditText
-            android:id="@+id/LeftInput"
+            android:id="@+id/OneVarInput"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
             card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintStart_toEndOf="@+id/Title1"
-            card_view:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/TitleMiddle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Text2"
-            android:textColor="#FFF"
-            android:layout_marginStart="10dp"
-            card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintStart_toEndOf="@+id/LeftInput"
-            card_view:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/RightInput"
-            android:layout_width="50dp"
-            android:layout_height="wrap_content"
-            card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintStart_toEndOf="@+id/TitleMiddle"
+            card_view:layout_constraintStart_toEndOf="@+id/OneVarTitle"
             card_view:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
@@ -102,6 +62,8 @@
             card_view:layout_constraintTop_toBottomOf="@+id/btn_del"
             card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24"
             android:contentDescription="@string/btn_up" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
