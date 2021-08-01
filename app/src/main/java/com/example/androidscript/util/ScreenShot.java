@@ -20,6 +20,7 @@ import android.content.res.Resources;
 import android.hardware.display.DisplayManager;
 import android.hardware.display.VirtualDisplay;
 import android.media.projection.MediaProjection;
+import android.util.DisplayMetrics;
 
 import androidx.annotation.Nullable;
 
@@ -41,27 +42,26 @@ public final class ScreenShot extends Service {
     public static boolean ServiceStart = false;
     public static boolean Transposed;
 
-    static {
-        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
+    public static void setUpScreenDimension(int _height,int _width, boolean transpose){
+        Transposed = transpose;
+        if (transpose) {
+            screenWidth = max(_width, _height);
+            screenHeight = min(_width, _height);
+        } else {
+            screenWidth = min(_width, _height);
+            screenHeight = max(_width, _height);
+        }
+//        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
+//        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
     @SuppressLint("WrongConstant")
-    public static void setUpMediaProjectionManager(Intent intent, MediaProjectionManager mm, boolean transpose) {
+    public static void setUpMediaProjectionManager(Intent intent, MediaProjectionManager mm) {
         if (ScreenShot.mediaProjectionManager == null) {
             ScreenShot.Permission = intent;
             ScreenShot.mediaProjectionManager = mm;
         }
-        int tmp;
-        if (transpose) {
-            tmp = max(screenWidth, screenHeight);
-            screenHeight = min(screenWidth, screenHeight);
-        } else {
-            tmp = min(screenWidth, screenHeight);
-            screenHeight = max(screenWidth, screenHeight);
-        }
-        screenWidth = tmp;
-        Transposed = transpose;
+
         ScreenShot.imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, 1);
     }
 

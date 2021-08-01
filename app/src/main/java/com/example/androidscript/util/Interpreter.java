@@ -40,7 +40,6 @@ public class Interpreter extends Thread {//Every child only need to specify wher
     };
 
     public boolean running = false;
-
     protected String ScriptName;
     protected String ScriptFolderName;
 

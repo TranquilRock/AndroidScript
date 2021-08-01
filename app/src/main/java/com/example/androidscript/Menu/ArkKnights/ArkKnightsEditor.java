@@ -44,7 +44,7 @@ public class ArkKnightsEditor extends AppCompatActivity implements Editor {
         EatMedicine = findViewById(R.id.EatMedicine);
         EatStone = findViewById(R.id.EatStone);
         BtnMaker.registerOnClick(R.id.set_service, this, v -> {
-            startActivity(new Intent(this, StartService.class));
+            startActivity(new Intent(this, StartService.class).putExtra("Orientation","Landscape"));
         });
         BtnMaker.registerOnClick(R.id.set_script, this, v -> {
             CheckState();

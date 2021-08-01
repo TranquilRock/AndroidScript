@@ -33,29 +33,28 @@ public class FGOButtonAdapter extends ButtonAdapter {
 
     @Override
     public void onBindViewHolder(@NonNull ButtonViewHolder holder, int position) {
-        holder.button.setText(ButtonText.get(position));
         switch (ButtonText.get(position)) {
-            case "從者技能":
+            case "ServantSkill":
+                holder.button.setText("從者技能");
                 holder.button.setOnClickListener(v -> {
                     BlockContent.insertElementAt(new Vector<>(Arrays.asList(FGOEditor.SkillBlock)), insertPosition);
                     onInsert.insert();
                 });
                 break;
-
-            case "自動選卡":
+            case "SelectCard":
+                holder.button.setText("自動選卡");
                 holder.button.setOnClickListener(v -> {
                     BlockContent.insertElementAt(new Vector<>(Arrays.asList(FGOEditor.NoblePhantasmsBlock)), insertPosition);
                     onInsert.insert();
                 });
                 break;
-
-            case "御主技能":
+            case "CraftSkill":
+                holder.button.setText("御主技能");
                 holder.button.setOnClickListener(v -> {
                     BlockContent.insertElementAt(new Vector<>(Arrays.asList(FGOEditor.CraftSkillBlock)), insertPosition);
                     onInsert.insert();
                 });
                 break;
-
             default:
                 throw new RuntimeException("Unrecognized button!");
         }

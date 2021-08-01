@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -40,6 +41,10 @@ public class StartService extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_service);
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
+        ScreenShot.setUpScreenDimension(displayMetrics.heightPixels,displayMetrics.widthPixels,getIntent().getStringExtra("Orientation").equals("Landscape"));
 
         if (!Settings.canDrawOverlays(getApplicationContext())) {//Floating Widget
             startActivity(new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION));
@@ -73,7 +78,7 @@ public class StartService extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PROJECTION_REQUEST_CODE && resultCode == RESULT_OK) {
             new Handler().postDelayed(() -> {
-                ScreenShot.setUpMediaProjectionManager(data, mediaProjectionManager, true);
+                ScreenShot.setUpMediaProjectionManager(data, mediaProjectionManager);
                 startService(new Intent(getApplicationContext(), ScreenShot.class));
             }, 1);
         }
