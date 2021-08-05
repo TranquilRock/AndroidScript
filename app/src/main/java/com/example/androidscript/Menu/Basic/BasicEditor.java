@@ -19,6 +19,8 @@ import java.util.Vector;
 
 public class BasicEditor extends UIActivity {
 
+    public static final String FolderName = "Basic/";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +75,6 @@ public class BasicEditor extends UIActivity {
 
     @Override
     public String getFolderName() {
-        return null;
+        return FolderName;
     }
 }

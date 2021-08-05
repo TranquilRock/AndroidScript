@@ -27,6 +27,7 @@ public class ArkKnightsEditor extends AppCompatActivity implements Editor {
     private boolean isEatStone = false;
     private String SelectedScript;
     private int nRepetition;
+    public static final String FolderName = "ArkKnights/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,7 @@ public class ArkKnightsEditor extends AppCompatActivity implements Editor {
             } else {
                 SelectedScript = "AutoFight.txt";
             }
-            FloatingWidgetService.setScript(new Interpreter("ArkKnights/",SelectedScript), new String[]{String.valueOf(nRepetition)});
+            FloatingWidgetService.setScript(new Interpreter(FolderName,SelectedScript), new String[]{String.valueOf(nRepetition)});
             StartService.startFloatingWidget(this);
         });
     }
@@ -82,6 +83,6 @@ public class ArkKnightsEditor extends AppCompatActivity implements Editor {
 
     @Override
     public String getFolderName() {
-        return null;
+        return FolderName;
     }
 }

@@ -37,6 +37,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
             "Var " + VarFormat + " " + IntVarFormat,//Declare Initial Value of Variable
             "Cal " + VarFormat + " += " + IntVarFormat,
             "Cal " + VarFormat + " -= " + IntVarFormat,
+            "Tag " + VarFormat,
             "Return " + IntVarFormat,
             "Exit",
     };
@@ -132,6 +133,14 @@ public class Interpreter extends Thread {//Every child only need to specify wher
         Map<String, String> LocalVar = new HashMap<>();
         parseArguments(LocalVar, argv);
         int codeLength = MyCode.get(FileName).codes.size();
+
+        for (int commandIndex = 0; commandIndex < codeLength; commandIndex++) {
+            String[] command = (MyCode.get(FileName).codes.get(commandIndex));
+            if(command[0].equals("Tag")){
+                LocalVar.put(command[1],String.valueOf(commandIndex));
+            }
+        }
+
         for (int commandIndex = 0; commandIndex < codeLength; commandIndex++) {
             if (!this.running) {
                 return 1;
@@ -203,6 +212,8 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     return 1;
                 case "Return":
                     return Integer.parseInt(Arguments[0]);
+                case "Tag":
+                    break;
                 default:
                     throw new RuntimeException("Cannot Recognize " + command[0]);
             }

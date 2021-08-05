@@ -9,11 +9,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.androidscript.FloatingWidget.FloatingWidgetService;
 import com.example.androidscript.Menu.StartService;
 import com.example.androidscript.R;
 import com.example.androidscript.UserInterface.UIActivity;
 import com.example.androidscript.util.BtnMaker;
 import com.example.androidscript.util.FileOperation;
+import com.example.androidscript.util.Interpreter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,9 +90,11 @@ public class FGOEditor extends UIActivity {
         return ret;
     }
 
+    public static final String FolderName = "FGO/";
+
     @Override
     public String getFolderName() {
-        return "";
+        return FolderName;
     }
 
     public static void compile(String filename, Vector<Vector<String>> data, float w, float h) {
@@ -107,7 +111,7 @@ public class FGOEditor extends UIActivity {
         }
 
         Vector<String> save = new Vector<String>();
-        for(Vector<String> block : data){
+        for (Vector<String> block : data) {
             if ("PreStage".equals(block.get(0))) {
                 save.add("Click " + linx(1400, w, m) + " " + liny(320, h, m)); //選擇上次關卡
                 save.add("Wait 3000");
@@ -334,7 +338,8 @@ public class FGOEditor extends UIActivity {
                 save.add("Wait 2000");
                 save.add("Click " + linx(659, w, m) + " " + liny(907, h, m));//關閉
             }
-            FileOperation.writeToFile(filename, save);
+            FileOperation.writeToFile(FolderName + filename, save);
+            FloatingWidgetService.setScript(new Interpreter(FolderName,filename),null);
         }
     }
 }
