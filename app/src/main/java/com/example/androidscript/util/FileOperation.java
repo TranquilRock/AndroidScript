@@ -24,12 +24,16 @@ public final class FileOperation extends Activity {
     public static void fileRootInit(String _root) {
         if (FileOperation.root == null) {
             FileOperation.root = _root;
+            DebugMessage.set(_root);
         }
     }
 
     public static String[] readDir(String PathName) {
         PathName = root + PathName;
         File dir = new File(PathName);
+        if(dir.mkdir()){
+            DebugMessage.set("MakeDir");
+        }
         if(dir.isDirectory()){
             return dir.list();
         }

@@ -32,13 +32,8 @@ public class SelectFile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_file);
-        try{
-            this.availableFile = FileOperation.browseAvailableFile("media/",".txt");
-        }catch (Exception e){
-            DebugMessage.printStackTrace(e);
-            this.availableFile = new Vector<>();
-            this.availableFile.add("123");
-        }
+        String[] classPath = getIntent().getStringExtra("next_destination").split("\\.");
+        this.availableFile = FileOperation.browseAvailableFile(classPath[classPath.length - 2] + "/", ".txt");
         setupElements();
     }
 
@@ -66,21 +61,19 @@ public class SelectFile extends AppCompatActivity {
         }));
     }
 
-    protected void switchToEdit(String FileName){
+    protected void switchToEdit(String FileName) {
         String[] tmp = FileName.split("/");
         FileName = tmp[tmp.length - 1];
         output.setText(FileName);
         if (checkFilename(FileName)) {
-            try{
-                Intent intent = new Intent(this,  Class.forName(getIntent().getStringExtra("next_destination")));
+            try {
+                Intent intent = new Intent(this, Class.forName(getIntent().getStringExtra("next_destination")));
                 intent.putExtra("FileName", FileName);
                 startActivity(intent);
-            }
-            catch (ClassNotFoundException e){
+            } catch (ClassNotFoundException e) {
                 DebugMessage.printStackTrace(e);
             }
-        }
-        else{
+        } else {
             output.setText("僅能包含英文字母、數字與底線\n且為txt檔案格式\n例如:a_1-B.txt");
         }
     }

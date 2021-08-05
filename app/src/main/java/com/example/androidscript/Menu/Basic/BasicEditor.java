@@ -13,7 +13,9 @@ import com.example.androidscript.Menu.StartService;
 import com.example.androidscript.R;
 import com.example.androidscript.UserInterface.UIActivity;
 import com.example.androidscript.util.BtnMaker;
+import com.example.androidscript.util.Interpreter;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.Vector;
 
@@ -31,32 +33,18 @@ public class BasicEditor extends UIActivity {
     @Override
     protected Vector<Vector<String>> getBlockData() {
         Vector<Vector<String>> ret = new Vector<>();
-        ret.add(makeVector("Click"));
-        ret.add(makeVector("Compare"));
-        ret.add(makeVector("Var"));
-        ret.add(makeVector("IfGreater"));
-        ret.add(makeVector("Call"));
-        ret.add(makeVector("Wait"));
-        ret.add(makeVector("JumpToLine"));
-        ret.add(makeVector("Exit"));
-        ret.add(makeVector("IfSmaller"));
-        ret.add(makeVector("Return"));
+        for(String command : Interpreter.SUPPORTED_COMMAND){
+            ret.add(new Vector<>(Arrays.asList(command.split(" "))));
+        }
         return ret;
     }
 
     @Override
     protected Vector<String> getButtonData() {
         Vector<String> ret = new Vector<>();
-        ret.add("Click");
-        ret.add("Compare");
-        ret.add("Var");
-        ret.add("IfGreater");
-        ret.add("IfSmaller");
-        ret.add("Call");
-        ret.add("Wait");
-        ret.add("JumpToLine");
-        ret.add("Return");
-        ret.add("Exit");
+        for(String command : Interpreter.SUPPORTED_COMMAND){
+            ret.add(command.split(" ")[0]);
+        }
         return ret;
     }
 

@@ -129,7 +129,9 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
     @Override
     public int getItemViewType(int position) {
         switch (BasicData.get(position).get(0)) {
-            case "Click":
+            case "Exit":
+                return 0;
+            case "Contain":
             case "IfGreater":
             case "IfSmaller":
             case "Var":
@@ -138,7 +140,6 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
             case "Wait":
             case "Call":
             case "Return":
-            case "Exit":
                 return 1;
             case "Compare":
                 return 2;
