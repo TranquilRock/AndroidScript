@@ -16,7 +16,7 @@
         android:background="#96F">
 
         <TextView
-            android:id="@+id/OneVarTitle"
+            android:id="@+id/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title"
@@ -30,7 +30,7 @@
             android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
-            card_view:layout_constraintStart_toEndOf="@+id/OneVarTitle"
+            card_view:layout_constraintStart_toEndOf="@+id/Title"
             card_view:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton

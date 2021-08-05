@@ -16,7 +16,7 @@
         android:background="#96F">
 
         <TextView
-            android:id="@+id/TwoVarTitle"
+            android:id="@+id/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title"
@@ -32,13 +32,13 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="43dp"
             card_view:layout_constraintTop_toTopOf="parent"
-            card_view:layout_constraintStart_toEndOf="@+id/TwoVarTitle" />
+            card_view:layout_constraintStart_toEndOf="@+id/Title" />
 
         <TextView
             android:id="@+id/TwoVarTextMiddle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextMiddle"
+            android:text=""
             android:textColor="#FFF"
             android:layout_marginStart="10dp"
             card_view:layout_constraintBaseline_toBaselineOf="@+id/TwoVarLeftInput"

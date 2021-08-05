@@ -13,14 +13,12 @@ import com.example.androidscript.R;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Vector;
-
 public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
 
+    protected View view;
     protected ImageButton Up;
     protected ImageButton Down;
     protected ImageButton Close;
-    protected View view;
     public TextView Title;
 
     public BasicViewHolder(@NonNull @NotNull View itemView) {
@@ -41,60 +39,89 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         Close.setOnClickListener(v -> {
             order.delete(position);
         });
+        Title = view.findViewById(R.id.Title);
     }
 
-    public static class TwoVarVH extends BasicViewHolder{
-        TextView SubTitle;
-        TextView Title1;
-        TextView TitleMiddle;
-        EditText LeftInput;
-        EditText RightInput;
+    public static class ZeroVH extends BasicViewHolder {
+        public EditText Input;
 
-        public TwoVarVH(View view) {
+        public OneVH(View view) {
             super(view);
         }
 
         @Override
-        public void onBind(updateOrder order, int position){
+        public void onBind(updateOrder order, int position) {
             super.onBind(order, position);
             Title = view.findViewById(R.id.Title);
-            SubTitle = view.findViewById(R.id.SubTitle);
-            Title1 = view.findViewById(R.id.Title1);
+            Input = view.findViewById(R.id.OneVarInput);
+        }
+    }
+
+
+    public static class OneVH extends BasicViewHolder {
+
+        public EditText Input;
+
+        public OneVH(View view) {
+            super(view);
+        }
+
+        @Override
+        public void onBind(updateOrder order, int position) {
+            super.onBind(order, position);
+            Title = view.findViewById(R.id.Title);
+            Input = view.findViewById(R.id.OneVarInput);
+        }
+    }
+
+    public static class TwoVH extends BasicViewHolder {
+        public TextView TitleMiddle;
+        public EditText LeftInput;
+        public EditText RightInput;
+
+        public TwoVH(View view) {
+            super(view);
+        }
+
+        @Override
+        public void onBind(updateOrder order, int position) {
+            super.onBind(order, position);
             TitleMiddle = view.findViewById(R.id.TitleMiddle);
             LeftInput = view.findViewById(R.id.LeftInput);
             RightInput = view.findViewById(R.id.RightInput);
         }
     }
 
-    public static class OneVarVH extends BasicViewHolder{
+    public static class ThreeVH extends BasicViewHolder {
+        public TextView TitleMiddle;
+        public EditText LeftInput;
+        public EditText RightInput;
 
-        EditText Input;
-
-        public OneVarVH (View view){
+        public ThreeVH(View view) {
             super(view);
         }
 
         @Override
-        public void onBind(updateOrder order, int position){
+        public void onBind(updateOrder order, int position) {
             super.onBind(order, position);
-            Title = view.findViewById(R.id.OneVarTitle);
-            Input = view.findViewById(R.id.OneVarInput);
+            TitleMiddle = view.findViewById(R.id.TitleMiddle);
+            LeftInput = view.findViewById(R.id.LeftInput);
+            RightInput = view.findViewById(R.id.RightInput);
         }
     }
 
-    public static class CompareVH extends BasicViewHolder{
+    public static class FourVH extends BasicViewHolder {
 
-        EditText LeftPositionX;
-        EditText LeftPositionY;
-        EditText RightPositionX;
-        EditText RightPositionY;
+        public EditText LeftPositionX;
+        public EditText LeftPositionY;
+        public EditText RightPositionX;
+        public EditText RightPositionY;
 
-        public CompareVH (View view){
+        public FourVH(View view){
             super(view);
         }
-
         @Override
-        public void onBind(updateOrder order, int position){
+        public void onBind(updateOrder order, int position) {
             super.onBind(order, position);
             LeftPositionX = view.findViewById(R.id.LeftPositionX);
             LeftPositionY = view.findViewById(R.id.LeftPositionY);
@@ -102,5 +129,23 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
             RightPositionY = view.findViewById(R.id.RightPositionY);
         }
     }
+    public static class FiveVH extends BasicViewHolder {
 
+        public EditText LeftPositionX;
+        public EditText LeftPositionY;
+        public EditText RightPositionX;
+        public EditText RightPositionY;
+
+        public FiveVH(View view){
+            super(view);
+        }
+        @Override
+        public void onBind(updateOrder order, int position) {
+            super.onBind(order, position);
+            LeftPositionX = view.findViewById(R.id.LeftPositionX);
+            LeftPositionY = view.findViewById(R.id.LeftPositionY);
+            RightPositionX = view.findViewById(R.id.RightPositionX);
+            RightPositionY = view.findViewById(R.id.RightPositionY);
+        }
+    }
 }

@@ -60,16 +60,16 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
         switch (viewType) {
             case 0://TwoVarFormat
                 view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.script_two_var_format, parent, false);
-                return new BasicViewHolder.TwoVarVH(view);
+                        .inflate(R.layout.basic_two_var_format, parent, false);
+                return new BasicViewHolder.ThreeVH(view);
             case 1://OneVarFormat
                 view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.script_one_var_format, parent, false);
-                return new BasicViewHolder.OneVarVH(view);
+                        .inflate(R.layout.basic_one_var_format, parent, false);
+                return new BasicViewHolder.OneVH(view);
             case 2://Compare
                 view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.script_four_var_format, parent, false);
-                return new BasicViewHolder.CompareVH(view);
+                        .inflate(R.layout.basic_four_var_format, parent, false);
+                return new BasicViewHolder.FourVH(view);
         }
         throw new RuntimeException("Invalid Type");
     }
@@ -80,7 +80,7 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
         ((BasicViewHolder) holder).Title.setText(BasicData.get(position).get(0));
         switch (BasicData.get(position).get(0)) {
             case "Exit":
-                ((BasicViewHolder.OneVarVH) holder).Input.setVisibility(View.INVISIBLE);
+                ((BasicViewHolder.OneVH) holder).Input.setVisibility(View.INVISIBLE);
                 break;
             case "Contain":
             case "JumpTo":
@@ -90,27 +90,27 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
             case "Return":
                 break;
             case "Click":
-                ((BasicViewHolder.TwoVarVH) holder).SubTitle.setText("Position");
-                ((BasicViewHolder.TwoVarVH) holder).Title1.setText("X:");
-                ((BasicViewHolder.TwoVarVH) holder).TitleMiddle.setText("Y:");
+                ((BasicViewHolder.ThreeVH) holder).SubTitle.setText("Position");
+                ((BasicViewHolder.ThreeVH) holder).Title1.setText("X:");
+                ((BasicViewHolder.ThreeVH) holder).TitleMiddle.setText("Y:");
                 break;
             case "CallArg":
             case "IfGreater":
-                ((BasicViewHolder.TwoVarVH) holder).SubTitle.setVisibility(View.INVISIBLE);
-                ((BasicViewHolder.TwoVarVH) holder).Title1.setVisibility(View.INVISIBLE);
-                ((BasicViewHolder.TwoVarVH) holder).TitleMiddle.setText(">");
+                ((BasicViewHolder.ThreeVH) holder).SubTitle.setVisibility(View.INVISIBLE);
+                ((BasicViewHolder.ThreeVH) holder).Title1.setVisibility(View.INVISIBLE);
+                ((BasicViewHolder.ThreeVH) holder).TitleMiddle.setText(">");
                 break;
             case "IfSmaller":
-                ((BasicViewHolder.TwoVarVH) holder).SubTitle.setVisibility(View.INVISIBLE);
-                ((BasicViewHolder.TwoVarVH) holder).Title1.setVisibility(View.INVISIBLE);
-                ((BasicViewHolder.TwoVarVH) holder).TitleMiddle.setText("<");//> or <
+                ((BasicViewHolder.ThreeVH) holder).SubTitle.setVisibility(View.INVISIBLE);
+                ((BasicViewHolder.ThreeVH) holder).Title1.setVisibility(View.INVISIBLE);
+                ((BasicViewHolder.ThreeVH) holder).TitleMiddle.setText("<");//> or <
                 break;
             case "Add":
             case "Subtract":
             case "Var":
-                ((BasicViewHolder.TwoVarVH) holder).SubTitle.setVisibility(View.INVISIBLE);
-                ((BasicViewHolder.TwoVarVH) holder).Title1.setVisibility(View.INVISIBLE);
-                ((BasicViewHolder.TwoVarVH) holder).TitleMiddle.setText("=");
+                ((BasicViewHolder.ThreeVH) holder).SubTitle.setVisibility(View.INVISIBLE);
+                ((BasicViewHolder.ThreeVH) holder).Title1.setVisibility(View.INVISIBLE);
+                ((BasicViewHolder.ThreeVH) holder).TitleMiddle.setText("=");
                 break;
             case "Swipe":
             case "Compare":
