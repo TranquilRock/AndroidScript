@@ -33,7 +33,7 @@ public class SelectFile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_file);
         try{
-            this.availableFile = FileOperation.browseAvailableFile("ArkKnights/",".txt");
+            this.availableFile = FileOperation.browseAvailableFile("media/",".txt");
         }catch (Exception e){
             DebugMessage.printStackTrace(e);
             this.availableFile = new Vector<>();
