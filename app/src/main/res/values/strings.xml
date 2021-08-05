@@ -19,6 +19,7 @@
     <string name="repeat">重複次數</string>
     <string name="changeskl">換人技</string>
     <string-array name="friends">
+        <item>無</item>
         <item>第一位</item>
         <item>CBA</item>
         <item>孔明</item>
@@ -54,7 +55,6 @@
     </string-array>
     <string-array name="craft_skl_swap">
         <item>不使用</item>
-        <item>無對象</item>
         <item>一四換</item>
         <item>一五換</item>
         <item>一六換</item>
