@@ -5,22 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    card_view:cardBackgroundColor="@color/green"
-    card_view:cardCornerRadius="10dp"
-    card_view:contentPadding="3dp">
+    card_view:cardBackgroundColor="#336699"
+    card_view:cardCornerRadius="15dp"
+    card_view:contentPadding="5dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="105dp"
-        android:background="#96F">
+        android:layout_height="97dp"
+        android:background="#5CADAD">
 
         <TextView
             android:id="@+id/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title"
-            android:textColor="#FFF"
+            android:textColor="#000"
             android:textSize="30dp"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
@@ -30,9 +30,9 @@
             android:id="@+id/FourVarInputLeftUp"
             android:layout_width="75dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            card_view:layout_constraintBaseline_toBaselineOf="@+id/Title"
-            card_view:layout_constraintStart_toEndOf="@+id/Title"/>
+            android:layout_marginTop="10dp"
+            card_view:layout_constraintTop_toBottomOf="@+id/Title"
+            card_view:layout_constraintStart_toStartOf="@+id/Title"/>
 
 
         <EditText
@@ -48,10 +48,9 @@
             android:id="@+id/FourVarInputLeftBottom"
             android:layout_width="75dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            card_view:layout_constraintStart_toEndOf="@+id/Title"
-            card_view:layout_constraintTop_toBottomOf="@+id/FourVarInputLeftUp" />
+            android:layout_marginStart="30dp"
+            card_view:layout_constraintStart_toEndOf="@+id/FourVarInputRightUp"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/FourVarInputLeftUp" />
 
         <EditText
             android:id="@+id/FourVarInputRightBottom"
@@ -59,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
             card_view:layout_constraintStart_toEndOf="@+id/FourVarInputLeftBottom"
-            card_view:layout_constraintBaseline_toBaselineOf="@+id/FourVarInputLeftBottom" />
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/FourVarInputLeftUp" />
 
         <ImageButton
             android:id="@+id/btn_del"

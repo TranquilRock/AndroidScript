@@ -5,22 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    card_view:cardBackgroundColor="@color/green"
-    card_view:cardCornerRadius="10dp"
-    card_view:contentPadding="3dp">
+    card_view:cardBackgroundColor="#336699"
+    card_view:cardCornerRadius="15dp"
+    card_view:contentPadding="5dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="90dp"
-        android:background="#96F">
+        android:background="#6FB7B7">
 
         <TextView
             android:id="@+id/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title"
-            android:textColor="#FFF"
+            android:textColor="#000"
             android:textSize="30dp"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
