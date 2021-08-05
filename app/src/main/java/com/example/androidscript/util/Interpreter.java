@@ -154,17 +154,9 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                 }
             }
             switch (command[0]) {
-                case "Click":
-                    delay();
-                    AutoClick.Click(Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]));
-                    break;
-                case "Swipe":
-                    delay();
-                    AutoClick.Swipe(Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]));
-                case "Compare":
-                    int Similarity = ScreenShot.compare(ReadImgFromFile(Arguments[4]), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]));
-                    LocalVar.put("$R", String.valueOf(Similarity));
-                    break;
+                case "Exit":
+                    this.running = false;
+                    return 1;
                 case "Contain":
                     if (ScreenShot.contain(ReadImgFromFile(Arguments[0]))) {
                         LocalVar.put("$R", "0");
@@ -181,39 +173,45 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                 case "Call":
                     LocalVar.put("$R", String.valueOf(run(Arguments[0], null, depth + 1)));
                     break;
+                case "Tag":
+                    break;
+                case "Return":
+                    return Integer.parseInt(Arguments[0]);
+                case "Click":
+                    delay();
+                    AutoClick.Click(Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]));
+                    break;
                 case "CallArg":
                     String[] nextArgv = new String[command.length - 2];
                     System.arraycopy(Arguments, 1, nextArgv, 0, command.length - 2);
                     LocalVar.put("$R", String.valueOf(run(Arguments[0], nextArgv, depth + 1)));
                     break;
                 case "IfGreater":
-                    if (Integer.parseInt(Arguments[0]) <= Integer.parseInt(Arguments[2])) {//Failed, skip next line
+                    if (Integer.parseInt(Arguments[0]) <= Integer.parseInt(Arguments[1])) {//Failed, skip next line
                         commandIndex++;
                     }
                     break;
                 case "IfSmaller":
-                    if (Integer.parseInt(Arguments[0]) >= Integer.parseInt(Arguments[2])) {//Failed, skip next line
+                    if (Integer.parseInt(Arguments[0]) >= Integer.parseInt(Arguments[1])) {//Failed, skip next line
                         commandIndex++;
                     }
+                    break;
+                case "Add":
+                    LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(Arguments[2]) + Integer.parseInt(LocalVar.get(Arguments[0]))));
+                    break;
+                case "Subtract":
+                    LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(LocalVar.get(Arguments[0])) - Integer.parseInt(Arguments[2])));
                     break;
                 case "Var":
                     assert (Arguments[0].charAt(0) == '$');
                     LocalVar.put(Arguments[0], Arguments[1]);
                     break;
-                case "Add":
-                    LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(Arguments[2]) + Integer.parseInt(LocalVar.get(Arguments[0]))));
-                    break;
-
-                case "Subtract":
-                    LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(LocalVar.get(Arguments[0])) - Integer.parseInt(Arguments[2])));
-
-                    break;
-                case "Exit":
-                    this.running = false;
-                    return 1;
-                case "Return":
-                    return Integer.parseInt(Arguments[0]);
-                case "Tag":
+                case "Swipe":
+                    delay();
+                    AutoClick.Swipe(Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]));
+                case "Compare":
+                    int Similarity = ScreenShot.compare(ReadImgFromFile(Arguments[4]), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]));
+                    LocalVar.put("$R", String.valueOf(Similarity));
                     break;
                 default:
                     throw new RuntimeException("Cannot Recognize " + command[0]);
