@@ -58,18 +58,26 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
     public @NotNull BasicViewHolder onCreateViewHolder(@NonNull @NotNull ViewGroup parent, int viewType) {
         View view;
         switch (viewType) {
-            case 0://TwoVarFormat
+            case 0://ZeroVarFormat
                 view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.basic_two_var_format, parent, false);
-                return new BasicViewHolder.ThreeVH(view);
+                        .inflate(R.layout.basic_zero_var_format, parent, false);
+                return new BasicViewHolder.ZeroVH(view);
             case 1://OneVarFormat
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.basic_one_var_format, parent, false);
                 return new BasicViewHolder.OneVH(view);
-            case 2://Compare
+            case 2://TwoVarFormat
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.basic_two_var_format, parent, false);
+                return new BasicViewHolder.TwoVH(view);
+            case 4://FourVarFormat
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.basic_four_var_format, parent, false);
                 return new BasicViewHolder.FourVH(view);
+            case 5://FiveVarFormat
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.basic_five_var_format, parent, false);
+                return new BasicViewHolder.FiveVH(view);
         }
         throw new RuntimeException("Invalid Type");
     }
