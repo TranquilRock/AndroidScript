@@ -11,6 +11,7 @@ import com.example.androidscript.Menu.StartService;
 import com.example.androidscript.R;
 import com.example.androidscript.UserInterface.UIActivity;
 import com.example.androidscript.util.BtnMaker;
+import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.Interpreter;
 
 import java.util.HashMap;
@@ -27,6 +28,7 @@ public class BasicEditor extends UIActivity {
         for (String command : Interpreter.SUPPORTED_COMMAND) {
             String[] keys = command.split(" ");
             Vector<String> value = new Vector<>();
+            value.add(keys[0]);
             for (int z = 1; z < keys.length; z++) {
                 value.add("");
             }
@@ -49,6 +51,10 @@ public class BasicEditor extends UIActivity {
         Vector<Vector<String>> ret = new Vector<>();
         for (Map.Entry<String, Vector<String>> Block : Blocks.entrySet()) {
             ret.add(Block.getValue());
+            for(String gg : Block.getValue()){
+                DebugMessage.set(gg);
+            }
+            DebugMessage.set("=============");
         }
         return ret;
     }
