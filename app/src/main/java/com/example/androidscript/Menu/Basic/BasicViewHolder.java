@@ -17,12 +17,11 @@ import java.util.Vector;
 
 public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
 
-    public abstract void retrieveData(Vector<Vector<String>> Data,int position);
-
     protected ImageButton Up;
     protected ImageButton Down;
     protected ImageButton Close;
     protected View view;
+    public TextView Title;
 
     public BasicViewHolder(@NonNull @NotNull View itemView) {
         super(itemView);
@@ -45,18 +44,11 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
     }
 
     public static class TwoVarVH extends BasicViewHolder{
-        TextView Title;
         TextView SubTitle;
         TextView Title1;
         TextView TitleMiddle;
         EditText LeftInput;
         EditText RightInput;
-
-
-        @Override
-        public void retrieveData(Vector<Vector<String>> Data, int position) {
-
-        }
 
         public TwoVarVH(View view) {
             super(view);
@@ -76,14 +68,7 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
 
     public static class OneVarVH extends BasicViewHolder{
 
-        TextView OneVarTitle;
-        EditText OneVarInput;
-
-
-        @Override
-        public void retrieveData(Vector<Vector<String>> Data, int position) {
-
-        }
+        EditText Input;
 
         public OneVarVH (View view){
             super(view);
@@ -92,8 +77,8 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         @Override
         public void onBind(updateOrder order, int position){
             super.onBind(order, position);
-            OneVarTitle = view.findViewById(R.id.OneVarTitle);
-            OneVarInput = view.findViewById(R.id.OneVarInput);
+            Title = view.findViewById(R.id.OneVarTitle);
+            Input = view.findViewById(R.id.OneVarInput);
         }
     }
 
@@ -103,11 +88,6 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         EditText LeftPositionY;
         EditText RightPositionX;
         EditText RightPositionY;
-
-        @Override
-        public void retrieveData(Vector<Vector<String>> Data, int position) {
-
-        }
 
         public CompareVH (View view){
             super(view);

@@ -1,6 +1,5 @@
 package com.example.androidscript.Menu.Basic;
 
-import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import com.example.androidscript.R;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Vector;
 
@@ -35,7 +33,7 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
         this.onOrderChange = new updateOrder() {
             @Override
             public void swap(int a, int b) {
-                if (a >= 0 && b < BasicData.size()&& a < b) {
+                if (a >= 0 && b < BasicData.size() && a < b) {
                     Collections.swap(BasicData, a, b);
                     notifyDataSetChanged();
                 }
@@ -79,50 +77,43 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull @NotNull BasicViewHolder holder, int position) {
         holder.onBind(onOrderChange, position);
+        ((BasicViewHolder) holder).Title.setText(BasicData.get(position).get(0));
         switch (BasicData.get(position).get(0)) {
-            //TwoVarFormat
+            case "Exit":
+                ((BasicViewHolder.OneVarVH) holder).Input.setVisibility(View.INVISIBLE);
+                break;
+            case "Contain":
+            case "JumpTo":
+            case "Wait":
+            case "Call":
+            case "Tag":
+            case "Return":
+                break;
             case "Click":
-                ((BasicViewHolder.TwoVarVH) holder).Title.setText("Click");
                 ((BasicViewHolder.TwoVarVH) holder).SubTitle.setText("Position");
                 ((BasicViewHolder.TwoVarVH) holder).Title1.setText("X:");
                 ((BasicViewHolder.TwoVarVH) holder).TitleMiddle.setText("Y:");
                 break;
+            case "CallArg":
             case "IfGreater":
-                ((BasicViewHolder.TwoVarVH) holder).Title.setText("If");
                 ((BasicViewHolder.TwoVarVH) holder).SubTitle.setVisibility(View.INVISIBLE);
                 ((BasicViewHolder.TwoVarVH) holder).Title1.setVisibility(View.INVISIBLE);
                 ((BasicViewHolder.TwoVarVH) holder).TitleMiddle.setText(">");
                 break;
             case "IfSmaller":
-                ((BasicViewHolder.TwoVarVH) holder).Title.setText("If");
                 ((BasicViewHolder.TwoVarVH) holder).SubTitle.setVisibility(View.INVISIBLE);
                 ((BasicViewHolder.TwoVarVH) holder).Title1.setVisibility(View.INVISIBLE);
-                ((BasicViewHolder.TwoVarVH) holder).TitleMiddle.setText("<");
+                ((BasicViewHolder.TwoVarVH) holder).TitleMiddle.setText("<");//> or <
                 break;
+            case "Add":
+            case "Subtract":
             case "Var":
-                ((BasicViewHolder.TwoVarVH) holder).Title.setText("Var");
                 ((BasicViewHolder.TwoVarVH) holder).SubTitle.setVisibility(View.INVISIBLE);
                 ((BasicViewHolder.TwoVarVH) holder).Title1.setVisibility(View.INVISIBLE);
                 ((BasicViewHolder.TwoVarVH) holder).TitleMiddle.setText("=");
                 break;
-            //OneVarFormat
-            case "JumpToLine":
-                ((BasicViewHolder.OneVarVH) holder).OneVarTitle.setText("JumpToLine");
-                break;
-            case "Wait":
-                ((BasicViewHolder.OneVarVH) holder).OneVarTitle.setText("Wait");
-                break;
-            case "Call":
-                ((BasicViewHolder.OneVarVH) holder).OneVarTitle.setText("Call");
-                break;
-            case "Return":
-                ((BasicViewHolder.OneVarVH) holder).OneVarTitle.setText("Return");
-                break;
-            case "Exit":
-                ((BasicViewHolder.OneVarVH) holder).OneVarTitle.setText("Exit");
-                ((BasicViewHolder.OneVarVH) holder).OneVarInput.setVisibility(View.INVISIBLE);
-                break;
-
+            case "Swipe":
+            case "Compare":
         }
     }
 
@@ -132,17 +123,24 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
             case "Exit":
                 return 0;
             case "Contain":
-            case "IfGreater":
-            case "IfSmaller":
-            case "Var":
-                return 0;
-            case "JumpToLine":
+            case "JumpTo":
             case "Wait":
             case "Call":
+            case "Tag":
             case "Return":
                 return 1;
-            case "Compare":
+            case "Click":
+            case "CallArg":
+            case "IfGreater":
+            case "IfSmaller":
+            case "Add":
+            case "Subtract":
+            case "Var":
                 return 2;
+            case "Swipe":
+                return 4;
+            case "Compare":
+                return 5;
         }
         throw new RuntimeException("Invalid Type");
     }
