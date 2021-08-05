@@ -1,30 +1,18 @@
 package com.example.androidscript.UserInterface;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidscript.Menu.FGO.FGOBlockAdapter;
-import com.example.androidscript.Menu.FGO.FGOButtonAdapter;
 import com.example.androidscript.Menu.FGO.FGOEditor;
-import com.example.androidscript.Menu.MenuActivity;
-import com.example.androidscript.Menu.StartService;
 import com.example.androidscript.R;
-import com.example.androidscript.util.BtnMaker;
-import com.example.androidscript.util.DebugMessage;
-import com.example.androidscript.util.FileOperation;
 import com.example.androidscript.util.ScreenShot;
-import com.example.androidscript.util.SpnMaker;
 
-import java.util.ArrayList;
 import java.util.Vector;
 
 public abstract class UIActivity extends AppCompatActivity implements Editor {
@@ -64,7 +52,7 @@ public abstract class UIActivity extends AppCompatActivity implements Editor {
                         Log.d("kkk", String.valueOf(data.get(i)));
                     }
 
-                    FGOEditor.savetointp(filename, data, ScreenShot.getWidth(), ScreenShot.getHeight());
+                    FGOEditor.compile(filename, data, ScreenShot.getWidth(), ScreenShot.getHeight());
                 }
             });
         }

@@ -42,8 +42,5 @@ public class MenuActivity extends AppCompatActivity {
         BtnMaker.jump(R.id.button_to_ArkUI, this, ArkKnightsEditor.class);
         BtnMaker.jumpWithMessage(R.id.button_to_FGO, this, SelectFile.class, "next_destination", "com.example.androidscript.Menu.FGO.FGOEditor");
         BtnMaker.jumpWithMessage(R.id.button_to_basic, this, SelectFile.class, "next_destination", "com.example.androidscript.Menu.Basic.BasicEditor");
-        if (!OpenCVLoader.initDebug()) {
-            throw new AssertionError("OpenCV unavailable!");
-        }
     }
 }
