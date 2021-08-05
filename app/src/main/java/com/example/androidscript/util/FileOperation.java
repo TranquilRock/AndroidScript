@@ -14,6 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -96,7 +97,7 @@ public final class FileOperation extends Activity {
                 byte[] data = new byte[(int) file.length()];
                 fileInputStream.read(data);
                 fileInputStream.close();
-                return new String(data, "UTF-8");
+                return new String(data, StandardCharsets.UTF_8);
 
             } catch (IOException e) {
                 DebugMessage.printStackTrace(e);
