@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidscript.Menu.Basic.BasicBlockAdapter.updateOrder;
 import com.example.androidscript.R;
+import com.example.androidscript.util.DebugMessage;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -26,7 +27,7 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
     public TextView Title;
     public EditText[] Inputs;
 
-    protected static TextWatcher getTextWatcher(Vector<Vector<String>> Data, int position, int index) {
+    protected static TextWatcher getTextWatcher(Vector<Vector<String>> Data, int position, int index, BasicViewHolder abc) {
         return (new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -38,7 +39,9 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
 
             @Override
             public void afterTextChanged(Editable s) {
-                Data.get(position).setElementAt(s.toString(), index);
+                if (abc.getAdapterPosition() == position) {
+                    Data.get(position).setElementAt(s.toString(), index);
+                }
             }
         });
     }
@@ -52,15 +55,12 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         Up = view.findViewById(R.id.btn_up);
         Up.setOnClickListener(v -> {
             order.swap(position - 1, position);
+
         });
         Down = view.findViewById(R.id.btn_down);
-        Down.setOnClickListener(v -> {
-            order.swap(position, position + 1);
-        });
+        Down.setOnClickListener(v -> order.swap(position, position + 1));
         Close = view.findViewById(R.id.btn_del);
-        Close.setOnClickListener(v -> {
-            order.delete(position);
-        });
+        Close.setOnClickListener(v -> order.delete(position));
         Title = view.findViewById(R.id.Title);
     }
 
@@ -69,7 +69,6 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
             super(view);
         }
     }
-
 
     public static class OneVH extends BasicViewHolder {
         public OneVH(View view) {
@@ -81,10 +80,8 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
             super.onBind(order, position, Data);
             Inputs[0] = view.findViewById(R.id.OneVarInput);
-            for (int z = 0; z < Inputs.length; z++) {
-                Inputs[z].addTextChangedListener(getTextWatcher(Data, position, z));
-                Inputs[z].setText(Data.get(position).get(z));
-            }
+            Inputs[0].setText(Data.get(position).get(1));
+            Inputs[0].addTextChangedListener(getTextWatcher(Data, position, 1, this));
         }
     }
 
@@ -102,31 +99,31 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
             TitleMiddle = view.findViewById(R.id.TwoVarTextMiddle);
             Inputs[0] = view.findViewById(R.id.TwoVarLeftInput);
             Inputs[1] = view.findViewById(R.id.TwoVarRightInput);
-            for (int z = 0; z < Inputs.length; z++) {
-                Inputs[z].addTextChangedListener(getTextWatcher(Data, position, z));
-                Inputs[z].setText(Data.get(position).get(z));
+            for (int z = 0; z < 2; z++) {
+                Inputs[z].setText(Data.get(position).get(z + 1));
+                Inputs[z].addTextChangedListener(getTextWatcher(Data, position, z + 1, this));
             }
         }
     }
 
-    public static class ThreeVH extends BasicViewHolder {
-        public ThreeVH(View view) {
-            super(view);
-            Inputs = new EditText[3];
-        }
-
-        @Override
-        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
-            super.onBind(order, position, Data);
-            Inputs[0] = view.findViewById(R.id.ThreeVarInputLeft);
-            Inputs[1] = view.findViewById(R.id.ThreeVarInputMiddle);
-            Inputs[2] = view.findViewById(R.id.ThreeVarInputRight);
-            for (int z = 0; z < Inputs.length; z++) {
-                Inputs[z].addTextChangedListener(getTextWatcher(Data, position, z));
-                Inputs[z].setText(Data.get(position).get(z));
-            }
-        }
-    }
+//    public static class ThreeVH extends BasicViewHolder {
+//        public ThreeVH(View view) {
+//            super(view);
+//            Inputs = new EditText[3];
+//        }
+//
+//        @Override
+//        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+//            super.onBind(order, position, Data);
+//            Inputs[0] = view.findViewById(R.id.ThreeVarInputLeft);
+//            Inputs[1] = view.findViewById(R.id.ThreeVarInputMiddle);
+//            Inputs[2] = view.findViewById(R.id.ThreeVarInputRight);
+//            for (int z = 0; z < 3; z++) {
+//            Inputs[z].setText(Data.get(position).get(z + 1));
+//                Inputs[z].addTextChangedListener(getTextWatcher(Data, position, z + 1));
+//            }
+//        }
+//    }
 
     public static class FourVH extends BasicViewHolder {
 
@@ -142,9 +139,9 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
             Inputs[1] = view.findViewById(R.id.FourVarInputRightUp);
             Inputs[2] = view.findViewById(R.id.FourVarInputLeftBottom);
             Inputs[3] = view.findViewById(R.id.FourVarInputRightBottom);
-            for (int z = 0; z < Inputs.length; z++) {
-                Inputs[z].addTextChangedListener(getTextWatcher(Data, position, z));
-                Inputs[z].setText(Data.get(position).get(z));
+            for (int z = 0; z < 4; z++) {
+                Inputs[z].setText(Data.get(position).get(z + 1));
+                Inputs[z].addTextChangedListener(getTextWatcher(Data, position, z + 1, this));
             }
         }
     }
@@ -164,9 +161,9 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
             Inputs[2] = view.findViewById(R.id.FiveVarInputLeftBottom);
             Inputs[3] = view.findViewById(R.id.FiveVarInputRightBottom);
             Inputs[4] = view.findViewById(R.id.FiveVarInputLast);
-            for (int z = 0; z < Inputs.length; z++) {
-                Inputs[z].addTextChangedListener(getTextWatcher(Data, position, z));
-                Inputs[z].setText(Data.get(position).get(z));
+            for (int z = 0; z < 5; z++) {
+                Inputs[z].setText(Data.get(position).get(z + 1));
+                Inputs[z].addTextChangedListener(getTextWatcher(Data, position, z + 1, this));
             }
         }
     }

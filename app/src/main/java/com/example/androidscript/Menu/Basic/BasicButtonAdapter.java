@@ -5,6 +5,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 
 import com.example.androidscript.UserInterface.ButtonAdapter;
+import com.example.androidscript.util.DebugMessage;
 
 import java.util.Vector;
 
@@ -49,7 +50,15 @@ public class BasicButtonAdapter extends ButtonAdapter {
 
     private View.OnClickListener buttonListener(String blockTitle) {
         return v -> {
-            BlockContent.insertElementAt(BasicEditor.Blocks.get(blockTitle), insertPosition);
+            BlockContent.insertElementAt(new Vector<>(BasicEditor.Blocks.get(blockTitle)) , insertPosition);
+            for(Vector<String> gas :BlockContent){
+                DebugMessage.set("========================");
+                for(String ww: gas){
+                    DebugMessage.set(ww);
+                }
+                DebugMessage.set("========================");
+            }
+
             onInsert.insert();
         };
     }

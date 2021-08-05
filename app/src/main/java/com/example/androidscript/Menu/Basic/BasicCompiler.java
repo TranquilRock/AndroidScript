@@ -1,6 +1,7 @@
 package com.example.androidscript.Menu.Basic;
 
 import com.example.androidscript.util.Compiler;
+import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
 
 import java.util.Vector;
@@ -17,7 +18,9 @@ public class BasicCompiler extends Compiler {
             }
             tmp.append(command.get(command.size() - 1));
             buffer.add(tmp.toString());
+            DebugMessage.set(tmp.toString());
         }
-        FileOperation.writeToFile("Run.txt", buffer);
+
+        FileOperation.writeToFile(BasicEditor.FolderName + "Run.txt", buffer);
     }
 }

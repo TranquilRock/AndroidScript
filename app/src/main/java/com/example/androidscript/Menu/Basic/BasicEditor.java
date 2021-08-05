@@ -29,7 +29,7 @@ public class BasicEditor extends UIActivity {
             String[] keys = command.split(" ");
             Vector<String> value = new Vector<>();
             value.add(keys[0]);
-            for (int z = 1; z < keys.length; z++) {
+            for (int z = 1; z < keys.length; z++) {//+1
                 value.add("");
             }
             Blocks.put(keys[0], value);
@@ -49,12 +49,8 @@ public class BasicEditor extends UIActivity {
     @Override
     protected Vector<Vector<String>> getBlockData() {
         Vector<Vector<String>> ret = new Vector<>();
-        for (Map.Entry<String, Vector<String>> Block : Blocks.entrySet()) {
-            ret.add(Block.getValue());
-            for(String gg : Block.getValue()){
-                DebugMessage.set(gg);
-            }
-            DebugMessage.set("=============");
+        for (Map.Entry<String, Vector<String>> key : Blocks.entrySet()) {
+            ret.add(new Vector<>(Blocks.get(key.getKey())));
         }
         return ret;
     }
@@ -77,7 +73,7 @@ public class BasicEditor extends UIActivity {
 
     @Override
     protected void setRecycleButton() {
-        this.ButtonView.setLayoutManager(new GridLayoutManager(this, 4));
+        this.ButtonView.setLayoutManager(new GridLayoutManager(this, 2));
         this.ButtonView.setAdapter(new BasicButtonAdapter(BlockData, ButtonData, ((BasicBlockAdapter) Objects.requireNonNull(BlockView.getAdapter())).onOrderChange));
     }
 
