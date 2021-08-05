@@ -20,6 +20,7 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
     protected ImageButton Down;
     protected ImageButton Close;
     public TextView Title;
+    public EditText[] Inputs;
 
     public BasicViewHolder(@NonNull @NotNull View itemView) {
         super(itemView);
@@ -43,9 +44,7 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
     }
 
     public static class ZeroVH extends BasicViewHolder {
-        public EditText Input;
-
-        public OneVH(View view) {
+        public ZeroVH(View view) {
             super(view);
         }
 
@@ -59,8 +58,6 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
 
 
     public static class OneVH extends BasicViewHolder {
-
-        public EditText Input;
 
         public OneVH(View view) {
             super(view);
@@ -76,9 +73,6 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
 
     public static class TwoVH extends BasicViewHolder {
         public TextView TitleMiddle;
-        public EditText LeftInput;
-        public EditText RightInput;
-
         public TwoVH(View view) {
             super(view);
         }
@@ -93,10 +87,6 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
     }
 
     public static class ThreeVH extends BasicViewHolder {
-        public TextView TitleMiddle;
-        public EditText LeftInput;
-        public EditText RightInput;
-
         public ThreeVH(View view) {
             super(view);
         }
@@ -112,11 +102,6 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
 
     public static class FourVH extends BasicViewHolder {
 
-        public EditText LeftPositionX;
-        public EditText LeftPositionY;
-        public EditText RightPositionX;
-        public EditText RightPositionY;
-
         public FourVH(View view){
             super(view);
         }
@@ -130,11 +115,6 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         }
     }
     public static class FiveVH extends BasicViewHolder {
-
-        public EditText LeftPositionX;
-        public EditText LeftPositionY;
-        public EditText RightPositionX;
-        public EditText RightPositionY;
 
         public FiveVH(View view){
             super(view);
