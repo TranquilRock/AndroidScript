@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    card_view:cardBackgroundColor="#336699"
+    card_view:cardBackgroundColor="#333333"
     card_view:cardCornerRadius="15dp"
     card_view:contentPadding="5dp">
 
@@ -13,15 +13,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="105dp"
-        android:background="#4F9D9D">
+        android:background="#373780">
 
         <TextView
             android:id="@+id/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title"
-            android:textColor="#000"
-            android:textSize="30dp"
+            android:textColor="#FFF"
+            android:textSize="20dp"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
 
