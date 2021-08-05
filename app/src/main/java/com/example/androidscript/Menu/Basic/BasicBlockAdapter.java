@@ -84,86 +84,73 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull BasicViewHolder holder, int position) {
-        holder.onBind(onOrderChange, position);
-        ((BasicViewHolder) holder).Title.setText(BasicData.get(position).get(0));
+        holder.onBind(onOrderChange, position, this.BasicData);
+        holder.Title.setText(BasicData.get(position).get(0));
         switch (BasicData.get(position).get(0)) {
             case "Exit"://ZeroVH
-                ((BasicViewHolder.ZeroVH) holder).Title.setText("Exit");
                 break;
             case "Contain"://OneVH
-                ((BasicViewHolder.OneVH) holder).Title.setText("Contain");
                 ((BasicViewHolder.OneVH) holder).Inputs[0].setHint("Image");
                 break;
             case "JumpTo":
-                ((BasicViewHolder.OneVH) holder).Title.setText("JumpTo");
                 ((BasicViewHolder.OneVH) holder).Inputs[0].setHint("Line");
                 break;
             case "Wait":
-                ((BasicViewHolder.OneVH) holder).Title.setText("Wait");
                 ((BasicViewHolder.OneVH) holder).Inputs[0].setHint("ms");
                 break;
             case "Call":
-                ((BasicViewHolder.OneVH) holder).Title.setText("Call");
                 ((BasicViewHolder.OneVH) holder).Inputs[0].setHint(".txt");
                 break;
             case "Tag":
-                ((BasicViewHolder.OneVH) holder).Title.setText("Tag");
                 ((BasicViewHolder.OneVH) holder).Inputs[0].setHint("$Var");
                 break;
             case "Return":
-                ((BasicViewHolder.OneVH) holder).Title.setText("Return");
                 ((BasicViewHolder.OneVH) holder).Inputs[0].setHint("Value");
                 break;
             case "Click"://TwoVH
-                ((BasicViewHolder.TwoVH) holder).Title.setText("Click");
                 ((BasicViewHolder.TwoVH) holder).TitleMiddle.setVisibility(View.INVISIBLE);
                 ((BasicViewHolder.TwoVH) holder).Inputs[0].setHint("X");
                 ((BasicViewHolder.TwoVH) holder).Inputs[1].setHint("Y");
                 break;
             case "CallArg":
-                ((BasicViewHolder.TwoVH) holder).Title.setText("CallArg");
                 ((BasicViewHolder.TwoVH) holder).TitleMiddle.setVisibility(View.INVISIBLE);
                 ((BasicViewHolder.TwoVH) holder).Inputs[0].setHint(".txt");
                 ((BasicViewHolder.TwoVH) holder).Inputs[1].setHint("Value");
                 break;
             case "IfGreater":
-                ((BasicViewHolder.TwoVH) holder).Title.setText("If");
+                holder.Title.setText("If");
                 ((BasicViewHolder.TwoVH) holder).TitleMiddle.setText(">");
                 ((BasicViewHolder.TwoVH) holder).Inputs[0].setHint("$Var");
                 ((BasicViewHolder.TwoVH) holder).Inputs[1].setHint("Value");
                 break;
             case "IfSmaller":
-                ((BasicViewHolder.TwoVH) holder).Title.setText("If");
+                holder.Title.setText("If");
                 ((BasicViewHolder.TwoVH) holder).TitleMiddle.setText("<");
                 ((BasicViewHolder.TwoVH) holder).Inputs[0].setHint("$Var");
                 ((BasicViewHolder.TwoVH) holder).Inputs[1].setHint("Value");
                 break;
             case "Add":
-                ((BasicViewHolder.TwoVH) holder).Title.setText("Add");
                 ((BasicViewHolder.TwoVH) holder).TitleMiddle.setText("+=");
                 ((BasicViewHolder.TwoVH) holder).Inputs[0].setHint("$Var");
                 ((BasicViewHolder.TwoVH) holder).Inputs[1].setHint("Value");
                 break;
             case "Subtract":
-                ((BasicViewHolder.TwoVH) holder).Title.setText("Subtract");
                 ((BasicViewHolder.TwoVH) holder).TitleMiddle.setText("-=");
                 ((BasicViewHolder.TwoVH) holder).Inputs[0].setHint("$Var");
                 ((BasicViewHolder.TwoVH) holder).Inputs[1].setHint("Value");
                 break;
             case "Var":
-                ((BasicViewHolder.TwoVH) holder).Title.setText("Var");
                 ((BasicViewHolder.TwoVH) holder).TitleMiddle.setVisibility(View.INVISIBLE);
                 ((BasicViewHolder.TwoVH) holder).Inputs[0].setHint("Name");
                 ((BasicViewHolder.TwoVH) holder).Inputs[1].setHint("Value");
                 break;
             case "Swipe"://FourVH
-                ((BasicViewHolder.FourVH) holder).Title.setText("Swipe");
                 ((BasicViewHolder.FourVH) holder).Inputs[0].setHint("FromX");
                 ((BasicViewHolder.FourVH) holder).Inputs[1].setHint("FromY");
                 ((BasicViewHolder.FourVH) holder).Inputs[2].setHint("ToX");
                 ((BasicViewHolder.FourVH) holder).Inputs[3].setHint("ToY");
+                break;
             case "Compare"://FiveVH
-                ((BasicViewHolder.FiveVH) holder).Title.setText("Compare");
                 ((BasicViewHolder.FiveVH) holder).Inputs[0].setHint("X1");
                 ((BasicViewHolder.FiveVH) holder).Inputs[1].setHint("Y1");
                 ((BasicViewHolder.FiveVH) holder).Inputs[2].setHint("X2");
@@ -198,7 +185,7 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
             case "Compare":
                 return 5;
         }
-        throw new RuntimeException("Invalid Type");
+        throw new RuntimeException("Invalid " + BasicData.get(position).get(0));
     }
 
     @Override

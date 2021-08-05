@@ -7,15 +7,13 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.androidscript.Menu.FGO.FGOBlockAdapter;
-import com.example.androidscript.Menu.FGO.FGOButtonAdapter;
 import com.example.androidscript.Menu.StartService;
 import com.example.androidscript.R;
 import com.example.androidscript.UserInterface.UIActivity;
 import com.example.androidscript.util.BtnMaker;
+import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.Interpreter;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -25,20 +23,27 @@ public class BasicEditor extends UIActivity {
 
     public static final String FolderName = "Basic/";
     public static Map<String, Vector<String>> Blocks = new HashMap<>();
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        BtnMaker.registerOnClick(R.id.start_service, this, v -> startActivity(new Intent(this, StartService.class).putExtra("Orientation", "vertical")));
-        BtnMaker.registerOnClick(R.id.start_floating, this, v -> StartService.startFloatingWidget(this));
+    public static BasicCompiler compiler;
+    static{
         for (String command : Interpreter.SUPPORTED_COMMAND) {
             String[] keys = command.split(" ");
             Vector<String> value = new Vector<>();
+            value.add(keys[0]);
             for (int z = 1; z < keys.length; z++) {
                 value.add("");
             }
             Blocks.put(keys[0], value);
         }
+        compiler = new BasicCompiler();
+    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        BtnMaker.registerOnClick(R.id.start_service, this, v -> startActivity(new Intent(this, StartService.class).putExtra("Orientation", "vertical")));
+        BtnMaker.registerOnClick(R.id.start_floating, this, v -> StartService.startFloatingWidget(this));
+        BtnMaker.registerOnClick(R.id.save_file,this,(v -> {
+            compiler.compile(this.BlockData);
+        }));
     }
 
     @Override
@@ -46,6 +51,10 @@ public class BasicEditor extends UIActivity {
         Vector<Vector<String>> ret = new Vector<>();
         for (Map.Entry<String, Vector<String>> Block : Blocks.entrySet()) {
             ret.add(Block.getValue());
+            for(String gg : Block.getValue()){
+                DebugMessage.set(gg);
+            }
+            DebugMessage.set("=============");
         }
         return ret;
     }
