@@ -14,6 +14,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.Vector;
 
@@ -23,12 +24,16 @@ public final class FileOperation extends Activity {
     public static void fileRootInit(String _root) {
         if (FileOperation.root == null) {
             FileOperation.root = _root;
+            DebugMessage.set(_root);
         }
     }
 
     public static String[] readDir(String PathName) {
         PathName = root + PathName;
         File dir = new File(PathName);
+        if(dir.mkdir()){
+            DebugMessage.set("MakeDir");
+        }
         if(dir.isDirectory()){
             return dir.list();
         }
@@ -96,7 +101,7 @@ public final class FileOperation extends Activity {
                 byte[] data = new byte[(int) file.length()];
                 fileInputStream.read(data);
                 fileInputStream.close();
-                return new String(data, "UTF-8");
+                return new String(data, StandardCharsets.UTF_8);
 
             } catch (IOException e) {
                 DebugMessage.printStackTrace(e);

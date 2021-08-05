@@ -5,35 +5,52 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    card_view:cardBackgroundColor="@color/green"
-    card_view:cardCornerRadius="10dp"
-    card_view:contentPadding="3dp">
+    card_view:cardBackgroundColor="#336699"
+    card_view:cardCornerRadius="15dp"
+    card_view:contentPadding="5dp">
 
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:background="#96F">
+        android:layout_height="90dp"
+        android:background="#81C0C0">
 
         <TextView
-            android:id="@+id/OneVarTitle"
+            android:id="@+id/Title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title"
-            android:textColor="#FFF"
-            android:textSize="20dp"
-            card_view:layout_constraintBottom_toBottomOf="parent"
+            android:textColor="#000"
+            android:textSize="30dp"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
 
+
         <EditText
-            android:id="@+id/OneVarInput"
-            android:layout_width="50dp"
+            android:id="@+id/TwoVarLeftInput"
+            android:layout_width="75dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintStart_toEndOf="@+id/OneVarTitle"
-            card_view:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginTop="43dp"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:layout_constraintStart_toEndOf="@+id/Title" />
+
+        <TextView
+            android:id="@+id/TwoVarTextMiddle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textColor="#000"
+            android:layout_marginStart="10dp"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/TwoVarLeftInput"
+            card_view:layout_constraintStart_toEndOf="@+id/TwoVarLeftInput" />
+
+        <EditText
+            android:id="@+id/TwoVarRightInput"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/TwoVarLeftInput"
+            card_view:layout_constraintStart_toEndOf="@+id/TwoVarTextMiddle" />
 
         <ImageButton
             android:id="@+id/btn_del"
@@ -49,8 +66,8 @@
             android:id="@+id/btn_down"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            card_view:layout_constraintEnd_toEndOf="@+id/btn_del"
-            card_view:layout_constraintTop_toBottomOf="@+id/btn_up"
+            card_view:layout_constraintEnd_toStartOf="@+id/btn_del"
+            card_view:layout_constraintTop_toTopOf="@+id/btn_del"
             card_view:srcCompat="@drawable/ic_baseline_arrow_drop_down_24"
             android:contentDescription="@string/btn_down"/>
 
@@ -58,12 +75,10 @@
             android:id="@+id/btn_up"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            card_view:layout_constraintEnd_toEndOf="@+id/btn_down"
-            card_view:layout_constraintTop_toBottomOf="@+id/btn_del"
+            card_view:layout_constraintEnd_toStartOf="@+id/btn_down"
+            card_view:layout_constraintTop_toTopOf="@+id/btn_del"
             card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24"
             android:contentDescription="@string/btn_up" />
-
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

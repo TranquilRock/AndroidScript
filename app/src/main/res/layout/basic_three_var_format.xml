@@ -1,0 +1,86 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/click"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    card_view:cardBackgroundColor="#336699"
+    card_view:cardCornerRadius="15dp"
+    card_view:contentPadding="5dp">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:background="#6FB7B7">
+
+        <TextView
+            android:id="@+id/Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textColor="#000"
+            android:textSize="30dp"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+
+        <EditText
+            android:id="@+id/ThreeVarInputLeft"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="43dp"
+            card_view:layout_constraintStart_toEndOf="@+id/Title"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/ThreeVarInputMiddle"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/ThreeVarInputLeft"
+            card_view:layout_constraintStart_toEndOf="@+id/ThreeVarInputLeft" />
+
+        <EditText
+            android:id="@+id/ThreeVarInputRight"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/ThreeVarInputLeft"
+            card_view:layout_constraintStart_toEndOf="@+id/ThreeVarInputMiddle" />
+
+        <ImageButton
+            android:id="@+id/btn_del"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="3dp"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent"
+            card_view:srcCompat="@drawable/ic_close_white_24dp"
+            android:contentDescription="@string/btn_del"/>
+
+        <ImageButton
+            android:id="@+id/btn_down"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            card_view:layout_constraintEnd_toStartOf="@+id/btn_del"
+            card_view:layout_constraintTop_toTopOf="@+id/btn_del"
+            card_view:srcCompat="@drawable/ic_baseline_arrow_drop_down_24"
+            android:contentDescription="@string/btn_down"/>
+
+        <ImageButton
+            android:id="@+id/btn_up"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            card_view:layout_constraintEnd_toStartOf="@+id/btn_down"
+            card_view:layout_constraintTop_toTopOf="@+id/btn_del"
+            card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24"
+            android:contentDescription="@string/btn_up" />
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
