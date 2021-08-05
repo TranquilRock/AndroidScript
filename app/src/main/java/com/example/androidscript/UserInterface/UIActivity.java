@@ -43,17 +43,13 @@ public abstract class UIActivity extends AppCompatActivity implements Editor {
         this.setRecycleButton();
         if(BlockView.getAdapter() instanceof FGOBlockAdapter) {
             Button btn = findViewById(R.id.save_file);
-            btn.setOnClickListener(new Button.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    FGOBlockAdapter adp = (FGOBlockAdapter) BlockView.getAdapter();
-                    Vector<Vector<String>> data = adp.Data;
-                    for(int i=0; i<data.size(); i++){
-                        Log.d("kkk", String.valueOf(data.get(i)));
-                    }
-
-                    FGOEditor.compile(filename, data, ScreenShot.getWidth(), ScreenShot.getHeight());
+            btn.setOnClickListener(v -> {
+                FGOBlockAdapter adp = (FGOBlockAdapter) BlockView.getAdapter();
+                Vector<Vector<String>> data = adp.Data;
+                for(int i=0; i<data.size(); i++){
+                    Log.d("kkk", String.valueOf(data.get(i)));
                 }
+                FGOEditor.compile(filename, data, ScreenShot.getWidth(), ScreenShot.getHeight());
             });
         }
     }

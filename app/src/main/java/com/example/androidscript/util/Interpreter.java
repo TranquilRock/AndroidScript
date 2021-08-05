@@ -25,19 +25,18 @@ public class Interpreter extends Thread {//Every child only need to specify wher
     public static final String[] SUPPORTED_COMMAND = {
             "Exit",
             "Contain " + ImgVarFormat,
-            "Check " + StrFormat,
-            "JumpToLine " + IntVarFormat,
+            "JumpTo " + IntVarFormat,
             "Wait " + IntVarFormat,
             "Call " + SptFormat,
             "Tag " + VarFormat,
             "Return " + IntVarFormat,
             "Click " + IntVarFormat + " " + IntVarFormat,
-            "Call " + SptFormat + " " + AnyFormat,
+            "CallArg " + SptFormat + " " + AnyFormat,
             "IfGreater " + IntVarFormat + " " + IntVarFormat,
             "IfSmaller " + IntVarFormat + " " + IntVarFormat,
-            "Var " + VarFormat + " " + IntVarFormat,//Declare Initial Value of Variable
-            "Cal " + VarFormat + " += " + IntVarFormat,
-            "Cal " + VarFormat + " -= " + IntVarFormat,
+            "Add " + VarFormat + " " + IntVarFormat,
+            "Subtract " + VarFormat + " " + IntVarFormat,
+            "Var " + VarFormat + " " + IntVarFormat,
             "Swipe " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat,
             "Compare " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat + " " + ImgVarFormat,
     };
@@ -173,25 +172,27 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                         LocalVar.put("$R", "1");
                     }
                     break;
-                case "JumpToLine":
+                case "JumpTo":
                     commandIndex = Integer.parseInt(Arguments[0]) - 1;//One-based
                     break;
                 case "Wait":
                     sleep(Integer.parseInt(Arguments[0]));
                     break;
                 case "Call":
-                    assert (MyCode.containsKey(Arguments[0]));
+                    LocalVar.put("$R", String.valueOf(run(Arguments[0], null, depth + 1)));
+                    break;
+                case "CallArg":
                     String[] nextArgv = new String[command.length - 2];
                     System.arraycopy(Arguments, 1, nextArgv, 0, command.length - 2);
                     LocalVar.put("$R", String.valueOf(run(Arguments[0], nextArgv, depth + 1)));
                     break;
                 case "IfGreater":
-                    if (Integer.parseInt(Arguments[0]) <= Integer.parseInt(Arguments[1])) {//Failed, skip next line
+                    if (Integer.parseInt(Arguments[0]) <= Integer.parseInt(Arguments[2])) {//Failed, skip next line
                         commandIndex++;
                     }
                     break;
                 case "IfSmaller":
-                    if (Integer.parseInt(Arguments[0]) >= Integer.parseInt(Arguments[1])) {//Failed, skip next line
+                    if (Integer.parseInt(Arguments[0]) >= Integer.parseInt(Arguments[2])) {//Failed, skip next line
                         commandIndex++;
                     }
                     break;
@@ -199,13 +200,13 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     assert (Arguments[0].charAt(0) == '$');
                     LocalVar.put(Arguments[0], Arguments[1]);
                     break;
-                case "Cal":
-                    assert (Arguments[0].charAt(0) == '$');
-                    if (Arguments[1].equals("+=")) {
-                        LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(Arguments[2]) + Integer.parseInt(LocalVar.get(Arguments[0]))));
-                    } else if (Arguments[1].equals("-=")) {
-                        LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(LocalVar.get(Arguments[0])) - Integer.parseInt(Arguments[2])));
-                    }
+                case "Add":
+                    LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(Arguments[2]) + Integer.parseInt(LocalVar.get(Arguments[0]))));
+                    break;
+
+                case "Subtract":
+                    LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(LocalVar.get(Arguments[0])) - Integer.parseInt(Arguments[2])));
+
                     break;
                 case "Exit":
                     this.running = false;

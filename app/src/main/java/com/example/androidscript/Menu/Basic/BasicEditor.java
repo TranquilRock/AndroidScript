@@ -16,25 +16,36 @@ import com.example.androidscript.util.BtnMaker;
 import com.example.androidscript.util.Interpreter;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Vector;
 
 public class BasicEditor extends UIActivity {
 
     public static final String FolderName = "Basic/";
+    public static Map<String, Vector<String>> Blocks = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BtnMaker.registerOnClick(R.id.start_service, this, v -> startActivity(new Intent(this, StartService.class).putExtra("Orientation","vertical")));
+        BtnMaker.registerOnClick(R.id.start_service, this, v -> startActivity(new Intent(this, StartService.class).putExtra("Orientation", "vertical")));
         BtnMaker.registerOnClick(R.id.start_floating, this, v -> StartService.startFloatingWidget(this));
+        for (String command : Interpreter.SUPPORTED_COMMAND) {
+            String[] keys = command.split(" ");
+            Vector<String> value = new Vector<>();
+            for (int z = 1; z < keys.length; z++) {
+                value.add("");
+            }
+            Blocks.put(keys[0], value);
+        }
     }
 
     @Override
     protected Vector<Vector<String>> getBlockData() {
         Vector<Vector<String>> ret = new Vector<>();
-        for(String command : Interpreter.SUPPORTED_COMMAND){
-            ret.add(new Vector<>(Arrays.asList(command.split(" "))));
+        for (Map.Entry<String, Vector<String>> Block : Blocks.entrySet()) {
+            ret.add(Block.getValue());
         }
         return ret;
     }
@@ -42,8 +53,8 @@ public class BasicEditor extends UIActivity {
     @Override
     protected Vector<String> getButtonData() {
         Vector<String> ret = new Vector<>();
-        for(String command : Interpreter.SUPPORTED_COMMAND){
-            ret.add(command.split(" ")[0]);
+        for (Map.Entry<String, Vector<String>> Block : Blocks.entrySet()) {
+            ret.add(Block.getKey());
         }
         return ret;
     }

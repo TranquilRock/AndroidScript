@@ -24,16 +24,22 @@ public class BasicButtonAdapter extends ButtonAdapter {
     public void onBindViewHolder(@NonNull ButtonViewHolder holder, int position) {
         holder.button.setText(ButtonText.get(position));
         switch (ButtonText.get(position)) {
-            case "Click":
-            case "Compare":
+            case "Exit":
+            case "Contain":
+            case "JumpTo":
+            case "Wait":
             case "Call":
+            case "Tag":
+            case "Return":
+            case "Click":
+            case "CallArg":
             case "IfGreater":
             case "IfSmaller":
+            case "Add":
+            case "Subtract":
             case "Var":
-            case "JumpToLine":
-            case "Wait":
-            case "Return":
-            case "Exit":
+            case "Swipe":
+            case "Compare":
                 holder.button.setOnClickListener(buttonListener(ButtonText.get(position)));
                 break;
             default:
@@ -41,11 +47,9 @@ public class BasicButtonAdapter extends ButtonAdapter {
         }
     }
 
-    private View.OnClickListener buttonListener(String content) {
+    private View.OnClickListener buttonListener(String blockTitle) {
         return v -> {
-            Vector<String> tmp = new Vector<>();
-            tmp.add(content);
-            BlockContent.insertElementAt(tmp, insertPosition);
+            BlockContent.insertElementAt(BasicEditor.Blocks.get(blockTitle), insertPosition);
             onInsert.insert();
         };
     }
