@@ -1,6 +1,5 @@
 package com.example.androidscript.Menu.Basic;
 
-import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import com.example.androidscript.R;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Vector;
 
@@ -70,7 +68,7 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
                 return new BasicViewHolder.OneVarVH(view);
             case 2://Compare
                 view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.script_compare, parent, false);
+                        .inflate(R.layout.script_four_var_format, parent, false);
                 return new BasicViewHolder.CompareVH(view);
         }
         throw new RuntimeException("Invalid Type");

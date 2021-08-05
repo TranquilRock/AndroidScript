@@ -16,7 +16,7 @@
         android:background="#96F">
 
         <TextView
-            android:id="@+id/TwoVarTitle"
+            android:id="@+id/ThreeVarTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title"
@@ -27,30 +27,28 @@
 
 
         <EditText
-            android:id="@+id/TwoVarLeftInput"
+            android:id="@+id/ThreeVarInputLeft"
             android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="43dp"
-            card_view:layout_constraintTop_toTopOf="parent"
-            card_view:layout_constraintStart_toEndOf="@+id/TwoVarTitle" />
-
-        <TextView
-            android:id="@+id/TwoVarTextMiddle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextMiddle"
-            android:textColor="#FFF"
-            android:layout_marginStart="10dp"
-            card_view:layout_constraintBaseline_toBaselineOf="@+id/TwoVarLeftInput"
-            card_view:layout_constraintStart_toEndOf="@+id/TwoVarLeftInput" />
+            card_view:layout_constraintStart_toEndOf="@+id/ThreeVarTitle"
+            card_view:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/TwoVarRightInput"
+            android:id="@+id/ThreeVarInputMiddle"
             android:layout_width="75dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            card_view:layout_constraintBaseline_toBaselineOf="@+id/TwoVarLeftInput"
-            card_view:layout_constraintStart_toEndOf="@+id/TwoVarTextMiddle" />
+            android:layout_marginStart="30dp"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/ThreeVarInputLeft"
+            card_view:layout_constraintStart_toEndOf="@+id/ThreeVarInputLeft" />
+
+        <EditText
+            android:id="@+id/ThreeVarInputRight"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/ThreeVarInputLeft"
+            card_view:layout_constraintStart_toEndOf="@+id/ThreeVarInputMiddle" />
 
         <ImageButton
             android:id="@+id/btn_del"
@@ -79,6 +77,8 @@
             card_view:layout_constraintTop_toTopOf="@+id/btn_del"
             card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24"
             android:contentDescription="@string/btn_up" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

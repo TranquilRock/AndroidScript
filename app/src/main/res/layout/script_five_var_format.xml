@@ -1,7 +1,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/click"
+    android:id="@+id/compare"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -12,11 +12,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="90dp"
+        android:layout_height="105dp"
         android:background="#96F">
 
         <TextView
-            android:id="@+id/TwoVarTitle"
+            android:id="@+id/FiveVarTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Title"
@@ -27,30 +27,47 @@
 
 
         <EditText
-            android:id="@+id/TwoVarLeftInput"
+            android:id="@+id/FiveVarInputLeftUp"
             android:layout_width="75dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="43dp"
-            card_view:layout_constraintTop_toTopOf="parent"
-            card_view:layout_constraintStart_toEndOf="@+id/TwoVarTitle" />
-
-        <TextView
-            android:id="@+id/TwoVarTextMiddle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="TextMiddle"
-            android:textColor="#FFF"
             android:layout_marginStart="10dp"
-            card_view:layout_constraintBaseline_toBaselineOf="@+id/TwoVarLeftInput"
-            card_view:layout_constraintStart_toEndOf="@+id/TwoVarLeftInput" />
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/FiveVarTitle"
+            card_view:layout_constraintStart_toEndOf="@+id/FiveVarTitle"/>
+
 
         <EditText
-            android:id="@+id/TwoVarRightInput"
+            android:id="@+id/FiveVarInputRightUp"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            card_view:layout_constraintStart_toEndOf="@+id/FiveVarInputLeftUp"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/FiveVarInputLeftUp" />
+
+
+        <EditText
+            android:id="@+id/FiveVarInputLeftBottom"
             android:layout_width="75dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            card_view:layout_constraintBaseline_toBaselineOf="@+id/TwoVarLeftInput"
-            card_view:layout_constraintStart_toEndOf="@+id/TwoVarTextMiddle" />
+            android:layout_marginTop="10dp"
+            card_view:layout_constraintStart_toEndOf="@+id/FiveVarTitle"
+            card_view:layout_constraintTop_toBottomOf="@+id/FiveVarInputLeftUp" />
+
+        <EditText
+            android:id="@+id/FiveVarInputRightBottom"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            card_view:layout_constraintStart_toEndOf="@+id/FiveVarInputLeftBottom"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/FiveVarInputLeftBottom" />
+
+        <EditText
+            android:id="@+id/FiveVarInputLast"
+            android:layout_width="75dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="30dp"
+            card_view:layout_constraintStart_toEndOf="@+id/FiveVarInputRightBottom"
+            card_view:layout_constraintBaseline_toBaselineOf="@+id/FiveVarInputLeftBottom" />
 
         <ImageButton
             android:id="@+id/btn_del"

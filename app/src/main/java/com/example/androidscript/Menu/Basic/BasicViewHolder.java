@@ -55,7 +55,10 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
 
         @Override
         public void retrieveData(Vector<Vector<String>> Data, int position) {
-
+            switch (Data.get(position).get(0)){
+                case "Click":
+                    LeftInput.getText();
+            }
         }
 
         public TwoVarVH(View view) {
