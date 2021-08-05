@@ -48,7 +48,7 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         this.view = itemView;
     }
 
-    public void onBind(updateOrder order, int position) {
+    public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
         Up = view.findViewById(R.id.btn_up);
         Up.setOnClickListener(v -> {
             order.swap(position - 1, position);
@@ -78,8 +78,8 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(updateOrder order, int position) {
-            super.onBind(order, position);
+        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+            super.onBind(order, position, Data);
             Inputs[0] = view.findViewById(R.id.OneVarInput);
             for (int z = 0; z < Inputs.length; z++) {
                 Inputs[z].addTextChangedListener(getTextWatcher(Data, position, z));
@@ -97,8 +97,8 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(updateOrder order, int position) {
-            super.onBind(order, position);
+        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+            super.onBind(order, position, Data);
             TitleMiddle = view.findViewById(R.id.TwoVarTextMiddle);
             Inputs[0] = view.findViewById(R.id.TwoVarLeftInput);
             Inputs[1] = view.findViewById(R.id.TwoVarRightInput);
@@ -116,8 +116,8 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(updateOrder order, int position) {
-            super.onBind(order, position);
+        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+            super.onBind(order, position, Data);
             Inputs[0] = view.findViewById(R.id.ThreeVarInputLeft);
             Inputs[1] = view.findViewById(R.id.ThreeVarInputMiddle);
             Inputs[2] = view.findViewById(R.id.ThreeVarInputRight);
@@ -136,8 +136,8 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(updateOrder order, int position) {
-            super.onBind(order, position);
+        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+            super.onBind(order, position, Data);
             Inputs[0] = view.findViewById(R.id.FourVarInputLeftUp);
             Inputs[1] = view.findViewById(R.id.FourVarInputRightUp);
             Inputs[2] = view.findViewById(R.id.FourVarInputLeftBottom);
@@ -157,8 +157,8 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(updateOrder order, int position) {
-            super.onBind(order, position);
+        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+            super.onBind(order, position, Data);
             Inputs[0] = view.findViewById(R.id.FiveVarInputLeftUp);
             Inputs[1] = view.findViewById(R.id.FiveVarInputRightUp);
             Inputs[2] = view.findViewById(R.id.FiveVarInputLeftBottom);

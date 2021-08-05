@@ -76,7 +76,7 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull @NotNull BasicViewHolder holder, int position) {
-        holder.onBind(onOrderChange, position);
+        holder.onBind(onOrderChange, position, this.BasicData);
         ((BasicViewHolder) holder).Title.setText(BasicData.get(position).get(0));
         switch (BasicData.get(position).get(0)) {
             case "Exit"://ZeroVH
