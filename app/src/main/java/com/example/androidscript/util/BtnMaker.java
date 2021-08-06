@@ -11,7 +11,7 @@ import com.example.androidscript.Menu.MenuActivity;
 
 
 public final class BtnMaker {
-    public static void jump(int id, AppCompatActivity from, Class<?> to) {
+    public static void Jump(int id, AppCompatActivity from, Class<?> to) {
         Button btn = from.findViewById(id);
         btn.setOnClickListener((v -> {
             Intent intent = new Intent(from, to);
@@ -20,7 +20,7 @@ public final class BtnMaker {
         }));
     }
 
-    public static void jumpWithMessage(int id, AppCompatActivity from, Class<?> to,String name,String message) {
+    public static void JumpWithMessage(int id, AppCompatActivity from, Class<?> to,String name,String message) {
         Button btn = from.findViewById(id);
         btn.setOnClickListener((v -> {
             Intent intent = new Intent(from, to);
