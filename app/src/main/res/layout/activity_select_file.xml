@@ -36,7 +36,7 @@
         android:id="@+id/et_New_Name"
         android:layout_width="200dp"
         android:hint="@string/scriptName"
-        android:text="A.txt"
+        android:text=".blc"
         android:layout_height="wrap_content"
         android:layout_gravity="center"/>
 
