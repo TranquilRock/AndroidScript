@@ -187,12 +187,12 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     LocalVar.put("$R", String.valueOf(run(Arguments[0], nextArgv, depth + 1)));
                     break;
                 case "IfGreater":
-                    if (Integer.parseInt(Arguments[0]) <= Integer.parseInt(Arguments[2])) {//Failed, skip next line
+                    if (Integer.parseInt(Arguments[0]) <= Integer.parseInt(Arguments[1])) {//Failed, skip next line
                         commandIndex++;
                     }
                     break;
                 case "IfSmaller":
-                    if (Integer.parseInt(Arguments[0]) >= Integer.parseInt(Arguments[2])) {//Failed, skip next line
+                    if (Integer.parseInt(Arguments[0]) >= Integer.parseInt(Arguments[1])) {//Failed, skip next line
                         commandIndex++;
                     }
                     break;

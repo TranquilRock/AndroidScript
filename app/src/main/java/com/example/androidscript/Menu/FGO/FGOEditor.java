@@ -129,9 +129,12 @@ public class FGOEditor extends UIActivity {
             } else if ("End".equals(block.get(0))) {
                 End(save, w, h, m);
             }
-            FileOperation.writeToFile(FolderName + filename, save);
-            FloatingWidgetService.setScript(new Interpreter(FolderName,filename),null);
+
         }
+        FileOperation.writeToFile(FolderName + filename, save);
+        Log.d("kk", filename);
+        FloatingWidgetService.setScript(new Interpreter(FolderName,filename),null);
+        Log.d("kk", filename);
     }
 
     public static void PreStage(Vector<String> save ,Vector<String> block, float w, float h, float m){
@@ -141,9 +144,10 @@ public class FGOEditor extends UIActivity {
         save.add("JumpTo $End");
         save.add("Click " + linx(1400, w, m) + " " + liny(320, h, m)); //選擇上次關卡
         save.add("Wait 3000");
-        save.add("Compare "+linx(757, w, m)+" "+liny(922, w, m)+" "+linx(1149, w, m)+" "+liny(1041, h, m)+" missionstartbtn.png");
+        save.add("Compare "+linx(757, w, m)+" "+liny(922, h, m)+" "+linx(1149, w, m)+" "+liny(1041, h, m)+" missionstartbtn.png");
+        save.add("IfGreater $R 30");
         save.add("JumpTo $Apple");
-        save.add("jumpTo $AppleEnd");
+        save.add("JumpTo $AppleEnd");
         save.add("Tag $Apple");
         switch (block.get(1)){
             case"0":
@@ -157,45 +161,47 @@ public class FGOEditor extends UIActivity {
                 break;
             case"3":
                 save.add("Swipe "+linx(960, w, m)+" "+liny(786, h, m)+" "+linx(960, w, m)+" "+liny(516, h, m));
+                save.add("Wait 300");
                 save.add("Click "+linx(960, w, m)+" "+liny(320, h, m));
                 break;
         }
-        save.add("Click "+linx(960, w, m)+" "+liny(320, h, m));
-        save.add("jumpTo $AppleEnd");
+        save.add("Wait 300");
+        save.add("Click "+linx(1260, w, m)+" "+liny(900, h, m));
+        save.add("Wait 300");
+        save.add("Click "+linx(960, w, m)+" "+liny(987, h, m));
+        save.add("JumpTo $AppleEnd");
         save.add("Tag $AppleEnd");
+        save.add("Wait 10000");
 
         save.add("Click " + linx(1050, w, m) + " " + liny(260, h, m));//選擇MIX職階
         save.add("Wait 500");
-        switch (block.get(2)) {
-            case "0":
-                break;
-            case"1":
-                save.add("Click " + linx(800, w, m) + " " + liny(467, h, m));
-                break;
-            case"2":
-                save.add("Tag $FriendsDNE");
-                save.add("Compare "+linx(68, w, m)+" "+liny(350, w, m)+" "+linx(323, w, m)+" "+liny(554, h, m)+" CBA.png");
-                save.add("jumpTo $Friends");
-                save.add("Swipe "+linx(960, w, m)+" "+liny(731, h, m)+" "+linx(960, w, m)+" "+liny(620, h, m));
-                save.add("jumpTo $FriendsDNE");
-                save.add("Tag $Friends");
-                save.add("Click " + linx(800, w, m) + " " + liny(467, h, m));
-                save.add("jumpTo $FriendsEnd");
-                save.add("Tag $FriendsEnd");
-                break;
-            case"3":
-                save.add("Tag $FriendsDNE");
-                save.add("Compare "+linx(68, w, m)+" "+liny(350, w, m)+" "+linx(323, w, m)+" "+liny(554, h, m)+" KM.png");
-                save.add("jumpTo $Friends");
-                save.add("Swipe "+linx(960, w, m)+" "+liny(731, h, m)+" "+linx(960, w, m)+" "+liny(620, h, m));
-                save.add("jumpTo $FriendsDNE");
-                save.add("Tag $Friends");
-                save.add("Click " + linx(800, w, m) + " " + liny(467, h, m));
-                save.add("jumpTo $FriendsEnd");
-                save.add("Tag $FriendsEnd");
-                break;
+        if ("0".equals(block.get(2))) {
+        } else if ("1".equals(block.get(2))) {
+            save.add("Click " + linx(800, w, m) + " " + liny(467, h, m));
+        } else if ("2".equals(block.get(2))) {
+            save.add("Tag $FriendsDNE");
+            save.add("Compare " + linx(68, w, m) + " " + liny(350, h, m) + " " + linx(323, w, m) + " " + liny(554, h, m) + " CBA.png");
+            save.add("IfGreater $R 30");
+            save.add("JumpTo $Friends");
+            save.add("Swipe " + linx(960, w, m) + " " + liny(731, h, m) + " " + linx(960, w, m) + " " + liny(620, h, m));
+            save.add("JumpTo $FriendsDNE");
+            save.add("Tag $Friends");
+            save.add("Click " + linx(800, w, m) + " " + liny(467, h, m));
+            save.add("JumpTo $FriendsEnd");
+            save.add("Tag $FriendsEnd");
+        } else if ("3".equals(block.get(2))) {
+            save.add("Tag $FriendsDNE");
+            save.add("Compare " + linx(68, w, m) + " " + liny(350, h, m) + " " + linx(323, w, m) + " " + liny(554, h, m) + " KM.png");
+            save.add("IfGreater $R 30");
+            save.add("JumpTo $Friends");
+            save.add("Swipe " + linx(960, w, m) + " " + liny(731, h, m) + " " + linx(960, w, m) + " " + liny(620, h, m));
+            save.add("JumpTo $FriendsDNE");
+            save.add("Tag $Friends");
+            save.add("Click " + linx(800, w, m) + " " + liny(467, h, m));
+            save.add("JumpTo $FriendsEnd");
+            save.add("Tag $FriendsEnd");
+        }else{
 
-            //TODO　選擇禮裝
         }
         save.add("Wait 3000");
         save.add("Click " + linx(1785, w, m) + " " + liny(1077, h, m));//任務開始
@@ -206,13 +212,14 @@ public class FGOEditor extends UIActivity {
         save.add("Click " + linx(1798, w, m) + " " + liny(530, h, m));//御主技能
         save.add("Wait 500");
         save.add("Click " + linx(varx, w, m) + " " + liny(530, h, m));//開技能
-        save.add("Compare "+linx(382, w, m)+" "+liny(626, w, m)+" "+linx(908, w, m)+" "+liny(766, h, m)+" canclebtn.png");
-        save.add("jumpTo $CraftSkill"+Integer.toString(tag));
+        save.add("Compare "+linx(382, w, m)+" "+liny(626, h, m)+" "+linx(908, w, m)+" "+liny(766, h, m)+" canclebtn.png");
+        save.add("IfGreater $R 30");
+        save.add("JumpTo $CraftSkill"+Integer.toString(tag));
         save.add("Click " + linx(sev, w, m) + " " + liny(731, h, m));//從者
-        save.add("jumpTo $CraftSkillEnd"+Integer.toString(tag));
+        save.add("JumpTo $CraftSkillEnd"+Integer.toString(tag));
         save.add("Tag $CraftSkill"+Integer.toString(tag));
         save.add("Click " + linx(645, w, m) + " " + liny(696, h, m));//取消BUG
-        save.add("jumpTo $CraftSkillEnd"+Integer.toString(tag));
+        save.add("JumpTo $CraftSkillEnd"+Integer.toString(tag));
         save.add("Tag $CraftSkillEnd"+Integer.toString(tag));
         save.add("Wait 4000");
         tag++;
@@ -224,16 +231,17 @@ public class FGOEditor extends UIActivity {
         save.add("Click " + linx(1622, w, m) + " " + liny(530, h, m));//開技能
         save.add("Wait 500");
         save.add("Compare "+linx(382, w, m)+" "+liny(626, w, m)+" "+linx(908, w, m)+" "+liny(766, h, m)+" canclebtn.png");
-        save.add("jumpTo $CraftSkill"+Integer.toString(tag));
+        save.add("IfGreater $R 30");
+        save.add("JumpTo $CraftSkill"+Integer.toString(tag));
         save.add("Click " + linx(sev1, w, m) + " " + liny(sev2, h, m));//換
         save.add("Click " + linx(1120, w, m) + " " + liny(590, h, m));
         save.add("Click " + linx(950, w, m) + " " + liny(1000, h, m));
-        save.add("jumpTo $CraftSkillEnd"+Integer.toString(tag));
+        save.add("JumpTo $CraftSkillEnd"+Integer.toString(tag));
         save.add("Tag $CraftSkill"+Integer.toString(tag));
         save.add("Click " + linx(645, w, m) + " " + liny(696, h, m));//取消BUG
         save.add("Wait 500");
         save.add("Click " + linx(1798, w, m) + " " + liny(530, h, m));//御主技能
-        save.add("jumpTo $CraftSkillEnd"+Integer.toString(tag));
+        save.add("JumpTo $CraftSkillEnd"+Integer.toString(tag));
         save.add("Tag $CraftSkillEnd"+Integer.toString(tag));
         save.add("Wait 8000");
     }
@@ -259,12 +267,13 @@ public class FGOEditor extends UIActivity {
                     save.add("Click " + linx(1798, w, m) + " " + liny(530, h, m));//御主技能
                     save.add("Wait 500");
                     save.add("Click " + linx(varx, w, m) + " " + liny(530, h, m));//開技能
-                    save.add("Compare "+linx(382, w, m)+" "+liny(626, w, m)+" "+linx(908, w, m)+" "+liny(766, h, m)+" canclebtn.png");
-                    save.add("jumpTo $CraftSkill"+Integer.toString(tag));
-                    save.add("jumpTo $CraftSkillEnd"+Integer.toString(tag));
+                    save.add("Compare "+linx(382, w, m)+" "+liny(626, h, m)+" "+linx(908, w, m)+" "+liny(766, h, m)+" canclebtn.png");
+                    save.add("IfGreater $R 30");
+                    save.add("JumpTo $CraftSkill"+Integer.toString(tag));
+                    save.add("JumpTo $CraftSkillEnd"+Integer.toString(tag));
                     save.add("Tag $CraftSkill"+Integer.toString(tag));
                     save.add("Click " + linx(645, w, m) + " " + liny(696, h, m));//取消BUG
-                    save.add("jumpTo $CraftSkillEnd"+Integer.toString(tag));
+                    save.add("JumpTo $CraftSkillEnd"+Integer.toString(tag));
                     save.add("Tag $CraftSkillEnd"+Integer.toString(tag));
                     save.add("Wait 4000");
                     tag++;
@@ -317,13 +326,14 @@ public class FGOEditor extends UIActivity {
     public static void SkillAux(Vector<String> save, float w, float h, float m, float varx, int tag, float sev){
         save.add("Click " + linx(varx, w, m) + " " + liny(930, h, m));//開技能
         save.add("Wait 500");
-        save.add("Compare "+linx(382, w, m)+" "+liny(626, w, m)+" "+linx(908, w, m)+" "+liny(766, h, m)+" canclebtn.png");
-        save.add("jumpTo $Skill"+Integer.toString(tag));
+        save.add("Compare "+linx(382, w, m)+" "+liny(626, h, m)+" "+linx(908, w, m)+" "+liny(766, h, m)+" canclebtn.png");
+        save.add("IfGreater $R 30");
+        save.add("JumpTo $Skill"+Integer.toString(tag));
         save.add("Click " + linx(sev, w, m) + " " + liny(731, h, m));//從者一
-        save.add("jumpTo $SkillEnd"+Integer.toString(tag));
+        save.add("JumpTo $SkillEnd"+Integer.toString(tag));
         save.add("Tag $Skill"+Integer.toString(tag));
         save.add("Click " + linx(645, w, m) + " " + liny(696, h, m));//取消BUG
-        save.add("jumpTo $SkillEnd"+Integer.toString(tag));
+        save.add("JumpTo $SkillEnd"+Integer.toString(tag));
         save.add("Tag $SkillEnd"+Integer.toString(tag));
         save.add("Wait 4000");
         tag++;
@@ -367,12 +377,13 @@ public class FGOEditor extends UIActivity {
                 case "1":
                     save.add("Click " + linx(varx, w, m) + " " + liny(930, h, m));//開技能
                     save.add("Wait 500");
-                    save.add("Compare "+linx(382, w, m)+" "+liny(626, w, m)+" "+linx(908, w, m)+" "+liny(766, h, m)+" canclebtn.png");
-                    save.add("jumpTo $Skill"+Integer.toString(tag));
-                    save.add("jumpTo $SkillEnd"+Integer.toString(tag));
+                    save.add("Compare "+linx(382, w, m)+" "+liny(626, h, m)+" "+linx(908, w, m)+" "+liny(766, h, m)+" canclebtn.png");
+                    save.add("IfGreater $R 30");
+                    save.add("JumpTo $Skill"+Integer.toString(tag));
+                    save.add("JumpTo $SkillEnd"+Integer.toString(tag));
                     save.add("Tag $Skill"+Integer.toString(tag));
                     save.add("Click " + linx(645, w, m) + " " + liny(696, h, m));//取消BUG
-                    save.add("jumpTo $SkillEnd"+Integer.toString(tag));
+                    save.add("JumpTo $SkillEnd"+Integer.toString(tag));
                     save.add("Tag $SkillEnd"+Integer.toString(tag));
                     save.add("Wait 4000");
                     tag++;
@@ -417,11 +428,12 @@ public class FGOEditor extends UIActivity {
         save.add("Wait 500");
         save.add("Click " + linx(1874, w, m) + " " + liny(835, h, m));//指令卡
         save.add("Tag $WaveOverAgain");
-        save.add("Compare "+linx(1560, w, m)+" "+liny(830, w, m)+" "+linx(1843, w, m)+" "+liny(1109, h, m)+" attack.png");
+        save.add("Compare "+linx(1560, w, m)+" "+liny(830, h, m)+" "+linx(1843, w, m)+" "+liny(1109, h, m)+" attack.png");
+        save.add("IfGreater $R 30");
         save.add("JumpTo $WaveOver");
         save.add("Wait 5000");
         save.add("JumpTo $WaveOverAgain");
-        save.add("Tag $WaveEOver");
+        save.add("Tag $WaveOver");
 
         //TODO 配卡
 //                    switch (data.get(i).get(4)){
@@ -441,14 +453,16 @@ public class FGOEditor extends UIActivity {
 
     public static void End(Vector<String> save, float w, float h, float m){
         save.add("Tag $EndStageAgain");
-        save.add("Compare "+linx(86, w, m)+" "+liny(301, w, m)+" "+linx(474, w, m)+" "+liny(382, h, m)+" end.png");
+        save.add("Compare "+linx(86, w, m)+" "+liny(301, h, m)+" "+linx(474, w, m)+" "+liny(382, h, m)+" end.png");
+        save.add("IfGreater $R 30");
         save.add("JumpTo $EndStage");
         save.add("Wait 5000");
         save.add("JumpTo $EndStageAgain");
         save.add("Tag $EndStage");
 
         save.add("Tag $EndStageAgain2");
-        save.add("Compare "+linx(453, w, m)+" "+liny(855, w, m)+" "+linx(878, w, m)+" "+liny(971, h, m)+" close2btn.png");
+        save.add("Compare "+linx(453, w, m)+" "+liny(855, h, m)+" "+linx(878, w, m)+" "+liny(971, h, m)+" close2btn.png");
+        save.add("IfGreater $R 30");
         save.add("JumpTo $EndStage2");
         save.add("Wait 2000");
         save.add("Click " + linx(1639, w, m) + " " + liny(1080, h, m));
@@ -457,6 +471,7 @@ public class FGOEditor extends UIActivity {
 
         save.add("Click " + linx(660, w, m) + " " + liny(900, h, m));
         save.add("Wait 1000");
+        save.add("Add $Loop 1");
         save.add("Tag $End");
     }
 
