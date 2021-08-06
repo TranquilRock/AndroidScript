@@ -21,7 +21,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
     public static final String IntFormat = "[0-9]*";
     public static final String IntVarFormat = "(" + IntFormat + "||" + VarFormat + ")";
     public static final String ImgVarFormat = "(" + ImgFormat + "||" + VarFormat + ")";
-    public static final String AnyFormat = "[a-zA-Z0-9$]*";//Need Space
+    public static final String AnyFormat = "[a-zA-Z0-9 $]*";
     public static final String[] SUPPORTED_COMMAND = {
             "Exit",
             "Contain " + ImgVarFormat,

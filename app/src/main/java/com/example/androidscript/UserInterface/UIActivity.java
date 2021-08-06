@@ -27,18 +27,19 @@ public abstract class UIActivity extends AppCompatActivity implements Editor {
 
     protected RecyclerView BlockView;
     protected RecyclerView ButtonView;
-    protected Vector<Vector<String>> BlockData;
-    protected Vector<String> ButtonData;
+    protected Vector<Vector<String>> BlockData = new Vector<>();
+    protected Vector<String> ButtonData= new Vector<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         String filename = getIntent().getStringExtra("FileName");
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_uiactivity);
-        this.BlockData = getBlockData();
-        this.ButtonData = getButtonData();
         this.ButtonView = findViewById(R.id.buttongrid);
         this.BlockView = findViewById(R.id.recycleview);
+
+        this.BlockData = getBlockData();
+        this.ButtonData = getButtonData();
         this.setRecycleBlock();
         this.setRecycleButton();
         if(BlockView.getAdapter() instanceof FGOBlockAdapter) {
@@ -52,11 +53,5 @@ public abstract class UIActivity extends AppCompatActivity implements Editor {
                 FGOEditor.compile(filename, data, ScreenShot.getWidth(), ScreenShot.getHeight());
             });
         }
-    }
-
-    public Vector<String> makeVector(String tmp){
-        Vector<String> ret = new Vector<>();
-        ret.add(tmp);
-        return ret;
     }
 }
