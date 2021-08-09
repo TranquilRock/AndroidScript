@@ -92,7 +92,7 @@ public class ArkKnightsEditor extends Editor {
     @Override
     protected void resourceInitialize() {
         try{
-            String[] allFiles = getAssets().list("");
+            String[] allFiles = getAssets().list("");//List all file
             for(String file : allFiles){
                 if(file.startsWith("Ark_")){
                     getResource(file,FolderName,file.substring(4));

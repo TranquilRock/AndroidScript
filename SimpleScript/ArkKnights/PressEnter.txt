@@ -1,6 +1,0 @@
-Call CheckEnterOperation.txt
-IfGreater $R 0
-Return 1
-Click 2730 1260
-Wait 500
-Return 0
