@@ -3,18 +3,16 @@ IfSmaller $T 1
 Return 0
 Call PressEnter.txt
 IfGreater $R 0
-JumpToLine 3
+JumpTo 3
 Call PressStart.txt
 IfSmaller $R 1
-JumpToLine 12
-Call EatMedicine.txt
+JumpTo 13
+CallArg Check.txt SanityInsufficient.png
 IfSmaller $R 1
-JumpToLine 15
-Call EatStone.txt
-IfGreater $R 0
-JumpToLine 6
+Exit
+JumpTo 6
 Call PressEnd.txt
 IfGreater $R 0
-JumpToLine 15
-Cal $T -= 1
-JumpToLine 1
+JumpTo 13
+Subtract $T 1
+JumpTo 1

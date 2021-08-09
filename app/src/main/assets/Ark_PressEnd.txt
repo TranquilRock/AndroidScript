@@ -1,5 +1,5 @@
 Wait 3000
-Call CheckOperationEnd.txt
+CallArg Check.txt OperationEnd.png
 IfGreater $R 0
 Return 1
 Wait 1000

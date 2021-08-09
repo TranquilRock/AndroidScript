@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,9 +17,17 @@ import com.example.androidscript.Menu.StartService;
 import com.example.androidscript.R;
 import com.example.androidscript.UserInterface.Editor;
 import com.example.androidscript.util.BtnMaker;
+import com.example.androidscript.util.DebugMessage;
+import com.example.androidscript.util.FileOperation;
 import com.example.androidscript.util.Interpreter;
+import com.example.androidscript.util.ScreenShot;
 
-public class ArkKnightsEditor extends AppCompatActivity implements Editor {
+import java.util.Vector;
+
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
+public class ArkKnightsEditor extends Editor {
     SwitchCompat TillEmpty;
     SwitchCompat EatMedicine;
     SwitchCompat EatStone;
@@ -45,7 +55,7 @@ public class ArkKnightsEditor extends AppCompatActivity implements Editor {
         EatMedicine = findViewById(R.id.EatMedicine);
         EatStone = findViewById(R.id.EatStone);
         BtnMaker.registerOnClick(R.id.set_service, this, v -> {
-            startActivity(new Intent(this, StartService.class).putExtra("Orientation","Landscape"));
+            startActivity(new Intent(this, StartService.class).putExtra("Orientation", "Landscape"));
         });
         BtnMaker.registerOnClick(R.id.set_script, this, v -> {
             CheckState();
@@ -57,7 +67,7 @@ public class ArkKnightsEditor extends AppCompatActivity implements Editor {
             } else {
                 SelectedScript = "AutoFight.txt";
             }
-            FloatingWidgetService.setScript(new Interpreter(FolderName,SelectedScript), new String[]{String.valueOf(nRepetition)});
+            FloatingWidgetService.setScript(new Interpreter(FolderName, SelectedScript), new String[]{String.valueOf(nRepetition)});
             StartService.startFloatingWidget(this);
         });
     }
@@ -84,5 +94,92 @@ public class ArkKnightsEditor extends AppCompatActivity implements Editor {
     @Override
     public String getFolderName() {
         return FolderName;
+    }
+
+    @Override
+    protected void resourceInitialize() {
+        try {
+            String[] allFiles = getAssets().list("");//List all file
+            for (String file : allFiles) {
+                if (file.startsWith("Ark_")) {
+                    getResource(file, FolderName, file.substring(4));
+                }
+            }
+        } catch (Exception e) {
+            DebugMessage.printStackTrace(e);
+        }
+        writeEatMedicine();
+        writeEatStone();
+        writePressEnd();
+        writePressEnter();
+        writePressStart();
+    }
+
+    private static final int Dev_Width = 3040;
+    private static final int Dev_Height = 1440;
+
+    private void writePressStart() {
+        Vector<String> buffer = new Vector<>();
+        buffer.add("CallArg Check.txt StartOperation.png");
+        buffer.add("IfGreater $R 0");
+        buffer.add("Return 1");
+        buffer.add("Click " + transform(2450,990));
+        buffer.add("Return 0");
+        FileOperation.writeLines(FolderName + "PressStart.txt", buffer);
+    }
+
+    private void writePressEnter() {
+        Vector<String> buffer = new Vector<>();
+        buffer.add("CallArg Check.txt EnterOperation.png");
+        buffer.add("IfGreater $R 0");
+        buffer.add("Return 1");
+        buffer.add("Click " + transform(2730, 1260));
+        buffer.add("Wait 500");
+        buffer.add("Return 0");
+        FileOperation.writeLines(FolderName + "PressEnter.txt", buffer);
+    }
+
+    private void writePressEnd() {
+        Vector<String> buffer = new Vector<>();
+        buffer.add("Wait 3000");
+        buffer.add("CallArg Check.txt OperationEnd.png");
+        buffer.add("IfGreater $R 0");
+        buffer.add("Return 1");
+        buffer.add("Wait 1000");
+        buffer.add("Click " + transform(445, 1245));
+        buffer.add("Return 0");
+        FileOperation.writeLines(FolderName + "PressEnd.txt", buffer);
+    }
+
+    private void writeEatStone() {
+        Vector<String> buffer = new Vector<>();
+        buffer.add("CallArg Check.txt RestoreSanityStone.png");
+        buffer.add("IfGreater $R 0");
+        buffer.add("Return 1");
+        buffer.add("Click " + transform(2415, 1150));
+        buffer.add("Call PressEnter.txt");
+        buffer.add("IfGreater $R 0");
+        buffer.add("JumpTo 4");
+        buffer.add("Return 0");
+        FileOperation.writeLines(FolderName + "EatStone.txt", buffer);
+    }
+
+    private void writeEatMedicine() {
+        Vector<String> buffer = new Vector<>();
+        buffer.add("CallArg Check.txt RestoreSanityMedicine.png");
+        buffer.add("IfGreater $R 0");
+        buffer.add("Return 1");
+        buffer.add("Click " + transform(2415, 1150));
+        buffer.add("Call PressEnter.txt");
+        buffer.add("IfGreater $R 0");
+        buffer.add("JumpTo 4");
+        buffer.add("Return 0");
+        FileOperation.writeLines(FolderName + "EatMedicine.txt", buffer);
+    }
+
+    private String transform(int x, int y) {
+        int w = max(ScreenShot.getWidth(),ScreenShot.getHeight());
+        int h = min(ScreenShot.getWidth(),ScreenShot.getHeight());
+        return (int) ((double) x / Dev_Width * w) + " " + (int) ((double) y / Dev_Height * h);
     }
 }

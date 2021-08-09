@@ -109,6 +109,6 @@ public final class ImageHandler {
         }
 
         DebugMessage.set("Match " + matchCount + " points " + screenDescriptor.width() + " " + screenDescriptor.height() + " " + targetDescriptor.width() + " " + targetDescriptor.height());
-        return ((float)ScreenShot.getHeight() * ScreenShot.getWidth() / 1920 / 1080) * 3.2 * matchCount >= min(screenDescriptor.height(), targetDescriptor.height());
+        return (3040.0 * 1440.0 / ScreenShot.getHeight() / ScreenShot.getWidth() * 3 * matchCount) >= min(screenDescriptor.height(), targetDescriptor.height());
     }
 }

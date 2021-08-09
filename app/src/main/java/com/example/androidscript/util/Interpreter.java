@@ -22,7 +22,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
     public static final String IntFormat = "[0-9]*";
     public static final String IntVarFormat = "(" + IntFormat + "||" + VarFormat + ")";
     public static final String ImgVarFormat = "(" + ImgFormat + "||" + VarFormat + ")";
-    public static final String AnyFormat = "[a-zA-Z0-9 $]*";
+    public static final String AnyFormat = "[a-zA-Z.0-9 $]*";
     public static final String[] SUPPORTED_COMMAND = {
             "Exit",
             "Contain " + ImgVarFormat,
@@ -77,7 +77,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     if (Pattern.matches(format, line)) {
                         valid = true;
                         String[] command = line.split(" ");
-                        if (command[0].equals("Call")) {
+                        if (command[0].equals("Call") || command[0].equals("CallArg")) {
                             dependency.add(command[1]);
                         }
                         codes.add(command);
@@ -132,6 +132,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
         assert (depth < 5);
         Map<String, String> LocalVar = new HashMap<>();
         parseArguments(LocalVar, argv);
+        DebugMessage.set("Running " + FileName);
         int codeLength = MyCode.get(FileName).codes.size();
 
         for (int commandIndex = 0; commandIndex < codeLength; commandIndex++) {
@@ -148,7 +149,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
             String[] command = (MyCode.get(FileName).codes.get(commandIndex));
             String[] Arguments = new String[command.length - 1];
             for (int i = 1; i < command.length; i++) {//Substitution
-                if (command[i].charAt(0) == '$' && !(command[0].equals("Var") && i == 1) && !(command[0].equals("Cal") && (i == 1))) {//There might be Var command, that should replace $V
+                if (command[i].charAt(0) == '$' && !(command[0].equals("Var") && i == 1) && !(command[0].equals("Subtract") && (i == 1)) && !(command[0].equals("Add") && (i == 1))) {//There might be Var command, that should replace $V
                     Arguments[i - 1] = LocalVar.get(command[i]);
                 } else {
                     Arguments[i - 1] = command[i];
@@ -198,10 +199,11 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     }
                     break;
                 case "Add":
-                    LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(Arguments[2]) + Integer.parseInt(LocalVar.get(Arguments[0]))));
+                    LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(LocalVar.get(Arguments[0])) + Integer.parseInt(Arguments[1])));
                     break;
                 case "Subtract":
-                    LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(LocalVar.get(Arguments[0])) - Integer.parseInt(Arguments[2])));
+                    DebugMessage.set(Arguments[0]);
+                    LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(LocalVar.get(Arguments[0])) - Integer.parseInt(Arguments[1])));
                     break;
                 case "Var":
                     assert (Arguments[0].charAt(0) == '$');

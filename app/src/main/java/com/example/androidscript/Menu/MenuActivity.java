@@ -8,6 +8,8 @@ import com.example.androidscript.util.BtnMaker;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
