@@ -7,7 +7,11 @@ import android.view.accessibility.AccessibilityEvent;
 public final class AutoClick extends AccessibilityService{
     private static AutoClick instance;
     public static void Click(int x, int y) {
-        AutoClick.Swipe(x - 1, y - 1, x + 1, y + 1);
+        Path path = new Path();
+        path.moveTo(x - 1, y - 1);
+        path.lineTo(x + 1, y + 1);
+        instance.dispatchGesture(new GestureDescription.Builder().addStroke(new GestureDescription.StrokeDescription
+                (path, 0, 100)).build(), null, null);
     }
 
     public static void Swipe(int x1, int y1, int x2, int y2) {
@@ -15,7 +19,7 @@ public final class AutoClick extends AccessibilityService{
         path.moveTo(x1, y1);
         path.lineTo(x2, y2);
         instance.dispatchGesture(new GestureDescription.Builder().addStroke(new GestureDescription.StrokeDescription
-                (path, 0, 100)).build(), null, null);
+                (path, 100, 500)).build(), null, null);
     }
 
 

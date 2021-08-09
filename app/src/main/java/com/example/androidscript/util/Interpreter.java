@@ -209,6 +209,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                 case "Swipe":
                     delay();
                     AutoClick.Swipe(Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]));
+                    break;
                 case "Compare":
                     int Similarity = ScreenShot.compare(ReadImgFromFile(Arguments[4]), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]));
                     LocalVar.put("$R", String.valueOf(Similarity));
