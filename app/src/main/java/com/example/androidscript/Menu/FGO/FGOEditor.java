@@ -13,6 +13,7 @@ import com.example.androidscript.Menu.StartService;
 import com.example.androidscript.R;
 import com.example.androidscript.UserInterface.UIActivity;
 import com.example.androidscript.util.BtnMaker;
+import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
 import com.example.androidscript.util.ScriptCompiler;
 
@@ -84,7 +85,16 @@ public class FGOEditor extends UIActivity {
 
     @Override
     protected void resourceInitialize() {
-
+        try {
+            String[] allFiles = getAssets().list("");//List all file
+            for (String file : allFiles) {
+                if (file.startsWith("FGO_")) {
+                    getResource(file, FolderName, file.substring(4));
+                }
+            }
+        } catch (Exception e) {
+            DebugMessage.printStackTrace(e);
+        }
     }
 
 }
