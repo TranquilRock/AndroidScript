@@ -1,0 +1,7 @@
+Wait 3000
+Call CheckOperationEnd.txt
+IfGreater $R 0
+Return 1
+Wait 1000
+Click 445 1245
+Return 0

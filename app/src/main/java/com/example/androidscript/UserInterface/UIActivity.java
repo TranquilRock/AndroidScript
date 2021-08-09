@@ -15,7 +15,7 @@ import com.example.androidscript.util.ScreenShot;
 
 import java.util.Vector;
 
-public abstract class UIActivity extends AppCompatActivity implements Editor {
+public abstract class UIActivity extends Editor {
 
     protected RecyclerView BlockView;
     protected RecyclerView ButtonView;

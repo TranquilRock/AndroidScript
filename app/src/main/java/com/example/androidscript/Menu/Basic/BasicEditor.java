@@ -114,4 +114,7 @@ public class BasicEditor extends UIActivity {
     public String getFolderName() {
         return FolderName;
     }
+
+    @Override
+    protected void resourceInitialize() {}
 }

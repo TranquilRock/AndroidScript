@@ -1,0 +1,18 @@
+Var $T $1
+IfSmaller $T 1
+Return 0
+Call PressEnter.txt
+IfGreater $R 0
+JumpToLine 3
+Call PressStart.txt
+IfSmaller $R 1
+JumpToLine 13
+Call CheckSanityInsufficient.txt
+IfSmaller $R 1
+Exit
+JumpToLine 6
+Call PressEnd.txt
+IfGreater $R 0
+JumpToLine 13
+Cal $T -= 1
+JumpToLine 1

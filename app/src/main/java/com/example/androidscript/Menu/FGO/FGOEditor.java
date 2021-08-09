@@ -82,4 +82,9 @@ public class FGOEditor extends UIActivity {
         return FolderName;
     }
 
+    @Override
+    protected void resourceInitialize() {
+
+    }
+
 }

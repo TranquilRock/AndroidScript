@@ -1,0 +1,5 @@
+Wait 500
+Compare 250 310 750 750 SanityInsufficient.png
+IfGreater $R 50
+Return 0
+Return 1

@@ -58,6 +58,22 @@ public final class FileOperation extends Activity {
         }
     }
 
+    public static void saveBitmapAsPNG(Bitmap bm, String FileName) {
+        FileName = root + FileName;
+        if (bm == null) {
+            return;
+        }
+        File file = createFileAndParent(FileName);
+        try {
+            FileOutputStream out = new FileOutputStream(file);
+            bm.compress(Bitmap.CompressFormat.PNG, 90, out);
+            out.flush();
+            out.close();
+        } catch (Exception e) {
+            DebugMessage.printStackTrace(e);
+        }
+    }
+
     public static void writeLines(String FileName, Vector<String> contents) {
         FileName = root + FileName;
         try {

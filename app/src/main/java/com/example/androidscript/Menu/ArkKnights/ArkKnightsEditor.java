@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
 import android.content.Intent;
+import android.content.res.AssetManager;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,9 +17,10 @@ import com.example.androidscript.Menu.StartService;
 import com.example.androidscript.R;
 import com.example.androidscript.UserInterface.Editor;
 import com.example.androidscript.util.BtnMaker;
+import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.Interpreter;
 
-public class ArkKnightsEditor extends AppCompatActivity implements Editor {
+public class ArkKnightsEditor extends Editor {
     SwitchCompat TillEmpty;
     SwitchCompat EatMedicine;
     SwitchCompat EatStone;
@@ -84,5 +87,21 @@ public class ArkKnightsEditor extends AppCompatActivity implements Editor {
     @Override
     public String getFolderName() {
         return FolderName;
+    }
+
+    @Override
+    protected void resourceInitialize() {
+        try{
+            String[] allFiles = getAssets().list("");
+            for(String file : allFiles){
+                if(file.startsWith("Ark_")){
+                    getResource(file,FolderName,file.substring(4));
+                }
+            }
+            DebugMessage.set("Good");
+        }catch (Exception e){
+            DebugMessage.printStackTrace(e);
+            DebugMessage.set("Dead");
+        }
     }
 }
