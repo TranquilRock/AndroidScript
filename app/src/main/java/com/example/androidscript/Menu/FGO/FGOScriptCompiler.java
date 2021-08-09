@@ -11,6 +11,8 @@ import com.example.androidscript.util.Interpreter;
 import com.example.androidscript.util.ScreenShot;
 
 public class FGOScriptCompiler extends ScriptCompiler {
+    public static int count = 0;
+
     @Override
     public void compile(Vector<Vector<String>> data) {
         float h = ScreenShot.getHeight();
@@ -28,17 +30,17 @@ public class FGOScriptCompiler extends ScriptCompiler {
         }
 
         Vector<String> save = new Vector<String>();
-        int tag = 0;
+
 
         for (Vector<String> block : data) {
             if ("PreStage".equals(block.get(0))) {
                 PreStage(save, block, w, h, m);
 
             } else if ("CraftSkill".equals(block.get(0))) {
-                CraftSkill(save, block, w, h, m, tag);
+                CraftSkill(save, block, w, h, m);
 
             } else if ("Skill".equals(block.get(0))) {
-                Skill(save, block, w, h, m, tag);
+                Skill(save, block, w, h, m);
 
             } else if ("NoblePhantasms".equals(block.get(0))) {
                 NoblePhantasms(save, block, w, h, m);
@@ -46,7 +48,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
             } else if ("End".equals(block.get(0))) {
                 End(save, w, h, m);
             }
-
+            Log.d("kk", Integer.toString(count));
         }
         FileOperation.writeLines(FGOEditor.FolderName + "Run.txt", save);
         Log.d("kk", "Save run script");
@@ -133,45 +135,46 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Wait 25000");
     }
 
-    public static void CraftSkillAux(Vector<String> save, float w, float h, float m, float varx, int tag, float sev) {
+    public static void CraftSkillAux(Vector<String> save, float w, float h, float m, float varx, float sev) {
         save.add("Click " + transform_x(1798, w, m) + " " + transform_y(530, h, m));//御主技能
         save.add("Wait 500");
         save.add("Click " + transform_x(varx, w, m) + " " + transform_y(530, h, m));//開技能
         save.add("Compare " + transform_x(382, w, m) + " " + transform_y(626, h, m) + " " + transform_x(908, w, m) + " " + transform_y(766, h, m) + " canclebtn.png");
         save.add("IfGreater $R 30");
-        save.add("JumpTo $CraftSkill" + Integer.toString(tag));
+        save.add("JumpTo $CraftSkill" + Integer.toString(count));
         save.add("Click " + transform_x(sev, w, m) + " " + transform_y(731, h, m));//從者
-        save.add("JumpTo $CraftSkillEnd" + Integer.toString(tag));
-        save.add("Tag $CraftSkill" + Integer.toString(tag));
+        save.add("JumpTo $CraftSkillEnd" + Integer.toString(count));
+        save.add("Tag $CraftSkill" + Integer.toString(count));
         save.add("Click " + transform_x(645, w, m) + " " + transform_y(696, h, m));//取消BUG
-        save.add("JumpTo $CraftSkillEnd" + Integer.toString(tag));
-        save.add("Tag $CraftSkillEnd" + Integer.toString(tag));
+        save.add("JumpTo $CraftSkillEnd" + Integer.toString(count));
+        save.add("Tag $CraftSkillEnd" + Integer.toString(count));
         save.add("Wait 4000");
-        tag++;
+        count++;
     }
 
-    public static void CraftSkillChangeAux(Vector<String> save, float w, float h, float m, int tag, float sev1, float sev2) {
+    public static void CraftSkillChangeAux(Vector<String> save, float w, float h, float m, float sev1, float sev2) {
         save.add("Click " + transform_x(1798, w, m) + " " + transform_y(530, h, m));//御主技能
         save.add("Wait 500");
         save.add("Click " + transform_x(1622, w, m) + " " + transform_y(530, h, m));//開技能
         save.add("Wait 500");
         save.add("Compare " + transform_x(382, w, m) + " " + transform_y(626, w, m) + " " + transform_x(908, w, m) + " " + transform_y(766, h, m) + " canclebtn.png");
         save.add("IfGreater $R 30");
-        save.add("JumpTo $CraftSkill" + Integer.toString(tag));
+        save.add("JumpTo $CraftSkill" + Integer.toString(count));
         save.add("Click " + transform_x(sev1, w, m) + " " + transform_y(sev2, h, m));//換
         save.add("Click " + transform_x(1120, w, m) + " " + transform_y(590, h, m));
         save.add("Click " + transform_x(950, w, m) + " " + transform_y(1000, h, m));
-        save.add("JumpTo $CraftSkillEnd" + Integer.toString(tag));
-        save.add("Tag $CraftSkill" + Integer.toString(tag));
+        save.add("JumpTo $CraftSkillEnd" + Integer.toString(count));
+        save.add("Tag $CraftSkill" + Integer.toString(count));
         save.add("Click " + transform_x(645, w, m) + " " + transform_y(696, h, m));//取消BUG
         save.add("Wait 500");
         save.add("Click " + transform_x(1798, w, m) + " " + transform_y(530, h, m));//御主技能
-        save.add("JumpTo $CraftSkillEnd" + Integer.toString(tag));
-        save.add("Tag $CraftSkillEnd" + Integer.toString(tag));
+        save.add("JumpTo $CraftSkillEnd" + Integer.toString(count));
+        save.add("Tag $CraftSkillEnd" + Integer.toString(count));
         save.add("Wait 8000");
+        count++;
     }
 
-    public static void CraftSkill(Vector<String> save, Vector<String> block, float w, float h, float m, int tag) {
+    public static void CraftSkill(Vector<String> save, Vector<String> block, float w, float h, float m) {
         for (int j = 1; j < 4; j++) {
             float varx = 0;
             switch (j) {
@@ -194,23 +197,23 @@ public class FGOScriptCompiler extends ScriptCompiler {
                     save.add("Click " + transform_x(varx, w, m) + " " + transform_y(530, h, m));//開技能
                     save.add("Compare " + transform_x(382, w, m) + " " + transform_y(626, h, m) + " " + transform_x(908, w, m) + " " + transform_y(766, h, m) + " canclebtn.png");
                     save.add("IfGreater $R 30");
-                    save.add("JumpTo $CraftSkill" + Integer.toString(tag));
-                    save.add("JumpTo $CraftSkillEnd" + Integer.toString(tag));
-                    save.add("Tag $CraftSkill" + Integer.toString(tag));
+                    save.add("JumpTo $CraftSkill" + Integer.toString(count));
+                    save.add("JumpTo $CraftSkillEnd" + Integer.toString(count));
+                    save.add("Tag $CraftSkill" + Integer.toString(count));
                     save.add("Click " + transform_x(645, w, m) + " " + transform_y(696, h, m));//取消BUG
-                    save.add("JumpTo $CraftSkillEnd" + Integer.toString(tag));
-                    save.add("Tag $CraftSkillEnd" + Integer.toString(tag));
+                    save.add("JumpTo $CraftSkillEnd" + Integer.toString(count));
+                    save.add("Tag $CraftSkillEnd" + Integer.toString(count));
                     save.add("Wait 4000");
-                    tag++;
+                    count++;
                     break;
                 case "2":
-                    CraftSkillAux(save, w, h, m, varx, tag, 507);
+                    CraftSkillAux(save, w, h, m, varx, 507);
                     break;
                 case "3":
-                    CraftSkillAux(save, w, h, m, varx, tag, 957);
+                    CraftSkillAux(save, w, h, m, varx, 957);
                     break;
                 case "4":
-                    CraftSkillAux(save, w, h, m, varx, tag, 1434);
+                    CraftSkillAux(save, w, h, m, varx, 1434);
                     break;
             }
         }
@@ -219,52 +222,52 @@ public class FGOScriptCompiler extends ScriptCompiler {
             case "0":
                 break;
             case "1":
-                CraftSkillChangeAux(save, w, h, m, tag, 210, 1120);
+                CraftSkillChangeAux(save, w, h, m, 210, 1120);
                 break;
             case "2":
-                CraftSkillChangeAux(save, w, h, m, tag, 210, 1414);
+                CraftSkillChangeAux(save, w, h, m, 210, 1414);
                 break;
             case "3":
-                CraftSkillChangeAux(save, w, h, m, tag, 210, 1700);
+                CraftSkillChangeAux(save, w, h, m, 210, 1700);
                 break;
             case "4":
-                CraftSkillChangeAux(save, w, h, m, tag, 507, 1120);
+                CraftSkillChangeAux(save, w, h, m, 507, 1120);
                 break;
             case "5":
-                CraftSkillChangeAux(save, w, h, m, tag, 507, 1414);
+                CraftSkillChangeAux(save, w, h, m, 507, 1414);
                 break;
             case "6":
-                CraftSkillChangeAux(save, w, h, m, tag, 507, 1700);
+                CraftSkillChangeAux(save, w, h, m, 507, 1700);
                 break;
             case "7":
-                CraftSkillChangeAux(save, w, h, m, tag, 810, 1120);
+                CraftSkillChangeAux(save, w, h, m, 810, 1120);
                 break;
             case "8":
-                CraftSkillChangeAux(save, w, h, m, tag, 810, 1414);
+                CraftSkillChangeAux(save, w, h, m, 810, 1414);
                 break;
             case "9":
-                CraftSkillChangeAux(save, w, h, m, tag, 810, 1700);
+                CraftSkillChangeAux(save, w, h, m, 810, 1700);
                 break;
         }
     }
 
-    public static void SkillAux(Vector<String> save, float w, float h, float m, float varx, int tag, float sev) {
+    public static void SkillAux(Vector<String> save, float w, float h, float m, float varx, float sev) {
         save.add("Click " + transform_x(varx, w, m) + " " + transform_y(930, h, m));//開技能
         save.add("Wait 500");
         save.add("Compare " + transform_x(382, w, m) + " " + transform_y(626, h, m) + " " + transform_x(908, w, m) + " " + transform_y(766, h, m) + " canclebtn.png");
         save.add("IfGreater $R 30");
-        save.add("JumpTo $Skill" + Integer.toString(tag));
+        save.add("JumpTo $Skill" + Integer.toString(count));
         save.add("Click " + transform_x(sev, w, m) + " " + transform_y(731, h, m));//從者一
-        save.add("JumpTo $SkillEnd" + Integer.toString(tag));
-        save.add("Tag $Skill" + Integer.toString(tag));
+        save.add("JumpTo $SkillEnd" + Integer.toString(count));
+        save.add("Tag $Skill" + Integer.toString(count));
         save.add("Click " + transform_x(645, w, m) + " " + transform_y(696, h, m));//取消BUG
-        save.add("JumpTo $SkillEnd" + Integer.toString(tag));
-        save.add("Tag $SkillEnd" + Integer.toString(tag));
+        save.add("JumpTo $SkillEnd" + Integer.toString(count));
+        save.add("Tag $SkillEnd" + Integer.toString(count));
         save.add("Wait 4000");
-        tag++;
+        count++;
     }
 
-    public static void Skill(Vector<String> save, Vector<String> block, float w, float h, float m, int tag) {
+    public static void Skill(Vector<String> save, Vector<String> block, float w, float h, float m) {
         float varx = 0;
         for (int j = 1; j < 10; j++) {
             switch (j) {
@@ -304,23 +307,23 @@ public class FGOScriptCompiler extends ScriptCompiler {
                     save.add("Wait 500");
                     save.add("Compare " + transform_x(382, w, m) + " " + transform_y(626, h, m) + " " + transform_x(908, w, m) + " " + transform_y(766, h, m) + " canclebtn.png");
                     save.add("IfGreater $R 30");
-                    save.add("JumpTo $Skill" + Integer.toString(tag));
-                    save.add("JumpTo $SkillEnd" + Integer.toString(tag));
-                    save.add("Tag $Skill" + Integer.toString(tag));
+                    save.add("JumpTo $Skill" + Integer.toString(count));
+                    save.add("JumpTo $SkillEnd" + Integer.toString(count));
+                    save.add("Tag $Skill" + Integer.toString(count));
                     save.add("Click " + transform_x(645, w, m) + " " + transform_y(696, h, m));//取消BUG
-                    save.add("JumpTo $SkillEnd" + Integer.toString(tag));
-                    save.add("Tag $SkillEnd" + Integer.toString(tag));
+                    save.add("JumpTo $SkillEnd" + Integer.toString(count));
+                    save.add("Tag $SkillEnd" + Integer.toString(count));
                     save.add("Wait 4000");
-                    tag++;
+                    count++;
                     break;
                 case "2":
-                    SkillAux(save, w, h, m, varx, tag, 507);
+                    SkillAux(save, w, h, m, varx, 507);
                     break;
                 case "3":
-                    SkillAux(save, w, h, m, varx, tag, 957);
+                    SkillAux(save, w, h, m, varx, 957);
                     break;
                 case "4":
-                    SkillAux(save, w, h, m, varx, tag, 1434);
+                    SkillAux(save, w, h, m, varx, 1434);
                     break;
             }
         }
