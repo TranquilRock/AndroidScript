@@ -1,6 +1,7 @@
 package com.example.androidscript.util;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.example.androidscript.FloatingWidget.FloatingWidgetService;
@@ -222,6 +223,9 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     AutoClick.Swipe(Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]));
                     break;
                 case "Compare":
+                    for(String t:Arguments){
+                        DebugMessage.set(t);
+                    }
                     int Similarity = ScreenShot.compare(ReadImgFromFile(Arguments[4]), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]));
                     LocalVar.put("$R", String.valueOf(Similarity));
                     break;
