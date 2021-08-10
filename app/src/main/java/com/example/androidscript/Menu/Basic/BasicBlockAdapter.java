@@ -91,6 +91,7 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
             case "Exit"://ZeroVH
                 break;
             case "Contain"://OneVH
+            case "ClickPic":
                 holder.Inputs[0].setHint("Image");
                 break;
             case "JumpTo":
@@ -172,6 +173,7 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
             case "Call":
             case "Tag":
             case "Return":
+            case "ClickPic":
                 return 1;
             case "Click":
             case "CallArg":

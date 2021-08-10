@@ -42,31 +42,32 @@ public final class ScreenShot extends Service {
     public static boolean ServiceStart = false;
     public static boolean Transposed = false;
 
-    public static int getHeight(){
+    public static int getHeight() {
         return screenHeight;
     }
-    public static int getWidth(){
+
+    public static int getWidth() {
         return screenWidth;
     }
-    public static void setUpScreenDimension(int _height,int _width){
+
+    public static void setUpScreenDimension(int _height, int _width) {
         screenWidth = _width;
         screenHeight = _height;
-//        screenWidth = Resources.getSystem().getDisplayMetrics().widthPixels;
-//        screenHeight = Resources.getSystem().getDisplayMetrics().heightPixels;
     }
 
-    public static void setShotOrientation(boolean transpose){
+    public static void setShotOrientation(boolean transpose) {
         Transposed = transpose;
         int tmp;
         if (transpose) {
-            tmp = max(screenHeight,screenWidth);
-            screenHeight = min(screenHeight,screenWidth);
+            tmp = max(screenHeight, screenWidth);
+            screenHeight = min(screenHeight, screenWidth);
         } else {
-            tmp = min(screenHeight,screenWidth);
-            screenHeight = max(screenHeight,screenWidth);
+            tmp = min(screenHeight, screenWidth);
+            screenHeight = max(screenHeight, screenWidth);
         }
         screenWidth = tmp;
     }
+
     @SuppressLint("WrongConstant")
     public static void setUpMediaProjectionManager(Intent intent, MediaProjectionManager mm) {
         if (ScreenShot.mediaProjectionManager == null) {
@@ -189,10 +190,10 @@ public final class ScreenShot extends Service {
     }
 
     public static int compare(Bitmap Target, int x1, int y1, int x2, int y2) {
-        return ImageHandler.matchPicture(Bitmap.createBitmap(Shot(), x1, y1, (x2 - x1), (y2- y1)), Target);
+        return ImageHandler.matchPicture(Bitmap.createBitmap(Shot(), x1, y1, (x2 - x1), (y2 - y1)), Target);
     }
 
-    public static boolean contain(Bitmap Target){
-        return ImageHandler.TestPictureContain(Shot(),Target);
+    public static boolean contain(Bitmap Target) {
+        return ImageHandler.TestPictureContain(Shot(), Target);
     }
 }

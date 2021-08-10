@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.androidscript.FloatingWidget.FloatingWidgetService;
+import com.example.androidscript.Menu.FGO.FGOEditor;
 import com.example.androidscript.Menu.StartService;
 import com.example.androidscript.R;
 import com.example.androidscript.UserInterface.UIActivity;
@@ -43,7 +45,7 @@ public class BasicEditor extends UIActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BtnMaker.registerOnClick(R.id.start_service, this, v -> startActivity(new Intent(this, StartService.class).putExtra("Orientation", "vertical")));
+        BtnMaker.registerOnClick(R.id.start_service, this, v -> startActivity(new Intent(this, StartService.class).putExtra("Orientation", "Landscape")));
         BtnMaker.registerOnClick(R.id.start_floating, this, v -> StartService.startFloatingWidget(this));
         BtnMaker.registerOnClick(R.id.save_file, this, (v -> {
             boolean flag = true;
@@ -56,11 +58,11 @@ public class BasicEditor extends UIActivity {
             if (flag) {
                 FileOperation.writeWords(BasicEditor.FolderName + this.filename, this.BlockData);
                 compiler.compile(this.BlockData);
-                Toast.makeText(this.getApplicationContext(), "File Saved!!", Toast.LENGTH_LONG).show();
+                FloatingWidgetService.setScript(new Interpreter(BasicEditor.FolderName, "Run.txt"), null);
+                Toast.makeText(this.getApplicationContext(), "Successful!", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this.getApplicationContext(), "Arguments can't be empty", Toast.LENGTH_LONG).show();
             }
-
         }));
 
         //SetBlockData
@@ -93,6 +95,7 @@ public class BasicEditor extends UIActivity {
             case "Call":
             case "Tag":
             case "Return":
+            case "ClickPic":
                 return 1;
             case "Click":
             case "CallArg":
