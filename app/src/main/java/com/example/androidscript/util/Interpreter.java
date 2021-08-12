@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.example.androidscript.FloatingWidget.FloatingWidgetService;
 
+import org.opencv.core.Point;
 import org.w3c.dom.Text;
 
 import java.util.HashMap;
@@ -31,6 +32,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
             "Call " + SptFormat,
             "Tag " + VarFormat,
             "Return " + IntVarFormat,
+            "ClickPic " + ImgVarFormat,
             "Click " + IntVarFormat + " " + IntVarFormat,
             "CallArg " + SptFormat + " " + AnyFormat,
             "IfGreater " + IntVarFormat + " " + IntVarFormat,
@@ -186,6 +188,13 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     break;
                 case "Return":
                     return Integer.parseInt(Arguments[0]);
+                case "ClickPic":
+                    Bitmap tmp = ReadImgFromFile(Arguments[0]);
+                    DebugMessage.set("ClickPic " + Arguments[0]);
+                    Point target = ImageHandler.findLocation(ScreenShot.Shot(),tmp);
+                    DebugMessage.set("Clicking Picture:" + target.x + " " + target.y);
+                    AutoClick.Click((int)target.x,(int)target.y);
+                    break;
                 case "Click":
                     delay();
                     AutoClick.Click(Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]));

@@ -5,10 +5,13 @@ import android.graphics.Bitmap;
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvException;
+import org.opencv.core.CvType;
 import org.opencv.core.DMatch;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfDMatch;
 import org.opencv.core.MatOfKeyPoint;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
 import org.opencv.features2d.DescriptorMatcher;
 import org.opencv.features2d.ORB;
 import org.opencv.imgproc.Imgproc;
@@ -25,6 +28,11 @@ public final class ImageHandler {
         return ret;
     }
 
+    private static Mat toMat(Bitmap bitmap){
+        Mat ret = new Mat();
+        Utils.bitmapToMat(bitmap, ret);
+        return ret;
+    }
     private static Mat featureExtraction(Mat grayBitmap) {//KeyPoint detection and extraction
         ORB orb = ORB.create(100000);
         MatOfKeyPoint keyPoint = new MatOfKeyPoint();
@@ -110,5 +118,23 @@ public final class ImageHandler {
 
         DebugMessage.set("Match " + matchCount + " points " + screenDescriptor.width() + " " + screenDescriptor.height() + " " + targetDescriptor.width() + " " + targetDescriptor.height());
         return (3040.0 * 1440.0 / ScreenShot.getHeight() / ScreenShot.getWidth() * 3 * matchCount) >= min(screenDescriptor.height(), targetDescriptor.height());
+    }
+
+    public static Point findLocation(Bitmap screenshot, Bitmap target) {
+        Mat result = new Mat();
+        Mat image = toMat(screenshot);
+        Mat template = toMat(target);
+        int result_cols = image.cols() - template.cols() + 1;
+        int result_rows =image.rows() - template.rows() + 1;
+        result.create(result_rows, result_cols, CvType.CV_32FC1);
+
+        Imgproc.matchTemplate(image, template, result, Imgproc.TM_SQDIFF_NORMED);
+//        Imgproc.matchTemplate(image, template, result, Imgproc.TM_CCOEFF);
+        Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1, new Mat());
+        Point matchLoc;
+        Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
+        matchLoc = mmr.minLoc;
+//        matchLoc = mmr.maxLoc;
+        return new Point(matchLoc.x + template.cols(), matchLoc.y + template.rows());
     }
 }

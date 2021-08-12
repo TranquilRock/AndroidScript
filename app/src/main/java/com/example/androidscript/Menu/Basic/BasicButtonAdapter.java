@@ -32,6 +32,7 @@ public class BasicButtonAdapter extends ButtonAdapter {
             case "Call":
             case "Tag":
             case "Return":
+            case "ClickPic":
             case "Click":
             case "CallArg":
             case "IfGreater":
