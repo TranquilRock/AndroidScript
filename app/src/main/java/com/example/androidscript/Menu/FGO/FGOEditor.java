@@ -46,8 +46,8 @@ public class FGOEditor extends UIActivity {
                 }
             }
             if (flag) {
-                FileOperation.writeWords(FGOEditor.FolderName + this.filename, this.BlockData);
                 compiler.compile(this.BlockData);
+                FileOperation.writeWords(FGOEditor.FolderName + this.filename, this.BlockData);
                 Toast.makeText(this.getApplicationContext(), "File Saved!!", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this.getApplicationContext(), "Arguments can't be empty", Toast.LENGTH_LONG).show();

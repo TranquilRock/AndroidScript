@@ -66,8 +66,19 @@ public class FGOScriptCompiler extends ScriptCompiler {
     public static void PreStage(Vector<String> save, Vector<String> block, float w, float h, float m) {
         //重複
         save.add("Var $Loop 1");
+        save.add("Tag $Start");
+
+        save.add("Tag $ReadyAgain");
+        save.add("Compare " + transform_x(1665, w, m) + " " + transform_y(1039, h, m) + " " + transform_x(1910, w, m) + " " + transform_y(1130, h, m) + " menu.png");
+        save.add("IfGreater $R 30");
+        save.add("JumpTo $Ready");
+        save.add("Wait 3000");
+        save.add("JumpTo $ReadyAgain");
+        save.add("Tag $Ready");
+        save.add("Wait 1000");
+
         save.add("IfGreater $Loop " + block.get(4));
-        save.add("JumpTo $End");
+        save.add("Exit");
         save.add("Click " + transform_x(1400, w, m) + " " + transform_y(320, h, m)); //選擇上次關卡
         save.add("Wait 3000");
         save.add("Compare " + transform_x(757, w, m) + " " + transform_y(922, h, m) + " " + transform_x(1149, w, m) + " " + transform_y(1041, h, m) + " closebtn.png");
@@ -135,7 +146,6 @@ public class FGOScriptCompiler extends ScriptCompiler {
         }
         save.add("Wait 3000");
         save.add("Click " + transform_x(1785, w, m) + " " + transform_y(1077, h, m));//任務開始
-        save.add("Wait 25000");
     }
 
     public static void CraftSkillAux(Vector<String> save, float w, float h, float m, float varx, float sev) {
@@ -178,6 +188,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
     }
 
     public static void CraftSkill(Vector<String> save, Vector<String> block, float w, float h, float m) {
+        CheckStillBattle(save, w, h, m);
         for (int j = 1; j < 4; j++) {
             float varx = 0;
             switch (j) {
@@ -271,6 +282,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
     }
 
     public static void Skill(Vector<String> save, Vector<String> block, float w, float h, float m) {
+        CheckStillBattle(save, w, h, m);
         float varx = 0;
         for (int j = 1; j < 10; j++) {
             switch (j) {
@@ -333,7 +345,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
     }
 
     public static void NoblePhantasms(Vector<String> save, Vector<String> block, float w, float h, float m) {
-
+        CheckStillBattle(save, w, h, m);
 
         save.add("Click " + transform_x(1694, w, m) + " " + transform_y(969, h, m));//攻擊鈕
         save.add("Wait 2500");
@@ -347,7 +359,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
                 varx = 1330;
             }
             Log.d("kk", block.get(j));
-            if (block.get(j) == "1") {
+            if (block.get(j).equals("1")) {
                 save.add("Click " + transform_x(varx, w, m) + " " + transform_y(364, h, m));//寶具
                 save.add("Wait 200");
             }
@@ -362,15 +374,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Wait 200");
         save.add("Click " + transform_x(1874, w, m) + " " + transform_y(835, h, m));//指令卡
 
-        save.add("Tag $WaveOverAgain"+Integer.toString(count));
-        save.add("Compare " + transform_x(1560, w, m) + " " + transform_y(830, h, m) + " " + transform_x(1843, w, m) + " " + transform_y(1109, h, m) + " attack.png");
-        save.add("IfGreater $R 30");
-        save.add("JumpTo $WaveOver"+Integer.toString(count));
-        save.add("Wait 5000");
-        save.add("JumpTo $WaveOverAgain"+Integer.toString(count));
-        save.add("Tag $WaveOver"+Integer.toString(count));
 
-        count++;
         //TODO 配卡
 //                    switch (data.get(i).get(4)){
 //                        case"0":
@@ -385,13 +389,14 @@ public class FGOScriptCompiler extends ScriptCompiler {
 //                            break;
 //                        case"5":
 //                            break;
+        save.add("Wait 10000");
     }
 
     public static void End(Vector<String> save, float w, float h, float m) {
         save.add("Tag $EndStageAgain");
-        save.add("Compare " + transform_x(86, w, m) + " " + transform_y(301, h, m) + " " + transform_x(474, w, m) + " " + transform_y(382, h, m) + " end.png");
-        save.add("IfGreater $R 30");
-        save.add("JumpTo $EndStage");
+        save.add("Compare " + transform_x(110, w, m) + " " + transform_y(300, h, m) + " " + transform_x(480, w, m) + " " + transform_y(380, h, m) + " end.png");
+        save.add("IfGreater $R 5");
+        save.add("JumpTo $EndStageAgain");
 
         save.add("Click " + transform_x(1694, w, m) + " " + transform_y(969, h, m));//攻擊鈕
         save.add("Wait 2500");
@@ -407,7 +412,8 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Wait 200");
 
         save.add("JumpTo $EndStageAgain");
-        save.add("Tag $EndStage");
+        save.add("Tag $EndStageAgain");
+        count++;
 
         save.add("Tag $EndStageAgain2");
         save.add("Compare " + transform_x(453, w, m) + " " + transform_y(855, h, m) + " " + transform_x(878, w, m) + " " + transform_y(971, h, m) + " close2btn.png");
@@ -421,7 +427,22 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Click " + transform_x(660, w, m) + " " + transform_y(900, h, m));
         save.add("Wait 1000");
         save.add("Add $Loop 1");
-        save.add("Tag $End");
+        save.add("JumpTo $Start");
     }
 
+    public static void CheckStillBattle(Vector<String> save, float w, float h, float m){
+        save.add("Tag $StillBattleAgain"+Integer.toString(count));
+        save.add("Compare " + transform_x(1560, w, m) + " " + transform_y(830, h, m) + " " + transform_x(1843, w, m) + " " + transform_y(1109, h, m) + " attack.png");
+        save.add("Compare " + transform_x(1560, w, m) + " " + transform_y(830, h, m) + " " + transform_x(1843, w, m) + " " + transform_y(1109, h, m) + " attack.png");
+        //save.add("Compare " + transform_x(1755, w, m) + " " + transform_y(335, h, m) + " " + transform_x(1835, w, m) + " " + transform_y(425, h, m) + " list.png");
+
+        save.add("IfGreater $R 30");
+
+        save.add("JumpTo $StillBattle"+Integer.toString(count));
+        save.add("Wait 3000");
+        save.add("JumpTo $StillBattleAgain"+Integer.toString(count));
+        save.add("Tag $StillBattle"+Integer.toString(count));
+        save.add("Wait 1000");
+        count++;
+    }
 }

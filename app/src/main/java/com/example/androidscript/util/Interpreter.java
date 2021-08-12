@@ -143,9 +143,16 @@ public class Interpreter extends Thread {//Every child only need to specify wher
         }
 
         for (int commandIndex = 0; commandIndex < codeLength; commandIndex++) {
+
+            StringBuilder tt = new StringBuilder();
+            for(String z : (MyCode.get(FileName).codes.get(commandIndex))){
+                tt.append(z + " ");
+            }
+            Log.d("kk", Integer.toString(commandIndex)+"  "+tt.toString());
             if (!this.running) {
                 return 1;
             }
+
             String[] command = (MyCode.get(FileName).codes.get(commandIndex));
             String[] Arguments = new String[command.length - 1];
             for (int i = 1; i < command.length; i++) {//Substitution
