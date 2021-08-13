@@ -198,7 +198,7 @@ public final class FileOperation extends Activity {
     public static Vector<String> browseAvailableFile(String Folder, String targetType) {
         Vector<String> ret = new Vector<>();
         for (String s : FileOperation.readDir(Folder)) {
-            if (s.contains(targetType)) {
+            if (s.endsWith(targetType)) {
                 ret.add(s);
             }
         }

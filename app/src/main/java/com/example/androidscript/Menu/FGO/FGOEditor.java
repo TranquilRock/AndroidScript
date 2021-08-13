@@ -74,7 +74,7 @@ public class FGOEditor extends UIActivity {
         this.ButtonData.add("CraftSkill");
         this.ButtonData.add("ServantSkill");
 
-        this.ButtonView.setLayoutManager(new GridLayoutManager(this, 4));
+        this.ButtonView.setLayoutManager(new GridLayoutManager(this, 2));
         this.ButtonView.setAdapter(new FGOButtonAdapter(BlockData, ButtonData, ((FGOBlockAdapter) Objects.requireNonNull(BlockView.getAdapter())).onOrderChange));
     }
 
@@ -87,9 +87,17 @@ public class FGOEditor extends UIActivity {
     protected void resourceInitialize() {
         try {
             String[] allFiles = getAssets().list("");//List all file
+            FileOperation.readDir(FolderName);//Since we access depth 2 folder later, make sure depth 1 is built;
             for (String file : allFiles) {
                 if (file.startsWith("FGO_")) {
-                    getResource(file, FolderName, file.substring(4));
+                    if(file.startsWith("FGO_Friend_")){
+                        getResource(file, FolderName  + "Friend/", file.substring(11));
+                    }
+                    else if(file.startsWith("FGO_Craft_")){
+                        getResource(file, FolderName + "Craft/", file.substring(10));
+                    }else{
+                        getResource(file, FolderName, file.substring(4));
+                    }
                 }
             }
         } catch (Exception e) {

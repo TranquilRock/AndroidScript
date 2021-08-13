@@ -46,7 +46,7 @@ public class SelectFile extends AppCompatActivity {
     private void setupElements() {
         etNewName = findViewById(R.id.et_New_Name);
         output = findViewById(R.id.output);//Show some massage to user
-        select = SpnMaker.fromString(R.id.spinner_Select_Script, this, availableFile);
+        select = SpnMaker.fromStringWithActivity(R.id.spinner_Select_Script, this, availableFile);
 
         BtnMaker.registerOnClick(R.id.btn_To_Load, this, (v -> {
             String FileName = select.getSelectedItem().toString();

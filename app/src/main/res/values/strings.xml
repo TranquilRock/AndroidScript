@@ -102,4 +102,7 @@
     <string name="basic_editor">通用腳本</string>
     <string name="select_file_description">選擇現有腳本或是輸入新的腳本名稱</string>
     <string name="ark_knights_description_content">自動周回指定關卡，開始前請先開啟點選關卡並點選代理指揮</string>
+    <string name="Save">儲存/載入</string>
+    <string name="StartService">啟動服務</string>
+    <string name="StartFloatingWidget">浮動視窗</string>
 </resources>
