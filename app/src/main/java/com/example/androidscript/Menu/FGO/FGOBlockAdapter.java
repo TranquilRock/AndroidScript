@@ -78,8 +78,8 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
             case 3://PreStage
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.script_prestage, parent, false);
-                SpnMaker.fromStringWithView(R.id.friend,view, FileOperation.browseAvailableFile(FGOEditor.FolderName + "Friend",".png"));
-                SpnMaker.fromStringWithView(R.id.craft,view, FileOperation.browseAvailableFile(FGOEditor.FolderName + "Craft",".png"));
+                SpnMaker.fromStringWithView(R.id.friend,view, FileOperation.browseWithoutSuffix(FGOEditor.FolderName + "Friend",".png"));
+                SpnMaker.fromStringWithView(R.id.craft,view, FileOperation.browseWithoutSuffix(FGOEditor.FolderName + "Craft",".png"));
                 return new FGOViewHolder.PreStageVH(view.findViewById(R.id.pre_stage));
             case 4:
                 view = LayoutInflater.from(parent.getContext())
