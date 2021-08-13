@@ -205,6 +205,16 @@ public final class FileOperation extends Activity {
         return ret;
     }
 
+    public static Vector<String> browseWithoutSuffix(String Folder, String targetType) {
+        Vector<String> ret = new Vector<>();
+        for (String s : FileOperation.readDir(Folder)) {
+            if (s.endsWith(targetType)) {
+                ret.add(s.substring(0,s.length() - targetType.length()));
+            }
+        }
+        return ret;
+    }
+
     public static boolean findFile(String Folder, String target) {
         return (new File(FileOperation.root + Folder + target)).exists();
     }
