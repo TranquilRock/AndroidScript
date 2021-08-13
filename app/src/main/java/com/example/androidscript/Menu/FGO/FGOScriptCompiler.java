@@ -127,7 +127,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
             save.add("Click " + transform_x(650, w, m) + " " + transform_y(260, h, m));
             save.add("Wait 500");
             save.add("Tag $FriendsDNE");
-            save.add("Compare " + transform_x(70, w, m) + " " + transform_y(310, h, m) + " " + transform_x(330, w, m) + " " + transform_y(700, h, m) + " "+block.get(2));
+            save.add("Compare " + transform_x(70, w, m) + " " + transform_y(310, h, m) + " " + transform_x(330, w, m) + " " + transform_y(700, h, m) + " Craft/"+block.get(2));
             save.add("IfGreater $R 30");
             save.add("JumpTo $Friends");
             save.add("Swipe " + transform_x(960, w, m) + " " + transform_y(937, h, m) + " " + transform_x(960, w, m) + " " + transform_y(660, h, m));
@@ -135,7 +135,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
             save.add("Tag $Friends");
             if ("無".equals(block.get(3))) {
             }else{
-                save.add("Compare " + transform_x(70, w, m) + " " + transform_y(310, h, m) + " " + transform_x(330, w, m) + " " + transform_y(700, h, m) + " "+block.get(3));
+                save.add("Compare " + transform_x(70, w, m) + " " + transform_y(310, h, m) + " " + transform_x(330, w, m) + " " + transform_y(700, h, m) + " Friend/"+block.get(3));
                 save.add("IfGreater $R 30");
                 save.add("JumpTo $Craft");
                 save.add("Swipe " + transform_x(960, w, m) + " " + transform_y(937, h, m) + " " + transform_x(960, w, m) + " " + transform_y(660, h, m));
