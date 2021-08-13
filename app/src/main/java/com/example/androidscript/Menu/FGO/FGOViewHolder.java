@@ -67,7 +67,6 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         Spinner Friend;
         Spinner Craft;
         EditText Repeat;
-
         public PreStageVH(View v) {
             super(v);
         }
@@ -78,11 +77,36 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
             Stamina.setOnItemSelectedListener(SpinnerListener(Data,position,1));
             Stamina.setSelection(Integer.parseInt(Data.get(position).get(1)));
             Friend = view.findViewById(R.id.friend);
-            Friend.setOnItemSelectedListener(SpinnerListener(Data,position,2));
-            Friend.setSelection(Integer.parseInt(Data.get(position).get(2)));
+            Friend.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                    Data.get(position).set(2,parent.getSelectedItem().toString());
+                    DebugMessage.set(parent.getSelectedItem().toString());
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {}
+            });
+            for(int i = 0; i < Friend.getCount();i++){
+                if(Data.get(position).get(2).equals(Friend.getItemAtPosition(i))){
+                    Friend.setSelection(i);
+                }
+            }
             Craft = view.findViewById(R.id.craft);
-            Craft.setOnItemSelectedListener(SpinnerListener(Data,position,3));
-            Craft.setSelection(Integer.parseInt(Data.get(position).get(3)));
+            Craft.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                    Data.get(position).set(3,parent.getSelectedItem().toString());
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {}
+            });
+            for(int i = 0; i < Craft.getCount();i++){
+                if(Data.get(position).get(3).equals(Craft.getItemAtPosition(i))){
+                    Craft.setSelection(i);
+                }
+            }
             Repeat = view.findViewById(R.id.n_repeat);
             Repeat.addTextChangedListener(new TextWatcher() {
                 @Override
