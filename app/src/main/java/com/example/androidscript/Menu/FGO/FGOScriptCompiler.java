@@ -90,19 +90,25 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Tag $Apple");
         switch (block.get(1)) {
             case "0":
-                save.add("Click " + transform_x(960, w, m) + " " + transform_y(330, h, m));
+                save.add("Wait 300000");
+                save.add("Click " + transform_x(960, w, m) + " " + transform_y(987, h, m));
+                save.add("JumpTo $Start");
                 break;
             case "1":
-                save.add("Click " + transform_x(960, w, m) + " " + transform_y(540, h, m));
+                save.add("Click " + transform_x(960, w, m) + " " + transform_y(330, h, m));
                 break;
             case "2":
-                save.add("Click " + transform_x(960, w, m) + " " + transform_y(750, h, m));
+                save.add("Click " + transform_x(960, w, m) + " " + transform_y(540, h, m));
                 break;
             case "3":
+                save.add("Click " + transform_x(960, w, m) + " " + transform_y(750, h, m));
+                break;
+            case "4":
                 save.add("Swipe " + transform_x(960, w, m) + " " + transform_y(786, h, m) + " " + transform_x(960, w, m) + " " + transform_y(516, h, m));
                 save.add("Wait 300");
                 save.add("Click " + transform_x(960, w, m) + " " + transform_y(320, h, m));
                 break;
+
         }
         save.add("Wait 300");
         save.add("Click " + transform_x(1260, w, m) + " " + transform_y(900, h, m));
@@ -146,6 +152,8 @@ public class FGOScriptCompiler extends ScriptCompiler {
         } else {
 
         }
+
+
         save.add("Wait 3000");
         save.add("Click " + transform_x(1785, w, m) + " " + transform_y(1077, h, m));//任務開始
     }
