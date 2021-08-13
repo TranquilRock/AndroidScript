@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 public class Interpreter extends Thread {//Every child only need to specify where and how to fetch files, as well as what kind of commands are accepted;
 
     public static final String StrFormat = "([A-Za-z0-9_-]*)";
-    public static final String ImgFormat = "([A-Za-z0-9_-]*).(jpg|png)";
+    public static final String ImgFormat = "([A-Za-z0-9_/-]*).(jpg|png)";
     public static final String SptFormat = "([A-Za-z0-9_-]*).txt";
     public static final String VarFormat = "\\$([A-Za-z0-9_-]*)";
     public static final String IntFormat = "[0-9]*";
@@ -45,8 +45,8 @@ public class Interpreter extends Thread {//Every child only need to specify wher
     };
 
     public boolean running = false;
-    protected String ScriptName;
-    protected String ScriptFolderName;
+    public String ScriptName;
+    public String ScriptFolderName;
 
     public Interpreter(String _ScriptFolderName, String _FileName) {
         this.ScriptName = _FileName;

@@ -73,7 +73,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
 
         save.add("Tag $ReadyAgain");
         save.add("Compare " + transform_x(1665, w, m) + " " + transform_y(1039, h, m) + " " + transform_x(1910, w, m) + " " + transform_y(1130, h, m) + " menu.png");
-        save.add("IfGreater $R 22");
+        save.add("IfGreater $R 20");
         save.add("JumpTo $Ready");
         save.add("Wait 3000");
         save.add("JumpTo $ReadyAgain");
@@ -118,25 +118,54 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Tag $AppleEnd");
         save.add("Wait 5000");
 
-        save.add("Click " + transform_x(1050, w, m) + " " + transform_y(260, h, m));//選擇MIX職階
-        save.add("Wait 500");
-
         if ("無".equals(block.get(2))) {
             save.add("Click " + transform_x(800, w, m) + " " + transform_y(467, h, m));
         } else {
-            save.add("Click " + transform_x(650, w, m) + " " + transform_y(260, h, m));
+            switch (block.get(2).charAt(block.get(2).length()-3)) {
+                case 'A':
+                    save.add("Click " + transform_x(148, w, m) + " " + transform_y(260, h, m));
+                    break;
+                case 'b':
+                    save.add("Click " + transform_x(248, w, m) + " " + transform_y(260, h, m));
+                    break;
+                case 'h':
+                    save.add("Click " + transform_x(348, w, m) + " " + transform_y(260, h, m));
+                    break;
+                case 'c':
+                    save.add("Click " + transform_x(448, w, m) + " " + transform_y(260, h, m));
+                    break;
+                case 'd':
+                    save.add("Click " + transform_x(548, w, m) + " " + transform_y(260, h, m));
+                    break;
+                case 't':
+                    save.add("Click " + transform_x(648, w, m) + " " + transform_y(260, h, m));
+                    break;
+                case 's':
+                    save.add("Click " + transform_x(748, w, m) + " " + transform_y(260, h, m));
+                    break;
+                case 'k':
+                    save.add("Click " + transform_x(848, w, m) + " " + transform_y(260, h, m));
+                    break;
+                case 'i':
+                    save.add("Click " + transform_x(948, w, m) + " " + transform_y(260, h, m));
+                    break;
+                case 'M':
+                    save.add("Click " + transform_x(1048, w, m) + " " + transform_y(260, h, m));
+                    break;
+            }
+
             save.add("Wait 500");
             save.add("Tag $FriendsDNE");
-            save.add("Compare " + transform_x(70, w, m) + " " + transform_y(310, h, m) + " " + transform_x(330, w, m) + " " + transform_y(700, h, m) + " Craft/"+block.get(2));
-            save.add("IfGreater $R 30");
+            save.add("Compare " + transform_x(70, w, m) + " " + transform_y(310, h, m) + " " + transform_x(330, w, m) + " " + transform_y(700, h, m) + " Friend/"+block.get(2) + ".png");
+            save.add("IfGreater $R 20");
             save.add("JumpTo $Friends");
             save.add("Swipe " + transform_x(960, w, m) + " " + transform_y(937, h, m) + " " + transform_x(960, w, m) + " " + transform_y(660, h, m));
             save.add("JumpTo $FriendsDNE");
             save.add("Tag $Friends");
             if ("無".equals(block.get(3))) {
             }else{
-                save.add("Compare " + transform_x(70, w, m) + " " + transform_y(310, h, m) + " " + transform_x(330, w, m) + " " + transform_y(700, h, m) + " Friend/"+block.get(3));
-                save.add("IfGreater $R 30");
+                save.add("Compare " + transform_x(70, w, m) + " " + transform_y(310, h, m) + " " + transform_x(330, w, m) + " " + transform_y(700, h, m) + " Craft/"+block.get(3) + ".png");
+                save.add("IfGreater $R 5");
                 save.add("JumpTo $Craft");
                 save.add("Swipe " + transform_x(960, w, m) + " " + transform_y(937, h, m) + " " + transform_x(960, w, m) + " " + transform_y(660, h, m));
                 save.add("JumpTo $FriendsDNE");
@@ -145,7 +174,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
                 save.add("JumpTo $CraftEnd");
                 save.add("Tag $CraftEnd");
             }
-            save.add("Click " + transform_x(800, w, m) + " " + transform_y(540, h, m));
+            save.add("Click " + transform_x(800, w, m) + " " + transform_y(480, h, m));
             save.add("JumpTo $FriendsEnd");
             save.add("Tag $FriendsEnd");
         }
