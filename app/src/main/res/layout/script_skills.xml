@@ -21,7 +21,6 @@
             android:layout_marginStart="7dp"
             android:layout_marginTop="7dp"
             android:text="@string/servantSkills"
-            android:textColor="@color/black"
             android:textSize="10pt"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
@@ -33,7 +32,6 @@
             android:layout_marginStart="7dp"
             android:layout_marginTop="16dp"
             android:text="@string/servant1"
-            android:textColor="@color/black"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -44,7 +42,6 @@
             android:layout_marginStart="51dp"
             android:layout_marginTop="54dp"
             android:text="@string/servant2"
-            android:textColor="@color/black"
             card_view:layout_constraintStart_toEndOf="@+id/textView2"
             card_view:layout_constraintTop_toTopOf="parent" />
 
@@ -55,7 +52,6 @@
             android:layout_marginStart="51dp"
             android:layout_marginTop="54dp"
             android:text="@string/servant3"
-            android:textColor="@color/black"
             card_view:layout_constraintStart_toEndOf="@+id/textView3"
             card_view:layout_constraintTop_toTopOf="parent" />
 

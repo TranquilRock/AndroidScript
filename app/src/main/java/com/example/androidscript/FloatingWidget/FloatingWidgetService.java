@@ -34,6 +34,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     private int x_init_cord, y_init_cord, x_init_margin, y_init_margin;
     private static Interpreter Script;
     private static String[] Argv;
+    private static boolean flag = false;
 
     public static void setScript(Interpreter _script, String[] _Argv) {
         Script = _script;
@@ -179,11 +180,17 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                 break;
             case R.id.run_script:
                 if (!Script.running) {
+                    if(flag){
+                        Script.interrupt();
+                        Script = new Interpreter(Script.ScriptFolderName, Script.ScriptName);
+                    }
                     Script.runCode(Argv);
                 }
+                flag = false;
                 break;
             case R.id.stop_script:
                 Script.running = false;
+                flag = true;
                 break;
         }
     }

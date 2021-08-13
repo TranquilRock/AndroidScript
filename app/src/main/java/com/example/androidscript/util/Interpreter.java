@@ -45,8 +45,8 @@ public class Interpreter extends Thread {//Every child only need to specify wher
     };
 
     public boolean running = false;
-    protected String ScriptName;
-    protected String ScriptFolderName;
+    public String ScriptName;
+    public String ScriptFolderName;
 
     public Interpreter(String _ScriptFolderName, String _FileName) {
         this.ScriptName = _FileName;
