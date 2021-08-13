@@ -115,17 +115,22 @@ public class ArkKnightsEditor extends Editor {
         writePressStart();
     }
 
-    private static final int Dev_Width = 3040;
-    private static final int Dev_Height = 1440;
+
+    private final int a = 2;
 
     private void writePressStart() {
         Vector<String> buffer = new Vector<>();
         buffer.add("CallArg Check.txt StartOperation.png");
         buffer.add("IfGreater $R 0");
         buffer.add("Return 1");
-        buffer.add("Click 1660 740");
-        buffer.add("Click 2450 990");
-//        buffer.add("ClickPic StartOperation.png");
+        if (a == 0) {
+            buffer.add("Click 1660 740");
+        } else if (a == 1) {
+            buffer.add("Click 2450 990");
+
+        } else {
+            buffer.add("ClickPic StartOperation.png");
+        }
         buffer.add("Return 0");
         FileOperation.writeLines(FolderName + "PressStart.txt", buffer);
     }
@@ -135,9 +140,13 @@ public class ArkKnightsEditor extends Editor {
         buffer.add("CallArg Check.txt EnterOperation.png");
         buffer.add("IfGreater $R 0");
         buffer.add("Return 1");
-        buffer.add("Click 1715 985");
-//        buffer.add("Click 2730 1260");
-//        buffer.add("ClickPic PressEnterOperation.png" );
+        if (a == 0) {
+            buffer.add("Click 1715 985");
+        } else if (a == 1) {
+            buffer.add("Click 2730 1260");
+        } else {
+            buffer.add("ClickPic PressEnterOperation.png");
+        }
         buffer.add("Wait 500");
         buffer.add("Return 0");
         FileOperation.writeLines(FolderName + "PressEnter.txt", buffer);
@@ -150,9 +159,13 @@ public class ArkKnightsEditor extends Editor {
         buffer.add("IfGreater $R 0");
         buffer.add("Return 1");
         buffer.add("Wait 1000");
-        buffer.add("Click 330 940");
-//        buffer.add("Click 445 1245");
-//        buffer.add("ClickPic OperationEnd.png");
+        if (a == 0) {
+            buffer.add("Click 330 940");
+        } else if (a == 1) {
+            buffer.add("Click 445 1245");
+        } else {
+            buffer.add("ClickPic OperationEnd.png");
+        }
         buffer.add("Return 0");
         FileOperation.writeLines(FolderName + "PressEnd.txt", buffer);
     }
@@ -162,8 +175,13 @@ public class ArkKnightsEditor extends Editor {
         buffer.add("CallArg Check.txt RestoreSanityStone.png");
         buffer.add("IfGreater $R 0");
         buffer.add("Return 1");
-        buffer.add("Click 2415 1150");
-//        buffer.add("ClickPic PressRestore.png");
+
+
+        if (a == 1) {
+            buffer.add("Click 2415 1150");
+        } else {
+            buffer.add("ClickPic PressRestore.png");
+        }
         buffer.add("Call PressEnter.txt");
         buffer.add("IfGreater $R 0");
         buffer.add("JumpTo 4");
@@ -176,18 +194,15 @@ public class ArkKnightsEditor extends Editor {
         buffer.add("CallArg Check.txt RestoreSanityMedicine.png");
         buffer.add("IfGreater $R 0");
         buffer.add("Return 1");
-        buffer.add("Click 2415 1150");
-//        buffer.add("ClickPic PressRestore.png");
+        if (a == 1) {
+            buffer.add("Click 2415 1150");
+        } else {
+            buffer.add("ClickPic PressRestore.png");
+        }
         buffer.add("Call PressEnter.txt");
         buffer.add("IfGreater $R 0");
         buffer.add("JumpTo 4");
         buffer.add("Return 0");
         FileOperation.writeLines(FolderName + "EatMedicine.txt", buffer);
-    }
-
-    private String transform(int x, int y) {
-        int w = max(ScreenShot.getWidth(),ScreenShot.getHeight());
-        int h = min(ScreenShot.getWidth(),ScreenShot.getHeight());
-        return (int) ((double) x / Dev_Width * w) + " " + (int) ((double) y / Dev_Height * h);
     }
 }
