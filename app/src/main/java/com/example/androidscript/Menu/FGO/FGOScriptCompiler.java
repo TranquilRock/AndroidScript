@@ -68,6 +68,9 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Var $Loop 1");
         save.add("Tag $Start");
 
+        save.add("IfGreater $Loop " + block.get(4));
+        save.add("Exit");
+
         save.add("Tag $ReadyAgain");
         save.add("Compare " + transform_x(1665, w, m) + " " + transform_y(1039, h, m) + " " + transform_x(1910, w, m) + " " + transform_y(1130, h, m) + " menu.png");
         save.add("IfGreater $R 22");
@@ -77,8 +80,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Tag $Ready");
         save.add("Wait 1000");
 
-        save.add("IfGreater $Loop " + block.get(4));
-        save.add("Exit");
+
         save.add("Click " + transform_x(1400, w, m) + " " + transform_y(320, h, m)); //選擇上次關卡
         save.add("Wait 3000");
         save.add("Compare " + transform_x(757, w, m) + " " + transform_y(922, h, m) + " " + transform_x(1149, w, m) + " " + transform_y(1041, h, m) + " closebtn.png");
@@ -88,19 +90,25 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Tag $Apple");
         switch (block.get(1)) {
             case "0":
-                save.add("Click " + transform_x(960, w, m) + " " + transform_y(330, h, m));
+                save.add("Wait 300000");
+                save.add("Click " + transform_x(960, w, m) + " " + transform_y(987, h, m));
+                save.add("JumpTo $Start");
                 break;
             case "1":
-                save.add("Click " + transform_x(960, w, m) + " " + transform_y(540, h, m));
+                save.add("Click " + transform_x(960, w, m) + " " + transform_y(330, h, m));
                 break;
             case "2":
-                save.add("Click " + transform_x(960, w, m) + " " + transform_y(750, h, m));
+                save.add("Click " + transform_x(960, w, m) + " " + transform_y(540, h, m));
                 break;
             case "3":
+                save.add("Click " + transform_x(960, w, m) + " " + transform_y(750, h, m));
+                break;
+            case "4":
                 save.add("Swipe " + transform_x(960, w, m) + " " + transform_y(786, h, m) + " " + transform_x(960, w, m) + " " + transform_y(516, h, m));
                 save.add("Wait 300");
                 save.add("Click " + transform_x(960, w, m) + " " + transform_y(320, h, m));
                 break;
+
         }
         save.add("Wait 300");
         save.add("Click " + transform_x(1260, w, m) + " " + transform_y(900, h, m));
@@ -144,6 +152,8 @@ public class FGOScriptCompiler extends ScriptCompiler {
         } else {
 
         }
+
+
         save.add("Wait 3000");
         save.add("Click " + transform_x(1785, w, m) + " " + transform_y(1077, h, m));//任務開始
     }
@@ -161,7 +171,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Click " + transform_x(645, w, m) + " " + transform_y(696, h, m));//取消BUG
         save.add("JumpTo $CraftSkillEnd" + Integer.toString(count));
         save.add("Tag $CraftSkillEnd" + Integer.toString(count));
-        save.add("Wait 4000");
+        save.add("Wait 3300");
         count++;
     }
 
@@ -217,7 +227,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
                     save.add("Click " + transform_x(645, w, m) + " " + transform_y(696, h, m));//取消BUG
                     save.add("JumpTo $CraftSkillEnd" + Integer.toString(count));
                     save.add("Tag $CraftSkillEnd" + Integer.toString(count));
-                    save.add("Wait 4000");
+                    save.add("Wait 3300");
                     count++;
                     break;
                 case "2":
@@ -277,7 +287,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Click " + transform_x(645, w, m) + " " + transform_y(696, h, m));//取消BUG
         save.add("JumpTo $SkillEnd" + Integer.toString(count));
         save.add("Tag $SkillEnd" + Integer.toString(count));
-        save.add("Wait 4000");
+        save.add("Wait 3300");
         count++;
     }
 
@@ -328,7 +338,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
                     save.add("Click " + transform_x(645, w, m) + " " + transform_y(696, h, m));//取消BUG
                     save.add("JumpTo $SkillEnd" + Integer.toString(count));
                     save.add("Tag $SkillEnd" + Integer.toString(count));
-                    save.add("Wait 4000");
+                    save.add("Wait 3300");
                     count++;
                     break;
                 case "2":
@@ -361,17 +371,12 @@ public class FGOScriptCompiler extends ScriptCompiler {
             Log.d("kk", block.get(j));
             if (block.get(j).equals("1")) {
                 save.add("Click " + transform_x(varx, w, m) + " " + transform_y(364, h, m));//寶具
-                save.add("Wait 200");
             }
         }
         save.add("Click " + transform_x(190, w, m) + " " + transform_y(835, h, m));//指令卡
-        save.add("Wait 200");
         save.add("Click " + transform_x(611, w, m) + " " + transform_y(835, h, m));//指令卡
-        save.add("Wait 200");
         save.add("Click " + transform_x(1032, w, m) + " " + transform_y(835, h, m));//指令卡
-        save.add("Wait 200");
         save.add("Click " + transform_x(1453, w, m) + " " + transform_y(835, h, m));//指令卡
-        save.add("Wait 200");
         save.add("Click " + transform_x(1874, w, m) + " " + transform_y(835, h, m));//指令卡
 
 
@@ -393,34 +398,27 @@ public class FGOScriptCompiler extends ScriptCompiler {
     }
 
     public static void End(Vector<String> save, float w, float h, float m) {
-        save.add("Tag $EndStageAgain");
-        save.add("Compare " + transform_x(110, w, m) + " " + transform_y(300, h, m) + " " + transform_x(480, w, m) + " " + transform_y(380, h, m) + " end.png");
-        save.add("IfGreater $R 5");
-        save.add("JumpTo $EndStageAgain");
-
-        save.add("Click " + transform_x(1694, w, m) + " " + transform_y(969, h, m));//攻擊鈕
-        save.add("Wait 2500");
-        save.add("Click " + transform_x(190, w, m) + " " + transform_y(835, h, m));//指令卡
-        save.add("Wait 200");
-        save.add("Click " + transform_x(611, w, m) + " " + transform_y(835, h, m));//指令卡
-        save.add("Wait 200");
-        save.add("Click " + transform_x(1032, w, m) + " " + transform_y(835, h, m));//指令卡
-        save.add("Wait 200");
-        save.add("Click " + transform_x(1453, w, m) + " " + transform_y(835, h, m));//指令卡
-        save.add("Wait 200");
-        save.add("Click " + transform_x(1874, w, m) + " " + transform_y(835, h, m));//指令卡
-        save.add("Wait 200");
-
-        save.add("JumpTo $EndStageAgain");
-        save.add("Tag $EndStageAgain");
-        count++;
 
         save.add("Tag $EndStageAgain2");
         save.add("Compare " + transform_x(453, w, m) + " " + transform_y(855, h, m) + " " + transform_x(878, w, m) + " " + transform_y(971, h, m) + " close2btn.png");
         save.add("IfGreater $R 30");
         save.add("JumpTo $EndStage2");
         save.add("Wait 2000");
-        save.add("Click " + transform_x(1639, w, m) + " " + transform_y(1080, h, m));
+        //save.add("Click " + transform_x(1639, w, m) + " " + transform_y(1080, h, m));
+
+        save.add("Click " + transform_x(1694, w, m) + " " + transform_y(969, h, m));//攻擊鈕
+
+        save.add("Click " + transform_x(190, w, m) + " " + transform_y(835, h, m));//指令卡
+
+        save.add("Click " + transform_x(611, w, m) + " " + transform_y(835, h, m));//指令卡
+
+        save.add("Click " + transform_x(1032, w, m) + " " + transform_y(835, h, m));//指令卡
+
+        save.add("Click " + transform_x(1453, w, m) + " " + transform_y(835, h, m));//指令卡
+
+        save.add("Click " + transform_x(1874, w, m) + " " + transform_y(835, h, m));//指令卡
+
+
         save.add("JumpTo $EndStageAgain2");
         save.add("Tag $EndStage2");
 
