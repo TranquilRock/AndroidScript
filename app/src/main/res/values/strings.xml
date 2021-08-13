@@ -20,7 +20,6 @@
     <string name="changeskl">換人技</string>
     <string-array name="friends">
         <item>無</item>
-        <item>第一位</item>
         <item>CBA</item>
         <item>孔明</item>
     </string-array>

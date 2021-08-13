@@ -120,39 +120,35 @@ public class FGOScriptCompiler extends ScriptCompiler {
 
         save.add("Click " + transform_x(1050, w, m) + " " + transform_y(260, h, m));//選擇MIX職階
         save.add("Wait 500");
-        if ("0".equals(block.get(2))) {
-        } else if ("1".equals(block.get(2))) {
+
+        if ("無".equals(block.get(2))) {
             save.add("Click " + transform_x(800, w, m) + " " + transform_y(467, h, m));
-        } else if ("2".equals(block.get(2))) {
-            save.add("Tag $FriendsDNE");
-            save.add("Click " + transform_x(650, w, m) + " " + transform_y(260, h, m));
-            save.add("Wait 500");
-            save.add("Compare " + transform_x(0, w, m) + " " + transform_y(310, h, m) + " " + transform_x(400, w, m) + " " + transform_y(700, h, m) + " CBA.png");
-            save.add("IfGreater $R 30");
-            save.add("JumpTo $Friends");
-            save.add("Swipe " + transform_x(960, w, m) + " " + transform_y(937, h, m) + " " + transform_x(960, w, m) + " " + transform_y(660, h, m));
-            save.add("JumpTo $FriendsDNE");
-            save.add("Tag $Friends");
-            save.add("Click " + transform_x(800, w, m) + " " + transform_y(467, h, m));
-            save.add("JumpTo $FriendsEnd");
-            save.add("Tag $FriendsEnd");
-        } else if ("3".equals(block.get(2))) {
-            save.add("Tag $FriendsDNE");
-            save.add("Click " + transform_x(650, w, m) + " " + transform_y(260, h, m));
-            save.add("Wait 500");
-            save.add("Compare " + transform_x(0, w, m) + " " + transform_y(310, h, m) + " " + transform_x(400, w, m) + " " + transform_y(700, h, m) + " KM.png");
-            save.add("IfGreater $R 30");
-            save.add("JumpTo $Friends");
-            save.add("Swipe " + transform_x(960, w, m) + " " + transform_y(937, h, m) + " " + transform_x(960, w, m) + " " + transform_y(660, h, m));
-            save.add("JumpTo $FriendsDNE");
-            save.add("Tag $Friends");
-            save.add("Click " + transform_x(800, w, m) + " " + transform_y(467, h, m));
-            save.add("JumpTo $FriendsEnd");
-            save.add("Tag $FriendsEnd");
         } else {
-
+            save.add("Click " + transform_x(650, w, m) + " " + transform_y(260, h, m));
+            save.add("Wait 500");
+            save.add("Tag $FriendsDNE");
+            save.add("Compare " + transform_x(70, w, m) + " " + transform_y(310, h, m) + " " + transform_x(330, w, m) + " " + transform_y(700, h, m) + " "+block.get(2));
+            save.add("IfGreater $R 30");
+            save.add("JumpTo $Friends");
+            save.add("Swipe " + transform_x(960, w, m) + " " + transform_y(937, h, m) + " " + transform_x(960, w, m) + " " + transform_y(660, h, m));
+            save.add("JumpTo $FriendsDNE");
+            save.add("Tag $Friends");
+            if ("無".equals(block.get(3))) {
+            }else{
+                save.add("Compare " + transform_x(70, w, m) + " " + transform_y(310, h, m) + " " + transform_x(330, w, m) + " " + transform_y(700, h, m) + " "+block.get(3));
+                save.add("IfGreater $R 30");
+                save.add("JumpTo $Craft");
+                save.add("Swipe " + transform_x(960, w, m) + " " + transform_y(937, h, m) + " " + transform_x(960, w, m) + " " + transform_y(660, h, m));
+                save.add("JumpTo $FriendsDNE");
+                save.add("Tag $Craft");
+                save.add("Click " + transform_x(800, w, m) + " " + transform_y(540, h, m));
+                save.add("JumpTo $CraftEnd");
+                save.add("Tag $CraftEnd");
+            }
+            save.add("Click " + transform_x(800, w, m) + " " + transform_y(540, h, m));
+            save.add("JumpTo $FriendsEnd");
+            save.add("Tag $FriendsEnd");
         }
-
 
         save.add("Wait 3000");
         save.add("Click " + transform_x(1785, w, m) + " " + transform_y(1077, h, m));//任務開始
@@ -379,21 +375,6 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Click " + transform_x(1453, w, m) + " " + transform_y(835, h, m));//指令卡
         save.add("Click " + transform_x(1874, w, m) + " " + transform_y(835, h, m));//指令卡
 
-
-        //TODO 配卡
-//                    switch (data.get(i).get(4)){
-//                        case"0":
-//                            break;
-//                        case"1":
-//                            break;
-//                        case"2":
-//                            break;
-//                        case"3":
-//                            break;
-//                        case"4":
-//                            break;
-//                        case"5":
-//                            break;
         save.add("Wait 10000");
     }
 
