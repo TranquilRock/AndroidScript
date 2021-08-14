@@ -406,31 +406,43 @@ public class FGOScriptCompiler extends ScriptCompiler {
 
     public static void End(Vector<String> save, float w, float h, float m) {
 
-        save.add("Tag $EndStageAgain2");
-        save.add("Compare " + transform_x(453, w, m) + " " + transform_y(855, h, m) + " " + transform_x(878, w, m) + " " + transform_y(971, h, m) + " close2btn.png");
+        save.add("Tag $EndStageAgain");
+        save.add("Compare " + transform_x(100, w, m) + " " + transform_y(300, h, m) + " " + transform_x(463, w, m) + " " + transform_y(380, h, m) + " end.png");
+        save.add("IfGreater $R 5");
+        save.add("JumpTo $EndStage");
+
+        save.add("Compare " + transform_x(1560, w, m) + " " + transform_y(830, h, m) + " " + transform_x(1843, w, m) + " " + transform_y(1109, h, m) + " attack.png");
         save.add("IfGreater $R 30");
-        save.add("JumpTo $EndStage2");
+        save.add("JumpTo $EndStageBattle");
         save.add("Wait 2000");
-        //save.add("Click " + transform_x(1639, w, m) + " " + transform_y(1080, h, m));
+
+
+        save.add("JumpTo $EndStageAgain");
+        save.add("Tag $EndStageBattle");
 
         save.add("Click " + transform_x(1694, w, m) + " " + transform_y(969, h, m));//攻擊鈕
-
+        save.add("Wait 2500");
+        save.add("Click " + transform_x(611, w, m) + " " + transform_y(364, h, m));//寶具
+        save.add("Click " + transform_x(972, w, m) + " " + transform_y(364, h, m));//寶具
+        save.add("Click " + transform_x(1330, w, m) + " " + transform_y(364, h, m));//寶具
         save.add("Click " + transform_x(190, w, m) + " " + transform_y(835, h, m));//指令卡
-
         save.add("Click " + transform_x(611, w, m) + " " + transform_y(835, h, m));//指令卡
-
         save.add("Click " + transform_x(1032, w, m) + " " + transform_y(835, h, m));//指令卡
-
         save.add("Click " + transform_x(1453, w, m) + " " + transform_y(835, h, m));//指令卡
-
         save.add("Click " + transform_x(1874, w, m) + " " + transform_y(835, h, m));//指令卡
 
-
-        save.add("JumpTo $EndStageAgain2");
-        save.add("Tag $EndStage2");
-
-        save.add("Click " + transform_x(660, w, m) + " " + transform_y(900, h, m));
+        save.add("JumpTo $EndStageAgain");
+        save.add("Tag $EndStage");
         save.add("Wait 1000");
+        save.add("Click " + transform_x(1800, w, m) + " " + transform_y(1100, h, m));
+        save.add("Wait 1000");
+        save.add("Click " + transform_x(1800, w, m) + " " + transform_y(1100, h, m));
+        save.add("Wait 1000");
+        save.add("Click " + transform_x(1800, w, m) + " " + transform_y(1100, h, m));
+        save.add("Wait 1000");
+        save.add("Click " + transform_x(1800, w, m) + " " + transform_y(1100, h, m));
+        save.add("Wait 1000");
+        save.add("Click " + transform_x(660, w, m) + " " + transform_y(900, h, m));
         save.add("Add $Loop 1");
         save.add("JumpTo $Start");
     }
