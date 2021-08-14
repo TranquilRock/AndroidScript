@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.androidscript.FloatingWidget.FloatingWidgetService;
 import com.example.androidscript.Menu.Basic.BasicEditor;
 import com.example.androidscript.Menu.StartService;
 import com.example.androidscript.R;
@@ -15,6 +16,7 @@ import com.example.androidscript.UserInterface.UIActivity;
 import com.example.androidscript.util.BtnMaker;
 import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
+import com.example.androidscript.util.Interpreter;
 import com.example.androidscript.util.ScriptCompiler;
 
 import java.io.File;
@@ -46,9 +48,10 @@ public class FGOEditor extends UIActivity {
                 }
             }
             if (flag) {
-                compiler.compile(this.BlockData);
                 FileOperation.writeWords(FGOEditor.FolderName + this.filename, this.BlockData);
-                Toast.makeText(this.getApplicationContext(), "File Saved!!", Toast.LENGTH_LONG).show();
+                compiler.compile(this.BlockData);
+                FloatingWidgetService.setScript(FGOEditor.FolderName, "Run.txt", null);
+                Toast.makeText(this.getApplicationContext(), "Successful!!", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this.getApplicationContext(), "Arguments can't be empty", Toast.LENGTH_LONG).show();
             }

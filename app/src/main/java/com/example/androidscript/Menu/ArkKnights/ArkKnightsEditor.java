@@ -67,7 +67,7 @@ public class ArkKnightsEditor extends Editor {
             } else {
                 SelectedScript = "AutoFight.txt";
             }
-            FloatingWidgetService.setScript(new Interpreter(FolderName, SelectedScript), new String[]{String.valueOf(nRepetition)});
+            FloatingWidgetService.setScript(FolderName, SelectedScript, new String[]{String.valueOf(nRepetition)});
             StartService.startFloatingWidget(this);
         });
     }

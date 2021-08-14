@@ -5,18 +5,15 @@ import android.app.Service;
 import android.os.Build;
 import android.os.IBinder;
 import android.view.View;
-import android.os.Handler;
 import android.view.Gravity;
 import android.content.Intent;
 import android.graphics.Point;
 import android.view.MotionEvent;
-import android.widget.ImageView;
 import android.os.CountDownTimer;
 import android.view.WindowManager;
 import android.view.LayoutInflater;
 import android.graphics.PixelFormat;
 import android.content.res.Configuration;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -25,23 +22,24 @@ import com.example.androidscript.R;
 import com.example.androidscript.util.*;
 import com.example.androidscript.util.Interpreter;
 
-public class FloatingWidgetService extends Service implements View.OnClickListener{
+public class FloatingWidgetService extends Service implements View.OnClickListener {
 
     private WindowManager mWindowManager = null;
     private View mFloatingWidgetView = null, collapsedView = null, expandedView = null;
     private final Point szWindow = new Point();
     private LayoutInflater inflater = null;
     private int x_init_cord, y_init_cord, x_init_margin, y_init_margin;
-    private static Interpreter Script;
+    private static Interpreter interpreter;
+    private static String ScriptFolderName;
+    private static String ScriptName;
     private static String[] Argv;
-    private static boolean flag = false;
 
-    public static void setScript(Interpreter _script, String[] _Argv) {
-        Script = _script;
+    public static void setScript(String _ScriptFolderName, String _ScriptName, String[] _Argv) {
+        ScriptFolderName = _ScriptFolderName;
+        ScriptName = _ScriptName;
         Argv = _Argv;
-        if (Script != null) {
-            DebugMessage.set("Reassign script");
-        }
+        interpreter = null;
+        DebugMessage.set("Assign Script");
     }
 
     @Override
@@ -95,6 +93,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         mFloatingWidgetView.findViewById(R.id.root_container).setOnTouchListener(new View.OnTouchListener() {
 
             long time_start = 0, time_end = 0;
+
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -179,18 +178,16 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                 stopSelf();
                 break;
             case R.id.run_script:
-                if (!Script.running) {
-                    if(flag){
-                        Script.interrupt();
-                        Script = new Interpreter(Script.ScriptFolderName, Script.ScriptName);
-                    }
-                    Script.runCode(Argv);
+                if (interpreter == null && ScriptName != null && ScriptFolderName != null) {
+                    interpreter = new Interpreter(ScriptFolderName, ScriptName);
+                    interpreter.runCode(Argv);
                 }
-                flag = false;
                 break;
             case R.id.stop_script:
-                Script.running = false;
-                flag = true;
+                if (interpreter != null) {
+                    interpreter.running = false;
+                    interpreter = null;
+                }
                 break;
         }
     }
