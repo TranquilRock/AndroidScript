@@ -55,6 +55,11 @@ public final class ScreenShot extends Service {
         screenHeight = _height;
     }
 
+    public static void endProjection(){
+        if(mediaProjection != null){
+            mediaProjection.stop();
+        }
+    }
     public static void setShotOrientation(boolean transpose) {
         Transposed = transpose;
         int tmp;

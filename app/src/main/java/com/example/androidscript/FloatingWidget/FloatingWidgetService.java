@@ -3,7 +3,10 @@ package com.example.androidscript.FloatingWidget;
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.view.Gravity;
 import android.content.Intent;
@@ -14,13 +17,20 @@ import android.view.WindowManager;
 import android.view.LayoutInflater;
 import android.graphics.PixelFormat;
 import android.content.res.Configuration;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.test.internal.runner.junit4.statement.UiThreadStatement;
 
 import com.example.androidscript.Menu.MenuActivity;
 import com.example.androidscript.R;
 import com.example.androidscript.util.*;
 import com.example.androidscript.util.Interpreter;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
+import android.app.Activity;
 
 public class FloatingWidgetService extends Service implements View.OnClickListener {
 
@@ -33,6 +43,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     private static String ScriptFolderName;
     private static String ScriptName;
     private static String[] Argv;
+    private Bulletin curStatus;
 
     public static void setScript(String _ScriptFolderName, String _ScriptName, String[] _Argv) {
         ScriptFolderName = _ScriptFolderName;
@@ -51,7 +62,6 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         addFloatingWidgetView();
         implementClickListeners();
         implementTouchListenerToFloatingWidgetView();
-        DebugMessage.set("FloatingWidgetService::onCreate\n");
     }
 
     /*  Add Floating Widget View to Window Manager  */
@@ -86,6 +96,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         mWindowManager.addView(mFloatingWidgetView, params);
         collapsedView = mFloatingWidgetView.findViewById(R.id.collapse_view);
         expandedView = mFloatingWidgetView.findViewById(R.id.expanded_container);
+        curStatus = new Bulletin(mFloatingWidgetView.findViewById(R.id.stateToast));
     }
 
     /*  Implement Touch Listener to Floating Widget Root View  */
@@ -179,12 +190,13 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                 break;
             case R.id.run_script:
                 if (interpreter == null && ScriptName != null && ScriptFolderName != null) {
-                    interpreter = new Interpreter(ScriptFolderName, ScriptName);
+                    interpreter = new Interpreter(ScriptFolderName, ScriptName, curStatus);
                     interpreter.runCode(Argv);
                 }
                 break;
             case R.id.stop_script:
                 if (interpreter != null) {
+                    curStatus.Announce("IDLE");
                     interpreter.running = false;
                     interpreter = null;
                 }
@@ -297,6 +309,23 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         if (mFloatingWidgetView != null) {
             mWindowManager.removeView(mFloatingWidgetView);
             mFloatingWidgetView = null;
+            ScreenShot.endProjection();
+        }
+    }
+
+    public static class Bulletin {
+        TextView board;
+
+        Bulletin(TextView _board) {
+            board = _board;
+        }
+
+        public void Announce(String announcement){
+            try{
+                new Handler(Looper.getMainLooper()).post(() -> board.setText(announcement));
+            }catch (Throwable e){
+                DebugMessage.set("Bulletin GG");
+            }
         }
     }
 }

@@ -115,6 +115,7 @@ public final class ImageHandler {
         }
 
         minDistance = max(2 * minDistance, 30.0f);
+//        minDistance *= 2;
 
         for (int z = 0; z < screenDescriptor.rows(); z++) {
             if (matchPoints[z].distance <= minDistance) {
@@ -126,16 +127,9 @@ public final class ImageHandler {
         return (3040.0 * 1440.0 / ScreenShot.getHeight() / ScreenShot.getWidth() * 3 * matchCount) >= min(screenDescriptor.height(), targetDescriptor.height());
     }
 
-    public static Point findLocation(Bitmap screenshot, Bitmap target) {
-//        FileOperation.saveBitmapAsJPG(screenshot, "Test.jpg");
+    public static Point findLocation(Bitmap screenshot, Bitmap target,double resizeRatio) {
         Mat image = toMat(screenshot);
         Mat template = new Mat();
-        double resizeRatio;
-        if (ScreenShot.getHeight() * 16 > ScreenShot.getWidth() * 9) {
-            resizeRatio = ScreenShot.getHeight() / 1152.0;
-        }else{
-            resizeRatio = ScreenShot.getWidth() / 2432.0;
-        }
         Imgproc.resize(toMat(target), template, new Size(target.getWidth() * resizeRatio, target.getHeight() * resizeRatio));
         Mat result = new Mat();
         Imgproc.matchTemplate(image, template, result, Imgproc.TM_CCOEFF_NORMED);
@@ -145,41 +139,6 @@ public final class ImageHandler {
         DebugMessage.set("Total: " + result.width() + " " + result.height());
         return new Point(mmr.maxLoc.x + template.width(), mmr.maxLoc.y + template.height());
     }
-
-//    public static Point findLocation(Bitmap screenshot, Bitmap target) {
-//        //        Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1, new Mat());
-////        FileOperation.saveBitmapAsJPG(screenshot,"Test.jpg");
-//        Vector<Point> pos = new Vector<>();
-//        int[] methods = {Imgproc.TM_CCOEFF_NORMED,Imgproc.TM_CCOEFF,Imgproc.TM_SQDIFF_NORMED,Imgproc.TM_SQDIFF,Imgproc.TM_CCORR_NORMED,Imgproc.TM_CCORR};
-//        for (int method : methods){
-//            Mat image = toMat(screenshot);
-//            Mat template = new Mat();
-//            Imgproc.resize(toMat(target),template,new Size(target.getWidth() * 1.25,target.getHeight()* 1.25 ));
-//            Mat result = new Mat();
-//            Imgproc.matchTemplate(image, template, result, method);
-//            Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
-//            pos.add(mmr.maxLoc);
-//            DebugMessage.set("Threshold: " + mmr.maxLoc + " ," + mmr.maxVal);
-//            DebugMessage.set("Threshold: " + mmr.minLoc + " ," + mmr.minVal);
-//            DebugMessage.set("Total: " + result.width() + " " + result.height());
-//        }
-////        DebugMessage.set("Target: " + result.get(2400,1140).toString());
-//
-//        Point ret =  new Point(0,0);
-//        for(Point p : pos){
-//            ret.x += p.x;
-//            ret.y += p.y;
-//        }
-//        ret.x /= pos.size();
-//        ret.y /= pos.size();
-//
-//        for(Point p : pos){
-//            if(Dis(p,ret) > max(target.getWidth(),target.getHeight()) / 2.0){
-//                throw new RuntimeException("Can't find target");
-//            }
-//        }
-//        return ret;
-//    }
 
     public static double Dis(Point a, Point b) {
         return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));

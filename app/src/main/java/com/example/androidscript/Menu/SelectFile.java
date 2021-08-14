@@ -83,14 +83,6 @@ public class SelectFile extends AppCompatActivity {
             output.setText("僅能包含英文字母、數字與底線\n且為txt檔案格式\n例如:a_1-B.blc");
         }
     }
-
-//    private static Intent pickFileIntent() {
-//        Intent chooseFile = new Intent(Intent.ACTION_GET_CONTENT);
-//        chooseFile.addCategory(Intent.CATEGORY_OPENABLE);
-//        chooseFile.setType("file/*");
-//        return Intent.createChooser(chooseFile, "Choose a file");
-//    }
-
     protected boolean checkFilename(String FileName) {
         return Pattern.matches(SUPPORTED_FILE_NAME_PATTERN, FileName) && (FileName.length() > 4);
     }

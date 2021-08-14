@@ -11,7 +11,7 @@
     <string name="loadScript">選擇腳本</string>
     <string name="newScript">建立腳本</string>
     <string name="scriptName">請輸入新檔案名稱</string>
-    <string name="state">CurCommand</string>
+    <string name="state">IDLE</string>
     <string name="selectFriends">選擇好友</string>
     <string name="selectCraft">選擇禮裝</string>
     <string name="preStage">關卡前置</string>
