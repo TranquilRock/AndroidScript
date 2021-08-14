@@ -1,6 +1,7 @@
 package com.example.androidscript.util;
 
 import android.graphics.Bitmap;
+import android.media.Image;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
@@ -12,12 +13,16 @@ import org.opencv.core.MatOfDMatch;
 import org.opencv.core.MatOfKeyPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.features2d.DescriptorMatcher;
 import org.opencv.features2d.ORB;
 import org.opencv.imgproc.Imgproc;
 
+import java.util.Vector;
+
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import static java.lang.Math.sqrt;
 
 public final class ImageHandler {
     private static Mat grayScale(Bitmap bitmap) {
@@ -28,11 +33,12 @@ public final class ImageHandler {
         return ret;
     }
 
-    private static Mat toMat(Bitmap bitmap){
+    private static Mat toMat(Bitmap bitmap) {
         Mat ret = new Mat();
         Utils.bitmapToMat(bitmap, ret);
         return ret;
     }
+
     private static Mat featureExtraction(Mat grayBitmap) {//KeyPoint detection and extraction
         ORB orb = ORB.create(100000);
         MatOfKeyPoint keyPoint = new MatOfKeyPoint();
@@ -121,20 +127,63 @@ public final class ImageHandler {
     }
 
     public static Point findLocation(Bitmap screenshot, Bitmap target) {
-        Mat result = new Mat();
+//        FileOperation.saveBitmapAsJPG(screenshot, "Test.jpg");
         Mat image = toMat(screenshot);
-        Mat template = toMat(target);
-        int result_cols = image.cols() - template.cols() + 1;
-        int result_rows =image.rows() - template.rows() + 1;
-        result.create(result_rows, result_cols, CvType.CV_32FC1);
-
-        Imgproc.matchTemplate(image, template, result, Imgproc.TM_SQDIFF_NORMED);
-//        Imgproc.matchTemplate(image, template, result, Imgproc.TM_CCOEFF);
-        Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1, new Mat());
-        Point matchLoc;
+        Mat template = new Mat();
+        double resizeRatio;
+        if (ScreenShot.getHeight() * 16 > ScreenShot.getWidth() * 9) {
+            resizeRatio = ScreenShot.getHeight() / 1152.0;
+        }else{
+            resizeRatio = ScreenShot.getWidth() / 2432.0;
+        }
+        Imgproc.resize(toMat(target), template, new Size(target.getWidth() * resizeRatio, target.getHeight() * resizeRatio));
+        Mat result = new Mat();
+        Imgproc.matchTemplate(image, template, result, Imgproc.TM_CCOEFF_NORMED);
         Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
-        matchLoc = mmr.minLoc;
-//        matchLoc = mmr.maxLoc;
-        return new Point(matchLoc.x + template.cols(), matchLoc.y + template.rows());
+        DebugMessage.set("Threshold: " + mmr.maxLoc + " ," + mmr.maxVal);
+        DebugMessage.set("Threshold: " + mmr.minLoc + " ," + mmr.minVal);
+        DebugMessage.set("Total: " + result.width() + " " + result.height());
+        return new Point(mmr.maxLoc.x + template.width(), mmr.maxLoc.y + template.height());
     }
+
+//    public static Point findLocation(Bitmap screenshot, Bitmap target) {
+//        //        Core.normalize(result, result, 0, 1, Core.NORM_MINMAX, -1, new Mat());
+////        FileOperation.saveBitmapAsJPG(screenshot,"Test.jpg");
+//        Vector<Point> pos = new Vector<>();
+//        int[] methods = {Imgproc.TM_CCOEFF_NORMED,Imgproc.TM_CCOEFF,Imgproc.TM_SQDIFF_NORMED,Imgproc.TM_SQDIFF,Imgproc.TM_CCORR_NORMED,Imgproc.TM_CCORR};
+//        for (int method : methods){
+//            Mat image = toMat(screenshot);
+//            Mat template = new Mat();
+//            Imgproc.resize(toMat(target),template,new Size(target.getWidth() * 1.25,target.getHeight()* 1.25 ));
+//            Mat result = new Mat();
+//            Imgproc.matchTemplate(image, template, result, method);
+//            Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
+//            pos.add(mmr.maxLoc);
+//            DebugMessage.set("Threshold: " + mmr.maxLoc + " ," + mmr.maxVal);
+//            DebugMessage.set("Threshold: " + mmr.minLoc + " ," + mmr.minVal);
+//            DebugMessage.set("Total: " + result.width() + " " + result.height());
+//        }
+////        DebugMessage.set("Target: " + result.get(2400,1140).toString());
+//
+//        Point ret =  new Point(0,0);
+//        for(Point p : pos){
+//            ret.x += p.x;
+//            ret.y += p.y;
+//        }
+//        ret.x /= pos.size();
+//        ret.y /= pos.size();
+//
+//        for(Point p : pos){
+//            if(Dis(p,ret) > max(target.getWidth(),target.getHeight()) / 2.0){
+//                throw new RuntimeException("Can't find target");
+//            }
+//        }
+//        return ret;
+//    }
+
+    public static double Dis(Point a, Point b) {
+        return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
+    }
+
+    ;
 }

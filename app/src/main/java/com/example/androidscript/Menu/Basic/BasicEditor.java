@@ -58,7 +58,7 @@ public class BasicEditor extends UIActivity {
             if (flag) {
                 FileOperation.writeWords(BasicEditor.FolderName + this.filename, this.BlockData);
                 compiler.compile(this.BlockData);
-                FloatingWidgetService.setScript(new Interpreter(BasicEditor.FolderName, "Run.txt"), null);
+                FloatingWidgetService.setScript(BasicEditor.FolderName, "Run.txt", null);
                 Toast.makeText(this.getApplicationContext(), "Successful!", Toast.LENGTH_LONG).show();
             } else {
                 Toast.makeText(this.getApplicationContext(), "Arguments can't be empty", Toast.LENGTH_LONG).show();

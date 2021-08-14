@@ -50,9 +50,6 @@ public class FGOScriptCompiler extends ScriptCompiler {
             }
         }
         FileOperation.writeLines(FGOEditor.FolderName + "Run.txt", save);
-        Log.d("kk", "Save run script");
-        FloatingWidgetService.setScript(new Interpreter(FGOEditor.FolderName, "Run.txt"), null);
-        Log.d("kk", "Set FloatingScript");
     }
 
     public static String transform_x(float x, float w, float m) {
