@@ -130,6 +130,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
         assert (ScriptName != null);
         assert (run_arg_depth != -1);
         this.run(ScriptName, run_arg_argv, run_arg_depth);
+        board.Announce("IDLE");
     }
 
     protected int run(String FileName, String[] argv, int depth) {//Run code that is already read in MyCode
@@ -199,7 +200,6 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     }else{
                         LocalVar.put("$R", "1");
                     }
-
                     break;
                 case "Click":
                     delay();

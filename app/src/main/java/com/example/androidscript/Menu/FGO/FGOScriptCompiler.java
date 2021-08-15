@@ -23,7 +23,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
         if (9 * w < 16 * h) {
             m = w / 1920;
         } else {
-            m = h / 1200;
+            m = h / 1070;
         }
 
         save = new Vector<>();

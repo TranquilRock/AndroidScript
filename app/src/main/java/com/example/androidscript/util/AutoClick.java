@@ -6,6 +6,13 @@ import android.accessibilityservice.GestureDescription;
 import android.view.accessibility.AccessibilityEvent;
 public final class AutoClick extends AccessibilityService{
     private static AutoClick instance;
+
+    public static void stop(){
+        if(instance != null){
+            instance.stopSelf();
+        }
+    }
+
     public static void Click(int x, int y) {
         Path path = new Path();
         path.moveTo(x - 1, y - 1);

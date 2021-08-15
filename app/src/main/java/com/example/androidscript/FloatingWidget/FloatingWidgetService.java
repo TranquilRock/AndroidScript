@@ -102,7 +102,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
 
     /*  Implement Touch Listener to Floating Widget Root View  */
     private void implementTouchListenerToFloatingWidgetView() {
-        mFloatingWidgetView.findViewById(R.id.floating_widget_image_view).setOnTouchListener(new View.OnTouchListener() {
+        mFloatingWidgetView.findViewById(R.id.root_container).setOnTouchListener(new View.OnTouchListener() {
 
             long time_start = 0, time_end = 0;
 
@@ -304,9 +304,12 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         if (mFloatingWidgetView != null) {
             mWindowManager.removeView(mFloatingWidgetView);
             mFloatingWidgetView = null;
-            interpreter.running = false;
-            ScreenShot.endProjection();
         }
+        if(interpreter != null){
+            interpreter.running = false;
+        }
+        AutoClick.stop();
+        ScreenShot.endProjection();
     }
 
     public static class Bulletin {

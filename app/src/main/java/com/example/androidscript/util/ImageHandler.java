@@ -68,8 +68,8 @@ public final class ImageHandler {
         if (screenshot == null || target == null) {
             return 0;
         }
-        FileOperation.saveBitmapAsJPG(screenshot, "Test" + tmp + ".jpg");
-        tmp++;
+//        FileOperation.saveBitmapAsJPG(screenshot, "Test" + tmp + ".jpg");
+//        tmp++;
         Mat sourceMat = grayScale(screenshot);
         Mat targetMat = grayScale(target);
         Mat screenDescriptor = featureExtraction(sourceMat); // Size:(totalFeatures, 32)

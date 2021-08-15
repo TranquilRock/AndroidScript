@@ -4,6 +4,7 @@ import com.example.androidscript.FloatingWidget.FloatingWidgetService;
 import com.example.androidscript.Menu.Basic.BasicEditor;
 import com.example.androidscript.Menu.FGO.FGOEditor;
 import com.example.androidscript.Menu.ArkKnights.ArkKnightsEditor;
+import com.example.androidscript.util.AutoClick;
 import com.example.androidscript.util.BtnMaker;
 
 import android.content.Intent;
@@ -44,5 +45,13 @@ public class MenuActivity extends AppCompatActivity {
         BtnMaker.Jump(R.id.button_to_ArkUI, this, ArkKnightsEditor.class);
         BtnMaker.JumpWithMessage(R.id.button_to_FGO, this, SelectFile.class, "next_destination", "com.example.androidscript.Menu.FGO.FGOEditor");
         BtnMaker.JumpWithMessage(R.id.button_to_basic, this, SelectFile.class, "next_destination", "com.example.androidscript.Menu.Basic.BasicEditor");
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        DebugMessage.set("Menu Restart!!!");
+        AutoClick.stop();
+        ScreenShot.endProjection();
     }
 }
