@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#AFEEEE</color>
-    <color name="noble_phantasms_bg">#48D1CC</color>
+    <color name="purple_200">#FF9900</color>
+    <color name="noble_phantasms_bg">#FFB366</color>
+
     <color name="purple_700">#AFEEEE</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="card_bg">#E0FFFF</color>
-    <color name="pre_stage_bg">#87CEFA</color>
+    <color name="teal_200">#002FA7</color>
+
+    <color name="end_bg">#B0C4DE</color>
+    <color name="pre_stage_bg">#B0C4DE</color>
+    <color name="n_b_bg">#87CEFA</color>
+    <color name="craft_skills_bg">#F0F8FF</color>
+    <color name="card_bg">#5E86C1</color>
+
+
+    <color name="floating_widget_bg">#AFEEEE</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="green">#AFEEEE</color>
-    <color name="craft_skills_bg">#B0E0E6</color>
-    <color name="floating_widget_bg">#AFEEEE</color>
-    <color name="end_bg">#87CEFA</color>
+    <color name="green">#4682B4</color>
 </resources>
