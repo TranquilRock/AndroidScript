@@ -71,7 +71,7 @@
         <Spinner
             android:background="@color/pre_stage_bg"
             android:id="@+id/stamina"
-            android:layout_width="76dp"
+            android:layout_width="80dp"
             android:layout_height="22dp"
             android:layout_marginStart="7dp"
             android:entries="@array/apples"

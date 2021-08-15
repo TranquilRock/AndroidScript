@@ -66,6 +66,7 @@ public final class ImageHandler {
         if (screenshot == null || target == null) {
             return 0;
         }
+//        FileOperation.saveBitmapAsJPG(screenshot,"Test.jpg");
         Mat sourceMat = grayScale(screenshot);
         Mat targetMat = grayScale(target);
         Mat screenDescriptor = featureExtraction(sourceMat); // Size:(totalFeatures, 32)
@@ -124,7 +125,7 @@ public final class ImageHandler {
         }
 
         DebugMessage.set("Match " + matchCount + " points " + screenDescriptor.width() + " " + screenDescriptor.height() + " " + targetDescriptor.width() + " " + targetDescriptor.height());
-        return (3040.0 * 1440.0 / ScreenShot.getHeight() / ScreenShot.getWidth() * 3 * matchCount) >= min(screenDescriptor.height(), targetDescriptor.height());
+        return (4 * matchCount) >= min(screenDescriptor.height(), targetDescriptor.height());//3040.0 * 1440.0 / ScreenShot.getHeight() / ScreenShot.getWidth() *
     }
 
     public static Point findLocation(Bitmap screenshot, Bitmap target,double resizeRatio) {
