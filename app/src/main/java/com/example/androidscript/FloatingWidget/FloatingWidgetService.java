@@ -178,7 +178,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                 expandedView.setVisibility(View.GONE);
                 break;
             case R.id.open_activity_button:
-                Intent intent = new Intent(FloatingWidgetService.this, MenuActivity.class);
+                Intent intent = new Intent(FloatingWidgetService.this, MenuActivity.class).putExtra("Message","Reset");
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 stopSelf();
@@ -308,8 +308,6 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         if(interpreter != null){
             interpreter.running = false;
         }
-        AutoClick.stop();
-        ScreenShot.endProjection();
     }
 
     public static class Bulletin {

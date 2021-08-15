@@ -37,10 +37,11 @@ public class MenuActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         FileOperation.fileRootInit(getExternalMediaDirs()[0].getAbsolutePath() + "/");
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getRealMetrics(displayMetrics);
-        ScreenShot.setUpScreenDimension(displayMetrics.heightPixels,displayMetrics.widthPixels);
+        ScreenShot.setUpScreenDimension(displayMetrics.heightPixels, displayMetrics.widthPixels);
         setContentView(R.layout.activity_menu);
         BtnMaker.Jump(R.id.button_to_ArkUI, this, ArkKnightsEditor.class);
         BtnMaker.JumpWithMessage(R.id.button_to_FGO, this, SelectFile.class, "next_destination", "com.example.androidscript.Menu.FGO.FGOEditor");
@@ -48,10 +49,12 @@ public class MenuActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        DebugMessage.set("Menu Restart!!!");
-        AutoClick.stop();
-        ScreenShot.endProjection();
+    protected void onResume() {
+        super.onResume();
+        if (getIntent().getStringExtra("Message") != null && getIntent().getStringExtra("Message").equals("Reset")) {
+            AutoClick.stop();
+            ScreenShot.endProjection();
+            stopService(new Intent(this, ScreenShot.class));
+        }
     }
 }

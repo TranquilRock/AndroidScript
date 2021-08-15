@@ -158,7 +158,7 @@ public final class ScreenShot extends Service {
 
     private void createNotificationChannel() {
         Notification.Builder builder = new Notification.Builder(getApplicationContext());
-        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MenuActivity.class), 0))
+        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MenuActivity.class).putExtra("Message","Reset"), 0))
                 .setContentTitle("AndroidScript啟動中")
                 .setContentText("AndroidScript正在擷取螢幕")
                 .setWhen(System.currentTimeMillis());
