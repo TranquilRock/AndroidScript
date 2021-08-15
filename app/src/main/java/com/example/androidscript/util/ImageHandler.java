@@ -62,11 +62,14 @@ public final class ImageHandler {
         }
     }
 
+    public static int tmp = 0;
+
     public static int matchPicture(Bitmap screenshot, Bitmap target) {
         if (screenshot == null || target == null) {
             return 0;
         }
-//        FileOperation.saveBitmapAsJPG(screenshot,"Test.jpg");
+        FileOperation.saveBitmapAsJPG(screenshot, "Test" + tmp + ".jpg");
+        tmp++;
         Mat sourceMat = grayScale(screenshot);
         Mat targetMat = grayScale(target);
         Mat screenDescriptor = featureExtraction(sourceMat); // Size:(totalFeatures, 32)

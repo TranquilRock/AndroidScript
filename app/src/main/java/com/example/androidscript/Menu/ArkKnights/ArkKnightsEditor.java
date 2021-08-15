@@ -23,6 +23,7 @@ import com.example.androidscript.util.FileOperation;
 import com.example.androidscript.util.Interpreter;
 import com.example.androidscript.util.ScreenShot;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 import static java.lang.Math.max;
@@ -62,13 +63,12 @@ public class ArkKnightsEditor extends Editor {
             CheckState();
             GetRepetition();
             if (isEatStone) {
-                SelectedScript = "AutoFightEatBoth.txt";
+                FloatingWidgetService.setScript(FolderName, "AutoFightEat.txt", new String[]{String.valueOf(nRepetition), "PressRestore.png"});
             } else if (isEatMedicine) {
-                SelectedScript = "AutoFightEatMedicine.txt";
+                FloatingWidgetService.setScript(FolderName, "AutoFightEat.txt", new String[]{String.valueOf(nRepetition), "PressRestoreMedicine.png"});
             } else {
-                SelectedScript = "AutoFight.txt";
+                FloatingWidgetService.setScript(FolderName, "AutoFight.txt", new String[]{String.valueOf(nRepetition)});
             }
-            FloatingWidgetService.setScript(FolderName, SelectedScript, new String[]{String.valueOf(nRepetition)});
             StartService.startFloatingWidget(this);
         });
     }
@@ -80,7 +80,6 @@ public class ArkKnightsEditor extends Editor {
             try {
                 nRepetition = Integer.parseInt(Repeat.getText().toString());
             } catch (NumberFormatException e) {
-
                 nRepetition = 0;
             }
         }

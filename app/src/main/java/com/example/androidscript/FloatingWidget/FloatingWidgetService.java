@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.renderscript.Script;
 import android.util.Log;
 import android.view.View;
 import android.view.Gravity;
@@ -309,6 +310,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         if (mFloatingWidgetView != null) {
             mWindowManager.removeView(mFloatingWidgetView);
             mFloatingWidgetView = null;
+            interpreter.running = false;
             ScreenShot.endProjection();
         }
     }
