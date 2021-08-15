@@ -101,7 +101,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
 
     /*  Implement Touch Listener to Floating Widget Root View  */
     private void implementTouchListenerToFloatingWidgetView() {
-        mFloatingWidgetView.findViewById(R.id.root_container).setOnTouchListener(new View.OnTouchListener() {
+        mFloatingWidgetView.findViewById(R.id.floating_widget_image_view).setOnTouchListener(new View.OnTouchListener() {
 
             long time_start = 0, time_end = 0;
 
@@ -144,8 +144,6 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                             y_cord_Destination = szWindow.y - (mFloatingWidgetView.getHeight() + barHeight);
                         }
                         layoutParams.y = y_cord_Destination;
-                        //reset position if user drags the floating view
-                        resetPosition(x_cord);
                         return true;
                     case MotionEvent.ACTION_MOVE:
                         int x_diff_move = x_cord - x_init_cord;

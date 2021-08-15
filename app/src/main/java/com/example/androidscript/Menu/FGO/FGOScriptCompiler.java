@@ -81,7 +81,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Click " + transform_x(1400, w, m) + " " + transform_y(320, h, m)); //選擇上次關卡
         save.add("Wait 3000");
         save.add("Compare " + transform_x(757, w, m) + " " + transform_y(922, h, m) + " " + transform_x(1149, w, m) + " " + transform_y(1041, h, m) + " closebtn.png");
-        save.add("IfGreater $R 30");
+        save.add("IfGreater $R 5");
         save.add("JumpTo $Apple");
         save.add("JumpTo $AppleEnd");
         save.add("Tag $Apple");
@@ -156,6 +156,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
             save.add("Compare " + transform_x(70, w, m) + " " + transform_y(310, h, m) + " " + transform_x(330, w, m) + " " + transform_y(700, h, m) + " Friend/"+block.get(2) + ".png");
             save.add("IfGreater $R 20");
             save.add("JumpTo $Friends");
+            save.add("Wait 2000");
             save.add("Swipe " + transform_x(960, w, m) + " " + transform_y(937, h, m) + " " + transform_x(960, w, m) + " " + transform_y(660, h, m));
             save.add("JumpTo $FriendsDNE");
             save.add("Tag $Friends");
@@ -164,6 +165,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
                 save.add("Compare " + transform_x(70, w, m) + " " + transform_y(310, h, m) + " " + transform_x(330, w, m) + " " + transform_y(700, h, m) + " Craft/"+block.get(3) + ".png");
                 save.add("IfGreater $R 5");
                 save.add("JumpTo $Craft");
+                save.add("Wait 2000");
                 save.add("Swipe " + transform_x(960, w, m) + " " + transform_y(937, h, m) + " " + transform_x(960, w, m) + " " + transform_y(660, h, m));
                 save.add("JumpTo $FriendsDNE");
                 save.add("Tag $Craft");
@@ -407,7 +409,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
     public static void End(Vector<String> save, float w, float h, float m) {
 
         save.add("Tag $EndStageAgain");
-        save.add("Compare " + transform_x(100, w, m) + " " + transform_y(300, h, m) + " " + transform_x(463, w, m) + " " + transform_y(380, h, m) + " end.png");
+        save.add("Compare " + transform_x(50, w, m) + " " + transform_y(200, h, m) + " " + transform_x(500, w, m) + " " + transform_y(380, h, m) + " end.png");
         save.add("IfGreater $R 5");
         save.add("JumpTo $EndStage");
 
