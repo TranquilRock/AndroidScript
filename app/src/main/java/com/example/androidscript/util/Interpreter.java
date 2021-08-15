@@ -27,7 +27,6 @@ public class Interpreter extends Thread {//Every child only need to specify wher
     public static final String AnyFormat = "[a-zA-Z.0-9 $]*";
     public static final String[] SUPPORTED_COMMAND = {
             "Exit",
-            "Contain " + ImgVarFormat,
             "JumpTo " + IntVarFormat,
             "Wait " + IntVarFormat,
             "Call " + SptFormat,
@@ -46,9 +45,9 @@ public class Interpreter extends Thread {//Every child only need to specify wher
     };
 
     public boolean running = false;
-    private String ScriptName;
-    private String ScriptFolderName;
-    private FloatingWidgetService.Bulletin board;
+    private final String ScriptName;
+    private final String ScriptFolderName;
+    private final FloatingWidgetService.Bulletin board;
 
     public Interpreter(String _ScriptFolderName, String _FileName, FloatingWidgetService.Bulletin _board) {
         this.ScriptName = _FileName;
@@ -149,11 +148,6 @@ public class Interpreter extends Thread {//Every child only need to specify wher
         }
 
         for (int commandIndex = 0; commandIndex < codeLength; commandIndex++) {
-            StringBuilder tt = new StringBuilder();
-            for (String z : (MyCode.get(FileName).codes.get(commandIndex))) {
-                tt.append(z + " ");
-            }
-            DebugMessage.set(commandIndex + "  " + tt.toString());
             if (!this.running) {
                 board.Announce("IDLE");
                 return 1;
@@ -167,17 +161,20 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     Arguments[i - 1] = command[i];
                 }
             }
+
+            //=====================================================
+            StringBuilder tt = new StringBuilder();
+            tt.append(command[0] + " ");
+            for (String z : Arguments) {
+                tt.append(z + " ");
+            }
+            DebugMessage.set(commandIndex + "  " + tt.toString());
+            //=====================================================
+
             switch (command[0]) {
                 case "Exit":
                     this.running = false;
                     return 1;
-                case "Contain":
-                    if (ScreenShot.contain(ReadImgFromFile(Arguments[0]))) {
-                        LocalVar.put("$R", "0");
-                    } else {
-                        LocalVar.put("$R", "1");
-                    }
-                    break;
                 case "JumpTo":
                     commandIndex = Integer.parseInt(Arguments[0]) - 1;//One-based
                     break;
@@ -195,8 +192,14 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                 case "ClickPic":
                     Bitmap tmp = ReadImgFromFile(Arguments[0]);
                     Point target = ImageHandler.findLocation(ScreenShot.Shot(), tmp, Double.valueOf(Arguments[1]));
-                    DebugMessage.set("Clicking Picture:" + target.x + " " + target.y);
-                    AutoClick.Click((int) target.x, (int) target.y);
+                    if(target != null){
+                        DebugMessage.set("Clicking Picture:" + target.x + " " + target.y);
+                        AutoClick.Click((int) target.x, (int) target.y);
+                        LocalVar.put("$R", "0");
+                    }else{
+                        LocalVar.put("$R", "1");
+                    }
+
                     break;
                 case "Click":
                     delay();

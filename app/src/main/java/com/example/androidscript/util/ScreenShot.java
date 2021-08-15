@@ -197,8 +197,4 @@ public final class ScreenShot extends Service {
     public static int compare(Bitmap Target, int x1, int y1, int x2, int y2) {
         return ImageHandler.matchPicture(Bitmap.createBitmap(Shot(), x1, y1, (x2 - x1), (y2 - y1)), Target);
     }
-
-    public static boolean contain(Bitmap Target) {
-        return ImageHandler.TestPictureContain(Shot(), Target);
-    }
 }

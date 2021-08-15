@@ -1,18 +1,8 @@
 Var $T $1
 IfSmaller $T 1
 Return 0
-Call PressEnter.txt
-IfGreater $R 0
-JumpTo 3
-Call PressStart.txt
-IfSmaller $R 1
-JumpTo 13
-CallArg Check.txt SanityInsufficient.png
-IfSmaller $R 1
-Exit
-JumpTo 6
-Call PressEnd.txt
-IfGreater $R 0
-JumpTo 13
+CallArg Press.txt PressEnterOperation.png 0
+CallArg Press.txt PressStartOperation.png 0
+CallArg Press.txt PressOperationEnd.png 8000
 Subtract $T 1
 JumpTo 1

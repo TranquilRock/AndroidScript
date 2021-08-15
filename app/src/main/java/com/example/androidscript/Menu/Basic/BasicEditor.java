@@ -89,7 +89,6 @@ public class BasicEditor extends UIActivity {
         switch (Command) {
             case "Exit":
                 return 0;
-            case "Contain":
             case "JumpTo":
             case "Wait":
             case "Call":

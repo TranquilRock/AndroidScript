@@ -90,9 +90,6 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
         switch (BasicData.get(position).get(0)) {
             case "Exit"://ZeroVH
                 break;
-            case "Contain"://OneVH
-                holder.Inputs[0].setHint("Image");
-                break;
             case "JumpTo":
                 holder.Inputs[0].setHint("Line");
                 break;
@@ -170,7 +167,6 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
         switch (BasicData.get(position).get(0)) {
             case "Exit":
                 return 0;
-            case "Contain":
             case "JumpTo":
             case "Wait":
             case "Call":

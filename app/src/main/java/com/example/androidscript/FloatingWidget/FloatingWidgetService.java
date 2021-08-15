@@ -176,6 +176,8 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.close_floating_view:
+                interpreter.running = false;
+                interpreter = null;
                 stopSelf();
                 break;
             case R.id.floating_widget_image_view:
