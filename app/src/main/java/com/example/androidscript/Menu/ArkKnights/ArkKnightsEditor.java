@@ -113,83 +113,24 @@ public class ArkKnightsEditor extends Editor {
         }
         resizeRatio = min(ScreenShot.getHeight(), ScreenShot.getWidth()) / 1152.0;//ArkKnights seems to be height dominate.
         // resizeRatio = ScreenShot.getWidth() / 2432.0;
-        writeEatMedicine();
-        writeEatStone();
-        writePressEnd();
-        writePressEnter();
-        writePressStart();
+        writePress();
+        writeTryPress();
     }
 
-    private void writePressStart() {
+    private void writePress() {
         Vector<String> buffer = new Vector<>();
-        buffer.add("CallArg Check.txt StartOperation.png");
+        buffer.add("Tag $Start");
+        buffer.add("ClickPic $1 " + resizeRatio);
+        buffer.add("Wait $2");
         buffer.add("IfGreater $R 0");
-        buffer.add("Return 1");
-        buffer.add("ClickPic StartOperation.png " + resizeRatio);
-        buffer.add("CallArg Check.txt StartOperation.png");
-        buffer.add("IfSmaller $R 1");
-        buffer.add("JumpTo 3");
-        buffer.add("Return 0");
-        FileOperation.writeLines(FolderName + "PressStart.txt", buffer);
+        buffer.add("JumpTo $Start");
+        FileOperation.writeLines(FolderName + "Press.txt", buffer);
     }
 
-    private void writePressEnter() {
+    private void writeTryPress() {
         Vector<String> buffer = new Vector<>();
-        buffer.add("CallArg Check.txt EnterOperation.png");
-        buffer.add("IfGreater $R 0");
-        buffer.add("Return 1");
-        buffer.add("ClickPic PressEnterOperation.png " + resizeRatio);
-        buffer.add("CallArg Check.txt EnterOperation.png");
-        buffer.add("IfSmaller $R 1");
-        buffer.add("JumpTo 3");
-        buffer.add("Return 0");
-        FileOperation.writeLines(FolderName + "PressEnter.txt", buffer);
-    }
-
-    private void writePressEnd() {
-        Vector<String> buffer = new Vector<>();
-        buffer.add("Wait 7000");
-        buffer.add("CallArg Check.txt OperationEnd.png");
-        buffer.add("IfGreater $R 0");
-        buffer.add("Return 1");
-        buffer.add("Wait 2000");
-        buffer.add("ClickPic OperationEnd.png " + resizeRatio);
-        buffer.add("CallArg Check.txt OperationEnd.png");
-        buffer.add("IfSmaller $R 1");
-        buffer.add("JumpTo 5");
-        buffer.add("Return 0");
-        FileOperation.writeLines(FolderName + "PressEnd.txt", buffer);
-    }
-
-    private void writeEatStone() {
-        Vector<String> buffer = new Vector<>();
-        buffer.add("CallArg Check.txt RestoreSanityStone.png");
-        buffer.add("IfGreater $R 0");
-        buffer.add("Return 1");
-        buffer.add("ClickPic PressRestore.png " + resizeRatio);
-        buffer.add("CallArg Check.txt RestoreSanityStone.png");
-        buffer.add("IfSmaller $R 1");
-        buffer.add("JumpTo 3");
-        buffer.add("Call PressEnter.txt");
-        buffer.add("IfGreater $R 0");
-        buffer.add("JumpTo 7");
-        buffer.add("Return 0");
-        FileOperation.writeLines(FolderName + "EatStone.txt", buffer);
-    }
-
-    private void writeEatMedicine() {
-        Vector<String> buffer = new Vector<>();
-        buffer.add("CallArg Check.txt RestoreSanityMedicine.png");
-        buffer.add("IfGreater $R 0");
-        buffer.add("Return 1");
-        buffer.add("ClickPic PressRestore.png " + resizeRatio);
-        buffer.add("CallArg Check.txt RestoreSanityMedicine.png");
-        buffer.add("IfSmaller $R 1");
-        buffer.add("JumpTo 3");
-        buffer.add("Call PressEnter.txt");
-        buffer.add("IfGreater $R 0");
-        buffer.add("JumpTo 7");
-        buffer.add("Return 0");
-        FileOperation.writeLines(FolderName + "EatMedicine.txt", buffer);
+        buffer.add("ClickPic $1 " + resizeRatio);
+        buffer.add("Return $R");
+        FileOperation.writeLines(FolderName + "TryPress.txt", buffer);
     }
 }

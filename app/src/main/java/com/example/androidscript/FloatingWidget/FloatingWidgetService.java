@@ -101,7 +101,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
 
     /*  Implement Touch Listener to Floating Widget Root View  */
     private void implementTouchListenerToFloatingWidgetView() {
-        mFloatingWidgetView.findViewById(R.id.expanded_container).setOnTouchListener(new View.OnTouchListener() {
+        mFloatingWidgetView.findViewById(R.id.floating_widget_image_view).setOnTouchListener(new View.OnTouchListener() {
 
             long time_start = 0, time_end = 0;
 
@@ -163,6 +163,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     }
 
     private void implementClickListeners() {//Set all View's Listener to self
+        mFloatingWidgetView.findViewById(R.id.close_floating_view).setOnClickListener(this);
         mFloatingWidgetView.findViewById(R.id.floating_widget_image_view).setOnClickListener(this);
         mFloatingWidgetView.findViewById(R.id.open_activity_button).setOnClickListener(this);
         mFloatingWidgetView.findViewById(R.id.run_script).setOnClickListener(this);
@@ -172,6 +173,11 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.close_floating_view:
+                interpreter.running = false;
+                interpreter = null;
+                stopSelf();
+                break;
             case R.id.floating_widget_image_view:
                 collapsedView.setVisibility(View.VISIBLE);
                 expandedView.setVisibility(View.GONE);

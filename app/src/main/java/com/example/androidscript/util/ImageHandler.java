@@ -95,55 +95,30 @@ public final class ImageHandler {
         return matchCount;
     }
 
-    public static boolean TestPictureContain(Bitmap screenshot, Bitmap target) {
-        if (screenshot == null || target == null) {
-            return false;
-        }
-        Mat sourceMat = grayScale(screenshot);
-        Mat targetMat = grayScale(target);
-        Mat screenDescriptor = featureExtraction(sourceMat); // Size:(totalFeatures, 32)
-        Mat targetDescriptor = featureExtraction(targetMat);
+//
+//    public static boolean TestPictureContain(Bitmap screenshot, Bitmap target,Double ratio) {
+//        if (screenshot == null || target == null) {
+//            return false;
+//        }
+//        Mat sourceMat = grayScale(screenshot);
+//        Mat targetMat = new Mat();
+//        Imgproc.resize(grayScale(target),targetMat,new Size(ratio * target.getWidth(),ratio * target.getHeight()));
+//        Mat result = new Mat();
+//        Imgproc.matchTemplate(sourceMat, targetMat, result, Imgproc.TM_CCOEFF_NORMED);
+//        Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
+//    }
 
-        DMatch[] matchPoints = featureMatch(screenDescriptor, targetDescriptor).toArray();//Length: max(AFeatures,B)
-
-        float minDistance = 0;
-        int matchCount = 0;
-
-        for (DMatch match : matchPoints) {
-            if (minDistance > match.distance) {
-                minDistance = match.distance;
-            }
-        }
-
-        minDistance = max(2 * minDistance, 30.0f);
-//        minDistance *= 2;
-
-        for (int z = 0; z < screenDescriptor.rows(); z++) {
-            if (matchPoints[z].distance <= minDistance) {
-                matchCount++;
-            }
-        }
-
-        DebugMessage.set("Match " + matchCount + " points " + screenDescriptor.width() + " " + screenDescriptor.height() + " " + targetDescriptor.width() + " " + targetDescriptor.height());
-        return (4 * matchCount) >= min(screenDescriptor.height(), targetDescriptor.height());//3040.0 * 1440.0 / ScreenShot.getHeight() / ScreenShot.getWidth() *
-    }
-
-    public static Point findLocation(Bitmap screenshot, Bitmap target,double resizeRatio) {
+    public static Point findLocation(Bitmap screenshot, Bitmap target, double resizeRatio) {
         Mat image = toMat(screenshot);
         Mat template = new Mat();
         Imgproc.resize(toMat(target), template, new Size(target.getWidth() * resizeRatio, target.getHeight() * resizeRatio));
         Mat result = new Mat();
         Imgproc.matchTemplate(image, template, result, Imgproc.TM_CCOEFF_NORMED);
         Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
-        DebugMessage.set("Threshold: " + mmr.maxLoc + " ," + mmr.maxVal);
-        DebugMessage.set("Threshold: " + mmr.minLoc + " ," + mmr.minVal);
-        DebugMessage.set("Total: " + result.width() + " " + result.height());
-        return new Point(mmr.maxLoc.x + template.width(), mmr.maxLoc.y + template.height());
+        DebugMessage.set("Confidence " + mmr.maxVal);
+        if (mmr.maxVal > 0.6) {
+            return new Point(mmr.maxLoc.x + template.width(), mmr.maxLoc.y + template.height());
+        }
+        return null;
     }
-
-    public static double Dis(Point a, Point b) {
-        return sqrt((a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y));
-    }
-
-    ;
 }

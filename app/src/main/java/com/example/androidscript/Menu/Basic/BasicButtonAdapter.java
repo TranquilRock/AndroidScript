@@ -26,7 +26,6 @@ public class BasicButtonAdapter extends ButtonAdapter {
         holder.button.setText(ButtonText.get(position));
         switch (ButtonText.get(position)) {
             case "Exit":
-            case "Contain":
             case "JumpTo":
             case "Wait":
             case "Call":
@@ -52,14 +51,13 @@ public class BasicButtonAdapter extends ButtonAdapter {
     private View.OnClickListener buttonListener(String blockTitle) {
         return v -> {
             BlockContent.insertElementAt(new Vector<>(BasicEditor.Blocks.get(blockTitle)) , insertPosition);
-            for(Vector<String> gas :BlockContent){
-                DebugMessage.set("========================");
-                for(String ww: gas){
-                    DebugMessage.set(ww);
-                }
-                DebugMessage.set("========================");
-            }
-
+//            for(Vector<String> gas :BlockContent){
+//                DebugMessage.set("========================");
+//                for(String ww: gas){
+//                    DebugMessage.set(ww);
+//                }
+//                DebugMessage.set("========================");
+//            }
             onInsert.insert();
         };
     }
