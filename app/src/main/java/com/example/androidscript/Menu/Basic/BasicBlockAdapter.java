@@ -91,7 +91,6 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
             case "Exit"://ZeroVH
                 break;
             case "Contain"://OneVH
-            case "ClickPic":
                 holder.Inputs[0].setHint("Image");
                 break;
             case "JumpTo":
@@ -108,6 +107,10 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
                 break;
             case "Return":
                 holder.Inputs[0].setHint("Value");
+                break;
+            case "ClickPic":
+                holder.Inputs[0].setHint("Image");
+                holder.Inputs[1].setHint("Ratio");
                 break;
             case "Click"://TwoVH
                 ((BasicViewHolder.TwoVH) holder).TitleMiddle.setVisibility(View.INVISIBLE);

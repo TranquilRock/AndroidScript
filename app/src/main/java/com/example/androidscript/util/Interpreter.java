@@ -21,6 +21,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
     public static final String SptFormat = "([A-Za-z0-9_-]*).txt";
     public static final String VarFormat = "\\$([A-Za-z0-9_-]*)";
     public static final String IntFormat = "[0-9]*";
+    public static final String FloatFormat = "[0-9.]*";
     public static final String IntVarFormat = "(" + IntFormat + "||" + VarFormat + ")";
     public static final String ImgVarFormat = "(" + ImgFormat + "||" + VarFormat + ")";
     public static final String AnyFormat = "[a-zA-Z.0-9 $]*";
@@ -32,7 +33,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
             "Call " + SptFormat,
             "Tag " + VarFormat,
             "Return " + IntVarFormat,
-            "ClickPic " + ImgVarFormat,
+            "ClickPic " + ImgVarFormat + " " + FloatFormat,
             "Click " + IntVarFormat + " " + IntVarFormat,
             "CallArg " + SptFormat + " " + AnyFormat,
             "IfGreater " + IntVarFormat + " " + IntVarFormat,
@@ -45,12 +46,14 @@ public class Interpreter extends Thread {//Every child only need to specify wher
     };
 
     public boolean running = false;
-    public String ScriptName;
-    public String ScriptFolderName;
+    private String ScriptName;
+    private String ScriptFolderName;
+    private FloatingWidgetService.Bulletin board;
 
-    public Interpreter(String _ScriptFolderName, String _FileName) {
+    public Interpreter(String _ScriptFolderName, String _FileName, FloatingWidgetService.Bulletin _board) {
         this.ScriptName = _FileName;
         this.ScriptFolderName = _ScriptFolderName;
+        this.board = _board;
         this.Interpret(_FileName);
     }
 
@@ -132,6 +135,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
 
     protected int run(String FileName, String[] argv, int depth) {//Run code that is already read in MyCode
         assert (depth < 5);
+        board.Announce(depth + "  " + FileName);
         Map<String, String> LocalVar = new HashMap<>();
         parseArguments(LocalVar, argv);
         DebugMessage.set("Running " + FileName);
@@ -145,16 +149,15 @@ public class Interpreter extends Thread {//Every child only need to specify wher
         }
 
         for (int commandIndex = 0; commandIndex < codeLength; commandIndex++) {
-
             StringBuilder tt = new StringBuilder();
-            for(String z : (MyCode.get(FileName).codes.get(commandIndex))){
+            for (String z : (MyCode.get(FileName).codes.get(commandIndex))) {
                 tt.append(z + " ");
             }
-            Log.d("kk", Integer.toString(commandIndex)+"  "+tt.toString());
+            DebugMessage.set(commandIndex + "  " + tt.toString());
             if (!this.running) {
+                board.Announce("IDLE");
                 return 1;
             }
-
             String[] command = (MyCode.get(FileName).codes.get(commandIndex));
             String[] Arguments = new String[command.length - 1];
             for (int i = 1; i < command.length; i++) {//Substitution
@@ -183,6 +186,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     break;
                 case "Call":
                     LocalVar.put("$R", String.valueOf(run(Arguments[0], null, depth + 1)));
+                    board.Announce(depth + "  " + FileName);
                     break;
                 case "Tag":
                     break;
@@ -190,10 +194,9 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     return Integer.parseInt(Arguments[0]);
                 case "ClickPic":
                     Bitmap tmp = ReadImgFromFile(Arguments[0]);
-                    DebugMessage.set("ClickPic " + Arguments[0]);
-                    Point target = ImageHandler.findLocation(ScreenShot.Shot(),tmp);
+                    Point target = ImageHandler.findLocation(ScreenShot.Shot(), tmp, Double.valueOf(Arguments[1]));
                     DebugMessage.set("Clicking Picture:" + target.x + " " + target.y);
-                    AutoClick.Click((int)target.x,(int)target.y);
+                    AutoClick.Click((int) target.x, (int) target.y);
                     break;
                 case "Click":
                     delay();
@@ -203,6 +206,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     String[] nextArgv = new String[command.length - 2];
                     System.arraycopy(Arguments, 1, nextArgv, 0, command.length - 2);
                     LocalVar.put("$R", String.valueOf(run(Arguments[0], nextArgv, depth + 1)));
+                    board.Announce(depth + "  " + FileName);
                     break;
                 case "IfGreater":
                     if (Integer.parseInt(Arguments[0]) <= Integer.parseInt(Arguments[1])) {//Failed, skip next line
@@ -218,7 +222,6 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(LocalVar.get(Arguments[0])) + Integer.parseInt(Arguments[1])));
                     break;
                 case "Subtract":
-                    DebugMessage.set(Arguments[0]);
                     LocalVar.put(Arguments[0], String.valueOf(Integer.parseInt(LocalVar.get(Arguments[0])) - Integer.parseInt(Arguments[1])));
                     break;
                 case "Var":
@@ -230,9 +233,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     AutoClick.Swipe(Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]));
                     break;
                 case "Compare":
-                    for(String t:Arguments){
-                        DebugMessage.set(t);
-                    }
+                    ScreenShot.Shot();//Empty shot to make sure Image be the newest.
                     int Similarity = ScreenShot.compare(ReadImgFromFile(Arguments[4]), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.parseInt(Arguments[2]), Integer.parseInt(Arguments[3]));
                     LocalVar.put("$R", String.valueOf(Similarity));
                     break;

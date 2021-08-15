@@ -95,8 +95,8 @@ public class BasicEditor extends UIActivity {
             case "Call":
             case "Tag":
             case "Return":
-            case "ClickPic":
                 return 1;
+            case "ClickPic":
             case "Click":
             case "CallArg":
             case "IfGreater":
