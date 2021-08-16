@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.androidscript.FloatingWidget.FloatingWidgetService;
 import com.example.androidscript.R;
+import com.example.androidscript.util.AutoClick;
 import com.example.androidscript.util.BtnMaker;
 import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
@@ -87,11 +88,20 @@ public class StartService extends AppCompatActivity {
 
     public static void startFloatingWidget(AppCompatActivity appCompatActivity){
         try {
-            if (Settings.canDrawOverlays(appCompatActivity.getApplicationContext()) && Settings.Secure.getInt(appCompatActivity.getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED) > 0) {
-                appCompatActivity.startService(new Intent(appCompatActivity, FloatingWidgetService.class));
-                appCompatActivity.finishAffinity();
+            if (Settings.canDrawOverlays(appCompatActivity.getApplicationContext())) {
+                if(ScreenShot.ServiceStart){
+                    if(Settings.Secure.getInt(appCompatActivity.getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED) > 0 && AutoClick.running()){
+                        appCompatActivity.startService(new Intent(appCompatActivity, FloatingWidgetService.class));
+                        appCompatActivity.finishAffinity();
+                    }
+                    else {
+                        Toast.makeText(appCompatActivity.getApplicationContext(), "Need Accessibility Enabled!", Toast.LENGTH_LONG).show();
+                    }
+                }else {
+                    Toast.makeText(appCompatActivity.getApplicationContext(), "Can't Capture Screen!", Toast.LENGTH_LONG).show();
+                }
             } else {
-                Toast.makeText(appCompatActivity.getApplicationContext(), "Need permission!", Toast.LENGTH_LONG).show();
+                Toast.makeText(appCompatActivity.getApplicationContext(), "Can't Draw Over Layers!", Toast.LENGTH_LONG).show();
             }
         } catch (Settings.SettingNotFoundException e) {
             DebugMessage.printStackTrace(e);

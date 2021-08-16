@@ -6,7 +6,9 @@ import android.accessibilityservice.GestureDescription;
 import android.view.accessibility.AccessibilityEvent;
 public final class AutoClick extends AccessibilityService{
     private static AutoClick instance;
-
+    public static boolean running(){
+        return instance != null;
+    }
     public static void stop(){
         if(instance != null){
             instance.stopSelf();

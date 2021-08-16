@@ -135,7 +135,6 @@ public class Interpreter extends Thread {//Every child only need to specify wher
 
     protected int run(String FileName, String[] argv, int depth) {//Run code that is already read in MyCode
         assert (depth < 5);
-        board.Announce(depth + "  " + FileName);
         Map<String, String> LocalVar = new HashMap<>();
         parseArguments(LocalVar, argv);
         DebugMessage.set("Running " + FileName);
@@ -153,6 +152,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                 board.Announce("IDLE");
                 return 1;
             }
+
             String[] command = (MyCode.get(FileName).codes.get(commandIndex));
             String[] Arguments = new String[command.length - 1];
             for (int i = 1; i < command.length; i++) {//Substitution
@@ -162,7 +162,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     Arguments[i - 1] = command[i];
                 }
             }
-
+            board.Announce(FileName + " " + command[0]);
             //=====================================================
             StringBuilder tt = new StringBuilder();
             tt.append(command[0] + " ");

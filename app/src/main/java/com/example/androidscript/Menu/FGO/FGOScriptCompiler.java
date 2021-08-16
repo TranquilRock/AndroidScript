@@ -68,7 +68,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
 
         save.add("Tag $ReadyAgain");
         save.add("Compare " + transform_x(1665) + " " + transform_y(1039) + " " + transform_x(1910) + " " + transform_y(1130) + " menu.png");
-        save.add("IfGreater $R 20");
+        save.add("IfGreater $R 15");
         save.add("JumpTo $Ready");
         save.add("Wait 3000");
         save.add("JumpTo $ReadyAgain");

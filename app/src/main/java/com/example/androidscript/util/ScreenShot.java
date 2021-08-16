@@ -55,11 +55,13 @@ public final class ScreenShot extends Service {
         screenHeight = _height;
     }
 
-    public static void endProjection(){
-        if(mediaProjection != null){
+    public static void endProjection() {
+        if (mediaProjection != null) {
             mediaProjection.stop();
         }
+        ServiceStart = false;
     }
+
     public static void setShotOrientation(boolean transpose) {
         Transposed = transpose;
         int tmp;
@@ -76,8 +78,10 @@ public final class ScreenShot extends Service {
     @SuppressLint("WrongConstant")
     public static void setUpMediaProjectionManager(Intent intent, MediaProjectionManager mm) {
         if (ScreenShot.mediaProjectionManager == null) {
-            ScreenShot.Permission = intent;
             ScreenShot.mediaProjectionManager = mm;
+        }
+        if (ScreenShot.Permission == null) {
+            ScreenShot.Permission = intent;
         }
 
         ScreenShot.imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, 1);
@@ -158,7 +162,7 @@ public final class ScreenShot extends Service {
 
     private void createNotificationChannel() {
         Notification.Builder builder = new Notification.Builder(getApplicationContext());
-        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MenuActivity.class).putExtra("Message","Reset"), 0))
+        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MenuActivity.class).putExtra("Message", "Reset"), 0))
                 .setContentTitle("AndroidScript啟動中")
                 .setContentText("AndroidScript正在擷取螢幕")
                 .setWhen(System.currentTimeMillis());

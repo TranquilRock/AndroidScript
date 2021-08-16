@@ -6,32 +6,24 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.renderscript.Script;
-import android.util.Log;
 import android.view.View;
 import android.view.Gravity;
 import android.content.Intent;
 import android.graphics.Point;
 import android.view.MotionEvent;
-import android.os.CountDownTimer;
 import android.view.WindowManager;
 import android.view.LayoutInflater;
 import android.graphics.PixelFormat;
 import android.content.res.Configuration;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.test.internal.runner.junit4.statement.UiThreadStatement;
 
 import com.example.androidscript.Menu.MenuActivity;
 import com.example.androidscript.R;
 import com.example.androidscript.util.*;
 import com.example.androidscript.util.Interpreter;
-
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-
-import android.app.Activity;
 
 public class FloatingWidgetService extends Service implements View.OnClickListener {
 
@@ -51,7 +43,6 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         ScriptName = _ScriptName;
         Argv = _Argv;
         interpreter = null;
-        DebugMessage.set("Assign Script");
     }
 
     @Override
@@ -61,8 +52,15 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         this.mWindowManager.getDefaultDisplay().getSize(szWindow);
         this.inflater = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         addFloatingWidgetView();
-        implementClickListeners();
-        implementTouchListenerToFloatingWidgetView();
+        setUpListener();
+    }
+    private void setUpListener(){
+        this.mFloatingWidgetView.findViewById(R.id.floating_widget_image_view).setOnClickListener(this);
+        this.mFloatingWidgetView.findViewById(R.id.open_activity_button).setOnClickListener(this);
+        this.mFloatingWidgetView.findViewById(R.id.run_script).setOnClickListener(this);
+        this.mFloatingWidgetView.findViewById(R.id.stop_script).setOnClickListener(this);
+        this.mFloatingWidgetView.findViewById(R.id.root_container).setOnTouchListener(getFloatingWidgetViewTouchListener());
+        this.mFloatingWidgetView.findViewById(R.id.floating_widget_image_view).setOnTouchListener(getFloatingWidgetViewTouchListener());
     }
 
     /*  Add Floating Widget View to Window Manager  */
@@ -92,7 +90,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
         params.gravity = Gravity.TOP | Gravity.START;
 
         params.x = 0;
-        params.y = 100;
+        params.y = 0;
 
         mWindowManager.addView(mFloatingWidgetView, params);
         collapsedView = mFloatingWidgetView.findViewById(R.id.collapse_view);
@@ -101,11 +99,9 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     }
 
     /*  Implement Touch Listener to Floating Widget Root View  */
-    private void implementTouchListenerToFloatingWidgetView() {
-        mFloatingWidgetView.findViewById(R.id.root_container).setOnTouchListener(new View.OnTouchListener() {
-
+    private View.OnTouchListener getFloatingWidgetViewTouchListener() {
+        return (new View.OnTouchListener() {
             long time_start = 0, time_end = 0;
-
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -134,7 +130,7 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                             time_end = System.currentTimeMillis();
                             //Also check the difference between start time and end time should be less than 300ms
                             if ((time_end - time_start) < 300) {
-                                onFloatingWidgetClick();
+                                switchView();
                             }
                         }
                         y_cord_Destination = y_init_margin + y_diff;
@@ -155,28 +151,15 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                         layoutParams.y = y_cord_Destination;
                         mWindowManager.updateViewLayout(mFloatingWidgetView, layoutParams);
                         return true;
-                    default:
-                        DebugMessage.set("Unrecognized in " + this.getClass().toString() + " implementTouchListenerToFloatingWidgetView\n");
                 }
                 return false;
             }
         });
     }
 
-    private void implementClickListeners() {//Set all View's Listener to self
-        mFloatingWidgetView.findViewById(R.id.floating_widget_image_view).setOnClickListener(this);
-        mFloatingWidgetView.findViewById(R.id.open_activity_button).setOnClickListener(this);
-        mFloatingWidgetView.findViewById(R.id.run_script).setOnClickListener(this);
-        mFloatingWidgetView.findViewById(R.id.stop_script).setOnClickListener(this);
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.floating_widget_image_view:
-                collapsedView.setVisibility(View.VISIBLE);
-                expandedView.setVisibility(View.GONE);
-                break;
             case R.id.open_activity_button:
                 Intent intent = new Intent(FloatingWidgetService.this, MenuActivity.class).putExtra("Message","Reset");
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -187,6 +170,8 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
                 if (interpreter == null && ScriptName != null && ScriptFolderName != null) {
                     interpreter = new Interpreter(ScriptFolderName, ScriptName, curStatus);
                     interpreter.runCode(Argv);
+                    resetPosition();
+                    collapseView();
                 }
                 break;
             case R.id.stop_script:
@@ -200,62 +185,26 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     }
 
     /*  Reset position of Floating Widget view on dragging  */
-    private void resetPosition(int x_cord_now) {
-        if (x_cord_now <= szWindow.x / 2) {
-            moveToLeft(x_cord_now);
+    private void resetPosition() {
+        WindowManager.LayoutParams pos = (WindowManager.LayoutParams) mFloatingWidgetView.getLayoutParams();
+        if (pos.x <= szWindow.x / 2) {
+            if(pos.y <= szWindow.y/2){
+                pos.x = 0;
+                pos.y = 0;
+            }else{
+                pos.x = 0;
+                pos.y = szWindow.y;
+            }
         } else {
-            moveToRight(x_cord_now);
+            if(pos.y <= szWindow.y/2){
+                pos.x = szWindow.x;
+                pos.y = 0;
+            }else{
+                pos.x = szWindow.x;
+                pos.y = szWindow.y;
+            }
         }
-    }
-
-    /*  Method to move the Floating widget view to Left  */
-    private void moveToLeft(final int current_x_cord) {
-        final int x = szWindow.x - current_x_cord;
-
-        new CountDownTimer(500, 5) {
-            //get params of Floating Widget view
-            WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) mFloatingWidgetView.getLayoutParams();
-
-            public void onTick(long t) {
-                long step = (500 - t) / 5;
-
-                mParams.x = -(int) (current_x_cord * current_x_cord * step);
-
-                //Update window manager for Floating Widget
-                mWindowManager.updateViewLayout(mFloatingWidgetView, mParams);
-            }
-
-            public void onFinish() {
-                mParams.x = 0;
-
-                //Update window manager for Floating Widget
-                mWindowManager.updateViewLayout(mFloatingWidgetView, mParams);
-            }
-        }.start();
-    }
-
-    /*  Method to move the Floating widget view to Right  */
-    private void moveToRight(final int current_x_cord) {
-
-        new CountDownTimer(500, 5) {
-            final WindowManager.LayoutParams mParams = (WindowManager.LayoutParams) mFloatingWidgetView.getLayoutParams();
-
-            public void onTick(long t) {
-                long step = (500 - t) / 5;
-                mParams.x = (int) (szWindow.x + (current_x_cord * current_x_cord * step) - mFloatingWidgetView.getWidth());
-                mWindowManager.updateViewLayout(mFloatingWidgetView, mParams);
-            }
-
-            public void onFinish() {
-                mParams.x = szWindow.x - mFloatingWidgetView.getWidth();
-                mWindowManager.updateViewLayout(mFloatingWidgetView, mParams);
-            }
-        }.start();
-    }
-
-    /*  Detect if the floating view is collapsed or expanded */
-    private boolean isViewCollapsed() {
-        return mFloatingWidgetView == null || mFloatingWidgetView.findViewById(R.id.collapse_view).getVisibility() == View.VISIBLE;
+        mWindowManager.updateViewLayout(mFloatingWidgetView, pos);
     }
 
     /*  return status bar height on basis of device display metrics  */
@@ -268,20 +217,6 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         mWindowManager.getDefaultDisplay().getSize(szWindow);
-        WindowManager.LayoutParams layoutParams = (WindowManager.LayoutParams) mFloatingWidgetView.getLayoutParams();
-        if (newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            if (layoutParams.y + (mFloatingWidgetView.getHeight() + getStatusBarHeight()) > szWindow.y) {
-                layoutParams.y = szWindow.y - (mFloatingWidgetView.getHeight() + getStatusBarHeight());
-                mWindowManager.updateViewLayout(mFloatingWidgetView, layoutParams);
-            }
-            if (layoutParams.x != 0 && layoutParams.x < szWindow.x) {
-                resetPosition(szWindow.x);
-            }
-        } else if (newConfig.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            if (layoutParams.x > szWindow.x) {
-                resetPosition(szWindow.x);
-            }
-        }
     }
 
     @Nullable
@@ -291,13 +226,26 @@ public class FloatingWidgetService extends Service implements View.OnClickListen
     }
 
     /*  on Floating widget click show expanded view  */
-    private void onFloatingWidgetClick() {
-        if (isViewCollapsed()) {
+    private void expandView() {
+        if (mFloatingWidgetView != null) {
             collapsedView.setVisibility(View.GONE);//Invisible
             expandedView.setVisibility(View.VISIBLE);
         }
     }
+    private void collapseView() {
+        if (mFloatingWidgetView != null) {
+            collapsedView.setVisibility(View.VISIBLE);
+             expandedView.setVisibility(View.GONE);
+        }
+    }
 
+    private void switchView(){
+        if(mFloatingWidgetView != null && mFloatingWidgetView.findViewById(R.id.collapse_view).getVisibility() == View.VISIBLE){
+            expandView();
+        }else{
+            collapseView();
+        }
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
