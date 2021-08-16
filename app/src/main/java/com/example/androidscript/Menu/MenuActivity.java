@@ -46,12 +46,7 @@ public class MenuActivity extends AppCompatActivity {
         BtnMaker.Jump(R.id.button_to_ArkUI, this, ArkKnightsEditor.class);
         BtnMaker.JumpWithMessage(R.id.button_to_FGO, this, SelectFile.class, "next_destination", "com.example.androidscript.Menu.FGO.FGOEditor");
         BtnMaker.JumpWithMessage(R.id.button_to_basic, this, SelectFile.class, "next_destination", "com.example.androidscript.Menu.Basic.BasicEditor");
-        BtnMaker.registerOnClick(R.id.Exit, this, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                endService();
-            }
-        });
+        BtnMaker.registerOnClick(R.id.Exit, this, v -> endService());
     }
 
     @Override
