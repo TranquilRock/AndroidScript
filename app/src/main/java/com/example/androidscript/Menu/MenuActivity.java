@@ -46,15 +46,24 @@ public class MenuActivity extends AppCompatActivity {
         BtnMaker.Jump(R.id.button_to_ArkUI, this, ArkKnightsEditor.class);
         BtnMaker.JumpWithMessage(R.id.button_to_FGO, this, SelectFile.class, "next_destination", "com.example.androidscript.Menu.FGO.FGOEditor");
         BtnMaker.JumpWithMessage(R.id.button_to_basic, this, SelectFile.class, "next_destination", "com.example.androidscript.Menu.Basic.BasicEditor");
+        BtnMaker.registerOnClick(R.id.Exit, this, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                endService();
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if (getIntent().getStringExtra("Message") != null && getIntent().getStringExtra("Message").equals("Reset")) {
-            AutoClick.stop();
-            ScreenShot.endProjection();
-            stopService(new Intent(this, ScreenShot.class));
+            endService();
         }
+    }
+    public void endService(){
+        AutoClick.stop();
+        ScreenShot.endProjection();
+        stopService(new Intent(this, ScreenShot.class));
     }
 }

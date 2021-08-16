@@ -38,4 +38,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/basic_editor" />
+
+    <Button
+        android:id="@+id/Exit"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/exit" />
 </LinearLayout>

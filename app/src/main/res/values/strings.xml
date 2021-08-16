@@ -104,4 +104,5 @@
     <string name="Save">儲存/載入</string>
     <string name="StartService">啟動服務</string>
     <string name="StartFloatingWidget">浮動視窗</string>
+    <string name="exit">關閉服務</string>
 </resources>
