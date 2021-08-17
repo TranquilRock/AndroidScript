@@ -31,7 +31,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
 
         h = y2 - y1;
         w = x2 - x1;
-
+        m = w / 1920;
 
         save = new Vector<>();
 
