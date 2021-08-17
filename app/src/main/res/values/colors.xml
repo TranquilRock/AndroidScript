@@ -9,12 +9,12 @@
     <color name="end_bg">#B0C4DE</color>
     <color name="pre_stage_bg">#B0C4DE</color>
     <color name="n_b_bg">#87CEFA</color>
-    <color name="craft_skills_bg">#F0F8FF</color>
+    <color name="craft_skills_bg">#4169E1</color>
     <color name="card_bg">#5E86C1</color>
 
 
     <color name="floating_widget_bg">#AFEEEE</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="green">#4682B4</color>
+    <color name="green">#F0F8FF</color>
 </resources>
