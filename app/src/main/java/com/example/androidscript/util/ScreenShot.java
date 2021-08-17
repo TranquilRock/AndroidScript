@@ -189,9 +189,6 @@ public final class ScreenShot extends Service {
     @SuppressLint("WrongConstant")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if (!OpenCVLoader.initDebug()) {
-            throw new AssertionError("OpenCV unavailable!");
-        }
         createNotificationChannel();
         ScreenShot.mediaProjection = ScreenShot.mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, ScreenShot.Permission);
         ScreenShot.ServiceStart = true;

@@ -1,12 +1,17 @@
 package com.example.androidscript.Menu.FGO;
 
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import java.util.Vector;
 
+import com.example.androidscript.util.DebugMessage;
+import com.example.androidscript.util.ImageHandler;
 import com.example.androidscript.util.ScriptCompiler;
 import com.example.androidscript.util.FileOperation;
 import com.example.androidscript.util.ScreenShot;
+
+import org.opencv.core.Point;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -15,19 +20,20 @@ public class FGOScriptCompiler extends ScriptCompiler {
     public static int count = 0;
     private static float h, w, m, x1, x2, y1, y2;
     private static Vector<String> save;
+
     @Override
     public void compile(Vector<Vector<String>> data) {
-
-//        h = min(ScreenShot.getHeight(), ScreenShot.getWidth());
-//        w = max(ScreenShot.getHeight(), ScreenShot.getWidth());
-//
-//
-//
-//        if (9 * w < 16 * h) {
-//            m = w / 1920;
-//        } else {
-//            m = h / 1070;
-//        }
+        String screen = data.get(0).get(5);
+        if (!screen.equals("None")) {
+            Bitmap screenshot = FileOperation.readPicAsBitmap(FGOEditor.FolderName + screen);
+            double ratio = 1.0;
+            ratio = min(max(ScreenShot.getHeight(), ScreenShot.getWidth()) / 3040.0, min(ScreenShot.getHeight(), ScreenShot.getWidth()) / 1440.0);
+            ratio = min(max(1920, 1200) / 3040.0, min(1920, 1200) / 1440.0);
+            Point a = ImageHandler.findLocation(screenshot, FileOperation.readPicAsBitmap(FGOEditor.FolderName + "upright.png"), ratio);
+            Point b = ImageHandler.findLocation(screenshot, FileOperation.readPicAsBitmap(FGOEditor.FolderName + "bottomleft.png"), ratio);
+            DebugMessage.set("A::" + a.x + " " + a.y);
+            DebugMessage.set("B::" + b.x + " " + b.y);
+        }
 
         h = y2 - y1;
         w = x2 - x1;

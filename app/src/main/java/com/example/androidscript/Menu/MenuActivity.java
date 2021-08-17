@@ -46,19 +46,25 @@ public class MenuActivity extends AppCompatActivity {
         BtnMaker.Jump(R.id.button_to_ArkUI, this, ArkKnightsEditor.class);
         BtnMaker.JumpWithMessage(R.id.button_to_FGO, this, SelectFile.class, "next_destination", "com.example.androidscript.Menu.FGO.FGOEditor");
         BtnMaker.JumpWithMessage(R.id.button_to_basic, this, SelectFile.class, "next_destination", "com.example.androidscript.Menu.Basic.BasicEditor");
-        BtnMaker.registerOnClick(R.id.Exit, this, v -> endService());
+        BtnMaker.registerOnClick(R.id.Exit, this, v -> endService(true));
+        if (!OpenCVLoader.initDebug()) {
+            throw new AssertionError("OpenCV unavailable!");
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         if (getIntent().getStringExtra("Message") != null && getIntent().getStringExtra("Message").equals("Reset")) {
-            endService();
+            endService(false);
         }
     }
-    public void endService(){
+    public void endService(boolean stop){
         AutoClick.stop();
         ScreenShot.endProjection();
         stopService(new Intent(this, ScreenShot.class));
+        if(stop){
+            this.finish();
+        }
     }
 }

@@ -145,7 +145,7 @@ public class FloatingWidgetService extends Service{
                         //The check for x_diff <5 && y_diff< 5 because sometime elements moves a little while clicking.
                         //So that is click event.
                         if (Math.abs(x_diff) < 5 && Math.abs(y_diff) < 5) {
-                            if ((System.currentTimeMillis() - time_start) < 500) {
+                            if ((System.currentTimeMillis() - time_start) < 800) {
                                 switchView();
                             }
                         }

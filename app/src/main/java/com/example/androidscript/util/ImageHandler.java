@@ -1,4 +1,4 @@
-package com.example.androidscript.util;
+ package com.example.androidscript.util;
 
 import android.graphics.Bitmap;
 import android.media.Image;
@@ -62,14 +62,10 @@ public final class ImageHandler {
         }
     }
 
-    public static int tmp = 0;
-
     public static int matchPicture(Bitmap screenshot, Bitmap target) {
         if (screenshot == null || target == null) {
             return 0;
         }
-//        FileOperation.saveBitmapAsJPG(screenshot, "Test" + tmp + ".jpg");
-//        tmp++;
         Mat sourceMat = grayScale(screenshot);
         Mat targetMat = grayScale(target);
         Mat screenDescriptor = featureExtraction(sourceMat); // Size:(totalFeatures, 32)
@@ -98,19 +94,6 @@ public final class ImageHandler {
         return matchCount;
     }
 
-//
-//    public static boolean TestPictureContain(Bitmap screenshot, Bitmap target,Double ratio) {
-//        if (screenshot == null || target == null) {
-//            return false;
-//        }
-//        Mat sourceMat = grayScale(screenshot);
-//        Mat targetMat = new Mat();
-//        Imgproc.resize(grayScale(target),targetMat,new Size(ratio * target.getWidth(),ratio * target.getHeight()));
-//        Mat result = new Mat();
-//        Imgproc.matchTemplate(sourceMat, targetMat, result, Imgproc.TM_CCOEFF_NORMED);
-//        Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
-//    }
-
     public static Point findLocation(Bitmap screenshot, Bitmap target, double resizeRatio) {
         Mat image = toMat(screenshot);
         Mat template = new Mat();
@@ -123,5 +106,15 @@ public final class ImageHandler {
             return new Point(mmr.maxLoc.x + template.width(), mmr.maxLoc.y + template.height());
         }
         return null;
+    }
+    public static Point findLocationAnyway(Bitmap screenshot, Bitmap target, double resizeRatio) {
+        Mat image = toMat(screenshot);
+        Mat template = new Mat();
+        Imgproc.resize(toMat(target), template, new Size(target.getWidth() * resizeRatio, target.getHeight() * resizeRatio));
+        Mat result = new Mat();
+        Imgproc.matchTemplate(image, template, result, Imgproc.TM_CCOEFF_NORMED);
+        Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
+        DebugMessage.set("Confidence " + mmr.maxVal);
+        return new Point(mmr.maxLoc.x + template.width(), mmr.maxLoc.y + template.height());
     }
 }

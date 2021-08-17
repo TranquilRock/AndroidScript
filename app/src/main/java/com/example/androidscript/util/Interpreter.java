@@ -147,32 +147,21 @@ public class Interpreter extends Thread {//Every child only need to specify wher
             }
         }
 
-        for (int commandIndex = 0; commandIndex < codeLength; commandIndex++) {
-            if (!this.running) {
-                board.Announce("IDLE");
-                return 1;
-            }
-
-            String[] command = (MyCode.get(FileName).codes.get(commandIndex));
-            String[] Arguments = new String[command.length - 1];
-            for (int i = 1; i < command.length; i++) {//Substitution
-                if (command[i].charAt(0) == '$' && !(command[0].equals("Var") && i == 1) && !(command[0].equals("Subtract") && (i == 1)) && !(command[0].equals("Add") && (i == 1))) {//There might be Var command, that should replace $V
-                    Arguments[i - 1] = LocalVar.get(command[i]);
-                } else {
-                    Arguments[i - 1] = command[i];
-                }
-            }
-            board.Announce(FileName + " " + command[0]);
+        for (int commandIndex = 0; commandIndex < codeLength && this.running; commandIndex++) {
+            String[] Command = (MyCode.get(FileName).codes.get(commandIndex));
+            String[] Arguments = new String[Command.length - 1];
+            System.arraycopy(Command, 1, Arguments, 0, Command.length - 1);
+            varsSubstitution(LocalVar,Command[0],Arguments);
+            board.Announce(Command[0]);
             //=====================================================
             StringBuilder tt = new StringBuilder();
-            tt.append(command[0] + " ");
+            tt.append(Command[0] + " ");
             for (String z : Arguments) {
                 tt.append(z + " ");
             }
             DebugMessage.set(commandIndex + "  " + tt.toString());
             //=====================================================
-
-            switch (command[0]) {
+            switch (Command[0]) {
                 case "Exit":
                     this.running = false;
                     return 1;
@@ -193,11 +182,12 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                 case "ClickPic":
                     Bitmap tmp = ReadImgFromFile(Arguments[0]);
                     Point target = ImageHandler.findLocation(ScreenShot.Shot(), tmp, Double.valueOf(Arguments[1]));
-                    if(target != null){
+                    if (target != null) {
+                        delay();
                         DebugMessage.set("Clicking Picture:" + target.x + " " + target.y);
                         AutoClick.Click((int) target.x, (int) target.y);
                         LocalVar.put("$R", "0");
-                    }else{
+                    } else {
                         LocalVar.put("$R", "1");
                     }
                     break;
@@ -206,8 +196,8 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     AutoClick.Click(Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]));
                     break;
                 case "CallArg":
-                    String[] nextArgv = new String[command.length - 2];
-                    System.arraycopy(Arguments, 1, nextArgv, 0, command.length - 2);
+                    String[] nextArgv = new String[Command.length - 2];
+                    System.arraycopy(Arguments, 1, nextArgv, 0, Command.length - 2);
                     LocalVar.put("$R", String.valueOf(run(Arguments[0], nextArgv, depth + 1)));
                     board.Announce(depth + "  " + FileName);
                     break;
@@ -241,12 +231,26 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     LocalVar.put("$R", String.valueOf(Similarity));
                     break;
                 default:
-                    throw new RuntimeException("Cannot Recognize " + command[0]);
+                    throw new RuntimeException("Cannot Recognize " + Command[0]);
             }
         }
         return 0;
     }
     //==========Helper=========================================
+
+    protected static void varsSubstitution(Map<String, String> LocalVar, String command,String[] Arguments) {
+        if(Arguments[0].charAt(0) == '$'
+                && !command.equals("Var")
+                && !command.equals("Subtract")
+                && !command.equals("Add")){
+            Arguments[0] = LocalVar.get(Arguments[0]);
+        }
+        for (int z = 1; z < Arguments.length; z++) {
+            if (Arguments[z].charAt(0) == '$'){//There might be Var command, that should replace $V
+                Arguments[z] = LocalVar.get(Arguments[z]);
+            }
+        }
+    }
 
     protected static void parseArguments(Map<String, String> LocalVar, String[] argv) {
         LocalVar.put("$R", "0");

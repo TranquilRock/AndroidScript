@@ -49,17 +49,6 @@ public class FGOEditor extends UIActivity {
             }
             if (flag) {
                 FileOperation.writeWords(FGOEditor.FolderName + this.filename, this.BlockData);
-
-
-                for(Vector<String> tt : this.BlockData){
-                    StringBuilder gg = new StringBuilder();
-                    for(String t:tt){
-                        gg.append(t).append(" ");
-                    }
-                    DebugMessage.set(gg.toString());
-                }
-
-
                 compiler.compile(this.BlockData);
                 FloatingWidgetService.setScript(FGOEditor.FolderName, "Run.txt", null);
                 Toast.makeText(this.getApplicationContext(), "Successful!!", Toast.LENGTH_LONG).show();

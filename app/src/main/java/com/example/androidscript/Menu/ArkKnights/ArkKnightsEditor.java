@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -20,9 +21,11 @@ import com.example.androidscript.UserInterface.Editor;
 import com.example.androidscript.util.BtnMaker;
 import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
+import com.example.androidscript.util.ImageHandler;
 import com.example.androidscript.util.Interpreter;
 import com.example.androidscript.util.ScreenShot;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Vector;
 
