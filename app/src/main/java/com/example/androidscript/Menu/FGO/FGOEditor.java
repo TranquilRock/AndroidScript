@@ -27,7 +27,7 @@ import java.util.Vector;
 public class FGOEditor extends UIActivity {
 
     public static final String FolderName = "FGO/";
-    public static final String[] PreStageBlock = {"PreStage", "0", "0", "0", ""};
+    public static final String[] PreStageBlock = {"PreStage", "0", "0", "0", "", ""};
     public static final String[] SkillBlock = {"Skill", "0", "0", "0", "0", "0", "0", "0", "0", "0"};
     public static final String[] CraftSkillBlock = {"CraftSkill", "0", "0", "0", "0"};
     public static final String[] NoblePhantasmsBlock = {"NoblePhantasms", "0", "0", "0", "0"};
@@ -49,6 +49,17 @@ public class FGOEditor extends UIActivity {
             }
             if (flag) {
                 FileOperation.writeWords(FGOEditor.FolderName + this.filename, this.BlockData);
+
+
+                for(Vector<String> tt : this.BlockData){
+                    StringBuilder gg = new StringBuilder();
+                    for(String t:tt){
+                        gg.append(t).append(" ");
+                    }
+                    DebugMessage.set(gg.toString());
+                }
+
+
                 compiler.compile(this.BlockData);
                 FloatingWidgetService.setScript(FGOEditor.FolderName, "Run.txt", null);
                 Toast.makeText(this.getApplicationContext(), "Successful!!", Toast.LENGTH_LONG).show();
@@ -61,6 +72,7 @@ public class FGOEditor extends UIActivity {
 
         if (FileOperation.findFile(FGOEditor.FolderName, this.filename)) {
             this.BlockData = FileOperation.readFromFileWords(FGOEditor.FolderName + this.filename);
+
         } else {
             this.BlockData.add(new Vector<>(Arrays.asList(PreStageBlock)));
             this.BlockData.add(new Vector<>(Arrays.asList(SkillBlock)));

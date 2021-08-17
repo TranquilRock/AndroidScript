@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidscript.R;
 import com.example.androidscript.util.DebugMessage;
+import com.example.androidscript.util.ScreenShot;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -32,11 +33,12 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         return new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Data.get(pos).set(index,String.valueOf(position));
+                Data.get(pos).set(index, String.valueOf(position));
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) {}
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         };
     }
 
@@ -46,7 +48,7 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         this.view = itemView;
     }
 
-    public void onBind(updateOrder order, int position,Vector<Vector<String>> Data) {
+    public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
         Up = view.findViewById(R.id.btn_up);
         Up.setOnClickListener(v -> {
             order.swap(position - 1, position);
@@ -66,59 +68,62 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         Spinner Stamina;
         Spinner Friend;
         Spinner Craft;
+        Spinner Screenshot;
         EditText Repeat;
+
         public PreStageVH(View v) {
             super(v);
         }
 
         @Override
-        public void onBind(updateOrder order, int position,Vector<Vector<String>> Data) {
+        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
             Stamina = view.findViewById(R.id.stamina);
-            Stamina.setOnItemSelectedListener(SpinnerListener(Data,position,1));
+            Stamina.setOnItemSelectedListener(SpinnerListener(Data, position, 1));
             Stamina.setSelection(Integer.parseInt(Data.get(position).get(1)));
+
             Friend = view.findViewById(R.id.friend);
-            Friend.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                    Data.get(position).set(2,parent.getSelectedItem().toString());
-                    DebugMessage.set(parent.getSelectedItem().toString());
-                }
+            setRawSpinner(Friend, Data.get(position), 2);
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {}
-            });
-            for(int i = 0; i < Friend.getCount();i++){
-                if(Data.get(position).get(2).equals(Friend.getItemAtPosition(i))){
-                    Friend.setSelection(i);
-                }
-            }
             Craft = view.findViewById(R.id.craft);
-            Craft.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                    Data.get(position).set(3,parent.getSelectedItem().toString());
-                }
+            setRawSpinner(Craft, Data.get(position), 3);
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {}
-            });
-            for(int i = 0; i < Craft.getCount();i++){
-                if(Data.get(position).get(3).equals(Craft.getItemAtPosition(i))){
-                    Craft.setSelection(i);
-                }
-            }
             Repeat = view.findViewById(R.id.n_repeat);
             Repeat.addTextChangedListener(new TextWatcher() {
                 @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
                 @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                }
+
                 @Override
                 public void afterTextChanged(Editable s) {
-                    Data.get(position).setElementAt(s.toString(),4);
+                    Data.get(position).setElementAt(s.toString(), 4);
                 }
             });
             Repeat.setText(Data.get(position).get(4));
+
+            Screenshot = view.findViewById(R.id.screen_shot);
+            setRawSpinner(Screenshot, Data.get(position), 5);
+        }
+
+        private static void setRawSpinner(Spinner spn, Vector<String> data, int index) {
+            spn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                    data.set(index, parent.getSelectedItem().toString());
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+                }
+            });
+            for (int i = 0; i < spn.getCount(); i++) {
+                if (data.get(index).equals(spn.getItemAtPosition(i))) {
+                    spn.setSelection(i);
+                }
+            }
         }
     }
 
@@ -139,8 +144,8 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(updateOrder order, int position,Vector<Vector<String>> Data) {
-            super.onBind(order, position,Data);
+        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+            super.onBind(order, position, Data);
             Skl11 = view.findViewById(R.id.skill_1_1);
             Skl12 = view.findViewById(R.id.skill_1_2);
             Skl13 = view.findViewById(R.id.skill_1_3);
@@ -151,15 +156,15 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
             Skl32 = view.findViewById(R.id.skill_3_2);
             Skl33 = view.findViewById(R.id.skill_3_3);
 
-            Skl11.setOnItemSelectedListener(SpinnerListener(Data,position,1));
-            Skl12.setOnItemSelectedListener(SpinnerListener(Data,position,2));
-            Skl13.setOnItemSelectedListener(SpinnerListener(Data,position,3));
-            Skl21.setOnItemSelectedListener(SpinnerListener(Data,position,4));
-            Skl22.setOnItemSelectedListener(SpinnerListener(Data,position,5));
-            Skl23.setOnItemSelectedListener(SpinnerListener(Data,position,6));
-            Skl31.setOnItemSelectedListener(SpinnerListener(Data,position,7));
-            Skl32.setOnItemSelectedListener(SpinnerListener(Data,position,8));
-            Skl33.setOnItemSelectedListener(SpinnerListener(Data,position,9));
+            Skl11.setOnItemSelectedListener(SpinnerListener(Data, position, 1));
+            Skl12.setOnItemSelectedListener(SpinnerListener(Data, position, 2));
+            Skl13.setOnItemSelectedListener(SpinnerListener(Data, position, 3));
+            Skl21.setOnItemSelectedListener(SpinnerListener(Data, position, 4));
+            Skl22.setOnItemSelectedListener(SpinnerListener(Data, position, 5));
+            Skl23.setOnItemSelectedListener(SpinnerListener(Data, position, 6));
+            Skl31.setOnItemSelectedListener(SpinnerListener(Data, position, 7));
+            Skl32.setOnItemSelectedListener(SpinnerListener(Data, position, 8));
+            Skl33.setOnItemSelectedListener(SpinnerListener(Data, position, 9));
 
             Skl11.setSelection(Integer.parseInt(Data.get(position).get(1)));
             Skl12.setSelection(Integer.parseInt(Data.get(position).get(2)));
@@ -184,17 +189,17 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(updateOrder order, int position,Vector<Vector<String>> Data) {
-            super.onBind(order, position,Data);
+        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+            super.onBind(order, position, Data);
             Skl1 = view.findViewById(R.id.skill_1_1);
             Skl2 = view.findViewById(R.id.skill_1_2);
             Skl3 = view.findViewById(R.id.skill_1_3);
             SklX = view.findViewById(R.id.skill_2_1);
 
-            Skl1.setOnItemSelectedListener(SpinnerListener(Data,position,1));
-            Skl2.setOnItemSelectedListener(SpinnerListener(Data,position,2));
-            Skl3.setOnItemSelectedListener(SpinnerListener(Data,position,3));
-            SklX.setOnItemSelectedListener(SpinnerListener(Data,position,4));
+            Skl1.setOnItemSelectedListener(SpinnerListener(Data, position, 1));
+            Skl2.setOnItemSelectedListener(SpinnerListener(Data, position, 2));
+            Skl3.setOnItemSelectedListener(SpinnerListener(Data, position, 3));
+            SklX.setOnItemSelectedListener(SpinnerListener(Data, position, 4));
 
             Skl1.setSelection(Integer.parseInt(Data.get(position).get(1)));
             Skl2.setSelection(Integer.parseInt(Data.get(position).get(2)));
@@ -209,42 +214,43 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         androidx.appcompat.widget.SwitchCompat N2;
         androidx.appcompat.widget.SwitchCompat N3;
         Spinner Color;
+
         public NoblePhantasmsVH(View v) {
             super(v);
         }
 
         @Override
-        public void onBind(updateOrder order, int position,Vector<Vector<String>> Data) {
-            super.onBind(order, position,Data);
+        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+            super.onBind(order, position, Data);
             N1 = view.findViewById(R.id.switch1);
             N2 = view.findViewById(R.id.switch2);
             N3 = view.findViewById(R.id.switch3);
             N1.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if(isChecked){
-                    Data.get(position).set(1,"1");
-                }else{
-                    Data.get(position).set(1,"0");
+                if (isChecked) {
+                    Data.get(position).set(1, "1");
+                } else {
+                    Data.get(position).set(1, "0");
                 }
             });
             N1.setChecked(Data.get(position).get(1).equals("1"));
             N2.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if(isChecked){
-                    Data.get(position).set(2,"1");
-                }else{
-                    Data.get(position).set(2,"0");
+                if (isChecked) {
+                    Data.get(position).set(2, "1");
+                } else {
+                    Data.get(position).set(2, "0");
                 }
             });
             N2.setChecked(Data.get(position).get(2).equals("1"));
             N3.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if(isChecked){
-                    Data.get(position).set(3,"1");
-                }else{
-                    Data.get(position).set(3,"0");
+                if (isChecked) {
+                    Data.get(position).set(3, "1");
+                } else {
+                    Data.get(position).set(3, "0");
                 }
             });
             N3.setChecked(Data.get(position).get(3).equals("1"));
             Color = view.findViewById(R.id.card_color);
-            Color.setOnItemSelectedListener(SpinnerListener(Data,position,4));
+            Color.setOnItemSelectedListener(SpinnerListener(Data, position, 4));
             Color.setSelection(Integer.parseInt(Data.get(position).get(4)));
         }
     }
@@ -253,7 +259,9 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         public EndVH(View v) {
             super(v);
         }
+
         @Override
-        public void onBind(updateOrder order, int position,Vector<Vector<String>> Data) {}
+        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+        }
     }
 }
