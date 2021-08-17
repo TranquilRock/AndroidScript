@@ -99,16 +99,38 @@
             card_view:layout_constraintStart_toEndOf="@+id/friend"
             card_view:layout_constraintTop_toBottomOf="@+id/textView4" />
 
+
+        <TextView
+            android:id="@+id/screen_shot_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="176dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/game_screenshot"
+            card_view:layout_constraintStart_toEndOf="@+id/textView"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/screen_shot"
+            android:layout_width="118dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="180dp"
+            android:layout_marginTop="24dp"
+            android:background="@color/pre_stage_bg"
+            android:visibility="visible"
+            card_view:layout_constraintStart_toEndOf="@+id/textView"
+            card_view:layout_constraintTop_toTopOf="@+id/screen_shot_text_view" />
+
         <EditText
             android:id="@+id/n_repeat"
             android:layout_width="110dp"
-            android:layout_height="41dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="16dp"
             android:ems="10"
-            android:text="1"
             android:hint="@string/repeat"
             android:inputType="number"
+            android:text="1"
             android:textSize="14sp"
             card_view:layout_constraintLeft_toRightOf="@+id/craft"
             card_view:layout_constraintTop_toTopOf="@id/textView4" />

@@ -106,7 +106,7 @@ public final class ScreenShot extends Service {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                DebugMessage.set(z + "::No Img in Screenshot\n");
+                DebugMessage.set(z + "::No Img in Screenshot");
                 continue;
             }
             //TODO:Clarify following.
@@ -115,9 +115,9 @@ public final class ScreenShot extends Service {
             int height;
             if (Transposed) {
                 width = max(img.getHeight(), img.getWidth());
-                height = Math.min(img.getHeight(), img.getWidth());
+                height = min(img.getHeight(), img.getWidth());
             } else {
-                width = Math.min(img.getHeight(), img.getWidth());
+                width = min(img.getHeight(), img.getWidth());
                 height = max(img.getHeight(), img.getWidth());
             }
             final Image.Plane plane = img.getPlanes()[0];
@@ -163,8 +163,9 @@ public final class ScreenShot extends Service {
     private void createNotificationChannel() {
         Notification.Builder builder = new Notification.Builder(getApplicationContext());
         builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MenuActivity.class).putExtra("Message", "Reset"), 0))
-                .setContentTitle("AndroidScript啟動中")
-                .setContentText("AndroidScript正在擷取螢幕")
+                .setContentTitle("AndroidScript")
+                .setContentText("Capturing Screen")
+                .setPriority(Notification.PRIORITY_HIGH)
                 .setWhen(System.currentTimeMillis());
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
