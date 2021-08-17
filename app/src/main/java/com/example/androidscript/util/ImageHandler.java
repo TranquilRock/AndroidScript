@@ -102,7 +102,7 @@ public final class ImageHandler {
         Imgproc.matchTemplate(image, template, result, Imgproc.TM_CCOEFF_NORMED);
         Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
         DebugMessage.set("Confidence " + mmr.maxVal);
-        if (mmr.maxVal > 0.6) {
+        if (mmr.maxVal > 0.75) {
             return new Point(mmr.maxLoc.x + template.width(), mmr.maxLoc.y + template.height());
         }
         return null;

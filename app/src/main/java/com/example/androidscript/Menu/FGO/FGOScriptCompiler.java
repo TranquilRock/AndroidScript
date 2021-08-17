@@ -2,6 +2,7 @@ package com.example.androidscript.Menu.FGO;
 
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.util.Size;
 
 import java.util.Vector;
 
@@ -17,29 +18,35 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 public class FGOScriptCompiler extends ScriptCompiler {
-    public static int count = 0;
-    private static float h, w, m, x1, x2, y1, y2;
+    public static int tag_count = 0;
+    private static final Size dev_size = new Size(1920, 1070);
+    private static final Point dev_offset = new Point(0, 64);
+    private static Size user_size;
+    private static Point user_offset;
+    private static double ratio;
     private static Vector<String> save;
 
     @Override
     public void compile(Vector<Vector<String>> data) {
-        String screen = data.get(0).get(5);
-        if (!screen.equals("None")) {
-            Bitmap screenshot = FileOperation.readPicAsBitmap(FGOEditor.FolderName + screen);
-            double ratio = 1.0;
-            ratio = min(max(ScreenShot.getHeight(), ScreenShot.getWidth()) / 3040.0, min(ScreenShot.getHeight(), ScreenShot.getWidth()) / 1440.0);
-            ratio = min(max(1920, 1200) / 3040.0, min(1920, 1200) / 1440.0);
-            Point a = ImageHandler.findLocation(screenshot, FileOperation.readPicAsBitmap(FGOEditor.FolderName + "upright.png"), ratio);
-            Point b = ImageHandler.findLocation(screenshot, FileOperation.readPicAsBitmap(FGOEditor.FolderName + "bottomleft.png"), ratio);
-            DebugMessage.set("A::" + a.x + " " + a.y);
-            DebugMessage.set("B::" + b.x + " " + b.y);
+        save = new Vector<>();
+
+        String screen_shot_file = data.get(0).get(5);
+
+        if (screen_shot_file.equals("None")) {
+            user_size = new Size(max(ScreenShot.getHeight(), ScreenShot.getWidth()),
+                    min(ScreenShot.getHeight(), ScreenShot.getWidth()));
+            user_offset = new Point(0, 0);
+        } else {
+            Bitmap screenshot = FileOperation.readPicAsBitmap(FGOEditor.FolderName + screen_shot_file);
+            user_offset = ImageHandler.findLocationAnyway(screenshot, FileOperation.readPicAsBitmap(FGOEditor.FolderName + "upright.png"), ratio);
+            Point bottom_left = ImageHandler.findLocationAnyway(screenshot, FileOperation.readPicAsBitmap(FGOEditor.FolderName + "bottomleft.png"), ratio);
+            user_size = new Size((int)(bottom_left.x - user_offset.x),(int)(bottom_left.y - user_offset.y));
+            DebugMessage.set("Size::" + user_size);
+            DebugMessage.set("Offset::" + user_offset);
         }
 
-        h = y2 - y1;
-        w = x2 - x1;
-        m = w / 1920;
-
-        save = new Vector<>();
+        ratio = min(user_size.getWidth() / (double) dev_size.getWidth(),
+                user_size.getHeight() / (double) dev_size.getHeight());
 
         for (Vector<String> block : data) {
             switch (block.get(0)) {
@@ -64,11 +71,11 @@ public class FGOScriptCompiler extends ScriptCompiler {
     }
 
     private static String transform_x(float x) {
-        return Integer.toString((int) Math.round((x1 + x2) / 2.0 + m * (x - 960)));
+        return String.valueOf((int)(ratio * (x - dev_offset.x) + user_offset.x));
     }
 
     private static String transform_y(float y) {
-        return Integer.toString((int) Math.round((y1 + y2) / 2.0 + m * (y - 600)));
+        return String.valueOf((int)(ratio * (y - dev_offset.y) + user_offset.y));
     }
 
     public static void PreStage(Vector<String> block) {
@@ -196,15 +203,15 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Click " + transform_x(x) + " " + transform_y(530));//開技能
         save.add("Compare " + transform_x(382) + " " + transform_y(626) + " " + transform_x(908) + " " + transform_y(766) + " cancel_btn.png");
         save.add("IfGreater $R 5");
-        save.add("JumpTo $CraftSkill" + count);
+        save.add("JumpTo $CraftSkill" + tag_count);
         save.add("Click " + transform_x(servant) + " " + transform_y(731));//從者
-        save.add("JumpTo $CraftSkillEnd" + count);
-        save.add("Tag $CraftSkill" + count);
+        save.add("JumpTo $CraftSkillEnd" + tag_count);
+        save.add("Tag $CraftSkill" + tag_count);
         save.add("Click " + transform_x(645) + " " + transform_y(696));//取消BUG
-        save.add("JumpTo $CraftSkillEnd" + count);
-        save.add("Tag $CraftSkillEnd" + count);
+        save.add("JumpTo $CraftSkillEnd" + tag_count);
+        save.add("Tag $CraftSkillEnd" + tag_count);
         save.add("Wait 3300");
-        count++;
+        tag_count++;
     }
 
     public static void CraftSkillChangeAux(float servant1, float servant2) {
@@ -214,19 +221,19 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Wait 500");
         save.add("Compare " + transform_x(382) + " " + transform_y(626) + " " + transform_x(908) + " " + transform_y(766) + " cancel_btn.png");
         save.add("IfGreater $R 5");
-        save.add("JumpTo $CraftSkill" + count);
+        save.add("JumpTo $CraftSkill" + tag_count);
         save.add("Click " + transform_x(servant1) + " " + transform_y(servant2));//換
         save.add("Click " + transform_x(1120) + " " + transform_y(590));
         save.add("Click " + transform_x(950) + " " + transform_y(1000));
-        save.add("JumpTo $CraftSkillEnd" + count);
-        save.add("Tag $CraftSkill" + count);
+        save.add("JumpTo $CraftSkillEnd" + tag_count);
+        save.add("Tag $CraftSkill" + tag_count);
         save.add("Click " + transform_x(645) + " " + transform_y(696));//取消BUG
         save.add("Wait 500");
         save.add("Click " + transform_x(1798) + " " + transform_y(530));//御主技能
-        save.add("JumpTo $CraftSkillEnd" + count);
-        save.add("Tag $CraftSkillEnd" + count);
+        save.add("JumpTo $CraftSkillEnd" + tag_count);
+        save.add("Tag $CraftSkillEnd" + tag_count);
         save.add("Wait 8000");
-        count++;
+        tag_count++;
     }
 
     public static void CraftSkill(Vector<String> block) {
@@ -253,14 +260,14 @@ public class FGOScriptCompiler extends ScriptCompiler {
                     save.add("Click " + transform_x(x) + " " + transform_y(530));//開技能
                     save.add("Compare " + transform_x(382) + " " + transform_y(626) + " " + transform_x(908) + " " + transform_y(766) + " cancel_btn.png");
                     save.add("IfGreater $R 5");
-                    save.add("JumpTo $CraftSkill" + count);
-                    save.add("JumpTo $CraftSkillEnd" + count);
-                    save.add("Tag $CraftSkill" + count);
+                    save.add("JumpTo $CraftSkill" + tag_count);
+                    save.add("JumpTo $CraftSkillEnd" + tag_count);
+                    save.add("Tag $CraftSkill" + tag_count);
                     save.add("Click " + transform_x(645) + " " + transform_y(696));//取消BUG
-                    save.add("JumpTo $CraftSkillEnd" + count);
-                    save.add("Tag $CraftSkillEnd" + count);
+                    save.add("JumpTo $CraftSkillEnd" + tag_count);
+                    save.add("Tag $CraftSkillEnd" + tag_count);
                     save.add("Wait 3300");
-                    count++;
+                    tag_count++;
                     break;
                 case "2":
                     CraftSkillAux(x, 507);
@@ -312,15 +319,15 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Wait 500");
         save.add("Compare " + transform_x(382) + " " + transform_y(626) + " " + transform_x(908) + " " + transform_y(766) + " cancel_btn.png");
         save.add("IfGreater $R 5");
-        save.add("JumpTo $Skill" + count);
+        save.add("JumpTo $Skill" + tag_count);
         save.add("Click " + transform_x(servant) + " " + transform_y(731));//從者一
-        save.add("JumpTo $SkillEnd" + count);
-        save.add("Tag $Skill" + count);
+        save.add("JumpTo $SkillEnd" + tag_count);
+        save.add("Tag $Skill" + tag_count);
         save.add("Click " + transform_x(645) + " " + transform_y(696));//取消BUG
-        save.add("JumpTo $SkillEnd" + count);
-        save.add("Tag $SkillEnd" + count);
+        save.add("JumpTo $SkillEnd" + tag_count);
+        save.add("Tag $SkillEnd" + tag_count);
         save.add("Wait 3300");
-        count++;
+        tag_count++;
     }
 
     public static void Skill(Vector<String> block) {
@@ -364,14 +371,14 @@ public class FGOScriptCompiler extends ScriptCompiler {
                     save.add("Wait 500");
                     save.add("Compare " + transform_x(382) + " " + transform_y(626) + " " + transform_x(908) + " " + transform_y(766) + " cancel_btn.png");
                     save.add("IfGreater $R 5");
-                    save.add("JumpTo $Skill" + count);
-                    save.add("JumpTo $SkillEnd" + count);
-                    save.add("Tag $Skill" + count);
+                    save.add("JumpTo $Skill" + tag_count);
+                    save.add("JumpTo $SkillEnd" + tag_count);
+                    save.add("Tag $Skill" + tag_count);
                     save.add("Click " + transform_x(645) + " " + transform_y(696));//取消BUG
-                    save.add("JumpTo $SkillEnd" + count);
-                    save.add("Tag $SkillEnd" + count);
+                    save.add("JumpTo $SkillEnd" + tag_count);
+                    save.add("Tag $SkillEnd" + tag_count);
                     save.add("Wait 3300");
-                    count++;
+                    tag_count++;
                     break;
                 case "2":
                     SkillAux(x, 507);
@@ -412,6 +419,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("IfGreater $R 5");
         save.add("JumpTo $EndStage");
 
+        save.add("Wait 2000");
         save.add("Compare " + transform_x(1560) + " " + transform_y(830) + " " + transform_x(1843) + " " + transform_y(1109) + " attack.png");
         save.add("IfGreater $R 30");
         save.add("JumpTo $EndStageBattle");
@@ -449,18 +457,14 @@ public class FGOScriptCompiler extends ScriptCompiler {
     }
 
     public static void CheckStillBattle() {
-        save.add("Tag $StillBattleAgain" + count);
+        save.add("Tag $StillBattleAgain" + tag_count);
         save.add("Compare " + transform_x(1560) + " " + transform_y(830) + " " + transform_x(1843) + " " + transform_y(1109) + " attack.png");
-        save.add("Compare " + transform_x(1560) + " " + transform_y(830) + " " + transform_x(1843) + " " + transform_y(1109) + " attack.png");
-        //save.add("Compare " + transform_x(1755, w, m) + " " + transform_y(335, h, m) + " " + transform_x(1835, w, m) + " " + transform_y(425, h, m) + " list.png");
-
         save.add("IfGreater $R 30");
-
-        save.add("JumpTo $StillBattle" + count);
+        save.add("JumpTo $StillBattle" + tag_count);
         save.add("Wait 3000");
-        save.add("JumpTo $StillBattleAgain" + count);
-        save.add("Tag $StillBattle" + count);
-        save.add("Wait 1000");
-        count++;
+        save.add("JumpTo $StillBattleAgain" + tag_count);
+        save.add("Tag $StillBattle" + tag_count);
+        save.add("Wait 3000");
+        tag_count++;
     }
 }
