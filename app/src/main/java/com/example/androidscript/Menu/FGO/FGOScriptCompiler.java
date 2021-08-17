@@ -13,18 +13,25 @@ import static java.lang.Math.min;
 
 public class FGOScriptCompiler extends ScriptCompiler {
     public static int count = 0;
-    private static float h, w, m;
+    private static float h, w, m, x1, x2, y1, y2;
     private static Vector<String> save;
     @Override
     public void compile(Vector<Vector<String>> data) {
-        h = min(ScreenShot.getHeight(), ScreenShot.getWidth());
-        w = max(ScreenShot.getHeight(), ScreenShot.getWidth());
 
-        if (9 * w < 16 * h) {
-            m = w / 1920;
-        } else {
-            m = h / 1070;
-        }
+//        h = min(ScreenShot.getHeight(), ScreenShot.getWidth());
+//        w = max(ScreenShot.getHeight(), ScreenShot.getWidth());
+//
+//
+//
+//        if (9 * w < 16 * h) {
+//            m = w / 1920;
+//        } else {
+//            m = h / 1070;
+//        }
+
+        h = y2 - y1;
+        w = x2 - x1;
+
 
         save = new Vector<>();
 
@@ -51,11 +58,11 @@ public class FGOScriptCompiler extends ScriptCompiler {
     }
 
     private static String transform_x(float x) {
-        return Integer.toString((int) Math.round(w / 2.0 + m * (x - 960)));
+        return Integer.toString((int) Math.round((x1 + x2) / 2.0 + m * (x - 960)));
     }
 
     private static String transform_y(float y) {
-        return Integer.toString((int) Math.round(h / 2.0 + m * (y - 600)));
+        return Integer.toString((int) Math.round((y1 + y2) / 2.0 + m * (y - 600)));
     }
 
     public static void PreStage(Vector<String> block) {
