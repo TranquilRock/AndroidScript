@@ -27,7 +27,7 @@ import java.util.Vector;
 public class FGOEditor extends UIActivity {
 
     public static final String FolderName = "FGO/";
-    public static final String[] PreStageBlock = {"PreStage", "0", "0", "0", "", ""};
+    public static final String[] PreStageBlock = {"PreStage", "0", "0", "0", "", "", "", "", "", ""};
     public static final String[] SkillBlock = {"Skill", "0", "0", "0", "0", "0", "0", "0", "0", "0"};
     public static final String[] CraftSkillBlock = {"CraftSkill", "0", "0", "0", "0"};
     public static final String[] NoblePhantasmsBlock = {"NoblePhantasms", "0", "0", "0", "0"};

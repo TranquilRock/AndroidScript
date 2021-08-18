@@ -106,4 +106,5 @@
     <string name="StartFloatingWidget">浮動視窗</string>
     <string name="exit">關閉服務</string>
     <string name="game_screenshot">遊戲截圖</string>
+    <string name="game_position">遊戲位置</string>
 </resources>

@@ -8,14 +8,11 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
-import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidscript.R;
-import com.example.androidscript.util.DebugMessage;
-import com.example.androidscript.util.ScreenShot;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -114,7 +111,7 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         Spinner Friend;
         Spinner Craft;
         EditText Repeat;
-        Switch Config;
+        androidx.appcompat.widget.SwitchCompat Config;
         EditText X1,Y1,X2,Y2;
 
         public PreStageVH(View v) {
@@ -140,14 +137,24 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
             Repeat.setText(data.get(4));
 
 
-            Config = view.findViewById(R.id.switch3);
-            Config.setOnCheckedChangeListener(getOnCheckedChange(data,5));
+            Config = view.findViewById(R.id.config);
+            Config.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    data.set(5, "1");
+                } else {
+                    data.set(5, "0");
+                }
+                order.self();
+            });
             Config.setChecked(data.get(5).equals("1"));
-            X1 = view.findViewById(R.id.n_repeat);
-            Y1 = view.findViewById(R.id.n_repeat);
-            X2 = view.findViewById(R.id.n_repeat);
-            Y2 = view.findViewById(R.id.n_repeat);
+
+            X1 = view.findViewById(R.id.x1);
+            Y1 = view.findViewById(R.id.y1);
+            X2 = view.findViewById(R.id.x2);
+            Y2 = view.findViewById(R.id.y2);
+
             if(Config.isChecked()){
+                view.findViewById(R.id.game_pos).setVisibility(View.VISIBLE);
                 X1.setVisibility(View.VISIBLE);
                 Y1.setVisibility(View.VISIBLE);
                 X2.setVisibility(View.VISIBLE);
@@ -165,6 +172,7 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
                 Y2.addTextChangedListener(getTextWatcher(data,9));
                 Y2.setText(data.get(9));
             }else{
+                view.findViewById(R.id.game_pos).setVisibility(View.GONE);
                 X1.setVisibility(View.GONE);
                 Y1.setVisibility(View.GONE);
                 X2.setVisibility(View.GONE);

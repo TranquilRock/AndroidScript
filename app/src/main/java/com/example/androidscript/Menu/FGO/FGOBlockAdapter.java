@@ -13,7 +13,6 @@ import com.example.androidscript.util.SpnMaker;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Vector;
 
@@ -29,6 +28,8 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
         void delete(int a);
 
         void insert();
+
+        void self();
     }
 
     public FGOBlockAdapter(Vector<Vector<String>> _Data) {
@@ -52,6 +53,11 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
 
             @Override
             public void insert() {
+                notifyDataSetChanged();
+            }
+
+            @Override
+            public void self(){
                 notifyDataSetChanged();
             }
         };

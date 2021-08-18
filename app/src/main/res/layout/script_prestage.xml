@@ -13,7 +13,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="153dp"
+        android:layout_height="wrap_content"
         android:background="@color/pre_stage_bg">
 
         <TextView
@@ -27,6 +27,15 @@
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
 
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/config"
+            android:layout_width="131dp"
+            android:layout_height="29dp"
+            android:layout_marginStart="156dp"
+            android:layout_marginTop="8dp"
+            android:text="特殊版面"
+            card_view:layout_constraintStart_toEndOf="@+id/textView"
+            card_view:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView2"
@@ -99,7 +108,6 @@
             card_view:layout_constraintStart_toEndOf="@+id/friend"
             card_view:layout_constraintTop_toBottomOf="@+id/textView4" />
 
-
         <EditText
             android:id="@+id/n_repeat"
             android:layout_width="110dp"
@@ -114,65 +122,64 @@
             card_view:layout_constraintLeft_toRightOf="@+id/craft"
             card_view:layout_constraintTop_toTopOf="@id/textView4" />
 
+        <TextView
+            android:id="@+id/game_pos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            android:text="@string/game_position"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/stamina"/>
+
         <EditText
             android:id="@+id/x1"
             android:layout_width="70dp"
             android:layout_height="37dp"
-            android:layout_marginStart="1dp"
-            android:ems="10"
-            android:hint="@string/repeat"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="110dp"
+            android:hint="x1"
             android:inputType="number"
-            android:text="x1"
             android:textSize="14sp"
-            card_view:layout_constraintStart_toEndOf="@+id/config"
-            card_view:layout_constraintTop_toTopOf="@+id/config" />
+            card_view:layout_constraintStart_toEndOf="@+id/game_pos"
+            card_view:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/y1"
             android:layout_width="70dp"
             android:layout_height="37dp"
             android:layout_marginStart="4dp"
-            android:ems="10"
-            android:hint="@string/repeat"
+            android:layout_marginTop="110dp"
+            android:hint="y1"
             android:inputType="number"
-            android:text="y1"
             android:textSize="14sp"
             card_view:layout_constraintStart_toEndOf="@+id/x1"
-            card_view:layout_constraintTop_toTopOf="@+id/x1" />
+            card_view:layout_constraintTop_toTopOf="parent" />
+
 
         <EditText
             android:id="@+id/x2"
             android:layout_width="70dp"
             android:layout_height="37dp"
-            android:ems="10"
-            android:hint="@string/repeat"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="110dp"
+            android:hint="x2"
             android:inputType="number"
-            android:text="x2"
             android:textSize="14sp"
             card_view:layout_constraintStart_toEndOf="@+id/y1"
-            card_view:layout_constraintTop_toTopOf="@+id/y1" />
-
-        <Switch
-            android:id="@+id/config"
-            android:layout_width="95dp"
-            android:layout_height="31dp"
-            android:layout_marginStart="7dp"
-            android:layout_marginTop="20dp"
-            android:text="去邊框"
-            card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/stamina" />
+            card_view:layout_constraintTop_toTopOf="parent" />
 
         <EditText
             android:id="@+id/y2"
             android:layout_width="70dp"
             android:layout_height="37dp"
-            android:ems="10"
-            android:hint="@string/repeat"
+            android:layout_marginTop="110dp"
+            android:hint="y2"
             android:inputType="number"
-            android:text="y2"
             android:textSize="14sp"
             card_view:layout_constraintStart_toEndOf="@+id/x2"
-            card_view:layout_constraintTop_toTopOf="@+id/x2" />
+            card_view:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
