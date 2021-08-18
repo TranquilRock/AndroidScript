@@ -166,7 +166,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
             save.add("Wait 500");
             save.add("Tag $FriendsDNE");
 
-            save.add("Compare " + transform_x(1841) + " " + transform_y(1091) + " " + transform_x(1876) + " " + transform_y(1124)  + "bar.png");
+            save.add("Compare " + transform_x(1841) + " " + transform_y(1091) + " " + transform_x(1876) + " " + transform_y(1124)  + " bar.png");
             save.add("IfGreater $R 5");
             save.add("JumpTo $Refresh");
             save.add("JumpTo $RefreshSkip");
