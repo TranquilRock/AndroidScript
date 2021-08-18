@@ -48,12 +48,15 @@ public class FGOScriptCompiler extends ScriptCompiler {
                     PreStage(block);
                     break;
                 case "CraftSkill":
+                    CheckStillBattle();
                     CraftSkill(block);
                     break;
                 case "Skill":
+                    CheckStillBattle();
                     Skill(block);
                     break;
                 case "NoblePhantasms":
+                    CheckStillBattle();
                     NoblePhantasms(block);
                     break;
                 case "End":
@@ -65,11 +68,11 @@ public class FGOScriptCompiler extends ScriptCompiler {
     }
 
     private static String transform_x(float x) {
-        return String.valueOf((int)(ratio * (x - dev_offset.x) + user_offset.x));
+        return String.valueOf((int) (ratio * (x - dev_offset.x) + user_offset.x));
     }
 
     private static String transform_y(float y) {
-        return String.valueOf((int)(ratio * (y - dev_offset.y) + user_offset.y));
+        return String.valueOf((int) (ratio * (y - dev_offset.y) + user_offset.y));
     }
 
     public static void PreStage(Vector<String> block) {
@@ -124,38 +127,38 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Tag $AppleEnd");
         save.add("Wait 5000");
 
-        if ("無".equals(block.get(2))) {
+        if ("None".equals(block.get(2))) {
             save.add("Click " + transform_x(800) + " " + transform_y(467));
         } else {
-            switch (block.get(2).charAt(block.get(2).length() - 3)) {
-                case 'A':
+            switch (block.get(2)) {
+                case "All":
                     save.add("Click " + transform_x(148) + " " + transform_y(260));
                     break;
-                case 'b':
+                case "Saber":
                     save.add("Click " + transform_x(248) + " " + transform_y(260));
                     break;
-                case 'h':
+                case "Archer":
                     save.add("Click " + transform_x(348) + " " + transform_y(260));
                     break;
-                case 'c':
+                case "Lancer":
                     save.add("Click " + transform_x(448) + " " + transform_y(260));
                     break;
-                case 'd':
+                case "Rider":
                     save.add("Click " + transform_x(548) + " " + transform_y(260));
                     break;
-                case 't':
+                case "Caster":
                     save.add("Click " + transform_x(648) + " " + transform_y(260));
                     break;
-                case 's':
+                case "Assassin":
                     save.add("Click " + transform_x(748) + " " + transform_y(260));
                     break;
-                case 'k':
+                case "Berserker":
                     save.add("Click " + transform_x(848) + " " + transform_y(260));
                     break;
-                case 'i':
+                case "Extra":
                     save.add("Click " + transform_x(948) + " " + transform_y(260));
                     break;
-                case 'M':
+                case "Mix":
                     save.add("Click " + transform_x(1048) + " " + transform_y(260));
                     break;
             }
@@ -169,7 +172,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
             save.add("Swipe " + transform_x(960) + " " + transform_y(937) + " " + transform_x(960) + " " + transform_y(660));
             save.add("JumpTo $FriendsDNE");
             save.add("Tag $Friends");
-            if (!block.get(3).equals("None")) {
+            if (!block.get(3).equals("None")) {//Servant Craft
                 save.add("Compare " + transform_x(70) + " " + transform_y(310) + " " + transform_x(330) + " " + transform_y(700) + " Craft/" + block.get(3) + ".png");
                 save.add("IfGreater $R 5");
                 save.add("JumpTo $Craft");
@@ -187,11 +190,11 @@ public class FGOScriptCompiler extends ScriptCompiler {
         }
 
         save.add("Wait 3000");
-        save.add("Click " + transform_x(1785) + " " + transform_y(1077));//任務開始
+        save.add("Click " + transform_x(1785) + " " + transform_y(1077));//Start Operation
     }
 
     public static void CraftSkillAux(float x, float servant) {
-        save.add("Click " + transform_x(1798) + " " + transform_y(530));//御主技能
+        save.add("Click " + transform_x(1798) + " " + transform_y(530));//Click Master Craft Skill
         save.add("Wait 500");
         save.add("Click " + transform_x(x) + " " + transform_y(530));//開技能
         save.add("Compare " + transform_x(382) + " " + transform_y(626) + " " + transform_x(908) + " " + transform_y(766) + " cancel_btn.png");
@@ -229,21 +232,11 @@ public class FGOScriptCompiler extends ScriptCompiler {
         tag_count++;
     }
 
+    private static final int[] master_craft_x_coordinate = {-1, 1359, 1490, 1616};
     public static void CraftSkill(Vector<String> block) {
-        CheckStillBattle();
+        float x;
         for (int j = 1; j < 4; j++) {
-            float x = 0;
-            switch (j) {
-                case (1):
-                    x = 1359;
-                    break;
-                case (2):
-                    x = 1490;
-                    break;
-                case (3):
-                    x = 1616;
-                    break;
-            }
+            x = master_craft_x_coordinate[j];
             switch (block.get(j)) {
                 case "0":
                     break;
@@ -323,43 +316,16 @@ public class FGOScriptCompiler extends ScriptCompiler {
         tag_count++;
     }
 
+    private static final int[] skill_x_coordinate = {-1, 114, 241, 380, 581, 718, 862, 1055, 1200, 1333};
+
     public static void Skill(Vector<String> block) {
-        CheckStillBattle();
-        float x = 0;
+        float x;
         for (int j = 1; j < 10; j++) {
-            switch (j) {
-                case (1):
-                    x = 114;
-                    break;
-                case (2):
-                    x = 241;
-                    break;
-                case (3):
-                    x = 380;
-                    break;
-                case (4):
-                    x = 581;
-                    break;
-                case (5):
-                    x = 718;
-                    break;
-                case (6):
-                    x = 862;
-                    break;
-                case (7):
-                    x = 1055;
-                    break;
-                case (8):
-                    x = 1200;
-                    break;
-                case (9):
-                    x = 1333;
-                    break;
-            }
+            x = skill_x_coordinate[j];
             switch (block.get(j)) {
-                case "0":
+                case "0"://Do nothing
                     break;
-                case "1":
+                case "1"://No target
                     save.add("Click " + transform_x(x) + " " + transform_y(930));//開技能
                     save.add("Wait 500");
                     save.add("Compare " + transform_x(382) + " " + transform_y(626) + " " + transform_x(908) + " " + transform_y(766) + " cancel_btn.png");
@@ -373,36 +339,44 @@ public class FGOScriptCompiler extends ScriptCompiler {
                     save.add("Wait 3300");
                     tag_count++;
                     break;
-                case "2":
+                case "2"://target servant 1
                     SkillAux(x, 507);
                     break;
-                case "3":
+                case "3"://target servant 2
                     SkillAux(x, 957);
                     break;
-                case "4":
+                case "4"://target servant 3
                     SkillAux(x, 1434);
                     break;
             }
         }
     }
 
+    private static final int[] noble_phantasms_x_coordinate = {-1, 611, 972, 1330};
+
     public static void NoblePhantasms(Vector<String> block) {
-        CheckStillBattle();
-        save.add("Click " + transform_x(1694) + " " + transform_y(969));//攻擊鈕
+        save.add("Click " + transform_x(1694) + " " + transform_y(969));//Attack
         save.add("Wait 2500");
-        int[] x_cor = {-1, 611, 972, 1330};
         for (int j = 1; j <= 3; j++) {
-            Log.d("kk", block.get(j));
             if (block.get(j).equals("1")) {
-                save.add("Click " + transform_x(x_cor[j]) + " " + transform_y(364));//寶具
+                save.add("Click " + transform_x(noble_phantasms_x_coordinate[j]) + " " + transform_y(364));//Noble Phantasms
             }
         }
-        save.add("Click " + transform_x(190) + " " + transform_y(835));//指令卡
-        save.add("Click " + transform_x(611) + " " + transform_y(835));//指令卡
-        save.add("Click " + transform_x(1032) + " " + transform_y(835));//指令卡
-        save.add("Click " + transform_x(1453) + " " + transform_y(835));//指令卡
-        save.add("Click " + transform_x(1874) + " " + transform_y(835));//指令卡
+        save.add("Click " + transform_x(190) + " " + transform_y(835));//Command Card
+        save.add("Click " + transform_x(611) + " " + transform_y(835));//Command Card
+        save.add("Click " + transform_x(1032) + " " + transform_y(835));//Command Card
+        save.add("Click " + transform_x(1453) + " " + transform_y(835));//Command Card
+        save.add("Click " + transform_x(1874) + " " + transform_y(835));//Command Card
         save.add("Wait 10000");
+    }
+
+    private static final Vector<String> ClickAll = new Vector<>();
+
+    static {
+        ClickAll.add("");
+        ClickAll.add("1");
+        ClickAll.add("1");
+        ClickAll.add("1");
     }
 
     public static void End() {
@@ -422,16 +396,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("JumpTo $EndStageAgain");
         save.add("Tag $EndStageBattle");
 
-        save.add("Click " + transform_x(1694) + " " + transform_y(969));//攻擊鈕
-        save.add("Wait 2500");
-        save.add("Click " + transform_x(611) + " " + transform_y(364));//寶具
-        save.add("Click " + transform_x(972) + " " + transform_y(364));//寶具
-        save.add("Click " + transform_x(1330) + " " + transform_y(364));//寶具
-        save.add("Click " + transform_x(190) + " " + transform_y(835));//指令卡
-        save.add("Click " + transform_x(611) + " " + transform_y(835));//指令卡
-        save.add("Click " + transform_x(1032) + " " + transform_y(835));//指令卡
-        save.add("Click " + transform_x(1453) + " " + transform_y(835));//指令卡
-        save.add("Click " + transform_x(1874) + " " + transform_y(835));//指令卡
+        NoblePhantasms(ClickAll);
 
         save.add("JumpTo $EndStageAgain");
         save.add("Tag $EndStage");
