@@ -8,6 +8,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,11 +30,39 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
     protected ImageButton Close;
     protected View view;
 
-    protected AdapterView.OnItemSelectedListener SpinnerListener(Vector<Vector<String>> Data, int pos, int index) {
+    protected static CompoundButton.OnCheckedChangeListener getOnCheckedChange(Vector<String> data, int index){
+        return (buttonView, isChecked) -> {
+            if (isChecked) {
+                data.set(index, "1");
+            } else {
+                data.set(index, "0");
+            }
+        };
+    }
+
+    protected static void setRawSpinner(Spinner spn, Vector<String> data, int index) {
+        spn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                data.set(index, parent.getSelectedItem().toString());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+        for (int i = 0; i < spn.getCount(); i++) {
+            if (data.get(index).equals(spn.getItemAtPosition(i))) {
+                spn.setSelection(i);
+            }
+        }
+    }
+
+    protected static AdapterView.OnItemSelectedListener SpinnerListener(Vector<String> data, int index) {
         return new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Data.get(pos).set(index, String.valueOf(position));
+                data.set(index, String.valueOf(position));
             }
 
             @Override
@@ -42,6 +71,22 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         };
     }
 
+    protected static TextWatcher getTextWatcher(Vector<String> data,int index){
+        return (new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                data.setElementAt(s.toString(),  index);
+            }
+        });
+    }
 
     public FGOViewHolder(@NonNull @NotNull View itemView) {
         super(itemView);
@@ -68,8 +113,9 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         Spinner Stamina;
         Spinner Friend;
         Spinner Craft;
-        Spinner Screenshot;
         EditText Repeat;
+        Switch Config;
+        EditText X1,Y1,X2,Y2;
 
         public PreStageVH(View v) {
             super(v);
@@ -77,52 +123,52 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
 
         @Override
         public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+            Vector<String> data = Data.get(position);
+
             Stamina = view.findViewById(R.id.stamina);
-            Stamina.setOnItemSelectedListener(SpinnerListener(Data, position, 1));
-            Stamina.setSelection(Integer.parseInt(Data.get(position).get(1)));
+            Stamina.setOnItemSelectedListener(SpinnerListener(data, 1));
+            Stamina.setSelection(Integer.parseInt(data.get(1)));
 
             Friend = view.findViewById(R.id.friend);
-            setRawSpinner(Friend, Data.get(position), 2);
+            setRawSpinner(Friend,data, 2);
 
             Craft = view.findViewById(R.id.craft);
-            setRawSpinner(Craft, Data.get(position), 3);
+            setRawSpinner(Craft,data, 3);
 
             Repeat = view.findViewById(R.id.n_repeat);
-            Repeat.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                }
+            Repeat.addTextChangedListener(getTextWatcher(data,4));
+            Repeat.setText(data.get(4));
 
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                }
 
-                @Override
-                public void afterTextChanged(Editable s) {
-                    Data.get(position).setElementAt(s.toString(), 4);
-                }
-            });
-            Repeat.setText(Data.get(position).get(4));
+            Config = view.findViewById(R.id.switch3);
+            Config.setOnCheckedChangeListener(getOnCheckedChange(data,5));
+            Config.setChecked(data.get(5).equals("1"));
+            X1 = view.findViewById(R.id.n_repeat);
+            Y1 = view.findViewById(R.id.n_repeat);
+            X2 = view.findViewById(R.id.n_repeat);
+            Y2 = view.findViewById(R.id.n_repeat);
+            if(Config.isChecked()){
+                X1.setVisibility(View.VISIBLE);
+                Y1.setVisibility(View.VISIBLE);
+                X2.setVisibility(View.VISIBLE);
+                Y2.setVisibility(View.VISIBLE);
 
-            Screenshot = view.findViewById(R.id.screen_shot);
-            setRawSpinner(Screenshot, Data.get(position), 5);
-        }
+                X1.addTextChangedListener(getTextWatcher(data,6));
+                X1.setText(data.get(6));
 
-        private static void setRawSpinner(Spinner spn, Vector<String> data, int index) {
-            spn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                    data.set(index, parent.getSelectedItem().toString());
-                }
+                Y1.addTextChangedListener(getTextWatcher(data,7));
+                Y1.setText(data.get(7));
 
-                @Override
-                public void onNothingSelected(AdapterView<?> parent) {
-                }
-            });
-            for (int i = 0; i < spn.getCount(); i++) {
-                if (data.get(index).equals(spn.getItemAtPosition(i))) {
-                    spn.setSelection(i);
-                }
+                X2.addTextChangedListener(getTextWatcher(data,8));
+                X2.setText(data.get(8));
+
+                Y2.addTextChangedListener(getTextWatcher(data,9));
+                Y2.setText(data.get(9));
+            }else{
+                X1.setVisibility(View.GONE);
+                Y1.setVisibility(View.GONE);
+                X2.setVisibility(View.GONE);
+                Y2.setVisibility(View.GONE);
             }
         }
     }
@@ -146,6 +192,8 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         @Override
         public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
             super.onBind(order, position, Data);
+            Vector<String> data = Data.get(position);
+
             Skl11 = view.findViewById(R.id.skill_1_1);
             Skl12 = view.findViewById(R.id.skill_1_2);
             Skl13 = view.findViewById(R.id.skill_1_3);
@@ -156,25 +204,25 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
             Skl32 = view.findViewById(R.id.skill_3_2);
             Skl33 = view.findViewById(R.id.skill_3_3);
 
-            Skl11.setOnItemSelectedListener(SpinnerListener(Data, position, 1));
-            Skl12.setOnItemSelectedListener(SpinnerListener(Data, position, 2));
-            Skl13.setOnItemSelectedListener(SpinnerListener(Data, position, 3));
-            Skl21.setOnItemSelectedListener(SpinnerListener(Data, position, 4));
-            Skl22.setOnItemSelectedListener(SpinnerListener(Data, position, 5));
-            Skl23.setOnItemSelectedListener(SpinnerListener(Data, position, 6));
-            Skl31.setOnItemSelectedListener(SpinnerListener(Data, position, 7));
-            Skl32.setOnItemSelectedListener(SpinnerListener(Data, position, 8));
-            Skl33.setOnItemSelectedListener(SpinnerListener(Data, position, 9));
+            Skl11.setOnItemSelectedListener(SpinnerListener(data, 1));
+            Skl12.setOnItemSelectedListener(SpinnerListener(data, 2));
+            Skl13.setOnItemSelectedListener(SpinnerListener(data, 3));
+            Skl21.setOnItemSelectedListener(SpinnerListener(data, 4));
+            Skl22.setOnItemSelectedListener(SpinnerListener(data, 5));
+            Skl23.setOnItemSelectedListener(SpinnerListener(data, 6));
+            Skl31.setOnItemSelectedListener(SpinnerListener(data, 7));
+            Skl32.setOnItemSelectedListener(SpinnerListener(data, 8));
+            Skl33.setOnItemSelectedListener(SpinnerListener(data, 9));
 
-            Skl11.setSelection(Integer.parseInt(Data.get(position).get(1)));
-            Skl12.setSelection(Integer.parseInt(Data.get(position).get(2)));
-            Skl13.setSelection(Integer.parseInt(Data.get(position).get(3)));
-            Skl21.setSelection(Integer.parseInt(Data.get(position).get(4)));
-            Skl22.setSelection(Integer.parseInt(Data.get(position).get(5)));
-            Skl23.setSelection(Integer.parseInt(Data.get(position).get(6)));
-            Skl31.setSelection(Integer.parseInt(Data.get(position).get(7)));
-            Skl32.setSelection(Integer.parseInt(Data.get(position).get(8)));
-            Skl33.setSelection(Integer.parseInt(Data.get(position).get(9)));
+            Skl11.setSelection(Integer.parseInt(data.get(1)));
+            Skl12.setSelection(Integer.parseInt(data.get(2)));
+            Skl13.setSelection(Integer.parseInt(data.get(3)));
+            Skl21.setSelection(Integer.parseInt(data.get(4)));
+            Skl22.setSelection(Integer.parseInt(data.get(5)));
+            Skl23.setSelection(Integer.parseInt(data.get(6)));
+            Skl31.setSelection(Integer.parseInt(data.get(7)));
+            Skl32.setSelection(Integer.parseInt(data.get(8)));
+            Skl33.setSelection(Integer.parseInt(data.get(9)));
         }
     }
 
@@ -191,20 +239,21 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         @Override
         public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
             super.onBind(order, position, Data);
+            Vector<String> data = Data.get(position);
             Skl1 = view.findViewById(R.id.skill_1_1);
             Skl2 = view.findViewById(R.id.skill_1_2);
             Skl3 = view.findViewById(R.id.skill_1_3);
             SklX = view.findViewById(R.id.skill_2_1);
 
-            Skl1.setOnItemSelectedListener(SpinnerListener(Data, position, 1));
-            Skl2.setOnItemSelectedListener(SpinnerListener(Data, position, 2));
-            Skl3.setOnItemSelectedListener(SpinnerListener(Data, position, 3));
-            SklX.setOnItemSelectedListener(SpinnerListener(Data, position, 4));
+            Skl1.setOnItemSelectedListener(SpinnerListener(data, 1));
+            Skl2.setOnItemSelectedListener(SpinnerListener(data, 2));
+            Skl3.setOnItemSelectedListener(SpinnerListener(data, 3));
+            SklX.setOnItemSelectedListener(SpinnerListener(data, 4));
 
-            Skl1.setSelection(Integer.parseInt(Data.get(position).get(1)));
-            Skl2.setSelection(Integer.parseInt(Data.get(position).get(2)));
-            Skl3.setSelection(Integer.parseInt(Data.get(position).get(3)));
-            SklX.setSelection(Integer.parseInt(Data.get(position).get(4)));
+            Skl1.setSelection(Integer.parseInt(data.get(1)));
+            Skl2.setSelection(Integer.parseInt(data.get(2)));
+            Skl3.setSelection(Integer.parseInt(data.get(3)));
+            SklX.setSelection(Integer.parseInt(data.get(4)));
         }
     }
 
@@ -222,36 +271,23 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         @Override
         public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
             super.onBind(order, position, Data);
+            Vector<String> data = Data.get(position);
+
             N1 = view.findViewById(R.id.switch1);
+            N1.setOnCheckedChangeListener(getOnCheckedChange(data,1));
+            N1.setChecked(data.get(1).equals("1"));
+
             N2 = view.findViewById(R.id.switch2);
+            N2.setOnCheckedChangeListener(getOnCheckedChange(data,2));
+            N2.setChecked(data.get(2).equals("1"));
+
             N3 = view.findViewById(R.id.switch3);
-            N1.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
-                    Data.get(position).set(1, "1");
-                } else {
-                    Data.get(position).set(1, "0");
-                }
-            });
-            N1.setChecked(Data.get(position).get(1).equals("1"));
-            N2.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
-                    Data.get(position).set(2, "1");
-                } else {
-                    Data.get(position).set(2, "0");
-                }
-            });
-            N2.setChecked(Data.get(position).get(2).equals("1"));
-            N3.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
-                    Data.get(position).set(3, "1");
-                } else {
-                    Data.get(position).set(3, "0");
-                }
-            });
-            N3.setChecked(Data.get(position).get(3).equals("1"));
+            N3.setOnCheckedChangeListener(getOnCheckedChange(data,3));
+            N3.setChecked(data.get(3).equals("1"));
+
             Color = view.findViewById(R.id.card_color);
-            Color.setOnItemSelectedListener(SpinnerListener(Data, position, 4));
-            Color.setSelection(Integer.parseInt(Data.get(position).get(4)));
+            Color.setOnItemSelectedListener(SpinnerListener(data, 4));
+            Color.setSelection(Integer.parseInt(data.get(4)));
         }
     }
 
@@ -259,7 +295,6 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         public EndVH(View v) {
             super(v);
         }
-
         @Override
         public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
         }
