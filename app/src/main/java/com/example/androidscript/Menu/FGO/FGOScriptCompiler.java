@@ -121,7 +121,6 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Click " + transform_x(1260) + " " + transform_y(900));
         save.add("Wait 300");
         save.add("Click " + transform_x(960) + " " + transform_y(987));
-        save.add("JumpTo $AppleEnd");
         save.add("Tag $AppleEnd");
         save.add("Wait 5000");
 
