@@ -13,7 +13,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="108dp"
+        android:layout_height="153dp"
         android:background="@color/pre_stage_bg">
 
         <TextView
@@ -69,21 +69,21 @@
             card_view:layout_constraintTop_toTopOf="parent" />
 
         <Spinner
-            android:background="@color/pre_stage_bg"
             android:id="@+id/stamina"
             android:layout_width="80dp"
             android:layout_height="22dp"
             android:layout_marginStart="7dp"
+            android:background="@color/pre_stage_bg"
             android:entries="@array/apples"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <Spinner
-            android:background="@color/pre_stage_bg"
             android:id="@+id/friend"
             android:layout_width="76dp"
             android:layout_height="22dp"
             android:layout_marginStart="17dp"
+            android:background="@color/pre_stage_bg"
             android:entries="@array/friends"
             card_view:layout_constraintStart_toEndOf="@+id/stamina"
             card_view:layout_constraintTop_toBottomOf="@+id/textView3" />
@@ -100,31 +100,10 @@
             card_view:layout_constraintTop_toBottomOf="@+id/textView4" />
 
 
-        <TextView
-            android:id="@+id/screen_shot_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="176dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/game_screenshot"
-            card_view:layout_constraintStart_toEndOf="@+id/textView"
-            card_view:layout_constraintTop_toTopOf="parent" />
-
-        <Spinner
-            android:id="@+id/screen_shot"
-            android:layout_width="118dp"
-            android:layout_height="20dp"
-            android:layout_marginStart="180dp"
-            android:layout_marginTop="24dp"
-            android:background="@color/pre_stage_bg"
-            android:visibility="visible"
-            card_view:layout_constraintStart_toEndOf="@+id/textView"
-            card_view:layout_constraintTop_toTopOf="@+id/screen_shot_text_view" />
-
         <EditText
             android:id="@+id/n_repeat"
             android:layout_width="110dp"
-            android:layout_height="35dp"
+            android:layout_height="37dp"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="16dp"
             android:ems="10"
@@ -134,6 +113,66 @@
             android:textSize="14sp"
             card_view:layout_constraintLeft_toRightOf="@+id/craft"
             card_view:layout_constraintTop_toTopOf="@id/textView4" />
+
+        <EditText
+            android:id="@+id/x1"
+            android:layout_width="70dp"
+            android:layout_height="37dp"
+            android:layout_marginStart="1dp"
+            android:ems="10"
+            android:hint="@string/repeat"
+            android:inputType="number"
+            android:text="x1"
+            android:textSize="14sp"
+            card_view:layout_constraintStart_toEndOf="@+id/config"
+            card_view:layout_constraintTop_toTopOf="@+id/config" />
+
+        <EditText
+            android:id="@+id/y1"
+            android:layout_width="70dp"
+            android:layout_height="37dp"
+            android:layout_marginStart="4dp"
+            android:ems="10"
+            android:hint="@string/repeat"
+            android:inputType="number"
+            android:text="y1"
+            android:textSize="14sp"
+            card_view:layout_constraintStart_toEndOf="@+id/x1"
+            card_view:layout_constraintTop_toTopOf="@+id/x1" />
+
+        <EditText
+            android:id="@+id/x2"
+            android:layout_width="70dp"
+            android:layout_height="37dp"
+            android:ems="10"
+            android:hint="@string/repeat"
+            android:inputType="number"
+            android:text="x2"
+            android:textSize="14sp"
+            card_view:layout_constraintStart_toEndOf="@+id/y1"
+            card_view:layout_constraintTop_toTopOf="@+id/y1" />
+
+        <Switch
+            android:id="@+id/config"
+            android:layout_width="95dp"
+            android:layout_height="31dp"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="20dp"
+            android:text="去邊框"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/stamina" />
+
+        <EditText
+            android:id="@+id/y2"
+            android:layout_width="70dp"
+            android:layout_height="37dp"
+            android:ems="10"
+            android:hint="@string/repeat"
+            android:inputType="number"
+            android:text="y2"
+            android:textSize="14sp"
+            card_view:layout_constraintStart_toEndOf="@+id/x2"
+            card_view:layout_constraintTop_toTopOf="@+id/x2" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
