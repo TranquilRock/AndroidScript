@@ -1,5 +1,7 @@
 package com.example.androidscript.Menu.FGO;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidscript.R;
+import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
 import com.example.androidscript.util.SpnMaker;
 
@@ -15,6 +18,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Vector;
+
 
 public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
 
@@ -29,7 +33,7 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
 
         void insert();
 
-        void self();
+        void self(int index);
     }
 
     public FGOBlockAdapter(Vector<Vector<String>> _Data) {
@@ -55,10 +59,13 @@ public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
             public void insert() {
                 notifyDataSetChanged();
             }
-
             @Override
-            public void self(){
-                notifyDataSetChanged();
+            public void self(int index){
+                try{
+                    new Handler(Looper.getMainLooper()).post(() -> notifyItemChanged(index));
+                }catch (Throwable e){
+                    DebugMessage.set("PreStageGG");
+                }
             }
         };
     }

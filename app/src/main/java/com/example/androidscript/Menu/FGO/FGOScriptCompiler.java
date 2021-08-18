@@ -29,20 +29,14 @@ public class FGOScriptCompiler extends ScriptCompiler {
     @Override
     public void compile(Vector<Vector<String>> data) {
         save = new Vector<>();
-
-        String screen_shot_file = data.get(0).get(5);
-
-        if (screen_shot_file.equals("None")) {
+        if (data.get(0).get(5).equals("0")) {
             user_size = new Size(max(ScreenShot.getHeight(), ScreenShot.getWidth()),
                     min(ScreenShot.getHeight(), ScreenShot.getWidth()));
             user_offset = new Point(0, 0);
         } else {
-            Bitmap screenshot = FileOperation.readPicAsBitmap(FGOEditor.FolderName + screen_shot_file);
-            user_offset = ImageHandler.findLocationAnyway(screenshot, FileOperation.readPicAsBitmap(FGOEditor.FolderName + "upright.png"), ratio);
-            Point bottom_left = ImageHandler.findLocationAnyway(screenshot, FileOperation.readPicAsBitmap(FGOEditor.FolderName + "bottomleft.png"), ratio);
-            user_size = new Size((int)(bottom_left.x - user_offset.x),(int)(bottom_left.y - user_offset.y));
-            DebugMessage.set("Size::" + user_size);
-            DebugMessage.set("Offset::" + user_offset);
+            user_offset = new Point(Integer.parseInt(data.get(0).get(6)), Integer.parseInt(data.get(0).get(7)));
+            user_size = new Size(Integer.parseInt(data.get(0).get(8)) - Integer.parseInt(data.get(0).get(6)),
+                    Integer.parseInt(data.get(0).get(9)) - Integer.parseInt(data.get(0).get(7)));
         }
 
         ratio = min(user_size.getWidth() / (double) dev_size.getWidth(),

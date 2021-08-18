@@ -144,7 +144,7 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
                 } else {
                     data.set(5, "0");
                 }
-                order.self();
+                order.self(position);
             });
             Config.setChecked(data.get(5).equals("1"));
 
