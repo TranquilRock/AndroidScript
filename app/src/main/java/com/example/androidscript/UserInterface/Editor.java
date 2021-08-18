@@ -28,11 +28,11 @@ public abstract class Editor extends AppCompatActivity {
 
     protected abstract void resourceInitialize();
 
-    protected void getResource(String sourceName, String folderName, String fileName){
+    protected void getResource(String folderName, String fileName){
         if(!FileOperation.findFile(folderName,fileName)){
             try{
-                if (sourceName.endsWith(".txt")) {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(getAssets().open(sourceName)));
+                if (fileName.endsWith(".txt")) {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(getAssets().open(folderName + fileName)));
                     Vector<String> buffer = new Vector<>();
                     String line;
                     while ((line = reader.readLine()) != null) {
@@ -40,13 +40,12 @@ public abstract class Editor extends AppCompatActivity {
                         buffer.add(line);
                     }
                     FileOperation.writeLines(folderName + fileName,buffer);
-                } else if (sourceName.endsWith(".png")) {
-                    FileOperation.saveBitmapAsPNG(BitmapFactory.decodeStream(getAssets().open(sourceName)), folderName + fileName);
-                } else if (sourceName.endsWith(".jpg")) {
-                    FileOperation.saveBitmapAsJPG(BitmapFactory.decodeStream(getAssets().open(sourceName)), folderName + fileName);
+                } else if (fileName.endsWith(".png")) {
+                    FileOperation.saveBitmapAsPNG(BitmapFactory.decodeStream(getAssets().open(folderName + fileName)), folderName + fileName);
+                } else if (fileName.endsWith(".jpg")) {
+                    FileOperation.saveBitmapAsJPG(BitmapFactory.decodeStream(getAssets().open(folderName + fileName)), folderName + fileName);
                 }
             }catch (IOException e){
-                DebugMessage.set("Bug in resource allocation");
                 DebugMessage.printStackTrace(e);
             }
         }
