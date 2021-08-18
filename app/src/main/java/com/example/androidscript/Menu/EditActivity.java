@@ -27,7 +27,7 @@ public class EditActivity extends AppCompatActivity {
         this.folder = "AndroidScript/";
 
         setContentView(R.layout.activity_edit);
-        output = (TextView) findViewById(R.id.edit_output);
+        output = findViewById(R.id.edit_output);
 
         Intent intent = getIntent();//Get string passing by intent
         String FileName = intent.getStringExtra("FileName");

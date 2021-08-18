@@ -32,20 +32,21 @@ public class BasicEditor extends UIActivity {
 
     static {
         for (String command : Interpreter.SUPPORTED_COMMAND) {
-            String[] keys = command.split(" ");
+            String key = command.split(" ")[0];
             Vector<String> value = new Vector<>();
-            value.add(keys[0]);
-            for (int z = 0; z < getCommandLength(keys[0]); z++) {//+1
+            value.add(key);
+            for (int z = 0; z < getCommandLength(key); z++) {//+1
                 value.add("");
             }
-            Blocks.put(keys[0], value);
+            Blocks.put(key, value);
         }
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BtnMaker.registerOnClick(R.id.start_service, this, v -> startActivity(new Intent(this, StartService.class).putExtra("Orientation", "Landscape")));
+        String orientation = getIntent().getStringExtra("Orientation");
+        BtnMaker.registerOnClick(R.id.start_service, this, v -> startActivity(new Intent(this, StartService.class).putExtra("Orientation", orientation)));
         BtnMaker.registerOnClick(R.id.start_floating, this, v -> StartService.startFloatingWidget(this));
         BtnMaker.registerOnClick(R.id.save_file, this, (v -> {
             boolean flag = true;

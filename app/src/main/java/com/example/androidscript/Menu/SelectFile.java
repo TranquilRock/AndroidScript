@@ -75,6 +75,10 @@ public class SelectFile extends AppCompatActivity {
             try {
                 Intent intent = new Intent(this, Class.forName(getIntent().getStringExtra("next_destination")));
                 intent.putExtra("FileName", FileName);
+                String orientation = getIntent().getStringExtra("Orientation");
+                if(orientation != null){
+                    intent.putExtra("Orientation",orientation);
+                }
                 startActivity(intent);
             } catch (ClassNotFoundException e) {
                 DebugMessage.printStackTrace(e);

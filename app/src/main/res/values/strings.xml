@@ -98,7 +98,7 @@
     <string name="Start">Start</string>
     <string name="fgo">FGO</string>
     <string name="arkknights">ArkKnights</string>
-    <string name="basic_editor">通用腳本</string>
+    <string name="basic_editor">通用腳本(橫向)</string>
     <string name="select_file_description">選擇現有腳本或是輸入新的腳本名稱</string>
     <string name="ark_knights_description_content">自動周回指定關卡，開始前請先開啟點選關卡並點選代理指揮</string>
     <string name="Save">儲存/載入</string>
@@ -107,4 +107,5 @@
     <string name="exit">關閉服務</string>
     <string name="game_screenshot">遊戲截圖</string>
     <string name="game_position">遊戲位置</string>
+    <string name="basic_portrait">通用腳本(直向)</string>
 </resources>

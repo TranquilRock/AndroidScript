@@ -55,6 +55,7 @@ public class StartService extends AppCompatActivity {
         } catch (Settings.SettingNotFoundException e) {
             DebugMessage.printStackTrace(e);
         }
+
         //ScreenShot, need to be foreground.(The rest parts are inside its class and onActivityResult.)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             List<String> requestedPermissions = new ArrayList<>();

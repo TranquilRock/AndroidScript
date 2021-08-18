@@ -33,12 +33,18 @@
         android:textAllCaps="false" />
 
     <Button
-        android:id="@+id/button_to_basic"
+        android:id="@+id/button_to_basic_landscape"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="@string/basic_editor" />
 
+    <Button
+        android:id="@+id/button_to_basic_portrait"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/basic_portrait" />
     <Button
         android:id="@+id/Exit"
         android:layout_width="150dp"

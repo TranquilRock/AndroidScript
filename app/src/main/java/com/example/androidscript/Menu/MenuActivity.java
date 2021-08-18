@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.androidscript.R;
@@ -45,7 +46,24 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
         BtnMaker.Jump(R.id.button_to_ArkUI, this, ArkKnightsEditor.class);
         BtnMaker.JumpWithMessage(R.id.button_to_FGO, this, SelectFile.class, "next_destination", "com.example.androidscript.Menu.FGO.FGOEditor");
-        BtnMaker.JumpWithMessage(R.id.button_to_basic, this, SelectFile.class, "next_destination", "com.example.androidscript.Menu.Basic.BasicEditor");
+
+
+        Button btn = findViewById(R.id.button_to_basic_landscape);
+        btn.setOnClickListener((v -> {
+            Intent intent = new Intent(this,SelectFile.class );
+            intent.putExtra("next_destination", "com.example.androidscript.Menu.Basic.BasicEditor");
+            intent.putExtra("Orientation","Landscape");
+            startActivity(intent);
+        }));
+
+        btn = findViewById(R.id.button_to_basic_portrait);
+        btn.setOnClickListener((v -> {
+            Intent intent = new Intent(this,SelectFile.class );
+            intent.putExtra("next_destination", "com.example.androidscript.Menu.Basic.BasicEditor");
+            intent.putExtra("Orientation","Portrait");
+            startActivity(intent);
+        }));
+
         BtnMaker.registerOnClick(R.id.Exit, this, v -> endService(true));
         if (!OpenCVLoader.initDebug()) {
             throw new AssertionError("OpenCV unavailable!");
