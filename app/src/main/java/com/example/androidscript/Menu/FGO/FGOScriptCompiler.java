@@ -130,7 +130,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Wait 300");
         save.add("Click " + transform_x(960) + " " + transform_y(987));
         save.add("Tag $AppleEnd");
-        save.add("Wait 5000");
+        save.add("Wait 1000");
 
         if ("None".equals(block.get(2))) {
             save.add("Click " + transform_x(800) + " " + transform_y(467));
@@ -171,8 +171,8 @@ public class FGOScriptCompiler extends ScriptCompiler {
             save.add("Wait 500");
             save.add("Tag $FriendsDNE");
 
-            save.add("Check " + transform_x(1857) + " " + transform_y(1127) + " " + 0xFFF9F9F9);
-            save.add("IfGreater $R 0");
+            save.add("Check " + transform_x(1859) + " " + transform_y(1073) + " " + 0xFFF9F9F9);
+            save.add("IfSmaller $R 1");
             save.add("JumpTo $Refresh");
             save.add("JumpTo $RefreshSkip");
             save.add("Tag $Refresh");
@@ -182,10 +182,10 @@ public class FGOScriptCompiler extends ScriptCompiler {
             save.add("Wait 2000");
             save.add("Tag $RefreshSkip");
             save.add("Compare " + transform_x(70) + " " + transform_y(310) + " " + transform_x(330) + " " + transform_y(700) + " Friend/" + block.get(2) + ".png");
-            save.add("IfGreater $R 20");
+            save.add("IfGreater $R 50");
             save.add("JumpTo $Friends");
             save.add("Wait 2000");
-            save.add("Swipe " + transform_x(960) + " " + transform_y(937) + " " + transform_x(960) + " " + transform_y(660));
+            save.add("Swipe " + transform_x(960) + " " + transform_y(937) + " " + transform_x(960) + " " + transform_y(689));
             save.add("JumpTo $FriendsDNE");
             save.add("Tag $Friends");
             if (!block.get(3).equals("None")) {//Servant Craft
@@ -193,7 +193,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
                 save.add("IfGreater $R 5");
                 save.add("JumpTo $Craft");
                 save.add("Wait 2000");
-                save.add("Swipe " + transform_x(960) + " " + transform_y(937) + " " + transform_x(960) + " " + transform_y(660));
+                save.add("Swipe " + transform_x(960) + " " + transform_y(937) + " " + transform_x(960) + " " + transform_y(689));
                 save.add("JumpTo $FriendsDNE");
                 save.add("Tag $Craft");
                 save.add("Click " + transform_x(800) + " " + transform_y(540));

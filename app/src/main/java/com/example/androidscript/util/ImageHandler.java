@@ -1,6 +1,7 @@
 package com.example.androidscript.util;
 
 import android.graphics.Bitmap;
+import android.util.Log;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
@@ -115,7 +116,7 @@ public final class ImageHandler {
     }
 
 
-    public static final int ColorThreshold = 40;
+    public static final int ColorThreshold = 100;
     public static final int[] ColorMasks = {0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000};
 
     public static boolean checkColor(Bitmap target, int x, int y, int color) {
@@ -124,6 +125,7 @@ public final class ImageHandler {
         for (int mask = 0; mask < ColorMasks.length; mask++) {
             diff += abs((targetPixel & ColorMasks[mask]) - (color & ColorMasks[mask])) >> (8 * mask);
         }
-        return diff > ColorThreshold;
+        Log.d("kk", Integer.toString(diff));
+        return diff < ColorThreshold;
     }
 }
