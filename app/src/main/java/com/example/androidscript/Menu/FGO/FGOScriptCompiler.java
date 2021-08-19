@@ -120,9 +120,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
                 save.add("Click " + transform_x(960) + " " + transform_y(750));
                 break;
             case "4":
-                save.add("Swipe " + transform_x(960) + " " + transform_y(786) + " " + transform_x(960) + " " + transform_y(516));
-                save.add("Wait 300");
-                save.add("Click " + transform_x(960) + " " + transform_y(320));
+                save.add("Swipe " + transform_x(960) + " " + transform_y(908) + " " + transform_x(960) + " " + transform_y(516));
                 break;
         }
         save.add("Wait 300");
@@ -373,7 +371,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
 
     public static void NoblePhantasms(Vector<String> block) {
         save.add("Click " + transform_x(1694) + " " + transform_y(969));//Attack
-        save.add("Wait 2500");
+        save.add("Wait 2300");
         for (int j = 1; j <= 3; j++) {
             if (block.get(j).equals("1")) {
                 save.add("Click " + transform_x(noble_phantasms_x_coordinate[j]) + " " + transform_y(364));//Noble Phantasms
@@ -438,10 +436,10 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Compare " + transform_x(1560) + " " + transform_y(830) + " " + transform_x(1843) + " " + transform_y(1109) + " attack.png");
         save.add("IfGreater $R 30");
         save.add("JumpTo $StillBattle" + tag_count);
-        save.add("Wait 3000");
+        save.add("Wait 1000");
         save.add("JumpTo $StillBattleAgain" + tag_count);
         save.add("Tag $StillBattle" + tag_count);
-        save.add("Wait 3000");
+        save.add("Wait 1000");
         tag_count++;
     }
 }
