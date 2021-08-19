@@ -9,11 +9,10 @@
 /.idea/assetWizardSettings.xml
 .DS_Store
 /build
+/openCVLibrary3415/build
 /captures
 .externalNativeBuild
 .cxx
 local.properties
-/app/src/main/java/com/example/androidscript/Test/
-!/app/src/main/java/com/example/androidscript/Test/TmpMenu.java
 
 
