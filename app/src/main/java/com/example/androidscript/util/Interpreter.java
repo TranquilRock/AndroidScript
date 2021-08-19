@@ -246,7 +246,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
     //==========Helper=========================================
 
     protected static void varsSubstitution(Map<String, String> LocalVar, String command, String[] Arguments) {
-        if (Arguments[0].charAt(0) == '$'
+        if (Arguments.length > 0 && Arguments[0].charAt(0) == '$'//Exit Has No Arg
                 && !command.equals("Var")
                 && !command.equals("Subtract")
                 && !command.equals("Add")) {
