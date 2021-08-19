@@ -135,7 +135,8 @@ public class FGOScriptCompiler extends ScriptCompiler {
         if ("None".equals(block.get(2))) {
             save.add("Click " + transform_x(800) + " " + transform_y(467));
         } else {
-            switch (block.get(2)) {
+            String[] servantClass = block.get(2).split("_");
+            switch (servantClass[servantClass.length - 1]) {
                 case "All":
                     save.add("Click " + transform_x(148) + " " + transform_y(260));
                     break;
@@ -163,9 +164,8 @@ public class FGOScriptCompiler extends ScriptCompiler {
                 case "Extra":
                     save.add("Click " + transform_x(948) + " " + transform_y(260));
                     break;
-                case "Mix":
+                default:
                     save.add("Click " + transform_x(1048) + " " + transform_y(260));
-                    break;
             }
 
             save.add("Wait 500");

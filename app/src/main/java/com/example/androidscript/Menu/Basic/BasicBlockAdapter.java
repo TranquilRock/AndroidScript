@@ -71,6 +71,10 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.basic_two_var_format, parent, false);
                 return new BasicViewHolder.TwoVH(view);
+            case 3://TwoVarFormat
+                view = LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.basic_three_var_format, parent, false);
+                return new BasicViewHolder.ThreeVH(view);
             case 4://FourVarFormat
                 view = LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.basic_four_var_format, parent, false);
@@ -141,10 +145,16 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
                 holder.Inputs[0].setHint("$Var");
                 holder.Inputs[1].setHint("Value");
                 break;
+
             case "Var":
                 ((BasicViewHolder.TwoVH) holder).TitleMiddle.setVisibility(View.INVISIBLE);
                 holder.Inputs[0].setHint("$Name");
                 holder.Inputs[1].setHint("Value");
+                break;
+            case "Check":
+                holder.Inputs[0].setHint("x");
+                holder.Inputs[1].setHint("y");
+                holder.Inputs[2].setHint("color");
                 break;
             case "Swipe"://FourVH
                 holder.Inputs[0].setHint("FromX");
@@ -182,6 +192,8 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
             case "Subtract":
             case "Var":
                 return 2;
+            case "Check":
+                return 3;
             case "Swipe":
                 return 4;
             case "Compare":

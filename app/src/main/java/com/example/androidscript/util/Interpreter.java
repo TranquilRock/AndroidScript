@@ -40,6 +40,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
             "Add " + VarFormat + " " + IntVarFormat,
             "Subtract " + VarFormat + " " + IntVarFormat,
             "Var " + VarFormat + " " + IntVarFormat,
+            "Check " + VarFormat + " " + VarFormat + " " + IntVarFormat,
             "Swipe " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat,
             "Compare " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat + " " + ImgVarFormat,
     };
@@ -151,7 +152,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
             String[] Command = (MyCode.get(FileName).codes.get(commandIndex));
             String[] Arguments = new String[Command.length - 1];
             System.arraycopy(Command, 1, Arguments, 0, Command.length - 1);
-            varsSubstitution(LocalVar,Command[0],Arguments);
+            varsSubstitution(LocalVar, Command[0], Arguments);
             board.Announce(Command[0]);
             //=====================================================
             StringBuilder tt = new StringBuilder();
@@ -238,15 +239,15 @@ public class Interpreter extends Thread {//Every child only need to specify wher
     }
     //==========Helper=========================================
 
-    protected static void varsSubstitution(Map<String, String> LocalVar, String command,String[] Arguments) {
-        if(Arguments[0].charAt(0) == '$'
+    protected static void varsSubstitution(Map<String, String> LocalVar, String command, String[] Arguments) {
+        if (Arguments[0].charAt(0) == '$'
                 && !command.equals("Var")
                 && !command.equals("Subtract")
-                && !command.equals("Add")){
+                && !command.equals("Add")) {
             Arguments[0] = LocalVar.get(Arguments[0]);
         }
         for (int z = 1; z < Arguments.length; z++) {
-            if (Arguments[z].charAt(0) == '$'){//There might be Var command, that should replace $V
+            if (Arguments[z].charAt(0) == '$') {//There might be Var command, that should replace $V
                 Arguments[z] = LocalVar.get(Arguments[z]);
             }
         }

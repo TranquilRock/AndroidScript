@@ -105,6 +105,8 @@ public class BasicEditor extends UIActivity {
             case "Subtract":
             case "Var":
                 return 2;
+            case "Check":
+                return 3;
             case "Swipe":
                 return 4;
             case "Compare":

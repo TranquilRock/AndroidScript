@@ -106,24 +106,24 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         }
     }
 
-//    public static class ThreeVH extends BasicViewHolder {
-//        public ThreeVH(View view) {
-//            super(view);
-//            Inputs = new EditText[3];
-//        }
-//
-//        @Override
-//        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
-//            super.onBind(order, position, Data);
-//            Inputs[0] = view.findViewById(R.id.ThreeVarInputLeft);
-//            Inputs[1] = view.findViewById(R.id.ThreeVarInputMiddle);
-//            Inputs[2] = view.findViewById(R.id.ThreeVarInputRight);
-//            for (int z = 0; z < 3; z++) {
-//            Inputs[z].setText(Data.get(position).get(z + 1));
-//                Inputs[z].addTextChangedListener(getTextWatcher(Data, position, z + 1));
-//            }
-//        }
-//    }
+    public static class ThreeVH extends BasicViewHolder {
+        public ThreeVH(View view) {
+            super(view);
+            Inputs = new EditText[3];
+        }
+
+        @Override
+        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+            super.onBind(order, position, Data);
+            Inputs[0] = view.findViewById(R.id.ThreeVarInputLeft);
+            Inputs[1] = view.findViewById(R.id.ThreeVarInputMiddle);
+            Inputs[2] = view.findViewById(R.id.ThreeVarInputRight);
+            for (int z = 0; z < 3; z++) {
+                Inputs[z].setText(Data.get(position).get(z + 1));
+                Inputs[z].addTextChangedListener(getTextWatcher(Data, position, z + 1, this));
+            }
+        }
+    }
 
     public static class FourVH extends BasicViewHolder {
 

@@ -39,6 +39,7 @@ public class BasicButtonAdapter extends ButtonAdapter {
             case "Add":
             case "Subtract":
             case "Var":
+            case "Check":
             case "Swipe":
             case "Compare":
                 holder.button.setOnClickListener(buttonListener(ButtonText.get(position)));
@@ -51,13 +52,6 @@ public class BasicButtonAdapter extends ButtonAdapter {
     private View.OnClickListener buttonListener(String blockTitle) {
         return v -> {
             BlockContent.insertElementAt(new Vector<>(BasicEditor.Blocks.get(blockTitle)) , insertPosition);
-//            for(Vector<String> gas :BlockContent){
-//                DebugMessage.set("========================");
-//                for(String ww: gas){
-//                    DebugMessage.set(ww);
-//                }
-//                DebugMessage.set("========================");
-//            }
             onInsert.insert();
         };
     }
