@@ -404,7 +404,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("JumpTo $EndStage");
 
         save.add("Wait 2000");
-        save.add("Compare " + transform_x(1473) + " " + transform_y(635) + " " + transform_x(1597) + " " + transform_y(727) + " bond.png");
+        save.add("Compare " + transform_x(973) + " " + transform_y(535) + " " + transform_x(1460) + " " + transform_y(607) + " bond.png");
         save.add("IfGreater $R 5");
         save.add("Click " + transform_x(500) + " " + transform_y(10));
 
