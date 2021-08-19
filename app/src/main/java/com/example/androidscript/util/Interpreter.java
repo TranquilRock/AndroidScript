@@ -222,7 +222,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     LocalVar.put(Arguments[0], Arguments[1]);
                     break;
                 case "Check":
-                    if(ImageHandler.checkColor(ScreenShot.Shot(),Integer.parseInt(Arguments[0]),Integer.parseInt(Arguments[1]),Integer.decode(Arguments[2]))){
+                    if(ImageHandler.checkColor(ScreenShot.Shot(),Integer.parseInt(Arguments[0]),Integer.parseInt(Arguments[1]), Integer.decode(Arguments[2]))){
                         LocalVar.put("$R", "0");
                     } else {
                         LocalVar.put("$R", "1");
