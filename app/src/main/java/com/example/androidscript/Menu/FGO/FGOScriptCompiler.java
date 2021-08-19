@@ -32,7 +32,11 @@ public class FGOScriptCompiler extends ScriptCompiler {
         if (data.get(0).get(5).equals("0")) {
             user_size = new Size(max(ScreenShot.getHeight(), ScreenShot.getWidth()),
                     min(ScreenShot.getHeight(), ScreenShot.getWidth()));
-            user_offset = new Point(0, 0);
+            if (user_size.getWidth() * 9 >= user_size.getHeight() * 16) {
+                user_offset = new Point(user_size.getWidth() / 2.0 - user_size.getHeight() * 8.0 / 9, 0);
+            } else {
+                user_offset = new Point(0, user_size.getHeight() / 2.0 - user_size.getWidth() * 9.0 / 32);
+            }
         } else {
             user_offset = new Point(Integer.parseInt(data.get(0).get(6)), Integer.parseInt(data.get(0).get(7)));
             user_size = new Size(Integer.parseInt(data.get(0).get(8)) - Integer.parseInt(data.get(0).get(6)),
@@ -166,7 +170,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
             save.add("Wait 500");
             save.add("Tag $FriendsDNE");
 
-            save.add("Compare " + transform_x(1841) + " " + transform_y(1091) + " " + transform_x(1876) + " " + transform_y(1124)  + " bar.png");
+            save.add("Compare " + transform_x(1841) + " " + transform_y(1091) + " " + transform_x(1876) + " " + transform_y(1124) + " bar.png");
             save.add("IfGreater $R 5");
             save.add("JumpTo $Refresh");
             save.add("JumpTo $RefreshSkip");
@@ -244,6 +248,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
     }
 
     private static final int[] master_craft_x_coordinate = {-1, 1359, 1490, 1616};
+
     public static void CraftSkill(Vector<String> block) {
         float x;
         for (int j = 1; j < 4; j++) {
