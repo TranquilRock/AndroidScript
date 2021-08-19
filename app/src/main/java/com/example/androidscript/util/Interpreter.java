@@ -20,7 +20,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
     public static final String ImgFormat = "([A-Za-z0-9_/-]*).(jpg|png)";
     public static final String SptFormat = "([A-Za-z0-9_-]*).txt";
     public static final String VarFormat = "\\$([A-Za-z0-9_-]*)";
-    public static final String IntFormat = "[0-9]*";
+    public static final String IntFormat = "[0-9-]*";
     public static final String FloatFormat = "[0-9.]*";
     public static final String IntVarFormat = "(" + IntFormat + "||" + VarFormat + ")";
     public static final String ImgVarFormat = "(" + ImgFormat + "||" + VarFormat + ")";
@@ -40,7 +40,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
             "Add " + VarFormat + " " + IntVarFormat,
             "Subtract " + VarFormat + " " + IntVarFormat,
             "Var " + VarFormat + " " + IntVarFormat,
-            "Check " + VarFormat + " " + VarFormat + " " + IntVarFormat,
+            "Check " + IntVarFormat + " " + IntVarFormat + " " + IntFormat,
             "Swipe " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat,
             "Compare " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat + " " + IntVarFormat + " " + ImgVarFormat,
     };
