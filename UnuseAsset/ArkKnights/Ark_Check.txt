@@ -1,4 +1,0 @@
-Contain $1
-IfSmaller $R 1
-Return 0
-Return 1
