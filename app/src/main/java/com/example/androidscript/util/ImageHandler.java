@@ -1,29 +1,23 @@
 package com.example.androidscript.util;
 
 import android.graphics.Bitmap;
-import android.graphics.Color;
-import android.media.Image;
 
 import org.opencv.android.Utils;
 import org.opencv.core.Core;
 import org.opencv.core.CvException;
-import org.opencv.core.CvType;
 import org.opencv.core.DMatch;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfDMatch;
 import org.opencv.core.MatOfKeyPoint;
 import org.opencv.core.Point;
-import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.features2d.DescriptorMatcher;
 import org.opencv.features2d.ORB;
 import org.opencv.imgproc.Imgproc;
 
-import java.util.Vector;
-
+import static java.lang.Math.abs;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-import static java.lang.Math.sqrt;
 
 public final class ImageHandler {
     private static Mat grayScale(Bitmap bitmap) {
@@ -120,9 +114,16 @@ public final class ImageHandler {
         return new Point(mmr.maxLoc.x + template.width(), mmr.maxLoc.y + template.height());
     }
 
-    public static boolean test(Bitmap target, int x, int y, int R, int G, int B) {
-        int ret = target.getPixel(x, y);
-        DebugMessage.set("Test:::" + ret);
-        return ret > 0;
+
+    public static final int ColorThreshold = 40;
+    public static final int[] ColorMasks = {0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF};
+
+    public static boolean checkColor(Bitmap target, int x, int y, int color) {
+        int targetPixel = target.getPixel(x, y);
+        int diff = 0;
+        for (int mask : ColorMasks) {
+            diff += abs((targetPixel & mask) - (color & mask));
+        }
+        return diff > ColorThreshold;
     }
 }
