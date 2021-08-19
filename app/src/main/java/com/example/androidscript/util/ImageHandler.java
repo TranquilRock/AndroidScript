@@ -1,6 +1,7 @@
- package com.example.androidscript.util;
+package com.example.androidscript.util;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.media.Image;
 
 import org.opencv.android.Utils;
@@ -107,6 +108,7 @@ public final class ImageHandler {
         }
         return null;
     }
+
     public static Point findLocationAnyway(Bitmap screenshot, Bitmap target, double resizeRatio) {
         Mat image = toMat(screenshot);
         Mat template = new Mat();
@@ -116,5 +118,11 @@ public final class ImageHandler {
         Core.MinMaxLocResult mmr = Core.minMaxLoc(result);
         DebugMessage.set("Confidence " + mmr.maxVal);
         return new Point(mmr.maxLoc.x + template.width(), mmr.maxLoc.y + template.height());
+    }
+
+    public static boolean test(Bitmap target, int x, int y, int R, int G, int B) {
+        int ret = target.getPixel(x, y);
+        DebugMessage.set("Test:::" + ret);
+        return ret > 0;
     }
 }
