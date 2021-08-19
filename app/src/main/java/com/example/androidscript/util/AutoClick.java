@@ -28,7 +28,7 @@ public final class AutoClick extends AccessibilityService{
         path.moveTo(x1, y1);
         path.lineTo(x2, y2);
         instance.dispatchGesture(new GestureDescription.Builder().addStroke(new GestureDescription.StrokeDescription
-                (path, 0, 500)).build(), null, null);
+                (path, 0, 1000)).build(), null, null);
     }
 
 

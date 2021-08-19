@@ -116,13 +116,13 @@ public final class ImageHandler {
 
 
     public static final int ColorThreshold = 40;
-    public static final int[] ColorMasks = {0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF};
+    public static final int[] ColorMasks = {0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000};
 
     public static boolean checkColor(Bitmap target, int x, int y, int color) {
         int targetPixel = target.getPixel(x, y);
         int diff = 0;
-        for (int mask : ColorMasks) {
-            diff += abs((targetPixel & mask) - (color & mask));
+        for (int mask = 0; mask < ColorMasks.length; mask++) {
+            diff += abs((targetPixel & ColorMasks[mask]) - (color & ColorMasks[mask])) >> (8 * mask);
         }
         return diff > ColorThreshold;
     }
