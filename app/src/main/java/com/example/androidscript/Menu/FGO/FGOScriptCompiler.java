@@ -87,7 +87,8 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Compare " + transform_x(1665) + " " + transform_y(1039) + " " + transform_x(1910) + " " + transform_y(1130) + " menu.png");
         save.add("IfGreater $R 15");
         save.add("JumpTo $Ready");
-        save.add("Wait 3000");
+        save.add("Click " + transform_x(660) + " " + transform_y(900));
+        save.add("Wait 2000");
         save.add("JumpTo $ReadyAgain");
         save.add("Tag $Ready");
         save.add("Wait 1000");
@@ -423,12 +424,6 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Click " + transform_x(1800) + " " + transform_y(1100));
         save.add("Wait 1000");
         save.add("Click " + transform_x(1800) + " " + transform_y(1100));
-        save.add("Wait 2000");
-        save.add("Click " + transform_x(500) + " " + transform_y(10));
-        save.add("Wait 2000");
-        save.add("Click " + transform_x(500) + " " + transform_y(10));
-        save.add("Wait 2000");
-        save.add("Click " + transform_x(660) + " " + transform_y(900));
         save.add("Add $Loop 1");
         save.add("JumpTo $Start");
     }
