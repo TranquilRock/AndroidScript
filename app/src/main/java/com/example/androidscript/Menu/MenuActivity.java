@@ -29,10 +29,13 @@ import com.example.androidscript.util.FileOperation;
 
 import org.opencv.android.OpenCVLoader;
 
+import com.example.androidscript.util.ImageHandler;
 import com.example.androidscript.util.ScreenShot;
 
 import java.io.File;
 import java.util.Vector;
+
+import static com.example.androidscript.util.ScreenShot.Shot;
 
 public class MenuActivity extends AppCompatActivity {
     @Override
@@ -68,6 +71,7 @@ public class MenuActivity extends AppCompatActivity {
         if (!OpenCVLoader.initDebug()) {
             throw new AssertionError("OpenCV unavailable!");
         }
+        //ImageHandler.matchPicture(Bitmap.createBitmap(FileOperation.readPicAsBitmap("FGO/bang.png"), 973, 535, (1460 - 973), (607 - 535)), FileOperation.readPicAsBitmap("FGO/bond.png"));
     }
 
     @Override
