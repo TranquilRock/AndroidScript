@@ -403,6 +403,10 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("JumpTo $EndStage");
 
         save.add("Wait 2000");
+        save.add("Compare " + transform_x(1473) + " " + transform_y(635) + " " + transform_x(1597) + " " + transform_y(727) + " bond.png");
+        save.add("IfGreater $R 5");
+        save.add("Click " + transform_x(500) + " " + transform_y(10));
+
         save.add("Compare " + transform_x(1560) + " " + transform_y(830) + " " + transform_x(1843) + " " + transform_y(1109) + " attack.png");
         save.add("IfGreater $R 30");
         save.add("JumpTo $EndStageBattle");
@@ -424,7 +428,11 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Click " + transform_x(1800) + " " + transform_y(1100));
         save.add("Wait 1000");
         save.add("Click " + transform_x(1800) + " " + transform_y(1100));
-        save.add("Wait 1000");
+        save.add("Wait 2000");
+        save.add("Click " + transform_x(500) + " " + transform_y(10));
+        save.add("Wait 2000");
+        save.add("Click " + transform_x(500) + " " + transform_y(10));
+        save.add("Wait 2000");
         save.add("Click " + transform_x(660) + " " + transform_y(900));
         save.add("Add $Loop 1");
         save.add("JumpTo $Start");
