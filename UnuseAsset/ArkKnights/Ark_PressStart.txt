@@ -1,5 +1,0 @@
-CallArg Check.txt StartOperation.png
-IfGreater $R 0
-Return 1
-Click 2450 990
-Return 0

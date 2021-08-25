@@ -25,8 +25,7 @@ import com.example.androidscript.R;
 import com.example.androidscript.util.*;
 import com.example.androidscript.util.Interpreter;
 
-public class FloatingWidgetService extends Service{
-
+public class FloatingWidgetService extends Service {
     private WindowManager mWindowManager = null;
     private View mFloatingWidgetView = null, collapsedView = null, expandedView = null;
     private final Point szWindow = new Point();
@@ -54,9 +53,10 @@ public class FloatingWidgetService extends Service{
         addFloatingWidgetView();
         setUpListener();
     }
-    private void setUpListener(){
+
+    private void setUpListener() {
         this.mFloatingWidgetView.findViewById(R.id.open_activity_button).setOnClickListener(v -> {
-            Intent intent = new Intent(FloatingWidgetService.this, MenuActivity.class).putExtra("Message","Reset");
+            Intent intent = new Intent(FloatingWidgetService.this, MenuActivity.class).putExtra("Message", "Reset");
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             stopSelf();
@@ -74,7 +74,14 @@ public class FloatingWidgetService extends Service{
         this.mFloatingWidgetView.findViewById(R.id.stop_script).setOnClickListener(v -> {
             if (interpreter != null) {
                 curStatus.Announce("IDLE");
-                interpreter.running = false;
+                while (interpreter.isAlive()){
+                    interpreter.running = false;
+                    try{
+                        Thread.sleep(300);
+                    }catch (Exception e){
+                        DebugMessage.set("Stop interpreter");
+                    }
+                }
                 interpreter = null;
             }
         });
@@ -122,6 +129,7 @@ public class FloatingWidgetService extends Service{
     private View.OnTouchListener getFloatingWidgetViewTouchListener() {
         return (new View.OnTouchListener() {
             long time_start = 0;
+
             @SuppressLint("ClickableViewAccessibility")
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -217,17 +225,18 @@ public class FloatingWidgetService extends Service{
             expandedView.setVisibility(View.VISIBLE);
         }
     }
+
     private void collapseView() {
         if (mFloatingWidgetView != null) {
             collapsedView.setVisibility(View.VISIBLE);
-             expandedView.setVisibility(View.GONE);
+            expandedView.setVisibility(View.GONE);
         }
     }
 
-    private void switchView(){
-        if(mFloatingWidgetView != null && mFloatingWidgetView.findViewById(R.id.collapse_view).getVisibility() == View.VISIBLE){
+    private void switchView() {
+        if (mFloatingWidgetView != null && mFloatingWidgetView.findViewById(R.id.collapse_view).getVisibility() == View.VISIBLE) {
             expandView();
-        }else{
+        } else {
             collapseView();
         }
     }
@@ -239,7 +248,7 @@ public class FloatingWidgetService extends Service{
             mWindowManager.removeView(mFloatingWidgetView);
             mFloatingWidgetView = null;
         }
-        if(interpreter != null){
+        if (interpreter != null) {
             interpreter.running = false;
         }
     }
@@ -250,11 +259,10 @@ public class FloatingWidgetService extends Service{
         Bulletin(TextView _board) {
             board = _board;
         }
-
-        public void Announce(String announcement){
-            try{
+        public void Announce(String announcement) {
+            try {
                 new Handler(Looper.getMainLooper()).post(() -> board.setText(announcement));
-            }catch (Throwable e){
+            } catch (Throwable e) {
                 DebugMessage.set("Bulletin GG");
             }
         }

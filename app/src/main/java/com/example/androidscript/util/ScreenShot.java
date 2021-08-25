@@ -23,6 +23,7 @@ import android.media.projection.MediaProjection;
 import androidx.annotation.Nullable;
 
 import com.example.androidscript.Menu.MenuActivity;
+import com.example.androidscript.R;
 
 import org.opencv.android.OpenCVLoader;
 
@@ -59,6 +60,10 @@ public final class ScreenShot extends Service {
         if (mediaProjection != null) {
             mediaProjection.stop();
         }
+        if (ScreenShot.virtualDisplay != null) {
+            ScreenShot.virtualDisplay.release();
+            ScreenShot.virtualDisplay = null;
+        }
         ServiceStart = false;
     }
 
@@ -83,90 +88,53 @@ public final class ScreenShot extends Service {
         if (ScreenShot.Permission == null) {
             ScreenShot.Permission = intent;
         }
-
-        ScreenShot.imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, 1);
+        ScreenShot.imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, 3);
     }
 
     public static Bitmap Shot() {
-        StartDisplay();
         if (!ServiceStart) {
             DebugMessage.set("Service unavailable.\n");
             return null;
         }
-        for (int z = 0; z < 30; z++) {//Auto restart at most three times.
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            Image img = imageReader.acquireLatestImage();
-            if (img == null) {
-                try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                DebugMessage.set(z + "::No Img in Screenshot");
-                continue;
-            }
-            //TODO:Clarify following.
-            DebugMessage.set("IMAGE " + img.getWidth() + " " + img.getHeight());
-            int width;
-            int height;
-            if (Transposed) {
-                width = max(img.getHeight(), img.getWidth());
-                height = min(img.getHeight(), img.getWidth());
-            } else {
-                width = min(img.getHeight(), img.getWidth());
-                height = max(img.getHeight(), img.getWidth());
-            }
-            final Image.Plane plane = img.getPlanes()[0];
-            final ByteBuffer buffer = plane.getBuffer();
-            buffer.rewind();
-            int pixelStride = plane.getPixelStride();//像素間距
-            int rowStride = plane.getRowStride();//總間距
-            int rowPadding = rowStride - pixelStride * width;
-            Bitmap bitmap = Bitmap.createBitmap(width + rowPadding / pixelStride, height,
-                    Bitmap.Config.ARGB_8888);
-            bitmap.copyPixelsFromBuffer(buffer);
-            bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height);
-            img.close();
-            EndDisplay();
-            return bitmap;
-        }
-        return null;
-    }
 
-    private static void StartDisplay() {
-        if (ServiceStart) {
-            try {
-                ScreenShot.virtualDisplay = ScreenShot.mediaProjection.createVirtualDisplay("Screenshot",
-                        ScreenShot.screenWidth,
-                        ScreenShot.screenHeight,
-                        Resources.getSystem().getDisplayMetrics().densityDpi,
-                        DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-                        ScreenShot.imageReader.getSurface(), null, null);
-            } catch (SecurityException e) {
-                ServiceStart = false;
-                DebugMessage.printStackTrace(e);
-            }
+        Image img = imageReader.acquireLatestImage();
+        if (img == null) {
+            DebugMessage.set("No Img in Screenshot");
+            return null;
         }
-    }
 
-    private static void EndDisplay() {
-        if (ScreenShot.virtualDisplay != null) {
-            ScreenShot.virtualDisplay.release();
-            ScreenShot.virtualDisplay = null;
+        DebugMessage.set("IMAGE " + img.getWidth() + " " + img.getHeight());
+        int width;
+        int height;
+        if (Transposed) {
+            width = max(img.getHeight(), img.getWidth());
+            height = min(img.getHeight(), img.getWidth());
+        } else {
+            width = min(img.getHeight(), img.getWidth());
+            height = max(img.getHeight(), img.getWidth());
         }
+        final Image.Plane plane = img.getPlanes()[0];
+        final ByteBuffer buffer = plane.getBuffer();
+        buffer.rewind();
+        int pixelStride = plane.getPixelStride();//像素間距
+        int rowStride = plane.getRowStride();//總間距
+        int rowPadding = rowStride - pixelStride * width;
+        Bitmap bitmap = Bitmap.createBitmap(width + rowPadding / pixelStride, height,
+                Bitmap.Config.ARGB_8888);
+        bitmap.copyPixelsFromBuffer(buffer);
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height);
+        img.close();
+        return bitmap;
     }
 
     private void createNotificationChannel() {
+        PendingIntent navigate = PendingIntent.getActivity(this, 0, new Intent(this, MenuActivity.class).putExtra("Message", "Reset"), 0);
         Notification.Builder builder = new Notification.Builder(getApplicationContext());
-        builder.setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MenuActivity.class).putExtra("Message", "Reset"), 0))
+        builder.setContentIntent(navigate)
                 .setContentTitle("AndroidScript")
                 .setContentText("Capturing Screen")
-                .setPriority(Notification.PRIORITY_HIGH)
-                .setWhen(System.currentTimeMillis());
+                .setSmallIcon(R.drawable.ic_launcher_foreground) //Necessary
+                .setPriority(Notification.PRIORITY_HIGH).build();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setChannelId("notification_id");
@@ -175,9 +143,7 @@ public final class ScreenShot extends Service {
             notificationManager.createNotificationChannel(channel);
         }
 
-        Notification notification = builder.build();
-        notification.defaults = Notification.DEFAULT_SOUND;
-        startForeground(13, notification);
+        startForeground(13, builder.build());
     }
 
     @Nullable
@@ -192,11 +158,22 @@ public final class ScreenShot extends Service {
         createNotificationChannel();
         ScreenShot.mediaProjection = ScreenShot.mediaProjectionManager.getMediaProjection(Activity.RESULT_OK, ScreenShot.Permission);
         ScreenShot.ServiceStart = true;
+        ScreenShot.virtualDisplay = ScreenShot.mediaProjection.createVirtualDisplay("Screenshot",
+                ScreenShot.screenWidth,
+                ScreenShot.screenHeight,
+                Resources.getSystem().getDisplayMetrics().densityDpi,
+                DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+                ScreenShot.imageReader.getSurface(), null, null);
         DebugMessage.set("Start Screen Casting on (" + screenHeight + "," + screenWidth + ") device\n");
         return 0;
     }
 
     public static int compare(Bitmap Target, int x1, int y1, int x2, int y2) {
-        return ImageHandler.matchPicture(Bitmap.createBitmap(Shot(), x1, y1, (x2 - x1), (y2 - y1)), Target);
+        Bitmap screen = Shot();
+        if (screen == null) {
+            return 0;
+        } else {
+            return ImageHandler.matchPicture(Bitmap.createBitmap(screen, x1, y1, (x2 - x1), (y2 - y1)), Target);
+        }
     }
 }

@@ -1,8 +1,0 @@
-CallArg Check.txt RestoreSanityStone.png
-IfGreater $R 0
-Return 1
-Click 2415 1150
-Call PressEnter.txt
-IfGreater $R 0
-JumpTo 4
-Return 0

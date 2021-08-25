@@ -91,6 +91,9 @@ public final class ImageHandler {
     }
 
     public static Point findLocation(Bitmap screenshot, Bitmap target, double resizeRatio) {
+        if(screenshot == null){
+            return null;
+        }
         Mat image = toMat(screenshot);
         Mat template = new Mat();
         Imgproc.resize(toMat(target), template, new Size(target.getWidth() * resizeRatio, target.getHeight() * resizeRatio));
@@ -120,6 +123,9 @@ public final class ImageHandler {
     public static final int[] ColorMasks = {0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000};
 
     public static boolean checkColor(Bitmap target, int x, int y, int color) {
+        if(target == null){
+            return false;
+        }
         int targetPixel = target.getPixel(x, y);
         int diff = 0;
         for (int mask = 0; mask < ColorMasks.length; mask++) {
