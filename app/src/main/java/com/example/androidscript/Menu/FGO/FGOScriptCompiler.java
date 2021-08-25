@@ -401,7 +401,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("IfGreater $R 5");
         save.add("JumpTo $EndStage");
 
-        save.add("Click " + transform_x(960) + " " + transform_y(20));
+        save.add("Click " + transform_x(960) + " " + transform_y(70));
 
         save.add("Compare " + transform_x(1560) + " " + transform_y(830) + " " + transform_x(1843) + " " + transform_y(1109) + " attack.png");
         save.add("IfGreater $R 30");
