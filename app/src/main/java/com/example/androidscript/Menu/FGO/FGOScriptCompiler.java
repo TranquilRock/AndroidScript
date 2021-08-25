@@ -187,7 +187,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
             save.add("JumpTo $FriendsDNE");
             save.add("Tag $Friends");
             if (!block.get(3).equals("None")) {//Servant Craft
-                save.add("Compare " + transform_x(70) + " " + transform_y(310) + " " + transform_x(330) + " " + transform_y(700) + " Craft/" + block.get(3) + ".png");
+                save.add("Compare " + transform_x(70) + " " + transform_y(480) + " " + transform_x(330) + " " + transform_y(700) + " Craft/" + block.get(3) + ".png");
                 save.add("IfGreater $R 5");
                 save.add("JumpTo $Craft");
                 save.add("Wait 2000");
@@ -198,7 +198,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
                 save.add("JumpTo $CraftEnd");
                 save.add("Tag $CraftEnd");
             }
-            save.add("Click " + transform_x(800) + " " + transform_y(480));
+            save.add("Click " + transform_x(800) + " " + transform_y(540));
             save.add("JumpTo $FriendsEnd");
             save.add("Tag $FriendsEnd");
         }
@@ -401,10 +401,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("IfGreater $R 5");
         save.add("JumpTo $EndStage");
 
-        save.add("Wait 2000");
-        save.add("Compare " + transform_x(973) + " " + transform_y(535) + " " + transform_x(1460) + " " + transform_y(607) + " bond.png");
-        save.add("IfGreater $R 5");
-        save.add("Click " + transform_x(500) + " " + transform_y(10));
+        save.add("Click " + transform_x(960) + " " + transform_y(20));
 
         save.add("Compare " + transform_x(1560) + " " + transform_y(830) + " " + transform_x(1843) + " " + transform_y(1109) + " attack.png");
         save.add("IfGreater $R 30");
