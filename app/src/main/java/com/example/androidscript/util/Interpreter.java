@@ -132,6 +132,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
         assert (run_arg_depth != -1);
         this.run(ScriptName, run_arg_argv, run_arg_depth);
         board.Announce("IDLE");
+        this.running = false;
     }
 
     protected int run(String FileName, String[] argv, int depth) {//Run code that is already read in MyCode
@@ -182,7 +183,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     return Integer.parseInt(Arguments[0]);
                 case "ClickPic":
                     Bitmap tmp = ReadImgFromFile(Arguments[0]);
-                    Point target = ImageHandler.findLocation(ScreenShot.Shot(), tmp, Double.valueOf(Arguments[1]));
+                    Point target = ImageHandler.findLocation(ScreenShot.Shot(), tmp, Double.parseDouble(Arguments[1]));
                     if (target != null) {
                         delay();
                         DebugMessage.set("Clicking Picture:" + target.x + " " + target.y);
@@ -240,6 +241,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                 default:
                     throw new RuntimeException("Cannot Recognize " + Command[0]);
             }
+            delay();
         }
         return 0;
     }

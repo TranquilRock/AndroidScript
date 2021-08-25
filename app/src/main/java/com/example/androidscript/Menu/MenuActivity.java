@@ -50,7 +50,6 @@ public class MenuActivity extends AppCompatActivity {
         BtnMaker.Jump(R.id.button_to_ArkUI, this, ArkKnightsEditor.class);
         BtnMaker.JumpWithMessage(R.id.button_to_FGO, this, SelectFile.class, "next_destination", "com.example.androidscript.Menu.FGO.FGOEditor");
 
-
         Button btn = findViewById(R.id.button_to_basic_landscape);
         btn.setOnClickListener((v -> {
             Intent intent = new Intent(this,SelectFile.class );
@@ -71,7 +70,6 @@ public class MenuActivity extends AppCompatActivity {
         if (!OpenCVLoader.initDebug()) {
             throw new AssertionError("OpenCV unavailable!");
         }
-        //ImageHandler.matchPicture(Bitmap.createBitmap(FileOperation.readPicAsBitmap("FGO/bang.png"), 973, 535, (1460 - 973), (607 - 535)), FileOperation.readPicAsBitmap("FGO/bond.png"));
     }
 
     @Override
@@ -84,6 +82,7 @@ public class MenuActivity extends AppCompatActivity {
     public void endService(boolean stop){
         AutoClick.stop();
         ScreenShot.endProjection();
+        stopService(new Intent(this,FloatingWidgetService.class));
         stopService(new Intent(this, ScreenShot.class));
         if(stop){
             this.finish();
