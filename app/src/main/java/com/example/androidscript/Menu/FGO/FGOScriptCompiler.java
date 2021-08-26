@@ -194,7 +194,6 @@ public class FGOScriptCompiler extends ScriptCompiler {
                 save.add("Swipe " + transform_x(960) + " " + transform_y(937) + " " + transform_x(960) + " " + transform_y(689));
                 save.add("JumpTo $FriendsDNE");
                 save.add("Tag $Craft");
-                save.add("Click " + transform_x(800) + " " + transform_y(540));
                 save.add("JumpTo $CraftEnd");
                 save.add("Tag $CraftEnd");
             }
@@ -398,16 +397,17 @@ public class FGOScriptCompiler extends ScriptCompiler {
 
         save.add("Tag $EndStageAgain");
         save.add("Compare " + transform_x(50) + " " + transform_y(200) + " " + transform_x(500) + " " + transform_y(380) + " end.png");
-        save.add("IfGreater $R 5");
+        save.add("IfGreater $R 3");
         save.add("JumpTo $EndStage");
 
-        save.add("Click " + transform_x(960) + " " + transform_y(20));
+
 
         save.add("Compare " + transform_x(1560) + " " + transform_y(830) + " " + transform_x(1843) + " " + transform_y(1109) + " attack.png");
         save.add("IfGreater $R 30");
         save.add("JumpTo $EndStageBattle");
-        save.add("Wait 2000");
 
+        save.add("Click " + transform_x(960) + " " + transform_y(85));
+        save.add("Wait 2000");
 
         save.add("JumpTo $EndStageAgain");
         save.add("Tag $EndStageBattle");
