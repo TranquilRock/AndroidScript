@@ -208,7 +208,6 @@ public class FGOScriptCompiler extends ScriptCompiler {
 
     public static void CraftSkillAux(float x, float servant) {
         save.add("Click " + transform_x(1798) + " " + transform_y(530));//Click Master Craft Skill
-        save.add("Wait 500");
         save.add("Click " + transform_x(x) + " " + transform_y(530));//開技能
         save.add("Compare " + transform_x(382) + " " + transform_y(626) + " " + transform_x(908) + " " + transform_y(766) + " cancel_btn.png");
         save.add("IfGreater $R 5");
@@ -219,7 +218,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Click " + transform_x(645) + " " + transform_y(696));//取消BUG
         save.add("JumpTo $CraftSkillEnd" + tag_count);
         save.add("Tag $CraftSkillEnd" + tag_count);
-        save.add("Wait 3300");
+        save.add("Wait 1100");
         tag_count++;
     }
 
@@ -266,7 +265,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
                     save.add("Click " + transform_x(645) + " " + transform_y(696));//取消BUG
                     save.add("JumpTo $CraftSkillEnd" + tag_count);
                     save.add("Tag $CraftSkillEnd" + tag_count);
-                    save.add("Wait 3300");
+                    save.add("Wait 1100");
                     tag_count++;
                     break;
                 case "2":
@@ -326,7 +325,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Click " + transform_x(645) + " " + transform_y(696));//取消BUG
         save.add("JumpTo $SkillEnd" + tag_count);
         save.add("Tag $SkillEnd" + tag_count);
-        save.add("Wait 3300");
+        save.add("Wait 1100");
         tag_count++;
     }
 
@@ -350,7 +349,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
                     save.add("Click " + transform_x(645) + " " + transform_y(696));//取消BUG
                     save.add("JumpTo $SkillEnd" + tag_count);
                     save.add("Tag $SkillEnd" + tag_count);
-                    save.add("Wait 3300");
+                    save.add("Wait 1100");
                     tag_count++;
                     break;
                 case "2"://target servant 1
@@ -381,7 +380,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Click " + transform_x(1032) + " " + transform_y(835));//Command Card
         save.add("Click " + transform_x(1453) + " " + transform_y(835));//Command Card
         save.add("Click " + transform_x(1874) + " " + transform_y(835));//Command Card
-        save.add("Wait 10000");
+        save.add("Wait 8000");
     }
 
     private static final Vector<String> ClickAll = new Vector<>();
@@ -395,7 +394,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
 
     public static void End() {
 
-        save.add("Wait 2000");
+        save.add("Wait 15000");
         save.add("Tag $EndStageAgain");
         save.add("Compare " + transform_x(50) + " " + transform_y(200) + " " + transform_x(500) + " " + transform_y(380) + " end.png");
         save.add("IfGreater $R 5");
