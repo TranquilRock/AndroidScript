@@ -395,9 +395,10 @@ public class FGOScriptCompiler extends ScriptCompiler {
 
     public static void End() {
 
+        save.add("Wait 2000");
         save.add("Tag $EndStageAgain");
         save.add("Compare " + transform_x(50) + " " + transform_y(200) + " " + transform_x(500) + " " + transform_y(380) + " end.png");
-        save.add("IfGreater $R 3");
+        save.add("IfGreater $R 5");
         save.add("JumpTo $EndStage");
 
 
