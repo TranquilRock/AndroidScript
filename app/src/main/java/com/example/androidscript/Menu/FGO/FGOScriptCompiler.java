@@ -120,7 +120,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
                 save.add("Click " + transform_x(960) + " " + transform_y(750));
                 break;
             case "4":
-                save.add("Swipe " + transform_x(960) + " " + transform_y(908) + " " + transform_x(960) + " " + transform_y(516));
+                save.add("Click " + transform_x(960) + " " + transform_y(904));
                 break;
         }
         save.add("Wait 300");
