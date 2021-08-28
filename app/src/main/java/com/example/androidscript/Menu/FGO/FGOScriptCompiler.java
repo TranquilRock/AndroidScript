@@ -49,21 +49,26 @@ public class FGOScriptCompiler extends ScriptCompiler {
         for (Vector<String> block : data) {
             switch (block.get(0)) {
                 case "PreStage":
+                    save.add("Log PreStage");
                     PreStage(block);
                     break;
                 case "CraftSkill":
+                    save.add("Log CraftSkill");
                     CheckStillBattle();
                     CraftSkill(block);
                     break;
                 case "Skill":
+                    save.add("Log Skill");
                     CheckStillBattle();
                     Skill(block);
                     break;
                 case "NoblePhantasms":
+                    save.add("Log NoblePhantasms");
                     CheckStillBattle();
                     NoblePhantasms(block);
                     break;
                 case "End":
+                    save.add("Log End");
                     End();
                     break;
             }
@@ -84,9 +89,6 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Var $Loop 1");
         save.add("Tag $Start");
 
-        save.add("IfGreater $Loop " + block.get(4));
-        save.add("Exit");
-
         save.add("Tag $ReadyAgain");
         save.add("Compare " + transform_x(1665) + " " + transform_y(1039) + " " + transform_x(1910) + " " + transform_y(1130) + " menu.png");
         save.add("IfGreater $R 15");
@@ -96,6 +98,10 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("JumpTo $ReadyAgain");
         save.add("Tag $Ready");
         save.add("Wait 1000");
+
+
+        save.add("IfGreater $Loop " + block.get(4));
+        save.add("Exit");
 
         save.add("Click " + transform_x(1400) + " " + transform_y(320)); //選擇上次關卡
         save.add("Wait 3000");
@@ -218,7 +224,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Click " + transform_x(645) + " " + transform_y(696));//取消BUG
         save.add("JumpTo $CraftSkillEnd" + tag_count);
         save.add("Tag $CraftSkillEnd" + tag_count);
-        save.add("Wait 1100");
+        save.add("Wait 2100");
         tag_count++;
     }
 
@@ -265,7 +271,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
                     save.add("Click " + transform_x(645) + " " + transform_y(696));//取消BUG
                     save.add("JumpTo $CraftSkillEnd" + tag_count);
                     save.add("Tag $CraftSkillEnd" + tag_count);
-                    save.add("Wait 1100");
+                    save.add("Wait 2100");
                     tag_count++;
                     break;
                 case "2":
@@ -325,7 +331,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Click " + transform_x(645) + " " + transform_y(696));//取消BUG
         save.add("JumpTo $SkillEnd" + tag_count);
         save.add("Tag $SkillEnd" + tag_count);
-        save.add("Wait 1100");
+        save.add("Wait 2100");
         tag_count++;
     }
 
@@ -349,7 +355,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
                     save.add("Click " + transform_x(645) + " " + transform_y(696));//取消BUG
                     save.add("JumpTo $SkillEnd" + tag_count);
                     save.add("Tag $SkillEnd" + tag_count);
-                    save.add("Wait 1100");
+                    save.add("Wait 2100");
                     tag_count++;
                     break;
                 case "2"://target servant 1
@@ -394,13 +400,12 @@ public class FGOScriptCompiler extends ScriptCompiler {
 
     public static void End() {
 
-        save.add("Wait 15000");
+        save.add("Wait 3000");
         save.add("Tag $EndStageAgain");
-        save.add("Compare " + transform_x(50) + " " + transform_y(200) + " " + transform_x(500) + " " + transform_y(380) + " end.png");
+
+        save.add("Compare " + transform_x(1556) + " " + transform_y(1031) + " " + transform_x(1777) + " " + transform_y(1116) + " end.png");
         save.add("IfGreater $R 5");
         save.add("JumpTo $EndStage");
-
-
 
         save.add("Compare " + transform_x(1560) + " " + transform_y(830) + " " + transform_x(1843) + " " + transform_y(1109) + " attack.png");
         save.add("IfGreater $R 30");
@@ -417,13 +422,9 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("JumpTo $EndStageAgain");
         save.add("Tag $EndStage");
         save.add("Wait 1000");
-        save.add("Click " + transform_x(1800) + " " + transform_y(1100));
+        save.add("Click " + transform_x(1658) + " " + transform_y(1073));
         save.add("Wait 1000");
-        save.add("Click " + transform_x(1800) + " " + transform_y(1100));
-        save.add("Wait 1000");
-        save.add("Click " + transform_x(1800) + " " + transform_y(1100));
-        save.add("Wait 1000");
-        save.add("Click " + transform_x(1800) + " " + transform_y(1100));
+        save.add("Click " + transform_x(1658) + " " + transform_y(1073));
         save.add("Add $Loop 1");
         save.add("JumpTo $Start");
     }
