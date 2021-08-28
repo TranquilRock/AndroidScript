@@ -27,6 +27,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
     public static final String AnyFormat = "[a-zA-Z.0-9 $]*";
     public static final String[] SUPPORTED_COMMAND = {
             "Exit",
+            "Log " + AnyFormat,
             "JumpTo " + IntVarFormat,
             "Wait " + IntVarFormat,
             "Call " + SptFormat,
@@ -130,12 +131,18 @@ public class Interpreter extends Thread {//Every child only need to specify wher
     public final void run() {
         assert (ScriptName != null);
         assert (run_arg_depth != -1);
-        this.run(ScriptName, run_arg_argv, run_arg_depth);
-        board.Announce("IDLE");
-        this.running = false;
+        board.Announce("Running");
+        try {
+            this.run(ScriptName, run_arg_argv, run_arg_depth);
+        } catch (InterruptedException e) {
+            DebugMessage.set("Interrupted");
+        }finally {
+            this.running = false;
+            board.Announce("IDLE");
+        }
     }
 
-    protected int run(String FileName, String[] argv, int depth) {//Run code that is already read in MyCode
+    protected int run(String FileName, String[] argv, int depth) throws InterruptedException {//Run code that is already read in MyCode
         assert (depth < 5);
         Map<String, String> LocalVar = new HashMap<>();
         parseArguments(LocalVar, argv);
@@ -154,7 +161,6 @@ public class Interpreter extends Thread {//Every child only need to specify wher
             String[] Arguments = new String[Command.length - 1];
             System.arraycopy(Command, 1, Arguments, 0, Command.length - 1);
             varsSubstitution(LocalVar, Command[0], Arguments);
-            board.Announce(Command[0]);
             //=====================================================
             StringBuilder tt = new StringBuilder();
             tt.append(Command[0] + " ");
@@ -167,6 +173,9 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                 case "Exit":
                     this.running = false;
                     return 1;
+                case "Log":
+                    board.Announce(Arguments[0]);
+                    break;
                 case "JumpTo":
                     commandIndex = Integer.parseInt(Arguments[0]) - 1;//One-based
                     break;
@@ -175,7 +184,6 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     break;
                 case "Call":
                     LocalVar.put("$R", String.valueOf(run(Arguments[0], null, depth + 1)));
-                    board.Announce(depth + "  " + FileName);
                     break;
                 case "Tag":
                     break;
@@ -201,7 +209,6 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     String[] nextArgv = new String[Command.length - 2];
                     System.arraycopy(Arguments, 1, nextArgv, 0, Command.length - 2);
                     LocalVar.put("$R", String.valueOf(run(Arguments[0], nextArgv, depth + 1)));
-                    board.Announce(depth + "  " + FileName);
                     break;
                 case "IfGreater":
                     if (Integer.parseInt(Arguments[0]) <= Integer.parseInt(Arguments[1])) {//Failed, skip next line
@@ -223,7 +230,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     LocalVar.put(Arguments[0], Arguments[1]);
                     break;
                 case "Check":
-                    if(ImageHandler.checkColor(ScreenShot.Shot(),Integer.parseInt(Arguments[0]),Integer.parseInt(Arguments[1]), Integer.decode(Arguments[2]))){
+                    if (ImageHandler.checkColor(ScreenShot.Shot(), Integer.parseInt(Arguments[0]), Integer.parseInt(Arguments[1]), Integer.decode(Arguments[2]))) {
                         LocalVar.put("$R", "0");
                     } else {
                         LocalVar.put("$R", "1");
@@ -272,16 +279,12 @@ public class Interpreter extends Thread {//Every child only need to specify wher
         }
     }
 
-    protected static void sleep(int ms) {
-        try {
-            Thread.sleep(ms);
-        } catch (Exception e) {
-            DebugMessage.printStackTrace(e);
-        }
+    protected static void sleep(int ms) throws InterruptedException {
+        Thread.sleep(ms);
     }
 
-    protected static void delay() {
-        sleep(500);
+    protected static void delay() throws InterruptedException {
+        Thread.sleep(200);
     }
 
 }

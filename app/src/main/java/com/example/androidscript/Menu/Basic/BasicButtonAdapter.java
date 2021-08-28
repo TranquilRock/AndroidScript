@@ -26,6 +26,7 @@ public class BasicButtonAdapter extends ButtonAdapter {
         holder.button.setText(ButtonText.get(position));
         switch (ButtonText.get(position)) {
             case "Exit":
+            case "Log":
             case "JumpTo":
             case "Wait":
             case "Call":

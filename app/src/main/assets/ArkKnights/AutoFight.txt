@@ -1,8 +1,17 @@
 Var $T $1
 IfSmaller $T 1
 Return 0
+Log PressEnter
 CallArg Press.txt PressEnterOperation.png 0
+Log PressStart
 CallArg Press.txt PressStartOperation.png 0
-CallArg Press.txt PressOperationEnd.png 8000
+Tag $End
+Wait 5000
+Log CheckLevUp
+CallArg TryPress.txt LevelUp.png
+Log PressEnd
+CallArg TryPress.txt PressOperationEnd.png
+IfGreater $R 0
+JumpTo $End
 Subtract $T 1
 JumpTo 1

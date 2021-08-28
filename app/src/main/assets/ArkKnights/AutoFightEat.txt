@@ -2,13 +2,21 @@ Var $T $1
 IfSmaller $T 1
 Return 0
 Tag $Enter
+Log PressEnter
 CallArg TryPress.txt PressEnterOperation.png
+Log PressStart
 CallArg TryPress.txt PressStartOperation.png
 IfSmaller $R 1
 JumpTo $End
 CallArg TryPress.txt $2
 JumpTo $Enter
 Tag $End
-CallArg Press.txt PressOperationEnd.png 8000
+Wait 5000
+Log CheckLevUp
+CallArg TryPress.txt LevelUp.png
+Log PressEnd
+CallArg TryPress.txt PressOperationEnd.png
+IfGreater $R 0
+JumpTo $End
 Subtract $T 1
 JumpTo 1

@@ -73,14 +73,9 @@ public class FloatingWidgetService extends Service {
 
         this.mFloatingWidgetView.findViewById(R.id.stop_script).setOnClickListener(v -> {
             if (interpreter != null) {
-                curStatus.Announce("IDLE");
-                while (interpreter.isAlive()){
-                    interpreter.running = false;
-                    try{
-                        Thread.sleep(300);
-                    }catch (Exception e){
-                        DebugMessage.set("Stop interpreter");
-                    }
+                interpreter.running = false;
+                if(interpreter.isAlive()){
+                    interpreter.interrupt();
                 }
                 interpreter = null;
             }
@@ -259,6 +254,7 @@ public class FloatingWidgetService extends Service {
         Bulletin(TextView _board) {
             board = _board;
         }
+
         public void Announce(String announcement) {
             try {
                 new Handler(Looper.getMainLooper()).post(() -> board.setText(announcement));
