@@ -105,11 +105,13 @@ public class FGOScriptCompiler extends ScriptCompiler {
 
         save.add("Click " + transform_x(1400) + " " + transform_y(320)); //選擇上次關卡
         save.add("Wait 3000");
+
         save.add("Compare " + transform_x(757) + " " + transform_y(922) + " " + transform_x(1149) + " " + transform_y(1041) + " close_btn.png");
         save.add("IfGreater $R 5");
         save.add("JumpTo $Apple");
         save.add("JumpTo $AppleEnd");
         save.add("Tag $Apple");
+
         switch (block.get(1)) {
             case "0":
                 save.add("Wait 300000");
@@ -129,12 +131,23 @@ public class FGOScriptCompiler extends ScriptCompiler {
                 save.add("Click " + transform_x(960) + " " + transform_y(904));
                 break;
         }
-        save.add("Wait 300");
+        save.add("Wait 1000");
+        save.add("Compare " + transform_x(757) + " " + transform_y(922) + " " + transform_x(1149) + " " + transform_y(1041) + " close_btn.png");
+        save.add("IfGreater $R 5");
+        save.add("JumpTo $AppleErr");
+        save.add("JumpTo $AppleNoErr");
+        save.add("Tag $AppleErr");
+        save.add("Click " + transform_x(924) + " " + transform_y(1002));
+        save.add("JumpTo $ReadyAgain");
+        save.add("Tag $AppleNoErr");
+
+        save.add("Wait 1000");
         save.add("Click " + transform_x(1260) + " " + transform_y(900));
-        save.add("Wait 300");
-        save.add("Click " + transform_x(960) + " " + transform_y(987));
+        save.add("Wait 1000");
         save.add("Tag $AppleEnd");
         save.add("Wait 1000");
+
+
 
         if ("None".equals(block.get(2))) {
             save.add("Click " + transform_x(800) + " " + transform_y(467));
@@ -175,8 +188,8 @@ public class FGOScriptCompiler extends ScriptCompiler {
             save.add("Wait 500");
             save.add("Tag $FriendsDNE");
 
-            save.add("Check " + transform_x(1859) + " " + transform_y(1073) + " " + 0xFFF9F9F9);
-            save.add("IfSmaller $R 1");
+            save.add("Var $FriendsDown 0");
+            save.add("IfGreater $FriendsDown 5");
             save.add("JumpTo $Refresh");
             save.add("JumpTo $RefreshSkip");
             save.add("Tag $Refresh");
@@ -185,7 +198,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
             save.add("Click " + transform_x(1259) + " " + transform_y(905));
             save.add("Wait 2000");
             save.add("Tag $RefreshSkip");
-            save.add("Compare " + transform_x(70) + " " + transform_y(310) + " " + transform_x(330) + " " + transform_y(700) + " Friend/" + block.get(2) + ".png");
+            save.add("Compare " + transform_x(70) + " " + transform_y(340) + " " + transform_x(330) + " " + transform_y(624) + " Friend/" + block.get(2) + ".png");
             save.add("IfGreater $R 50");
             save.add("JumpTo $Friends");
             save.add("Wait 2000");
@@ -414,13 +427,12 @@ public class FGOScriptCompiler extends ScriptCompiler {
 
         save.add("Click " + transform_x(960) + " " + transform_y(85));
         save.add("Wait 2000");
-
         save.add("JumpTo $EndStageAgain");
+
         save.add("Tag $EndStageBattle");
-
         NoblePhantasms(ClickAll);
-
         save.add("JumpTo $EndStageAgain");
+
         save.add("Tag $EndStage");
         save.add("Wait 1000");
         save.add("Click " + transform_x(1658) + " " + transform_y(1073));
