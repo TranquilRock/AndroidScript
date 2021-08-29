@@ -236,8 +236,9 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("Compare " + transform_x(382) + " " + transform_y(626) + " " + transform_x(908) + " " + transform_y(766) + " cancel_btn.png");
         save.add("IfGreater $R 5");
         save.add("JumpTo $CraftSkill" + tag_count);
-        save.add("Click " + transform_x(servant1) + " " + transform_y(servant2));//換
-        save.add("Click " + transform_x(1120) + " " + transform_y(590));
+        save.add("Click " + transform_x(servant1) + " " + transform_y(590));//換
+        save.add("Click " + transform_x(servant2) + " " + transform_y(590));//換
+//        save.add("Click " + transform_x(1120) + " " + transform_y(590));
         save.add("Click " + transform_x(950) + " " + transform_y(1000));
         save.add("JumpTo $CraftSkillEnd" + tag_count);
         save.add("Tag $CraftSkill" + tag_count);
