@@ -131,7 +131,7 @@ public class FGOScriptCompiler extends ScriptCompiler {
                 save.add("Click " + transform_x(960) + " " + transform_y(904));
                 break;
         }
-        save.add("Wait 1000");
+        save.add("Wait 3000");
         save.add("Compare " + transform_x(757) + " " + transform_y(922) + " " + transform_x(1149) + " " + transform_y(1041) + " close_btn.png");
         save.add("IfGreater $R 5");
         save.add("JumpTo $AppleErr");
@@ -141,9 +141,9 @@ public class FGOScriptCompiler extends ScriptCompiler {
         save.add("JumpTo $ReadyAgain");
         save.add("Tag $AppleNoErr");
 
-        save.add("Wait 1000");
+        save.add("Wait 3000");
         save.add("Click " + transform_x(1260) + " " + transform_y(900));
-        save.add("Wait 1000");
+        save.add("Wait 3000");
         save.add("Tag $AppleEnd");
         save.add("Wait 1000");
 
