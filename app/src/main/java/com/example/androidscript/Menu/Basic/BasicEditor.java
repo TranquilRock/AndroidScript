@@ -121,5 +121,14 @@ public class BasicEditor extends UIActivity {
     }
 
     @Override
-    protected void resourceInitialize() {}
+    protected void resourceInitialize() {
+        try {
+            FileOperation.readDir(FolderName);
+            for (String file : getAssets().list(FolderName)) {
+                getResource(FolderName, file);
+            }
+        } catch (Exception e) {
+            DebugMessage.printStackTrace(e);
+        }
+    }
 }

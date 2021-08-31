@@ -63,10 +63,17 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
         save.add("Add " + VarName + " 1");
     }
 
-    private static void checkMenu(String trueTag) {
+    private static void waitUntilMenuAndSelectStage() {
+        save.add("Tag $NotReadyToEnterStage");
         save.add("Compare " + transform_x(1665) + " " + transform_y(1039) + " " + transform_x(1910) + " " + transform_y(1130) + " menu.png");
         save.add("IfGreater $R 15");
-        save.add("JumpTo " + trueTag);
+        save.add("JumpTo $ReadyToEnterStage");
+        save.add("Wait 1000");
+        save.add("JumpTo $NotReadyToEnterStage");
+
+        save.add("Tag $ReadyToEnterStage");
+        save.add("Wait 1000");
+        save.add("Click " + transform_x(1400) + " " + transform_y(320)); //Select stage
     }
 
     private static void checkFriendPage(String trueTag) {
@@ -82,6 +89,7 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
     }
 
     private static void selectFriend(String EntryTag, String Servant, String Craft) {
+        save.add("Tag " + EntryTag);
         if ("None".equals(Servant)) {
             save.add("Click " + transform_x(800) + " " + transform_y(467));
             save.add("JumpTo $FriendEnd");
@@ -195,28 +203,29 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
     }
 
     private static void PreStage(Vector<String> block) {
-        //Init
+        //================Init======================
+        save.add("Var $Continue 0");
         save.add("Var $Loop 1");
-        //Start
+        //================Start=====================
         save.add("Tag $Start");
         countDownAndExit("$Loop", block.get(4));
-        //================Entering Stage==========================
-        save.add("Tag $NotReadyToEnterStage");
-        checkMenu("$ReadyToEnterStage");
-        save.add("Wait 1000");
-        save.add("JumpTo $NotReadyToEnterStage");
-
-        save.add("Tag $ReadyToEnterStage");
-        save.add("Wait 1000");
-        save.add("Click " + transform_x(1400) + " " + transform_y(320)); //Select stage
-        //========================================================
+        save.add("IfGreater $Continue 0");
+        save.add("JumpTo $BeforeEnter");
+        waitUntilMenuAndSelectStage();
         save.add("Tag $BeforeEnter");
         checkFriendPage("$ChooseFriend");
         checkApplePage("$EatApple");
         save.add("JumpTo $BeforeEnter");
         eatApple("$EatApple", block.get(1));
+        save.add("Tag $WaitToSelectFriend");
+        checkFriendPage("$ChooseFriend");
+        save.add("JumpTo $WaitToSelectFriend");
         selectFriend("$ChooseFriend", block.get(2), block.get(3));
+        save.add("IfGreater $Continue 0");
+        save.add("JumpTo $PreStageEnd");
         waitUntilClickEnter();
+        save.add("Tag $PreStageEnd");
+        save.add("Var $Continue 0");
     }
 
     private static void CraftSkillAux(float x, float servant) {
@@ -406,7 +415,6 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
     }
 
     private static void End() {
-
         save.add("Wait 3000");
         save.add("Tag $EndStageAgain");
 
@@ -431,7 +439,26 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
         save.add("Click " + transform_x(1658) + " " + transform_y(1073));
         save.add("Wait 1000");
         save.add("Click " + transform_x(1658) + " " + transform_y(1073));
+
+        save.add("Tag $Ending");
+        //Check is menu
+        save.add("Compare " + transform_x(1665) + " " + transform_y(1039) + " " + transform_x(1910) + " " + transform_y(1130) + " menu.png");
+        save.add("IfGreater $R 15");
         save.add("JumpTo $Start");
+
+        //Check Continue
+        save.add("Compare " + transform_x(1046) + " " + transform_y(852) + " " + transform_x(1472) + " " + transform_y(975) + " contdbtn.png");
+        save.add("IfSmaller $R 15");
+        save.add("JumpTo $SafeClick");
+        save.add("Click " + transform_x(1211) + " " + transform_y(910));
+        save.add("Var $Continue 1");
+        save.add("JumpTo $Start");
+
+
+        save.add("Tag $SafeClick");
+        save.add("Wait 1000");
+        save.add("Click " + transform_x(960) + " " + transform_y(85));
+        save.add("JumpTo $Ending");
     }
 
     private static void waitUntilAttackButton() {

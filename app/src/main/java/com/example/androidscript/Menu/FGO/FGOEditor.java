@@ -32,7 +32,7 @@ public class FGOEditor extends UIActivity {
     public static final String[] CraftSkillBlock = {"CraftSkill", "0", "0", "0", "0"};
     public static final String[] NoblePhantasmsBlock = {"NoblePhantasms", "0", "0", "0", "0"};
     public static final String[] EndBlock = {"End"};
-    public static final ScriptCompiler compiler = new FGOScriptCompiler();
+    public static final ScriptCompiler compiler = new FGOScriptCompiler2();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -16,7 +16,7 @@ import org.opencv.core.Point;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
-
+@Deprecated
 public class FGOScriptCompiler extends ScriptCompiler {
     public static int tag_count = 0;
     private static final Size dev_size = new Size(1920, 1070);
