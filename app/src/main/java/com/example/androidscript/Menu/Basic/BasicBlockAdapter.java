@@ -186,8 +186,8 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
             case "Call":
             case "Tag":
             case "Return":
-            case "ClickPic":
                 return 1;
+            case "ClickPic":
             case "Click":
             case "CallArg":
             case "IfGreater":

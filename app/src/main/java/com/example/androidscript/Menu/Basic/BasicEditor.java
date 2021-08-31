@@ -67,13 +67,21 @@ public class BasicEditor extends UIActivity {
         }));
 
         //SetBlockData
-
         if (FileOperation.findFile(BasicEditor.FolderName, this.filename)) {
             this.BlockData = FileOperation.readFromFileWords(BasicEditor.FolderName + this.filename);
         } else {
             DebugMessage.set("No such file");
             this.BlockData.add(new Vector<>(Blocks.get("Return")));
         }
+        for (Vector<String> g : BlockData) {
+            StringBuilder a = new StringBuilder();
+            for (String d : g) {
+                a.append(d + ":");
+            }
+            DebugMessage.set(a.toString());
+        }
+
+
         this.BlockView.setLayoutManager(new LinearLayoutManager(this));
         this.BlockView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         this.BlockView.setAdapter(new BasicBlockAdapter(BlockData));
@@ -124,7 +132,8 @@ public class BasicEditor extends UIActivity {
     protected void resourceInitialize() {
         try {
             FileOperation.readDir(FolderName);
-            for (String file : getAssets().list(FolderName)) {
+            String[] allFiles = getAssets().list(FolderName);//List all file
+            for (String file : allFiles) {
                 getResource(FolderName, file);
             }
         } catch (Exception e) {

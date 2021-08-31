@@ -33,6 +33,7 @@ public class SelectFile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_file);
         String[] classPath = getIntent().getStringExtra("next_destination").split("\\.");
+        DebugMessage.set(classPath[classPath.length - 2] + "/");
         try {
             this.availableFile = FileOperation.browseAvailableFile(classPath[classPath.length - 2] + "/", ".blc");
         } catch (Exception e) {

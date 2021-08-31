@@ -31,7 +31,7 @@ public abstract class Editor extends AppCompatActivity {
     protected void getResource(String folderName, String fileName){
         if(!FileOperation.findFile(folderName,fileName)){
             try{
-                if (fileName.endsWith(".txt")) {
+                if (fileName.endsWith(".txt") || fileName.endsWith(".blc")) {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(getAssets().open(folderName + fileName)));
                     Vector<String> buffer = new Vector<>();
                     String line;

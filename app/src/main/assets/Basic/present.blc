@@ -1,0 +1,27 @@
+Var $N 100
+Var $Ratio 1.0
+Var $n 1
+Var $X 650
+Var $Y 650
+Tag $Start
+Var $C 0
+Tag $For
+Click $X $Y
+Wait 400
+IfGreater $C 30
+JumpTo $Check
+Add $C 1
+JumpTo $For
+Tag $Check
+ClickPic no_present.png $Ratio
+IfSmaller $R 1
+JumpTo $Refresh
+JumpTo $Start
+Tag $Refresh
+ClickPic reset_present.png $Ratio
+ClickPic close_present.png $Ratio
+ClickPic exe_present.png $Ratio
+Add $n 1
+IfGreater $n $N
+Exit
+JumpTo $Start
