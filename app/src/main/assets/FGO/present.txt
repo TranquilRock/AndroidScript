@@ -1,0 +1,19 @@
+Var $Total 100
+Var $Ratio 1
+Var $Loop 1
+Tag $Start
+ClickPic $ten_present $Ratio
+IfSmaller $R 1
+JumpTo $Start
+ClickPic $no_present $Ratio
+IfSmaller $R 1
+JumpTo $Refresh
+JumpTo $Start
+Tag $Refresh
+ClickPic $refresh_present $Ratio
+ClickPic $close_present $Ratio
+ClickPic $exe_present $Ratio
+Add $Loop 1
+IfGreater $Loop $Total
+Exit
+JumpTo $Start
