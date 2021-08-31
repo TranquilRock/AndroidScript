@@ -196,7 +196,6 @@ public class Interpreter extends Thread {//Every child only need to specify wher
                     Bitmap tmp = ReadImgFromFile(Arguments[0]);
                     Point target = ImageHandler.findLocation(ScreenShot.Shot(), tmp, Double.parseDouble(Arguments[1]));
                     if (target != null) {
-                        delay();
                         DebugMessage.set("Clicking Picture:" + target.x + " " + target.y);
                         AutoClick.Click((int) target.x, (int) target.y);
                         LocalVar.put("$R", "0");
@@ -287,7 +286,7 @@ public class Interpreter extends Thread {//Every child only need to specify wher
     }
 
     protected static void delay() throws InterruptedException {
-        Thread.sleep(200);
+        Thread.sleep(100);
     }
 
 }

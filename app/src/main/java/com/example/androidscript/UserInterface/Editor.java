@@ -29,7 +29,7 @@ public abstract class Editor extends AppCompatActivity {
     protected abstract void resourceInitialize();
 
     protected void getResource(String folderName, String fileName){
-        if(!FileOperation.findFile(folderName,fileName)){
+        if(!FileOperation.findFile(folderName,fileName) && true){
             try{
                 if (fileName.endsWith(".txt") || fileName.endsWith(".blc")) {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(getAssets().open(folderName + fileName)));

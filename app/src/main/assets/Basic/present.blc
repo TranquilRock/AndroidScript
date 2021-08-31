@@ -4,23 +4,31 @@ Var $n 1
 Var $X 650
 Var $Y 650
 Tag $Start
-Var $C 0
+Var $cc 0
 Tag $For
 Click $X $Y
-Wait 400
-IfGreater $C 30
+IfGreater $cc 10
 JumpTo $Check
-Add $C 1
+Add $cc 1
 JumpTo $For
 Tag $Check
-ClickPic no_present.png $Ratio
-IfSmaller $R 1
+Compare 0 0 1000 1000 no_present.png
+IfGreater $R 30
 JumpTo $Refresh
 JumpTo $Start
 Tag $Refresh
+Tag $A
 ClickPic reset_present.png $Ratio
-ClickPic close_present.png $Ratio
+IfGreater $R 0
+JumpTo $A
+Tag $B
 ClickPic exe_present.png $Ratio
+IfGreater $R 0
+JumpTo $B
+Tag $C
+ClickPic close_present.png $Ratio
+IfGreater $R 0
+JumpTo $C
 Add $n 1
 IfGreater $n $N
 Exit
