@@ -70,11 +70,15 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
     }
 
     private static void checkFriendPage(String trueTag) {
-        //TODO
+        save.add("Compare " + transform_x(1551) + " " + transform_y(67) + " " + transform_x(1917) + " " + transform_y(154) + " support_select.png");
+        save.add("IfGreater $R 15");
+        save.add("JumpTo " + trueTag);
     }
 
     private static void checkApplePage(String trueTag) {
-        //TODO
+        save.add("Compare " + transform_x(757) + " " + transform_y(922) + " " + transform_x(1149) + " " + transform_y(1041) + " close_btn.png");
+        save.add("IfGreater $R 5");
+        save.add("JumpTo " + trueTag);
     }
 
     private static void selectFriend(String EntryTag, String Servant, String Craft) {
@@ -177,15 +181,6 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
                 save.add("Click " + transform_x(960) + " " + transform_y(904));
                 break;
         }
-        save.add("Wait 3000");
-        save.add("Compare " + transform_x(757) + " " + transform_y(922) + " " + transform_x(1149) + " " + transform_y(1041) + " close_btn.png");
-        save.add("IfGreater $R 5");
-        save.add("JumpTo $AppleErr");
-        save.add("JumpTo $AppleNoErr");
-        save.add("Tag $AppleErr");
-        save.add("Click " + transform_x(924) + " " + transform_y(1002));
-        save.add("JumpTo $NotReadyToEnterStage");
-        save.add("Tag $AppleNoErr");
         save.add("Wait 3000");
         save.add("Click " + transform_x(1260) + " " + transform_y(900));
         save.add("Wait 3000");
