@@ -77,6 +77,15 @@ public class FloatingWidgetService extends Service {
                 if(interpreter.isAlive()){
                     interpreter.interrupt();
                 }
+                if(interpreter.isAlive()){
+                    interpreter.interrupt();
+                }
+                if(interpreter.isAlive()){
+                    interpreter.interrupt();
+                }
+                if(interpreter.isAlive()){
+                    interpreter.interrupt();
+                }
                 interpreter = null;
             }
         });
@@ -245,6 +254,15 @@ public class FloatingWidgetService extends Service {
         }
         if (interpreter != null) {
             interpreter.running = false;
+            if(interpreter.isAlive()){
+                interpreter.interrupt();
+            }if(interpreter.isAlive()){
+                interpreter.interrupt();
+            }if(interpreter.isAlive()){
+                interpreter.interrupt();
+            }if(interpreter.isAlive()){
+                interpreter.interrupt();
+            }
         }
     }
 
