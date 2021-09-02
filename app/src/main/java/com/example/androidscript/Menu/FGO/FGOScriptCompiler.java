@@ -217,7 +217,6 @@ public class FGOScriptCompiler extends ScriptCompiler {
                 save.add("Tag $CraftEnd");
             }
             save.add("Click " + transform_x(800) + " " + transform_y(540));
-            save.add("JumpTo $FriendsEnd");
             save.add("Tag $FriendsEnd");
         }
 

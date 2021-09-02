@@ -90,10 +90,7 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
 
     private static void selectFriend(String EntryTag, String Servant, String Craft) {
         save.add("Tag " + EntryTag);
-        if ("None".equals(Servant)) {
-            save.add("Click " + transform_x(800) + " " + transform_y(467));
-            save.add("JumpTo $FriendEnd");
-        }
+
         String[] servantClass = Servant.split("_");
         switch (servantClass[servantClass.length - 1]) {
             case "All":
@@ -140,8 +137,10 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
         save.add("Click " + transform_x(1259) + " " + transform_y(905));
         save.add("Wait 2000");
         save.add("Tag $RefreshSkip");
-        save.add("Compare " + transform_x(70) + " " + transform_y(340) + " " + transform_x(330) + " " + transform_y(624) + " Friend/" + Servant + ".png");
-        save.add("IfGreater $R 50");
+        if (!"None".equals(Servant)) {
+            save.add("Compare " + transform_x(70) + " " + transform_y(340) + " " + transform_x(330) + " " + transform_y(624) + " Friend/" + Servant + ".png");
+            save.add("IfGreater $R 50");
+        }
         save.add("JumpTo $Friends");
         save.add("Wait 2000");
         save.add("Swipe " + transform_x(960) + " " + transform_y(937) + " " + transform_x(960) + " " + transform_y(689));
@@ -159,7 +158,6 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
             save.add("Tag $CraftEnd");
         }
         save.add("Click " + transform_x(800) + " " + transform_y(540));
-        save.add("JumpTo $FriendsEnd");
         save.add("Tag $FriendsEnd");
     }
 
@@ -230,10 +228,12 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
 
     private static void CraftSkillAux(float x, float servant) {
         save.add("Click " + transform_x(1798) + " " + transform_y(530));//Click Master Craft Skill
+        save.add("Wait 500");
         save.add("Click " + transform_x(x) + " " + transform_y(530));//開技能
         save.add("Compare " + transform_x(382) + " " + transform_y(626) + " " + transform_x(908) + " " + transform_y(766) + " cancel_btn.png");
         save.add("IfGreater $R 5");
         save.add("JumpTo $CraftSkill" + tag_count);
+        save.add("Wait 300");
         save.add("Click " + transform_x(servant) + " " + transform_y(731));//從者
         save.add("JumpTo $CraftSkillEnd" + tag_count);
         save.add("Tag $CraftSkill" + tag_count);
@@ -266,7 +266,7 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
         tag_count++;
     }
 
-    private static final int[] master_craft_x_coordinate = {-1, 1359, 1490, 1616};
+    private static final int[] master_craft_x_coordinate = {-1, 1366, 1490, 1616};
 
     private static void CraftSkill(Vector<String> block) {
         float x;
@@ -277,7 +277,7 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
                     break;
                 case "1":
                     save.add("Click " + transform_x(1798) + " " + transform_y(530));//御主技能
-                    save.add("Wait 500");
+                    save.add("Wait 1000");
                     save.add("Click " + transform_x(x) + " " + transform_y(530));//開技能
                     save.add("Compare " + transform_x(382) + " " + transform_y(626) + " " + transform_x(908) + " " + transform_y(766) + " cancel_btn.png");
                     save.add("IfGreater $R 5");
@@ -426,7 +426,7 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
         save.add("IfGreater $R 30");
         save.add("JumpTo $EndStageBattle");
 
-        save.add("Click " + transform_x(960) + " " + transform_y(85));
+        safeClick();
         save.add("Wait 2000");
         save.add("JumpTo $EndStageAgain");
 
@@ -457,7 +457,7 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
 
         save.add("Tag $SafeClick");
         save.add("Wait 1000");
-        save.add("Click " + transform_x(960) + " " + transform_y(85));
+        safeClick();
         save.add("JumpTo $Ending");
     }
 
@@ -467,6 +467,7 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
         save.add("IfGreater $R 30");
         save.add("JumpTo $StillBattle" + tag_count);
         save.add("Wait 1000");
+        safeClick();
         save.add("JumpTo $StillBattleAgain" + tag_count);
         save.add("Tag $StillBattle" + tag_count);
         save.add("Wait 1000");
@@ -500,5 +501,8 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
 
     private static String transform_y(float y) {
         return String.valueOf((int) (ratio * (y - dev_offset.y) + user_offset.y));
+    }
+    private static void safeClick() {
+        save.add("Click " + transform_x(1278) + " " + transform_y(85));
     }
 }
