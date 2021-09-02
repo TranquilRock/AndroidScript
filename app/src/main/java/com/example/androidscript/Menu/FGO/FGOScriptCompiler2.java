@@ -240,7 +240,7 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
         save.add("Click " + transform_x(645) + " " + transform_y(696));//取消BUG
         save.add("JumpTo $CraftSkillEnd" + tag_count);
         save.add("Tag $CraftSkillEnd" + tag_count);
-        save.add("Wait 2100");
+        save.add("Wait 2500");
         tag_count++;
     }
 
@@ -287,7 +287,7 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
                     save.add("Click " + transform_x(645) + " " + transform_y(696));//取消BUG
                     save.add("JumpTo $CraftSkillEnd" + tag_count);
                     save.add("Tag $CraftSkillEnd" + tag_count);
-                    save.add("Wait 2100");
+                    save.add("Wait 2500");
                     tag_count++;
                     break;
                 case "2":
@@ -347,7 +347,7 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
         save.add("Click " + transform_x(645) + " " + transform_y(696));//取消BUG
         save.add("JumpTo $SkillEnd" + tag_count);
         save.add("Tag $SkillEnd" + tag_count);
-        save.add("Wait 2100");
+        save.add("Wait 2500");
         tag_count++;
     }
 
@@ -371,7 +371,7 @@ public class FGOScriptCompiler2 extends ScriptCompiler {
                     save.add("Click " + transform_x(645) + " " + transform_y(696));//取消BUG
                     save.add("JumpTo $SkillEnd" + tag_count);
                     save.add("Tag $SkillEnd" + tag_count);
-                    save.add("Wait 2100");
+                    save.add("Wait 2500");
                     tag_count++;
                     break;
                 case "2"://target servant 1
