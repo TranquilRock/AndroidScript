@@ -12,91 +12,125 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="105dp"
+        android:layout_height="wrap_content"
         android:background="#373780">
 
         <TextView
             android:id="@+id/Title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Title"
+            android:layout_height="43dp"
+            android:gravity="center_vertical"
+            android:text="@string/block_name"
             android:textColor="#FFF"
-            android:textSize="20dp"
+            android:textSize="16sp"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
 
-
-        <EditText
-            android:id="@+id/FiveVarInputLeftUp"
-            android:layout_width="75dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/inputs1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            card_view:layout_constraintBaseline_toBaselineOf="@+id/Title"
-            card_view:layout_constraintStart_toEndOf="@+id/Title"/>
+            card_view:layout_constraintEnd_toStartOf="@id/buttons"
+            card_view:layout_constraintStart_toEndOf="@id/Title"
+            card_view:layout_constraintTop_toTopOf="parent">
+
+            <EditText
+                android:id="@+id/FiveVarInputLeftUp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textSize="16sp"
+                card_view:layout_constraintEnd_toStartOf="@id/FiveVarInputRightUp"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent" />
 
 
-        <EditText
-            android:id="@+id/FiveVarInputRightUp"
-            android:layout_width="75dp"
+            <EditText
+                android:id="@+id/FiveVarInputRightUp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textSize="16sp"
+                card_view:layout_constraintBaseline_toBaselineOf="@id/FiveVarInputLeftUp"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintStart_toEndOf="@id/FiveVarInputLeftUp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/inputs2"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            card_view:layout_constraintStart_toEndOf="@+id/FiveVarInputLeftUp"
-            card_view:layout_constraintBaseline_toBaselineOf="@+id/FiveVarInputLeftUp" />
-
-
-        <EditText
-            android:id="@+id/FiveVarInputLeftBottom"
-            android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="10dp"
-            card_view:layout_constraintStart_toEndOf="@+id/Title"
-            card_view:layout_constraintTop_toBottomOf="@+id/FiveVarInputLeftUp" />
-
-        <EditText
-            android:id="@+id/FiveVarInputRightBottom"
-            android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            card_view:layout_constraintStart_toEndOf="@+id/FiveVarInputLeftBottom"
-            card_view:layout_constraintBaseline_toBaselineOf="@+id/FiveVarInputLeftBottom" />
-
-        <EditText
-            android:id="@+id/FiveVarInputLast"
-            android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            card_view:layout_constraintStart_toEndOf="@+id/FiveVarInputRightBottom"
-            card_view:layout_constraintBaseline_toBaselineOf="@+id/FiveVarInputLeftBottom" />
-
-        <ImageButton
-            android:id="@+id/btn_del"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="3dp"
             card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintTop_toTopOf="parent"
-            card_view:srcCompat="@drawable/ic_close_white_24dp"
-            android:contentDescription="@string/btn_del"/>
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/inputs1"
+            android:layout_marginEnd="10sp">
 
-        <ImageButton
-            android:id="@+id/btn_down"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            card_view:layout_constraintEnd_toStartOf="@+id/btn_del"
-            card_view:layout_constraintTop_toTopOf="@+id/btn_del"
-            card_view:srcCompat="@drawable/ic_baseline_arrow_drop_down_24"
-            android:contentDescription="@string/btn_down"/>
+            <EditText
+                android:id="@+id/FiveVarInputLeftBottom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textSize="16sp"
+                card_view:layout_constraintEnd_toStartOf="@id/FiveVarInputRightBottom"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/btn_up"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            card_view:layout_constraintEnd_toStartOf="@+id/btn_down"
-            card_view:layout_constraintTop_toTopOf="@+id/btn_del"
-            card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24"
-            android:contentDescription="@string/btn_up" />
+            <EditText
+                android:id="@+id/FiveVarInputRightBottom"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textSize="16sp"
+                card_view:layout_constraintBaseline_toBaselineOf="@id/FiveVarInputLeftBottom"
+                card_view:layout_constraintEnd_toStartOf="@id/FiveVarInputLast"
+                card_view:layout_constraintStart_toEndOf="@id/FiveVarInputLeftBottom" />
 
+            <EditText
+                android:id="@+id/FiveVarInputLast"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textSize="16sp"
+                card_view:layout_constraintBaseline_toBaselineOf="@id/FiveVarInputLeftBottom"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintStart_toEndOf="@id/FiveVarInputRightBottom" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/btn_up"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@string/btn_up"
+                card_view:layout_constraintEnd_toStartOf="@id/btn_down"
+                card_view:layout_constraintTop_toTopOf="@id/btn_del"
+                card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24" />
+
+            <ImageButton
+                android:id="@+id/btn_down"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@string/btn_down"
+                card_view:layout_constraintEnd_toStartOf="@id/btn_del"
+                card_view:layout_constraintTop_toTopOf="@id/btn_del"
+                card_view:srcCompat="@drawable/ic_baseline_arrow_drop_down_24" />
+
+            <ImageButton
+                android:id="@+id/btn_del"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="3dp"
+                android:contentDescription="@string/btn_del"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent"
+                card_view:srcCompat="@drawable/ic_close_white_24dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

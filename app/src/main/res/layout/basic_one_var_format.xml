@@ -18,50 +18,68 @@
         <TextView
             android:id="@+id/Title"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Title"
+            android:layout_height="match_parent"
+            android:text="@string/block_name"
             android:textColor="#FFF"
-            android:textSize="20dp"
+            android:textSize="16sp"
+            android:gravity="center_vertical"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/OneVarInput"
-            android:layout_width="75dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            card_view:layout_constraintStart_toEndOf="@+id/Title"
-            card_view:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/btn_del"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_marginEnd="3dp"
-            card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintTop_toTopOf="parent"
-            card_view:srcCompat="@drawable/ic_close_white_24dp"
-            android:contentDescription="@string/btn_del"/>
+            card_view:layout_constraintBottom_toBottomOf="parent"/>
 
-        <ImageButton
-            android:id="@+id/btn_down"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            card_view:layout_constraintEnd_toStartOf="@+id/btn_del"
-            card_view:layout_constraintTop_toTopOf="@+id/btn_del"
-            card_view:srcCompat="@drawable/ic_baseline_arrow_drop_down_24"
-            android:contentDescription="@string/btn_down"/>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/inputs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintEnd_toStartOf="@id/buttons"
+            card_view:layout_constraintStart_toEndOf="@id/Title"
+            card_view:layout_constraintTop_toTopOf="parent">
 
-        <ImageButton
-            android:id="@+id/btn_up"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            card_view:layout_constraintEnd_toStartOf="@+id/btn_down"
-            card_view:layout_constraintTop_toTopOf="@+id/btn_del"
-            card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24"
-            android:contentDescription="@string/btn_up" />
+            <EditText
+                android:id="@+id/OneVarInput"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/buttons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/btn_up"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@string/btn_up"
+                card_view:layout_constraintEnd_toStartOf="@id/btn_down"
+                card_view:layout_constraintTop_toTopOf="@id/btn_del"
+                card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24" />
+
+            <ImageButton
+                android:id="@+id/btn_down"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:contentDescription="@string/btn_down"
+                card_view:layout_constraintEnd_toStartOf="@id/btn_del"
+                card_view:layout_constraintTop_toTopOf="@id/btn_del"
+                card_view:srcCompat="@drawable/ic_baseline_arrow_drop_down_24" />
+
+            <ImageButton
+                android:id="@+id/btn_del"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginEnd="3dp"
+                android:contentDescription="@string/btn_del"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintTop_toTopOf="parent"
+                card_view:srcCompat="@drawable/ic_close_white_24dp" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

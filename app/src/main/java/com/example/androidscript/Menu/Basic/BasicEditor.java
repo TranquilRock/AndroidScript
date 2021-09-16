@@ -98,6 +98,7 @@ public class BasicEditor extends UIActivity {
         switch (Command) {
             case "Exit":
                 return 0;
+            case "Log" :
             case "JumpTo":
             case "Wait":
             case "Call":
@@ -120,7 +121,7 @@ public class BasicEditor extends UIActivity {
             case "Compare":
                 return 5;
         }
-        return 0;
+        throw new RuntimeException("Unrecognized command!");
     }
 
     @Override

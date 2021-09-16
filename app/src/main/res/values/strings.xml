@@ -108,4 +108,5 @@
     <string name="game_screenshot">遊戲截圖</string>
     <string name="game_position">遊戲位置</string>
     <string name="basic_portrait">通用腳本(直向)</string>
+    <string name="block_name">Title</string>
 </resources>

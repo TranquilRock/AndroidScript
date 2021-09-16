@@ -113,16 +113,17 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
                 holder.Inputs[0].setHint("Value");
                 break;
             case "ClickPic"://TwoVH
+                ((BasicViewHolder.TwoVH) holder).TitleMiddle.setText("");
                 holder.Inputs[0].setHint("Image");
                 holder.Inputs[1].setHint("Ratio");
                 break;
             case "Click":
-                ((BasicViewHolder.TwoVH) holder).TitleMiddle.setVisibility(View.INVISIBLE);
+                ((BasicViewHolder.TwoVH) holder).TitleMiddle.setText("");
                 holder.Inputs[0].setHint("X");
                 holder.Inputs[1].setHint("Y");
                 break;
             case "CallArg":
-                ((BasicViewHolder.TwoVH) holder).TitleMiddle.setVisibility(View.INVISIBLE);
+                ((BasicViewHolder.TwoVH) holder).TitleMiddle.setText("");
                 holder.Inputs[0].setHint(".txt");
                 holder.Inputs[1].setHint("Value");
                 break;
@@ -148,13 +149,12 @@ public class BasicBlockAdapter extends RecyclerView.Adapter<BasicViewHolder> {
                 holder.Inputs[0].setHint("$Var");
                 holder.Inputs[1].setHint("Value");
                 break;
-
             case "Var":
-                ((BasicViewHolder.TwoVH) holder).TitleMiddle.setVisibility(View.INVISIBLE);
+                ((BasicViewHolder.TwoVH) holder).TitleMiddle.setText("=");
                 holder.Inputs[0].setHint("$Name");
                 holder.Inputs[1].setHint("Value");
                 break;
-            case "Check":
+            case "Check"://Three
                 holder.Inputs[0].setHint("x");
                 holder.Inputs[1].setHint("y");
                 holder.Inputs[2].setHint("color");
