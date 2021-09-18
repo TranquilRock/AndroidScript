@@ -16,10 +16,151 @@
     - 檔案資源會建立在Android/media/AndroidSciprt
     - 出於興趣及自身需求製作，沒辦法保證更新、維護週期
     - 如果覺得有幫助請不吝給個Star↗↗↗↗
+    
 
-- Usage/使用方法
 
-    - FGO
-    - ArKnights
-    - Basic
-
+- Usage/使用說明
+	- English
+		- FGO
+		- ArKnights
+			- Only support PRTS-replay, check before script start.
+			- Set repetition and whether restore sanity before start.
+		- Basic
+			- Define your own script (Need to select screen orientation in Menu)
+			- Load own resources into "Android/media/AndroidSciprt/Basic/"
+			- Support the following command(For details please check out code in util/interpreter.java)
+				- Exit
+					- End the whole script
+				- Log
+					- Show log on the floatingwidget
+				- JumpTo
+					- Jump to the specified Line/Tag
+				- Wait
+					- Wait a specific ms
+				- Call
+					- Call another sciprt
+				- Tag
+					- Specify a place to be jumped 
+				- Return
+					- End current script with return value
+				- ClickPic
+					- Click the buttom-right corner of the provided picture on screen(The resolution of provide picture need to be the same as you screen)
+				- Click
+					- Click the provided (x,y)
+				- CallArg
+					- Call another sciprt with argument(s)
+				- IfGreater
+					- Compare two value, if the former larger than the latter, $R = 0, otherwise $R = 1
+				- IfSmaller
+					- Compare two value, if the former smaller than the latter, $R = 0, otherwise $R = 1
+				- Add
+					- Add the variable 
+				- Subtract
+					- Subtract the variable 
+				- Var
+					- Assign a value to the varibale
+				- Check
+					- Check color of the specific location
+				- Swipe
+					- Swipe between two provided location
+				- Compare
+					- Compare region with provided picture(Resolution can be different)
+	- 中文
+		- FGO
+		    - 關卡前置
+		    - 御主技能
+		    - 
+		- ArKnights
+			- 只適用代理作戰，啟動腳本前先勾選代理。
+			- 設定重複次數、選擇是否自動恢復理智(體力)。
+		- Basic
+			- 自行編排指令，可以把資源檔案放到"Android/media/AndroidSciprt/Basic/"當中讓腳本使用
+			- 支援以下指令(詳細格式參考util/interpreter.java)
+				- Exit
+					- 結束整個腳本
+				- Log
+					- 顯示訊息在浮動工具
+				- JumpTo
+					- 跳至指定行數、Tag
+				- Wait
+					- 等待時間
+				- Call
+					- 呼叫另一個腳本
+				- Tag
+					- 標註位置讓JumpTo跳躍
+				- Return
+					- 結束當前腳本並回傳數值
+				- ClickPic
+					- 點擊提供圖片的右下角(解析度需與畫面相同)
+				- Click
+					- 點擊指定座標
+				- CallArg
+					- 呼叫另一個腳本並附帶參數
+				- IfGreater
+					- 比較兩個數值，若前者大於後者，設定$R為0，否則$R為1
+				- IfSmaller
+					- 比較兩個數值，若前者小於後者，設定$R為0，否則$R為1
+				- Add
+					- 將指定變數加上一個數值
+				- Subtract
+					- 將指定變數減去一個數值
+				- Var
+					- 給予變數一個數值
+				- Check
+					- 檢查某個座標的顏色
+				- Swipe
+					- 滑過兩個指定座標之間
+				- Compare
+					- 比較指定區域是否符合提供圖片(解析度不須相同)
+    
+- Resource/資源
+	- English
+		- FGO/
+		- ArKnights/
+			- AutoFight.txt
+				- Script txt, need not to modify.
+			- AutoFightEat.txt
+				- Script txt, need not to modify.
+			- LevelUp.png
+				- Check levelup page.
+				- Chinese-character on it, replace with same resolution.
+			- PressEnterOperation.png
+				- Check before operation page.
+				- Chinese-character on it, replace with same resolution.
+			- PressOperationEnd.png
+				- Check operation end page.
+				- Chinese-character on it, replace with same resolution.
+			- PressRestore.png
+				- Check Originiums' restore page.
+				- Need not to modify.
+			- PressRestoreMedicine.png
+				- Check Sanity restore page.
+				- Chinese-character on it, replace with same resolution.
+			- PressStartOperation.png
+				- Check Mission Start botton. 
+				- Chinese-character on it, replace with same resolution.
+	- 中文
+		- FGO/
+		- ArKnights/
+			- AutoFight.txt
+				- 戰鬥腳本，不需要更改
+			- AutoFightEat.txt
+				- 戰鬥腳本，不需要更改
+			- LevelUp.png
+				- 判斷開始關卡的圖片
+				- 帶有文字，更換時注意要維持相同解析度
+			- PressEnterOperation.png
+				- 判斷關卡結束的圖片
+				- 帶有文字，更換時注意要維持相同解析度
+			- PressOperationEnd.png
+				- 判斷進入關卡的圖片
+				- 帶有文字，更換時注意要維持相同解析度
+			- PressRestore.png
+				- 判斷吃源石的圖片
+				- 在不同伺服器不需更換
+			- PressRestoreMedicine.png
+				- 判斷吃理智劑的圖片
+				- 帶有文字，更換時注意要維持相同解析度
+			- PressStartOperation.png
+				- 判斷開始關卡的圖片
+				- 帶有文字，更換時注意要維持相同解析度
