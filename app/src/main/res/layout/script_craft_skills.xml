@@ -1,5 +1,6 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/craft_skills"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -30,10 +31,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="7dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="54dp"
             android:text="@string/skill1"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView" />
+            card_view:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView5"
@@ -60,10 +61,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="51dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="54dp"
             android:text="@string/changeskl"
             card_view:layout_constraintStart_toEndOf="@+id/textView4"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView" />
+            card_view:layout_constraintTop_toTopOf="parent" />
 
 
         <ImageButton

@@ -1,5 +1,6 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/noble_phantasms"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -29,19 +30,19 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/servant1"
 
+            android:layout_marginTop="54dp"
+            android:text="@string/servant1"
             android:textSize="16sp"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView" />
+            card_view:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
-            android:layout_marginTop="46dp"
+            android:layout_marginTop="54dp"
             android:text="@string/servant2"
 
             android:textSize="16sp"
@@ -53,20 +54,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
-            android:layout_marginTop="46dp"
+            android:layout_marginTop="54dp"
             android:text="@string/servant3"
             android:textSize="16sp"
             card_view:layout_constraintStart_toEndOf="@+id/textView3"
-            card_view:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="54dp"
-            android:text="@string/preference"
-            card_view:layout_constraintStart_toEndOf="@+id/textView4"
             card_view:layout_constraintTop_toTopOf="parent" />
 
 
@@ -127,15 +118,6 @@
             android:textSize="16sp"
             card_view:layout_constraintStart_toStartOf="@+id/switch2"
             card_view:layout_constraintTop_toBottomOf="@+id/textView4" />
-
-        <Spinner
-            android:id="@+id/card_color"
-            android:layout_width="78dp"
-            android:layout_height="26dp"
-            android:layout_marginTop="1dp"
-            android:entries="@array/preference"
-            card_view:layout_constraintStart_toStartOf="@+id/textView5"
-            card_view:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
