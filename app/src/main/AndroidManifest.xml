@@ -26,9 +26,6 @@
         <activity
             android:name=".Menu.SelectFile"
             android:parentActivityName=".Menu.MenuActivity" />
-        <activity
-            android:name=".Menu.EditActivity"
-            android:parentActivityName=".Menu.SelectFile" />
 
         <service
             android:name=".util.AutoClick"
