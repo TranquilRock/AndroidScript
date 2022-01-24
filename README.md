@@ -1,9 +1,11 @@
 # AndroidScript
 - Intro/簡介
   - Slides: https://docs.google.com/presentation/d/1p2pku1bjBfWljaol40b3c5a5rb4wGgAlyKgmD7n5bRQ/edit?usp=sharing
+ 
   - Demo video
   	1. UI: https://www.youtube.com/watch?v=CwXp0ZrnUg0
   	2. Game(FGO): https://www.youtube.com/watch?v=SLK26wOAvS8  
+
   - English
     - This is a simple kit to auto play FGO/ArKnights.
     - There is also easy interface to develope auto script.
@@ -19,8 +21,6 @@
     - 檔案資源會建立在Android/media/AndroidSciprt
     - 出於興趣及自身需求製作，沒辦法保證更新、維護週期
     - 如果覺得有幫助請不吝給個Star↗↗↗↗
-    
-
 
 - Usage/使用說明
 	- English
@@ -167,3 +167,6 @@
 			- PressStartOperation.png
 				- 判斷開始關卡的圖片
 				- 帶有文字，更換時注意要維持相同解析度
+
+- Class Graph
+	- ![](https://i.imgur.com/SauAxNZ.png)
