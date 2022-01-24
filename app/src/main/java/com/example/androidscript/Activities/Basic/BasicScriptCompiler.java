@@ -1,7 +1,6 @@
-package com.example.androidscript.Menu.Basic;
+package com.example.androidscript.Activities.Basic;
 
 import com.example.androidscript.util.ScriptCompiler;
-import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
 
 import java.util.Vector;

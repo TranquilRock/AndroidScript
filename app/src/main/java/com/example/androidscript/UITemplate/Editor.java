@@ -1,17 +1,14 @@
-package com.example.androidscript.UserInterface;
+package com.example.androidscript.UITemplate;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.androidscript.R;
 import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Vector;

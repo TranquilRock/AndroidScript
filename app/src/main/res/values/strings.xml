@@ -17,7 +17,7 @@
     <string name="preStage">關卡前置</string>
     <string name="eatApple">回復體力</string>
     <string name="repeat">重複次數</string>
-    <string name="changeskl">換人技</string>
+    <string name="change_skill">換人技</string>
     <string-array name="friends">
         <item>無</item>
         <item>CBA</item>
@@ -48,7 +48,7 @@
         <item>從者二</item>
         <item>從者三</item>
     </string-array>
-    <string-array name="lockenm">
+    <string-array name="target_enemy">
         <item>敵人一</item>
         <item>敵人二</item>
         <item>敵人三</item>
@@ -66,7 +66,7 @@
         <item>三六換</item>
     </string-array>
 
-    <string-array name="scnshot" id="a">
+    <string-array name="screen_shot" id="a">
         <item>好友一</item>
         <item>好友二</item>
         <item>禮裝一</item>
@@ -97,7 +97,7 @@
     <string name="EatStone">石頭&amp;理智劑</string>
     <string name="Start">Start</string>
     <string name="fgo">FGO</string>
-    <string name="arkknights">ArkKnights</string>
+    <string name="ark_knights">ArkKnights</string>
     <string name="basic_editor">通用腳本(橫向)</string>
     <string name="select_file_description">選擇現有腳本或是輸入新的腳本名稱</string>
     <string name="ark_knights_description_content">自動周回指定關卡，開始前請先開啟點選關卡並點選代理指揮</string>

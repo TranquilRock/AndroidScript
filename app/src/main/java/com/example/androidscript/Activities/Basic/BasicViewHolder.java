@@ -1,4 +1,4 @@
-package com.example.androidscript.Menu.Basic;
+package com.example.androidscript.Activities.Basic;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,9 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.androidscript.Menu.Basic.BasicBlockAdapter.updateOrder;
+import com.example.androidscript.UITemplate.BlockAdapter;
+import com.example.androidscript.UITemplate.BlockAdapter.updater;
 import com.example.androidscript.R;
-import com.example.androidscript.util.DebugMessage;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -51,7 +51,7 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         this.view = itemView;
     }
 
-    public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+    public void onBind(BlockAdapter.updater order, int position, Vector<Vector<String>> Data) {
         Up = view.findViewById(R.id.btn_up);
         Up.setOnClickListener(v -> {
             order.swap(position - 1, position);
@@ -77,7 +77,7 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+        public void onBind(BlockAdapter.updater order, int position, Vector<Vector<String>> Data) {
             super.onBind(order, position, Data);
             Inputs[0] = view.findViewById(R.id.OneVarInput);
             Inputs[0].setText(Data.get(position).get(1));
@@ -94,7 +94,7 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+        public void onBind(BlockAdapter.updater order, int position, Vector<Vector<String>> Data) {
             super.onBind(order, position, Data);
             TitleMiddle = view.findViewById(R.id.TwoVarTextMiddle);
             Inputs[0] = view.findViewById(R.id.TwoVarLeftInput);
@@ -113,7 +113,7 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+        public void onBind(updater order, int position, Vector<Vector<String>> Data) {
             super.onBind(order, position, Data);
             Inputs[0] = view.findViewById(R.id.ThreeVarInputLeft);
             Inputs[1] = view.findViewById(R.id.ThreeVarInputMiddle);
@@ -133,7 +133,7 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+        public void onBind(updater order, int position, Vector<Vector<String>> Data) {
             super.onBind(order, position, Data);
             Inputs[0] = view.findViewById(R.id.FourVarInputLeftUp);
             Inputs[1] = view.findViewById(R.id.FourVarInputRightUp);
@@ -154,7 +154,7 @@ public abstract class BasicViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+        public void onBind(BlockAdapter.updater order, int position, Vector<Vector<String>> Data) {
             super.onBind(order, position, Data);
             Inputs[0] = view.findViewById(R.id.FiveVarInputLeftUp);
             Inputs[1] = view.findViewById(R.id.FiveVarInputRightUp);

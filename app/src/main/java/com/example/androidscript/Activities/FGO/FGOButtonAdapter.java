@@ -1,30 +1,19 @@
-package com.example.androidscript.Menu.FGO;
-
-import android.content.Intent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
+package com.example.androidscript.Activities.FGO;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.androidscript.Menu.StartService;
-import com.example.androidscript.R;
-import com.example.androidscript.UserInterface.ButtonAdapter;
+import com.example.androidscript.UITemplate.BlockAdapter;
+import com.example.androidscript.UITemplate.ButtonAdapter;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
 public class FGOButtonAdapter extends ButtonAdapter {
     private final Vector<Vector<String>> BlockContent;
     private static final int insertPosition = 1;
-    FGOBlockAdapter.updateOrder onInsert;
+    BlockAdapter.updater onInsert;
 
-    public FGOButtonAdapter(Vector<Vector<String>> _BlockContent, Vector<String> _ButtonText, FGOBlockAdapter.updateOrder _onInsert) {
+    public FGOButtonAdapter(Vector<Vector<String>> _BlockContent, Vector<String> _ButtonText, BlockAdapter.updater _onInsert) {
         super(_ButtonText);
         this.ButtonText = _ButtonText;
         this.BlockContent = _BlockContent;

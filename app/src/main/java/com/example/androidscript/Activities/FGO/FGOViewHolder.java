@@ -1,4 +1,4 @@
-package com.example.androidscript.Menu.FGO;
+package com.example.androidscript.Activities.FGO;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,7 +16,7 @@ import com.example.androidscript.R;
 
 import org.jetbrains.annotations.NotNull;
 
-import static com.example.androidscript.Menu.FGO.FGOBlockAdapter.updateOrder;
+import static com.example.androidscript.UITemplate.BlockAdapter.updater;
 
 import java.util.Vector;
 
@@ -90,7 +90,7 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         this.view = itemView;
     }
 
-    public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+    public void onBind(updater order, int position, Vector<Vector<String>> Data) {
         Up = view.findViewById(R.id.btn_up);
         Up.setOnClickListener(v -> {
             order.swap(position - 1, position);
@@ -119,7 +119,7 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+        public void onBind(updater order, int position, Vector<Vector<String>> Data) {
             Vector<String> data = Data.get(position);
 
             Stamina = view.findViewById(R.id.stamina);
@@ -198,7 +198,7 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+        public void onBind(updater order, int position, Vector<Vector<String>> Data) {
             super.onBind(order, position, Data);
             Vector<String> data = Data.get(position);
 
@@ -245,7 +245,7 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         }
 
         @Override
-        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+        public void onBind(updater order, int position, Vector<Vector<String>> Data) {
             super.onBind(order, position, Data);
             Vector<String> data = Data.get(position);
             Skl1 = view.findViewById(R.id.skill_1_1);
@@ -270,14 +270,12 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
         androidx.appcompat.widget.SwitchCompat N1;
         androidx.appcompat.widget.SwitchCompat N2;
         androidx.appcompat.widget.SwitchCompat N3;
-        Spinner Color;
-
         public NoblePhantasmsVH(View v) {
             super(v);
         }
 
         @Override
-        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+        public void onBind(updater order, int position, Vector<Vector<String>> Data) {
             super.onBind(order, position, Data);
             Vector<String> data = Data.get(position);
 
@@ -292,10 +290,6 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
             N3 = view.findViewById(R.id.switch3);
             N3.setOnCheckedChangeListener(getOnCheckedChange(data,3));
             N3.setChecked(data.get(3).equals("1"));
-
-            Color = view.findViewById(R.id.card_color);
-            Color.setOnItemSelectedListener(SpinnerListener(data, 4));
-            Color.setSelection(Integer.parseInt(data.get(4)));
         }
     }
 
@@ -304,7 +298,7 @@ public abstract class FGOViewHolder extends RecyclerView.ViewHolder {
             super(v);
         }
         @Override
-        public void onBind(updateOrder order, int position, Vector<Vector<String>> Data) {
+        public void onBind(updater order, int position, Vector<Vector<String>> Data) {
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.androidscript.Menu;
+package com.example.androidscript.Activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,31 +11,21 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.DisplayMetrics;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androidscript.FloatingWidget.FloatingWidgetService;
 import com.example.androidscript.R;
 import com.example.androidscript.util.AutoClick;
-import com.example.androidscript.util.BtnMaker;
 import com.example.androidscript.util.DebugMessage;
-import com.example.androidscript.util.FileOperation;
-import com.example.androidscript.util.Interpreter;
 import com.example.androidscript.util.ScreenShot;
-import com.example.androidscript.util.SpnMaker;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
-import java.util.regex.Pattern;
 
 public class StartService extends AppCompatActivity {
     public static final int PROJECTION_REQUEST_CODE = 123;
     public static final int FOREGROUND_REQUEST_CODE = 111;
+    public static boolean SERVICE_STARTED = false;
     private MediaProjectionManager mediaProjectionManager;
 
     @Override
@@ -87,25 +77,39 @@ public class StartService extends AppCompatActivity {
         finish();
     }
 
-    public static void startFloatingWidget(AppCompatActivity appCompatActivity){
+    public static void StartFloatingWidget(AppCompatActivity appCompatActivity){
+        //2022_01_21 move checking to Authorized
+        if(SERVICE_STARTED){
+            appCompatActivity.startService(new Intent(appCompatActivity, FloatingWidgetService.class));
+            appCompatActivity.finishAffinity();
+
+        }
+    }
+
+    public static boolean IsAuthorized(AppCompatActivity appCompatActivity){
+        Toast.makeText(appCompatActivity.getApplicationContext(), "Please Authorize.", Toast.LENGTH_SHORT).show();
+        final boolean DEBUG = false;
         try {
             if (Settings.canDrawOverlays(appCompatActivity.getApplicationContext())) {
                 if(ScreenShot.ServiceStart){
                     if(Settings.Secure.getInt(appCompatActivity.getContentResolver(), Settings.Secure.ACCESSIBILITY_ENABLED) > 0 && AutoClick.running()){
-                        appCompatActivity.startService(new Intent(appCompatActivity, FloatingWidgetService.class));
-                        appCompatActivity.finishAffinity();
+                        SERVICE_STARTED = true;
+                        Toast.makeText(appCompatActivity.getApplicationContext(), "Authorized", Toast.LENGTH_LONG).show();
+                        return true;
                     }
-                    else {
+                    else if(DEBUG) {
                         Toast.makeText(appCompatActivity.getApplicationContext(), "Need Accessibility Enabled!", Toast.LENGTH_LONG).show();
                     }
-                }else {
+                }else if(DEBUG){
                     Toast.makeText(appCompatActivity.getApplicationContext(), "Can't Capture Screen!", Toast.LENGTH_LONG).show();
                 }
-            } else {
+            } else if(DEBUG){
                 Toast.makeText(appCompatActivity.getApplicationContext(), "Can't Draw Over Layers!", Toast.LENGTH_LONG).show();
             }
         } catch (Settings.SettingNotFoundException e) {
             DebugMessage.printStackTrace(e);
         }
+        SERVICE_STARTED = false;
+        return false;
     }
 }

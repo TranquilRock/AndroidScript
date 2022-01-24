@@ -22,10 +22,8 @@ import android.media.projection.MediaProjection;
 
 import androidx.annotation.Nullable;
 
-import com.example.androidscript.Menu.MenuActivity;
+import com.example.androidscript.Activities.Menu;
 import com.example.androidscript.R;
-
-import org.opencv.android.OpenCVLoader;
 
 import java.nio.ByteBuffer;
 
@@ -128,7 +126,7 @@ public final class ScreenShot extends Service {
     }
 
     private void createNotificationChannel() {
-        PendingIntent navigate = PendingIntent.getActivity(this, 0, new Intent(this, MenuActivity.class).putExtra("Message", "Reset"), 0);
+        PendingIntent navigate = PendingIntent.getActivity(this, 0, new Intent(this, Menu.class).putExtra("Message", "Reset"), 0);
         Notification.Builder builder = new Notification.Builder(getApplicationContext());
         builder.setContentIntent(navigate)
                 .setContentTitle("AndroidScript")

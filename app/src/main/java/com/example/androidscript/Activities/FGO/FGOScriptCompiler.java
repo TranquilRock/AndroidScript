@@ -1,4 +1,4 @@
-package com.example.androidscript.Menu.FGO;
+package com.example.androidscript.Activities.FGO;
 
 import android.util.Size;
 
@@ -13,7 +13,7 @@ import java.util.Vector;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 
-public class FGOScriptCompiler2 extends ScriptCompiler {
+public class FGOScriptCompiler extends ScriptCompiler {
     public static int tag_count;
     private static final Size dev_size = new Size(1920, 1070);
     private static final Point dev_offset = new Point(0, 64);

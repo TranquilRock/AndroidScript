@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".Menu.MenuActivity">
+    tools:context=".Activities.Menu">
 
     <!--    <Button-->
     <!--        android:id="@+id/start_service"-->
@@ -20,7 +20,7 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/arkknights"
+        android:text="@string/ark_knights"
         android:textAllCaps="false" />
 
 

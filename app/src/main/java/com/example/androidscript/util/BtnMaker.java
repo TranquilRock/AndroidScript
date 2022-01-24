@@ -7,7 +7,7 @@ import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.androidscript.Menu.MenuActivity;
+import com.example.androidscript.Activities.Menu;
 
 
 public final class BtnMaker {
@@ -16,7 +16,7 @@ public final class BtnMaker {
         btn.setOnClickListener((v -> {
             Intent intent = new Intent(from, to);
             from.startActivity(intent);
-            intent.putExtra("a", MenuActivity.class);
+            intent.putExtra("a", Menu.class);
         }));
     }
 

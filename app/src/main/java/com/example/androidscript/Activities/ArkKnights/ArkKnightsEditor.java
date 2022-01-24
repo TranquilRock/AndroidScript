@@ -1,32 +1,21 @@
-package com.example.androidscript.Menu.ArkKnights;
+package com.example.androidscript.Activities.ArkKnights;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SwitchCompat;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.content.res.Resources;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 
 import com.example.androidscript.FloatingWidget.FloatingWidgetService;
-import com.example.androidscript.Menu.StartService;
+import com.example.androidscript.Activities.StartService;
 import com.example.androidscript.R;
-import com.example.androidscript.UserInterface.Editor;
+import com.example.androidscript.UITemplate.Editor;
 import com.example.androidscript.util.BtnMaker;
 import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
-import com.example.androidscript.util.ImageHandler;
-import com.example.androidscript.util.Interpreter;
 import com.example.androidscript.util.ScreenShot;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Vector;
 
 import static java.lang.Math.max;
@@ -59,20 +48,21 @@ public class ArkKnightsEditor extends Editor {
         });
         EatMedicine = findViewById(R.id.EatMedicine);
         EatStone = findViewById(R.id.EatStone);
-        BtnMaker.registerOnClick(R.id.set_service, this, v -> {
-            startActivity(new Intent(this, StartService.class).putExtra("Orientation", "Landscape"));
-        });
         BtnMaker.registerOnClick(R.id.set_script, this, v -> {
-            CheckState();
-            GetRepetition();
-            if (isEatStone) {
-                FloatingWidgetService.setScript(FolderName, "AutoFightEat.txt", new String[]{String.valueOf(nRepetition), "PressRestore.png"});
-            } else if (isEatMedicine) {
-                FloatingWidgetService.setScript(FolderName, "AutoFightEat.txt", new String[]{String.valueOf(nRepetition), "PressRestoreMedicine.png"});
-            } else {
-                FloatingWidgetService.setScript(FolderName, "AutoFight.txt", new String[]{String.valueOf(nRepetition)});
+            if(!StartService.IsAuthorized(this)){
+                this.startActivity(new Intent(this, StartService.class).putExtra("Orientation", "Landscape"));
+            }else{
+                CheckState();
+                GetRepetition();
+                if (isEatStone) {
+                    FloatingWidgetService.setScript(FolderName, "AutoFightEat.txt", new String[]{String.valueOf(nRepetition), "PressRestore.png"});
+                } else if (isEatMedicine) {
+                    FloatingWidgetService.setScript(FolderName, "AutoFightEat.txt", new String[]{String.valueOf(nRepetition), "PressRestoreMedicine.png"});
+                } else {
+                    FloatingWidgetService.setScript(FolderName, "AutoFight.txt", new String[]{String.valueOf(nRepetition)});
+                }
+                StartService.StartFloatingWidget(this);
             }
-            StartService.startFloatingWidget(this);
         });
     }
 

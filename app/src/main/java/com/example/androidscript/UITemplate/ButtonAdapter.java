@@ -1,4 +1,4 @@
-package com.example.androidscript.UserInterface;
+package com.example.androidscript.UITemplate;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -6,17 +6,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidscript.R;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.Vector;
 
-public class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonViewHolder> {
+public abstract class ButtonAdapter extends RecyclerView.Adapter<ButtonAdapter.ButtonViewHolder> {
 
     public static class ButtonViewHolder extends RecyclerView.ViewHolder {
         public Button button;

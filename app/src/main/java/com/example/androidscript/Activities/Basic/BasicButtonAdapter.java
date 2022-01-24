@@ -1,20 +1,20 @@
-package com.example.androidscript.Menu.Basic;
+package com.example.androidscript.Activities.Basic;
 
 import android.view.View;
 
 import androidx.annotation.NonNull;
 
-import com.example.androidscript.UserInterface.ButtonAdapter;
-import com.example.androidscript.util.DebugMessage;
+import com.example.androidscript.UITemplate.BlockAdapter;
+import com.example.androidscript.UITemplate.ButtonAdapter;
 
 import java.util.Vector;
 
 public class BasicButtonAdapter extends ButtonAdapter {
     private final Vector<Vector<String>> BlockContent;
     private static final int insertPosition = 0;
-    BasicBlockAdapter.updateOrder onInsert;
+    BlockAdapter.updater onInsert;
 
-    public BasicButtonAdapter(Vector<Vector<String>> _BlockContent, Vector<String> _ButtonText, BasicBlockAdapter.updateOrder _onInsert) {
+    public BasicButtonAdapter(Vector<Vector<String>> _BlockContent, Vector<String> _ButtonText, BlockAdapter.updater _onInsert) {
         super(_ButtonText);
         this.ButtonText = _ButtonText;
         this.BlockContent = _BlockContent;

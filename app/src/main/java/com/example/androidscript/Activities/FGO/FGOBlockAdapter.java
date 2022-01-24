@@ -1,4 +1,4 @@
-package com.example.androidscript.Menu.FGO;
+package com.example.androidscript.Activities.FGO;
 
 import android.os.Handler;
 import android.os.Looper;
@@ -7,9 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androidscript.R;
+import com.example.androidscript.UITemplate.BlockAdapter;
 import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
 import com.example.androidscript.util.SpnMaker;
@@ -20,25 +20,25 @@ import java.util.Collections;
 import java.util.Vector;
 
 
-public class FGOBlockAdapter extends RecyclerView.Adapter<FGOViewHolder> {
+public class FGOBlockAdapter extends BlockAdapter<FGOViewHolder> {
 
-    public Vector<Vector<String>> Data;
-
-    public updateOrder onOrderChange;
-
-    public interface updateOrder {
-        void swap(int a, int b);
-
-        void delete(int a);
-
-        void insert();
-
-        void self(int index);
-    }
+//    public Vector<Vector<String>> Data;
+//
+//    public updater onOrderChange;
+//
+//    public interface updater {
+//        void swap(int a, int b);
+//
+//        void delete(int a);
+//
+//        void insert();
+//
+//        void self(int index);
+//    }
 
     public FGOBlockAdapter(Vector<Vector<String>> _Data) {
         this.Data = _Data;
-        this.onOrderChange = new updateOrder() {
+        this.onOrderChange = new updater() {
             @Override
             public void swap(int a, int b) {
                 if (a > 0 && b < Data.size() - 1 && a < b) {

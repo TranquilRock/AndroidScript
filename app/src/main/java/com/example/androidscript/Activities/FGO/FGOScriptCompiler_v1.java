@@ -1,13 +1,9 @@
-package com.example.androidscript.Menu.FGO;
+package com.example.androidscript.Activities.FGO;
 
-import android.graphics.Bitmap;
-import android.util.Log;
 import android.util.Size;
 
 import java.util.Vector;
 
-import com.example.androidscript.util.DebugMessage;
-import com.example.androidscript.util.ImageHandler;
 import com.example.androidscript.util.ScriptCompiler;
 import com.example.androidscript.util.FileOperation;
 import com.example.androidscript.util.ScreenShot;
@@ -17,7 +13,7 @@ import org.opencv.core.Point;
 import static java.lang.Math.max;
 import static java.lang.Math.min;
 @Deprecated
-public class FGOScriptCompiler extends ScriptCompiler {
+public class FGOScriptCompiler_v1 extends ScriptCompiler {
     public static int tag_count = 0;
     private static final Size dev_size = new Size(1920, 1070);
     private static final Point dev_offset = new Point(0, 64);

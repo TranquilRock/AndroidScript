@@ -15,12 +15,18 @@
             android:gravity="center"
             android:orientation="vertical">
 
+            <!--            <Button-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_marginEnd="5pt"-->
+            <!--                android:id="@+id/start_floating"-->
+            <!--                android:text="@string/StartFloatingWidget" />-->
             <Button
+                android:id="@+id/save_file"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5pt"
-                android:id="@+id/start_floating"
-                android:text="@string/StartFloatingWidget" />
+                android:text="@string/Save" />
 
             <Button
                 android:id="@+id/start_service"
@@ -29,12 +35,7 @@
                 android:layout_marginEnd="5pt"
                 android:text="@string/StartService" />
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="5pt"
-                android:id="@+id/save_file"
-                android:text="@string/Save" />
+
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView

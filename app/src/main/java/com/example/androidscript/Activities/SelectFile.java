@@ -1,14 +1,9 @@
-package com.example.androidscript.Menu;
+package com.example.androidscript.Activities;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.media.projection.MediaProjectionManager;
 import android.os.Bundle;
 import android.content.Intent;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -16,7 +11,6 @@ import android.widget.TextView;
 import com.example.androidscript.R;
 import com.example.androidscript.util.*;
 
-import java.io.File;
 import java.util.Vector;
 import java.util.regex.Pattern;
 // {getExternalFilesDir(null).getAbsolutePath() + "/}This would lead to an invisible dir (from studio)

@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="51dp"
             android:layout_marginTop="54dp"
-            android:text="@string/changeskl"
+            android:text="@string/change_skill"
             card_view:layout_constraintStart_toEndOf="@+id/textView4"
             card_view:layout_constraintTop_toTopOf="parent" />
 

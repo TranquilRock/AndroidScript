@@ -1,6 +1,5 @@
-package com.example.androidscript.Menu.FGO;
+package com.example.androidscript.Activities.FGO;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -9,22 +8,18 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.androidscript.FloatingWidget.FloatingWidgetService;
-import com.example.androidscript.Menu.Basic.BasicEditor;
-import com.example.androidscript.Menu.StartService;
 import com.example.androidscript.R;
-import com.example.androidscript.UserInterface.UIActivity;
+import com.example.androidscript.UITemplate.UIEditor;
 import com.example.androidscript.util.BtnMaker;
 import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
-import com.example.androidscript.util.Interpreter;
 import com.example.androidscript.util.ScriptCompiler;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.Vector;
 
-public class FGOEditor extends UIActivity {
+public class FGOEditor extends UIEditor {
 
     public static final String FolderName = "FGO/";
     public static final String[] PreStageBlock = {"PreStage", "0", "0", "0", "1", "0", "0", "0", "0", "0"};
@@ -32,22 +27,21 @@ public class FGOEditor extends UIActivity {
     public static final String[] CraftSkillBlock = {"CraftSkill", "0", "0", "0", "0"};
     public static final String[] NoblePhantasmsBlock = {"NoblePhantasms", "0", "0", "0", "0"};
     public static final String[] EndBlock = {"End"};
-    public static final ScriptCompiler compiler = new FGOScriptCompiler2();
+    public static final ScriptCompiler compiler = new FGOScriptCompiler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BtnMaker.registerOnClick(R.id.start_service, this, v -> startActivity(new Intent(this, StartService.class).putExtra("Orientation", "Landscape")));
-        BtnMaker.registerOnClick(R.id.start_floating, this, v -> StartService.startFloatingWidget(this));
+        BtnMaker.registerOnClick(R.id.start_service, this, v -> startServiceHandler("Landscape"));
         BtnMaker.registerOnClick(R.id.save_file, this, (v -> {
-            boolean flag = true;
+            boolean syntaxFlag = true;
             for (Vector<String> Line : this.BlockData) {
                 if (Line.contains("")) {
-                    flag = false;
+                    syntaxFlag = false;
                     break;
                 }
             }
-            if (flag) {
+            if (syntaxFlag) {
                 FileOperation.writeWords(FGOEditor.FolderName + this.filename, this.BlockData);
                 compiler.compile(this.BlockData);
                 FloatingWidgetService.setScript(FGOEditor.FolderName, "Run.txt", null);

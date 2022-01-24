@@ -14,13 +14,11 @@ import android.view.MotionEvent;
 import android.view.WindowManager;
 import android.view.LayoutInflater;
 import android.graphics.PixelFormat;
-import android.content.res.Configuration;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
-import com.example.androidscript.Menu.MenuActivity;
+import com.example.androidscript.Activities.Menu;
 import com.example.androidscript.R;
 import com.example.androidscript.util.*;
 import com.example.androidscript.util.Interpreter;
@@ -33,7 +31,7 @@ public class FloatingWidgetService extends Service {
     private int x_init_cord, y_init_cord, x_init_margin, y_init_margin;
     private static Interpreter interpreter;
     private static String ScriptFolderName;
-    private static String ScriptName;
+    private static String ScriptName = null;
     private static String[] Argv;
     private Bulletin curStatus;
 
@@ -42,6 +40,10 @@ public class FloatingWidgetService extends Service {
         ScriptName = _ScriptName;
         Argv = _Argv;
         interpreter = null;
+    }
+
+    public static boolean ScriptSet() {
+        return ScriptName != null;
     }
 
     @Override
@@ -56,7 +58,7 @@ public class FloatingWidgetService extends Service {
 
     private void setUpListener() {
         this.mFloatingWidgetView.findViewById(R.id.open_activity_button).setOnClickListener(v -> {
-            Intent intent = new Intent(FloatingWidgetService.this, MenuActivity.class).putExtra("Message", "Reset");
+            Intent intent = new Intent(FloatingWidgetService.this, Menu.class).putExtra("Message", "Reset");
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             stopSelf();
