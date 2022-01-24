@@ -175,4 +175,4 @@
 
 ## Class Graph
 - (Click pic for higher resolution)
-- ![](https://i.imgur.com/SauAxNZ.png =1547x1506)
+- ![](https://i.imgur.com/SauAxNZ.png)
