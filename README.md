@@ -1,6 +1,9 @@
 # AndroidScript
 - Intro/簡介
-
+  - Slides: https://docs.google.com/presentation/d/1p2pku1bjBfWljaol40b3c5a5rb4wGgAlyKgmD7n5bRQ/edit?usp=sharing
+  - Demo video
+  	1. UI: https://www.youtube.com/watch?v=CwXp0ZrnUg0
+  	2. Game(FGO): https://www.youtube.com/watch?v=SLK26wOAvS8  
   - English
     - This is a simple kit to auto play FGO/ArKnights.
     - There is also easy interface to develope auto script.
