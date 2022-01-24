@@ -174,5 +174,5 @@
 			- 帶有文字，更換時注意要維持相同解析度
 
 ## Class Graph
-(Click pic for higher resolution)
-![](https://i.imgur.com/SauAxNZ.png =1547x1506)
+- (Click pic for higher resolution)
+- ![](https://i.imgur.com/SauAxNZ.png =1547x1506)
