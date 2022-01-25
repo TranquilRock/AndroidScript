@@ -13,7 +13,7 @@ import com.example.androidscript.UITemplate.UIEditor;
 import com.example.androidscript.util.BtnMaker;
 import com.example.androidscript.util.DebugMessage;
 import com.example.androidscript.util.FileOperation;
-import com.example.androidscript.util.Interpreter;
+import com.example.androidscript.FloatingWidget.Interpreter;
 
 import java.util.HashMap;
 import java.util.Map;

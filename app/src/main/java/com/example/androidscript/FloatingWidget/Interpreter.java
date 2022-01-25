@@ -1,13 +1,14 @@
-package com.example.androidscript.util;
+package com.example.androidscript.FloatingWidget;
 
 import android.graphics.Bitmap;
-import android.util.Log;
-import android.widget.TextView;
 
-import com.example.androidscript.FloatingWidget.FloatingWidgetService;
+import com.example.androidscript.util.AutoClick;
+import com.example.androidscript.util.DebugMessage;
+import com.example.androidscript.util.FileOperation;
+import com.example.androidscript.util.ImageHandler;
+import com.example.androidscript.util.ScreenShot;
 
 import org.opencv.core.Point;
-import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;

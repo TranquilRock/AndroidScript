@@ -21,7 +21,6 @@ import androidx.annotation.Nullable;
 import com.example.androidscript.Activities.Menu;
 import com.example.androidscript.R;
 import com.example.androidscript.util.*;
-import com.example.androidscript.util.Interpreter;
 
 public class FloatingWidgetService extends Service {
     private WindowManager mWindowManager = null;

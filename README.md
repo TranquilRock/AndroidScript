@@ -9,17 +9,17 @@
 
 - English
 	- This is a simple kit to auto play FGO/ArKnights.
-	- There is also easy interface to develope auto script.
+	- There is also easy interface to develop auto script.
 	- The resources for FGO/ArKnights are currently for Traditional-Chinese server, one may need to replace the resource (Only those with Chinese character on) with same name to run on different server.
-	- The resources will reside in Android/media/AndroidSciprt folder.
-	- Made with friends for own use, no guarntee for maintenance.
+	- The resources will reside in Android/media/AndroidScript folder.
+	- Made with friends for own use, no guarantee for maintenance.
 	- If you think this kit did help, please leave a Star↗↗↗↗
 
 - 中文
 	- FGO/明日方舟的戰鬥腳本，讓雙手從周回中解放~~
 	- 也支援用圖形介面編輯任意用途的腳本
 	- FGO/明日方舟的相關檔案擷取自繁中服，如果要應用在不同伺服器需要更換有包含文字的資源圖檔
-	- 檔案資源會建立在Android/media/AndroidSciprt
+	- 檔案資源會建立在Android/media/AndroidScript
 	- 出於興趣及自身需求製作，沒辦法保證更新、維護週期
 	- 如果覺得有幫助請不吝給個Star↗↗↗↗
 
@@ -32,28 +32,28 @@
 		- Set repetition and whether restore sanity before start.
 	- Basic
 		- Define your own script (Need to select screen orientation in Menu)
-		- Load own resources into "Android/media/AndroidSciprt/Basic/"
+		- Load own resources into "Android/media/AndroidScript/Basic/"
 		- Support the following command(For details please check out code in util/interpreter.java)
 			- Exit
 				- End the whole script
 			- Log
-				- Show log on the floatingwidget
+				- Show log on the floating widget
 			- JumpTo
 				- Jump to the specified Line/Tag
 			- Wait
 				- Wait a specific ms
 			- Call
-				- Call another sciprt
+				- Call another script
 			- Tag
 				- Specify a place to be jumped 
 			- Return
 				- End current script with return value
 			- ClickPic
-				- Click the buttom-right corner of the provided picture on screen(The resolution of provide picture need to be the same as you screen)
+				- Click the bottom-right corner of the provided picture on screen(The resolution of provide picture need to be the same as you screen)
 			- Click
 				- Click the provided (x,y)
 			- CallArg
-				- Call another sciprt with argument(s)
+				- Call another script with argument(s)
 			- IfGreater
 				- Compare two value, if the former larger than the latter, $R = 0, otherwise $R = 1
 			- IfSmaller
@@ -63,7 +63,7 @@
 			- Subtract
 				- Subtract the variable 
 			- Var
-				- Assign a value to the varibale
+				- Assign a value to the variable
 			- Check
 				- Check color of the specific location
 			- Swipe
@@ -80,7 +80,7 @@
 		- 只適用代理作戰，啟動腳本前先勾選代理。
 		- 設定重複次數、選擇是否自動恢復理智(體力)。
 	- Basic
-		- 自行編排指令，可以把資源檔案放到"Android/media/AndroidSciprt/Basic/"當中讓腳本使用
+		- 自行編排指令，可以把資源檔案放到"Android/media/AndroidScript/Basic/"當中讓腳本使用
 		- 支援以下指令(詳細格式參考util/interpreter.java)
 			- Exit
 				- 結束整個腳本
@@ -129,7 +129,7 @@
 		- AutoFightEat.txt
 			- Script txt, need not to modify.
 		- LevelUp.png
-			- Check levelup page.
+			- Check level-up page.
 			- Chinese-character on it, replace with same resolution.
 		- PressEnterOperation.png
 			- Check before operation page.
@@ -138,13 +138,13 @@
 			- Check operation end page.
 			- Chinese-character on it, replace with same resolution.
 		- PressRestore.png
-			- Check Originiums' restore page.
+			- Check Originium restore page.
 			- Need not to modify.
 		- PressRestoreMedicine.png
 			- Check Sanity restore page.
 			- Chinese-character on it, replace with same resolution.
 		- PressStartOperation.png
-			- Check Mission Start botton. 
+			- Check Mission Start button.
 			- Chinese-character on it, replace with same resolution.
 
 - 中文
