@@ -12,11 +12,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidScript">
-        <activity android:name=".Activities.StartService"/>
-        <activity android:name=".Activities.ArkKnights.ArkKnightsEditor" />
-        <activity android:name=".Activities.FGO.FGOEditor"/>
-        <activity android:name=".Activities.Basic.BasicEditor"/>
-        <activity android:name=".Activities.Menu"
+        <activity android:name=".activities.StartServiceActivity"/>
+        <activity android:name=".activities.arknights.ArkKnightsEditor" />
+        <activity android:name=".activities.fgo.FGOEditor"/>
+        <activity android:name=".activities.basic.BasicEditor"/>
+        <activity android:name=".activities.Menu"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,11 +25,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Activities.SelectFile"
-            android:parentActivityName=".Activities.Menu" />
+            android:name=".activities.SelectFileActivity"
+            android:parentActivityName=".activities.Menu" />
 
         <service
-            android:name=".util.AutoClick"
+            android:name=".floatingwidget.AutoClickService"
             android:enabled="true"
             android:label="自動點擊"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
@@ -43,11 +43,11 @@
                 android:resource="@xml/accessibility_service_config" />
         </service>
         <service
-            android:name=".FloatingWidget.FloatingWidgetService"
+            android:name=".floatingwidget.FloatingWidgetService"
             android:enabled="true"
             android:label="FloatingWidgetService" />
         <service
-            android:name=".util.ScreenShot"
+            android:name=".floatingwidget.ScreenShotService"
             android:enabled="true"
             android:foregroundServiceType="mediaProjection"
             android:label="ScreenShot" />

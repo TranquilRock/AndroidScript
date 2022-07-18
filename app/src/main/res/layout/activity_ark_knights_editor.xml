@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.ArkKnights.ArkKnightsEditor">
+    tools:context=".activities.arknights.ArkKnightsEditor">
 
     <TextView
         android:id="@+id/ark_knights_title"
