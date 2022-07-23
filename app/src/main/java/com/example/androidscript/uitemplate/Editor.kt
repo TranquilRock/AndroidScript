@@ -27,10 +27,11 @@ abstract class Editor : AppCompatActivity() {
                     val reader =
                         BufferedReader(InputStreamReader(assets.open(folderName + fileName)))
                     val buffer = Vector<String>()
-                    var line: String
-                    while (reader.readLine().also { line = it } != null) {
-                        DebugMessage.set(line)
-                        buffer.add(line)
+                    while (true) {
+                        reader.readLine()?.run{
+                            DebugMessage.set(this)
+                            buffer.add(this)
+                        } ?: break
                     }
                     FileOperation.writeLines(folderName + fileName, buffer)
                 }

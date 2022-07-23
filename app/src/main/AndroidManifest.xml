@@ -27,7 +27,6 @@
         <activity
             android:name=".activities.SelectFileActivity"
             android:parentActivityName=".activities.Menu" />
-
         <service
             android:name=".floatingwidget.AutoClickService"
             android:enabled="true"

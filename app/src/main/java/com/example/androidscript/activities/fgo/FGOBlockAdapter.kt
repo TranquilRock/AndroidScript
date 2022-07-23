@@ -1,5 +1,5 @@
 package com.example.androidscript.activities.fgo
-import com.example.androidscript.util.DebugMessage
+
 import com.example.androidscript.util.FileOperation
 import com.example.androidscript.R
 import com.example.androidscript.uitemplate.BlockAdapter
@@ -36,18 +36,27 @@ class FGOBlockAdapter(_data: Vector<Vector<String>>) : BlockAdapter<FGOViewHolde
             3 -> {
                 view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.script_prestage, parent, false)
-                var tmp = FileOperation.browseWithoutSuffix(
-                    FGOEditor.folderName + "Friend",
-                    ".png"
+
+                val friendList = Vector<String>()
+                friendList.add("None")
+                friendList.addAll(
+                    FileOperation.browseWithoutSuffix(
+                        FGOEditor.folderName + "Friend",
+                        ".png"
+                    )
                 )
-                tmp.add(0, "None")
-                SpnMaker.fromStringWithView(R.id.friend, view, tmp)
-                tmp = FileOperation.browseWithoutSuffix(
-                    FGOEditor.folderName + "Craft",
-                    ".png"
+                SpnMaker.fromStringWithView(R.id.friend, view, friendList)
+
+                val craftList = Vector<String>()
+                craftList.add("None")
+                craftList.addAll(
+                    FileOperation.browseWithoutSuffix(
+                        FGOEditor.folderName + "Craft",
+                        ".png"
+                    )
                 )
-                tmp.add(0, "None")
-                SpnMaker.fromStringWithView(R.id.craft, view, tmp)
+                SpnMaker.fromStringWithView(R.id.craft, view, craftList)
+
                 return PreStageVH(view.findViewById(R.id.pre_stage))
             }
             4 -> {
@@ -64,14 +73,16 @@ class FGOBlockAdapter(_data: Vector<Vector<String>>) : BlockAdapter<FGOViewHolde
     }
 
     override fun getItemViewType(position: Int): Int {
-        when (data[position][0]) {
-            "Skill" -> return 0
-            "NoblePhantasms" -> return 1
-            "CraftSkill" -> return 2
-            "PreStage" -> return 3
-            "End" -> return 4
+        return when (data[position][0]) {
+            "Skill" -> 0
+            "NoblePhantasms" -> 1
+            "CraftSkill" -> 2
+            "PreStage" -> 3
+            "End" -> 4
+            else -> {
+                throw RuntimeException("Invalid block " + data[position][0])
+            }
         }
-        throw RuntimeException("Invalid Type " + data[position][0])
     }
 
     override fun getItemCount(): Int {
@@ -100,11 +111,7 @@ class FGOBlockAdapter(_data: Vector<Vector<String>>) : BlockAdapter<FGOViewHolde
             }
 
             override fun self(index: Int) {
-                try {
-                    Handler(Looper.getMainLooper()).post { notifyItemChanged(index) }
-                } catch (e: Throwable) {
-                    DebugMessage.set("PreStageGG")
-                }
+                Handler(Looper.getMainLooper()).post { notifyItemChanged(index) }
             }
         }
     }

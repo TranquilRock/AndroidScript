@@ -49,7 +49,7 @@ class BasicBlockAdapter(content: Vector<Vector<String>>) : BlockAdapter<BasicVie
                 return FiveVH(view)
             }
         }
-        throw RuntimeException("Invalid Type")
+        throw RuntimeException("Invalid view type!")
     }
 
     override fun onBindViewHolder(holder: BasicViewHolder, position: Int) {
@@ -135,7 +135,7 @@ class BasicBlockAdapter(content: Vector<Vector<String>>) : BlockAdapter<BasicVie
             "Swipe" -> return 4
             "Compare" -> return 5
         }
-        throw RuntimeException("Invalid " + data[position][0])
+        throw RuntimeException("Invalid command: " + data[position][0])
     }
 
     override fun getItemCount(): Int {

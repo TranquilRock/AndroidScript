@@ -4,7 +4,6 @@ import android.content.Intent
 import com.example.androidscript.util.DebugMessage
 import com.example.androidscript.util.FileOperation
 import android.os.Bundle
-import com.example.androidscript.util.BtnMaker
 import com.example.androidscript.R
 import com.example.androidscript.floatingwidget.FloatingWidgetService
 import android.widget.EditText
@@ -37,11 +36,12 @@ class ArkKnightsEditor : Editor() {
             }
         }
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_ark_knights_editor)
+
         repeat = findViewById(R.id.Repetition)
+
         tillEmpty = findViewById(R.id.tillEmpty)
         tillEmpty.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
             if (isChecked) {
@@ -50,9 +50,11 @@ class ArkKnightsEditor : Editor() {
                 repeat.visibility = View.VISIBLE
             }
         }
+
         eatMedicine = findViewById(R.id.EatMedicine)
         eatStone = findViewById(R.id.EatStone)
-        BtnMaker.registerOnClick(R.id.set_script, this) {
+
+        findViewById<View>(R.id.set_script).setOnClickListener{
             if (!StartServiceActivity.isAuthorized(this)) {
                 this.startActivity(
                     Intent(this, StartServiceActivity::class.java).putExtra(
@@ -61,26 +63,31 @@ class ArkKnightsEditor : Editor() {
                     )
                 )
             } else {
+                lateinit var scriptName: String
+                lateinit var arguments: ArrayList<String>
                 if (isEatStone) {
-                    FloatingWidgetService.setScript(
-                        folderName,
-                        "AutoFightEat.txt",
-                        arrayOf(nRepetition.toString(), "PressRestore.png")
-                    )
+                    scriptName = "AutoFightEat.txt"
+                    arguments = mutableListOf(
+                        nRepetition.toString(),
+                        "PressRestore.png"
+                    ) as ArrayList<String>
                 } else if (isEatMedicine) {
-                    FloatingWidgetService.setScript(
-                        folderName,
-                        "AutoFightEat.txt",
-                        arrayOf(nRepetition.toString(), "PressRestoreMedicine.png")
-                    )
+                    scriptName = "AutoFightEat.txt"
+                    arguments = mutableListOf(
+                        nRepetition.toString(),
+                        "PressRestoreMedicine.png"
+                    ) as ArrayList<String>
                 } else {
-                    FloatingWidgetService.setScript(
-                        folderName,
-                        "AutoFight.txt",
-                        arrayOf(nRepetition.toString())
-                    )
+                    scriptName = "AutoFight.txt"; arguments =
+                        mutableListOf(nRepetition.toString()) as ArrayList<String>
                 }
-                StartServiceActivity.startFloatingWidget(this)
+                this.startService(
+                    Intent(this, FloatingWidgetService::class.java)
+                        .putExtra(FloatingWidgetService.folderTAG, folderName)
+                        .putExtra(FloatingWidgetService.scriptTAG, scriptName)
+                        .putExtra(FloatingWidgetService.argsTAG, arguments)
+                )
+                this.finishAffinity()
             }
         }
     }
@@ -90,8 +97,8 @@ class ArkKnightsEditor : Editor() {
     override fun resourceInitialize() {
         try {
             FileOperation.readDir(folderName)
-            val allFiles = assets.list(folderName) //List all file
-            for (file in allFiles!!) {
+            for (file in assets.list(folderName)!!) {
+                DebugMessage.set(file)
                 getResource(folderName, file!!)
             }
         } catch (e: Exception) {

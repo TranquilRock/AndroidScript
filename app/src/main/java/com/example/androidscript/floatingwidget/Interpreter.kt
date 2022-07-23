@@ -7,6 +7,7 @@ import java.lang.Exception
 import java.lang.RuntimeException
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 open class Interpreter(
     private val ScriptFolderName: String,
@@ -14,13 +15,12 @@ open class Interpreter(
     private val board: FloatingWidgetService.Bulletin
 ) : Thread() {
 
+    private var scriptCode: HashMap<String, Code> = HashMap()
+    var runningFlag = false
+
     init {
         interpret(ScriptName)
     }
-
-    var runningFlag = false
-
-    private var scriptCode: MutableMap<String, Code> = HashMap()
 
     private fun readCode(fileName: String): Vector<String> {
         return FileOperation.readFromFileLines(ScriptFolderName + fileName)
@@ -31,27 +31,42 @@ open class Interpreter(
     }
 
     private fun interpret(fileName: String) {
-        DebugMessage.set("Interpreting:$fileName")
-        val command = readCode(fileName)
-        try {
-            scriptCode[fileName] = Code(SUPPORTED_COMMAND, command)
-        } catch (e: Exception) {
-            DebugMessage.set("Bug in $fileName")
-            DebugMessage.printStackTrace(e)
+        val code = Code(SUPPORTED_COMMAND, readCode(fileName))
+
+        val tagVar: HashMap<String, String> = HashMap()
+
+        for (i in 0 until code.codes.size) {
+            val command = code.codes[i]
+            if (command[0] == "Tag") {
+                tagVar[command[1]] = i.toString()
+            }
         }
-        for (depend in scriptCode[fileName]!!.dependency) {
-            if (!scriptCode.containsKey(depend)) {
-                interpret(depend)
+
+        for (line in code.codes) {
+            for (i in 1 until line.size) { // The first word must be tag
+                if (tagVar.containsKey(line[i])) {
+                    line[i] = tagVar[line[i]].toString()
+                }
+            }
+        }
+
+        scriptCode[fileName] = code
+
+        for (dependency in code.dependency) {
+            if (!scriptCode.containsKey(dependency)) {
+                interpret(dependency)
             }
         }
     }
 
     //==========================================
-    private lateinit var runArgs: ArrayList<String>
+    private var runArgs: ArrayList<String>? = null
+    private lateinit var screenShot: ScreenShotService.ScreenShotBinder
 
-    fun runCode(argv: ArrayList<String>) {
+    fun runCode(argv: ArrayList<String>?, screenShotBinder: ScreenShotService.ScreenShotBinder) {
         runArgs = argv
         runningFlag = true
+        screenShot = screenShotBinder
         start()
     }
 
@@ -70,21 +85,15 @@ open class Interpreter(
 
         val localVar: MutableMap<String, String> = HashMap()
         parseArguments(localVar, args)
-        DebugMessage.set("Running $fileName")
-        val codeLength = scriptCode[fileName]!!.codes.size
-        for (commandIndex in 0 until codeLength) {
-            val command = scriptCode[fileName]!!.codes[commandIndex]
-            if (command[0] == "Tag") {
-                localVar[command[1]] = commandIndex.toString()
-            }
-        }
-        var commandIndex = 0
-        while (commandIndex < codeLength && runningFlag) {
-            val command = scriptCode[fileName]!!.codes[commandIndex]
-            val arguments = command.copyOfRange(1, command.size - 1)
+
+        var pc = 0
+
+        while (runningFlag && (pc < scriptCode[fileName]!!.codes.size)) {
+            val command = scriptCode[fileName]!!.codes[pc]
+            val arguments = command.copyOfRange(1, command.size)
             varsSubstitution(localVar, command[0], arguments)
             //=====================================================
-            DebugMessage.set("$commandIndex  ${arguments.joinToString(" ")}")
+            DebugMessage.set("$pc  ${command.joinToString(" ")}")
             delay()
             when (command[0]) {
                 "Exit" -> {
@@ -92,7 +101,7 @@ open class Interpreter(
                     return 1
                 }
                 "Log" -> board.announce(arguments[0])
-                "JumpTo" -> commandIndex = arguments[0].toInt() - 1 //One-based
+                "JumpTo" -> pc = arguments[0].toInt() - 1 //One-based
                 "Wait" -> sleep(
                     arguments[0].toInt()
                 )
@@ -102,7 +111,7 @@ open class Interpreter(
                 "ClickPic" -> {
                     val tmp = readImg(arguments[0])
                     val target = ImageHandler.findLocation(
-                        ScreenShotService.shot(), tmp, arguments[1]
+                        screenShot.service.shot(), tmp, arguments[1]
                             .toDouble()
                     )
                     if (target != null) {
@@ -118,14 +127,14 @@ open class Interpreter(
                 }
                 "CallArg" -> {
                     val nextArgv =
-                        arguments.copyOfRange(1, command.size - 2).toCollection(ArrayList())
+                        arguments.copyOfRange(1, command.size - 1).toCollection(ArrayList())
                     localVar["\$R"] = execute(arguments[0], nextArgv, depth + 1).toString()
                 }
                 "IfGreater" -> if (arguments[0].toInt() <= arguments[1].toInt()) { //Failed, skip next line
-                    commandIndex++
+                    pc++
                 }
                 "IfSmaller" -> if (arguments[0].toInt() >= arguments[1].toInt()) { //Failed, skip next line
-                    commandIndex++
+                    pc++
                 }
                 "Add" -> localVar[arguments[0]] = (localVar[arguments[0]]!!
                     .toInt() + arguments[1].toInt()).toString()
@@ -133,7 +142,7 @@ open class Interpreter(
                     .toInt() - arguments[1].toInt()).toString()
                 "Var" -> localVar[arguments[0]] = arguments[1]
                 "Check" -> if (ImageHandler.checkColor(
-                        ScreenShotService.shot(), arguments[0]
+                        screenShot.service.shot(), arguments[0]
                             .toInt(), arguments[1].toInt(), arguments[2].toInt()
                     )
                 ) {
@@ -151,8 +160,8 @@ open class Interpreter(
                     )
                 }
                 "Compare" -> {
-                    ScreenShotService.shot() //Empty shot to make sure Image be the newest.
-                    localVar["\$R"] = ScreenShotService.compare(
+                    screenShot.service.shot() //Empty shot to make sure Image be the newest.
+                    localVar["\$R"] = screenShot.service.compare(
                         readImg(arguments[4]), arguments[0]
                             .toInt(), arguments[1].toInt(), arguments[2].toInt(), arguments[3]
                             .toInt()
@@ -160,7 +169,7 @@ open class Interpreter(
                 }
                 else -> throw RuntimeException("Cannot Recognize " + command[0])
             }
-            commandIndex++
+            pc++
         }
         return 0
     }
@@ -200,6 +209,15 @@ open class Interpreter(
         )
 
         //==================== Helper =======================
+
+        protected fun tagsSubstitution(
+            localVar: MutableMap<String, String>,
+            command: String,
+            args: Array<String>
+        ) {
+
+        }
+
         protected fun varsSubstitution(
             localVar: MutableMap<String, String>,
             command: String,

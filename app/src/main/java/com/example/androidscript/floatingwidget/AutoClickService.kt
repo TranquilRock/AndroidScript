@@ -32,16 +32,6 @@ class AutoClickService : AccessibilityService() {
     companion object {
         private var instance: AutoClickService? = null
 
-        fun running(): Boolean {
-            return instance != null
-        }
-
-        fun stop() {
-            if (instance != null) {
-                instance!!.stopSelf()
-            }
-        }
-
         fun click(x: Int, y: Int) {
             val path = Path()
             path.moveTo((x - 1).toFloat(), (y - 1).toFloat())

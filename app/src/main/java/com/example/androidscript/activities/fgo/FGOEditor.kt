@@ -4,9 +4,7 @@ import com.example.androidscript.util.DebugMessage
 import com.example.androidscript.util.FileOperation
 import com.example.androidscript.uitemplate.UIEditor
 import android.os.Bundle
-import com.example.androidscript.util.BtnMaker
 import com.example.androidscript.R
-import com.example.androidscript.floatingwidget.FloatingWidgetService
 import android.widget.Toast
 import com.example.androidscript.util.ScriptCompiler
 import android.view.*
@@ -17,14 +15,13 @@ import java.lang.Exception
 import java.util.*
 
 class FGOEditor : UIEditor() {
-    
+    override val folderName: String
+        get() = FGOEditor.folderName
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        BtnMaker.registerOnClick(
-            R.id.start_service,
-            this
-        ) { startServiceHandler("Landscape") }
-        BtnMaker.registerOnClick(R.id.save_file, this) {
+        findViewById<View>(R.id.start_service).setOnClickListener { startServiceHandler("Landscape") }
+        findViewById<View>(R.id.save_file).setOnClickListener {
             var syntaxFlag = true
             for (Line in blockData) {
                 if (Line!!.contains("")) {
@@ -35,7 +32,6 @@ class FGOEditor : UIEditor() {
             if (syntaxFlag) {
                 FileOperation.writeWords(folderName + fileName, blockData)
                 compiler.compile(blockData)
-                FloatingWidgetService.setScript(folderName, "Run.txt", null)
                 Toast.makeText(this.applicationContext, "Successful!!", Toast.LENGTH_LONG).show()
             } else {
                 Toast.makeText(

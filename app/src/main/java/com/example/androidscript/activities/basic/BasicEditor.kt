@@ -4,9 +4,7 @@ import com.example.androidscript.util.DebugMessage
 import com.example.androidscript.util.FileOperation
 import com.example.androidscript.uitemplate.UIEditor
 import android.os.Bundle
-import com.example.androidscript.util.BtnMaker
 import com.example.androidscript.R
-import com.example.androidscript.floatingwidget.FloatingWidgetService
 import android.widget.Toast
 import android.view.*
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -14,11 +12,11 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidscript.floatingwidget.Interpreter
 import java.lang.RuntimeException
-import java.lang.StringBuilder
 import java.util.*
 
 class BasicEditor : UIEditor() {
-
+    override val folderName: String
+        get() = BasicEditor.folderName
     companion object {
         const val folderName = "Basic/"
         var Blocks: MutableMap<String, Vector<String>> = HashMap()
@@ -50,10 +48,10 @@ class BasicEditor : UIEditor() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val orientation = intent.getStringExtra("Orientation")!!
-        BtnMaker.registerOnClick(R.id.start_service, this) {
+        findViewById<View>(R.id.start_service).setOnClickListener{
             startServiceHandler(orientation)
         }
-        BtnMaker.registerOnClick(R.id.save_file, this) {
+        findViewById<View>(R.id.save_file).setOnClickListener{
             var syntaxFlag = true
             for (Line in blockData) {
                 if (Line!!.contains("")) {
@@ -64,7 +62,6 @@ class BasicEditor : UIEditor() {
             if (syntaxFlag) {
                 FileOperation.writeWords(folderName + fileName, blockData)
                 compiler.compile(blockData)
-                FloatingWidgetService.setScript(folderName, "Run.txt", null)
                 Toast.makeText(this.applicationContext, "Successful!", Toast.LENGTH_LONG).show()
             } else {
                 Toast.makeText(
@@ -82,12 +79,8 @@ class BasicEditor : UIEditor() {
             DebugMessage.set("No such file")
             blockData.add(Vector(Blocks["Return"]!!))
         }
-        for (g in blockData) {
-            val a = StringBuilder()
-            for (d in g) {
-                a.append("$d:")
-            }
-            DebugMessage.set(a.toString())
+        for (blc in blockData) {
+            DebugMessage.set(blc.joinToString(":"))
         }
         blockView.layoutManager = LinearLayoutManager(this)
         blockView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
