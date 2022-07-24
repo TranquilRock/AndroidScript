@@ -1,7 +1,9 @@
 package com.example.androidscript.activities.arknights
 
+import android.app.Activity
 import android.content.Intent
-import com.example.androidscript.util.DebugMessage
+import android.media.projection.MediaProjectionManager
+import com.example.androidscript.util.MyLog
 import com.example.androidscript.util.FileOperation
 import android.os.Bundle
 import com.example.androidscript.R
@@ -12,8 +14,9 @@ import android.widget.CompoundButton
 import com.example.androidscript.floatingwidget.ScreenShotService
 import com.example.androidscript.activities.StartServiceActivity
 import android.view.*
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import com.example.androidscript.uitemplate.Editor
-import java.lang.Exception
 import java.lang.Integer.min
 import java.util.*
 
@@ -28,13 +31,14 @@ class ArkKnightsEditor : Editor() {
         get() = eatMedicine.isChecked
     private val isEatStone: Boolean
         get() = eatStone.isChecked
-    private val nRepetition: Int
+    private val nRepetition: String
         get() {
             return when (isTillEmpty) {
-                true -> 10000
-                false -> repeat.text.toString().toInt()
+                true -> "10000"
+                false -> repeat.text.toString()
             }
         }
+    private var resizeRatio = 0.0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,55 +58,56 @@ class ArkKnightsEditor : Editor() {
         eatMedicine = findViewById(R.id.EatMedicine)
         eatStone = findViewById(R.id.EatStone)
 
-        findViewById<View>(R.id.set_script).setOnClickListener{
-            if (!StartServiceActivity.isAuthorized(this)) {
-                this.startActivity(
-                    Intent(this, StartServiceActivity::class.java).putExtra(
-                        "Orientation",
-                        "Landscape"
-                    )
-                )
-            } else {
-                lateinit var scriptName: String
-                lateinit var arguments: ArrayList<String>
-                if (isEatStone) {
-                    scriptName = "AutoFightEat.txt"
-                    arguments = mutableListOf(
-                        nRepetition.toString(),
-                        "PressRestore.png"
-                    ) as ArrayList<String>
-                } else if (isEatMedicine) {
-                    scriptName = "AutoFightEat.txt"
-                    arguments = mutableListOf(
-                        nRepetition.toString(),
-                        "PressRestoreMedicine.png"
-                    ) as ArrayList<String>
-                } else {
-                    scriptName = "AutoFight.txt"; arguments =
-                        mutableListOf(nRepetition.toString()) as ArrayList<String>
+        startServiceLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    startWidget()
                 }
-                this.startService(
-                    Intent(this, FloatingWidgetService::class.java)
-                        .putExtra(FloatingWidgetService.folderTAG, folderName)
-                        .putExtra(FloatingWidgetService.scriptTAG, scriptName)
-                        .putExtra(FloatingWidgetService.argsTAG, arguments)
-                )
-                this.finishAffinity()
             }
+
+        startWidgetLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    lateinit var scriptName: String
+                    lateinit var arguments: ArrayList<String>
+                    if (isEatStone) {
+                        scriptName = "AutoFightEat.txt"
+                        arguments = mutableListOf(
+                            nRepetition,
+                            "PressRestore.png"
+                        ) as ArrayList<String>
+                    } else if (isEatMedicine) {
+                        scriptName = "AutoFightEat.txt"
+                        arguments = mutableListOf(
+                            nRepetition,
+                            "PressRestoreMedicine.png"
+                        ) as ArrayList<String>
+                    } else {
+                        scriptName = "AutoFight.txt"; arguments =
+                            mutableListOf(nRepetition) as ArrayList<String>
+                    }
+                    this.startService(
+                        Intent(this, FloatingWidgetService::class.java)
+                            .putExtra(FloatingWidgetService.folderTAG, folderName)
+                            .putExtra(FloatingWidgetService.scriptTAG, scriptName)
+                            .putExtra(FloatingWidgetService.argsTAG, arguments)
+                            .putExtra("MPM", result.data!!)
+                    )
+                    this.finishAffinity()
+                }
+            }
+
+
+        findViewById<View>(R.id.set_script).setOnClickListener {
+            startServiceLauncher.launch(Intent(this, StartServiceActivity::class.java))
         }
     }
 
-
-    private var resizeRatio = 0.0
     override fun resourceInitialize() {
-        try {
-            FileOperation.readDir(folderName)
-            for (file in assets.list(folderName)!!) {
-                DebugMessage.set(file)
-                getResource(folderName, file!!)
-            }
-        } catch (e: Exception) {
-            DebugMessage.printStackTrace(e)
+        FileOperation.readDir(folderName)
+        for (file in assets.list(folderName)!!) {
+            MyLog.set(file)
+            getResource(folderName, file!!)
         }
         resizeRatio = min(
             ScreenShotService.height,
@@ -128,6 +133,12 @@ class ArkKnightsEditor : Editor() {
         buffer.add("ClickPic $1 $resizeRatio")
         buffer.add("Return \$R")
         FileOperation.writeLines(folderName + "TryPress.txt", buffer)
+    }
+
+
+    private fun startWidget() {
+        val mpm: MediaProjectionManager = getSystemService(MediaProjectionManager::class.java)
+        startWidgetLauncher.launch(mpm.createScreenCaptureIntent())
     }
 
     companion object {

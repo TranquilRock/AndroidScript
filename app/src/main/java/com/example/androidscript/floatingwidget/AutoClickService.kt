@@ -1,6 +1,6 @@
 package com.example.androidscript.floatingwidget
 
-import com.example.androidscript.util.DebugMessage
+import com.example.androidscript.util.MyLog
 import android.accessibilityservice.AccessibilityService
 import android.view.accessibility.AccessibilityEvent
 import android.accessibilityservice.GestureDescription
@@ -13,15 +13,15 @@ class AutoClickService : AccessibilityService() {
     public override fun onServiceConnected() {
         super.onServiceConnected()
         instance = this
-        DebugMessage.set("AutoClick::onServiceConnected\n")
+        MyLog.set("AutoClick::onServiceConnected\n")
     }
 
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
-        DebugMessage.set("AutoClick::onAccessibilityEvent\n")
+        MyLog.set("AutoClick::onAccessibilityEvent\n")
     }
 
     override fun onInterrupt() {
-        DebugMessage.set("AutoClick::onInterrupt\n")
+        MyLog.set("AutoClick::onInterrupt\n")
     }
 
     override fun onUnbind(intent: Intent?): Boolean {

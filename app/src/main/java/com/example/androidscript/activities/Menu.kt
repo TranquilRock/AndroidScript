@@ -37,9 +37,12 @@ class Menu : AppCompatActivity() {
         // Pre-setup
         FileOperation.root = (externalMediaDirs[0].absolutePath + "/")
 
+        @Suppress("DEPRECATION") // For old api version
         windowManager.run {
             if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) {
-                DisplayMetrics().also { defaultDisplay.getRealMetrics(it) }.run {
+                DisplayMetrics().also {
+                    defaultDisplay.getRealMetrics(it)
+                }.run {
                     ScreenShotService.setScreenDim(heightPixels, widthPixels)
                 }
             } else currentWindowMetrics.bounds.run {

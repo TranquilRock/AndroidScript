@@ -1,6 +1,6 @@
 package com.example.androidscript.activities.fgo
 
-import com.example.androidscript.util.DebugMessage
+import android.content.Intent
 import com.example.androidscript.util.FileOperation
 import com.example.androidscript.uitemplate.UIEditor
 import android.os.Bundle
@@ -11,7 +11,7 @@ import android.view.*
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import java.lang.Exception
+import com.example.androidscript.activities.StartServiceActivity
 import java.util.*
 
 class FGOEditor : UIEditor() {
@@ -20,7 +20,11 @@ class FGOEditor : UIEditor() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        findViewById<View>(R.id.start_service).setOnClickListener { startServiceHandler("Landscape") }
+        findViewById<View>(R.id.start_service).setOnClickListener {
+            resultLauncher.launch(
+                Intent(this, StartServiceActivity::class.java)
+            )
+        }
         findViewById<View>(R.id.save_file).setOnClickListener {
             var syntaxFlag = true
             for (Line in blockData) {
@@ -67,22 +71,19 @@ class FGOEditor : UIEditor() {
     }
 
     override fun resourceInitialize() {
-        try {
-            FileOperation.readDir(folderName) //Since we access depth 2 folder later, make sure depth 1 is built;
-            FileOperation.readDir(folderName + "Friend/")
-            FileOperation.readDir(folderName + "Craft/")
-            for (folder in arrayOf(
-                folderName,
-                folderName + "Friend/",
-                folderName + "Craft/"
-            )) {
-                for (file in assets.list(folder)!!) {
-                    getResource(folder, file!!)
-                }
+        FileOperation.readDir(folderName) //Since we access depth 2 folder later, make sure depth 1 is built;
+        FileOperation.readDir(folderName + "Friend/")
+        FileOperation.readDir(folderName + "Craft/")
+        for (folder in arrayOf(
+            folderName,
+            folderName + "Friend/",
+            folderName + "Craft/"
+        )) {
+            for (file in assets.list(folder)!!) {
+                getResource(folder, file!!)
             }
-        } catch (e: Exception) {
-            DebugMessage.printStackTrace(e)
         }
+
     }
 
     companion object {

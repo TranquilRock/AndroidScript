@@ -1,6 +1,7 @@
 package com.example.androidscript.activities.basic
 
-import com.example.androidscript.util.DebugMessage
+import android.content.Intent
+import com.example.androidscript.util.MyLog
 import com.example.androidscript.util.FileOperation
 import com.example.androidscript.uitemplate.UIEditor
 import android.os.Bundle
@@ -10,6 +11,7 @@ import android.view.*
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.androidscript.activities.StartServiceActivity
 import com.example.androidscript.floatingwidget.Interpreter
 import java.lang.RuntimeException
 import java.util.*
@@ -47,9 +49,8 @@ class BasicEditor : UIEditor() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val orientation = intent.getStringExtra("Orientation")!!
         findViewById<View>(R.id.start_service).setOnClickListener{
-            startServiceHandler(orientation)
+            resultLauncher.launch(Intent(this, StartServiceActivity::class.java))
         }
         findViewById<View>(R.id.save_file).setOnClickListener{
             var syntaxFlag = true
@@ -76,11 +77,11 @@ class BasicEditor : UIEditor() {
         if (FileOperation.findFile(folderName, fileName)) {
             blockData = FileOperation.readFromFileWords(folderName + fileName)
         } else {
-            DebugMessage.set("No such file")
+            MyLog.set("No such file")
             blockData.add(Vector(Blocks["Return"]!!))
         }
         for (blc in blockData) {
-            DebugMessage.set(blc.joinToString(":"))
+            MyLog.set(blc.joinToString(":"))
         }
         blockView.layoutManager = LinearLayoutManager(this)
         blockView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))

@@ -3,7 +3,6 @@ package com.example.androidscript.floatingwidget
 import android.content.Intent
 import android.graphics.Bitmap
 import com.example.androidscript.R
-import android.media.projection.MediaProjectionManager
 import android.os.Build
 import android.os.IBinder
 import android.annotation.SuppressLint
@@ -24,12 +23,8 @@ class ScreenShotService : Service() {
 
     private lateinit var serviceBinder: ScreenShotBinder
     private lateinit var imageReader: ImageReader
-
-    private val virtualDisplay: VirtualDisplay
-        get() = serviceBinder.virtualDisplay
-
-    private val mediaProjection
-        get() = serviceBinder.mediaProjection
+    private lateinit var virtualDisplay: VirtualDisplay
+    private lateinit var mediaProjection: MediaProjection
 
     override fun onCreate() {
         super.onCreate()
@@ -40,79 +35,35 @@ class ScreenShotService : Service() {
         return serviceBinder
     }
 
-    inner class ScreenShotBinder : Binder() {
-        lateinit var mediaProjection: MediaProjection
-        lateinit var virtualDisplay: VirtualDisplay
-        fun set(mediaProjection: MediaProjection){
-            this.mediaProjection = mediaProjection
-            this.virtualDisplay = mediaProjection.createVirtualDisplay(
-                "Screenshot",
-                width,
-                height,
-                Resources.getSystem().displayMetrics.densityDpi,
-                DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
-                this@ScreenShotService.imageReader.surface, null, null
-            )
-        }
-        fun end(){
-            if(this::virtualDisplay.isInitialized){
-                virtualDisplay.release()
-            }
-            if(this::mediaProjection.isInitialized){
-                mediaProjection.stop()
-            }
-        }
-        val service: ScreenShotService
-            get() = this@ScreenShotService
-    }
-
-    private fun createNotificationChannel() {
-        val navigate = PendingIntent.getActivity(
-            this,
-            0,
-            Intent(this, Menu::class.java).putExtra("Message", "Reset"),
-            PendingIntent.FLAG_IMMUTABLE
-        )
-        val builder = Notification.Builder(applicationContext, "com.example.androidscript")
-        builder.setContentIntent(navigate)
-            .setContentTitle("AndroidScript")
-            .setContentText("Capturing Screen")
-            .setSmallIcon(R.drawable.ic_launcher_foreground) //Necessary
-            .build()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            builder.setChannelId("notification_id")
-            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-            val channel = NotificationChannel(
-                "notification_id",
-                "notification_name",
-                NotificationManager.IMPORTANCE_HIGH
-            )
-            notificationManager.createNotificationChannel(channel)
-        }
-        startForeground(13, builder.build())
-    }
-
-
-    @SuppressLint("WrongConstant")
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
-        createNotificationChannel()
-
-        imageReader = ImageReader.newInstance(width, height, PixelFormat.RGBA_8888, 3)
-
-        DebugMessage.set("""Start Screen Casting on ($height,$width) device""")
-        return super.onStartCommand(intent, flags, startId)
-    }
-
     override fun onDestroy() {
-        serviceBinder.end()
+        if (this::virtualDisplay.isInitialized) {
+            virtualDisplay.release()
+        }
+        if (this::mediaProjection.isInitialized) {
+            mediaProjection.stop()
+        }
         super.onDestroy()
+    }
+
+    fun set(mediaProjection: MediaProjection) {
+        this.mediaProjection = mediaProjection
+        imageReader = ImageReader.newInstance(width, height, PixelFormat.RGBA_8888, 3)
+        this.virtualDisplay = mediaProjection.createVirtualDisplay(
+            "Screenshot",
+            width,
+            height,
+            Resources.getSystem().displayMetrics.densityDpi,
+            DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
+            this.imageReader.surface, null, null
+        )
+        MyLog.set("""Start Screen Casting on ($height,$width) device""")
     }
 
     fun shot(): Bitmap? {
         val img = imageReader.acquireLatestImage()
 
         // TODO remove this
-        DebugMessage.set("IMAGE " + img.width + " " + img.height)
+        MyLog.set("IMAGE " + img.width + " " + img.height)
         val width: Int
         val height: Int
 
@@ -155,6 +106,11 @@ class ScreenShotService : Service() {
                 ), Target
             )
         }
+    }
+
+    inner class ScreenShotBinder : Binder() {
+        val service: ScreenShotService
+            get() = this@ScreenShotService
     }
 
     companion object {

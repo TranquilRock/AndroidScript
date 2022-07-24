@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.Image
 import java.io.*
-import java.lang.Exception
 import java.lang.StringBuilder
 import java.nio.charset.StandardCharsets
 import java.util.*
@@ -25,14 +24,10 @@ object FileOperation {
 
     fun saveBitmapAsJPG(bm: Bitmap, fileName: String) {
         val file = createFileAndParent(root + fileName)
-        try {
             val out = FileOutputStream(file)
             bm.compress(Bitmap.CompressFormat.JPEG, 90, out)
             out.flush()
             out.close()
-        } catch (e: Exception) {
-            DebugMessage.printStackTrace(e)
-        }
     }
 
     fun saveBitmapAsPNG(bm: Bitmap, fileName: String) {
@@ -146,12 +141,12 @@ object FileOperation {
     }
 
     private fun createFileAndParent(fileName: String): File {
-        DebugMessage.set("Writing File: $fileName")
+        MyLog.set("Writing File: $fileName")
         val file = File(fileName)
         if (file.exists() && file.delete()) {
-            DebugMessage.set("Overwriting $fileName")
+            MyLog.set("Overwriting $fileName")
         } else if (file.parentFile?.mkdir() == true) {
-            DebugMessage.set("Creating Parent Dir of $fileName")
+            MyLog.set("Creating Parent Dir of $fileName")
         }
         return file
     }

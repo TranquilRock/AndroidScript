@@ -9,7 +9,7 @@ import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 
-@Suppress("SameParameterValue")
+@Suppress("SameParameterValue") //For readability
 class FGOScriptCompiler : ScriptCompiler() {
     override fun compile(data: Vector<Vector<String>>) {
         save = Vector()
@@ -46,6 +46,7 @@ class FGOScriptCompiler : ScriptCompiler() {
     }
 
     companion object {
+        // TODO
         // Discussion 2022/01/26
         //    public class resourceLocation{
         //        public final int x1;

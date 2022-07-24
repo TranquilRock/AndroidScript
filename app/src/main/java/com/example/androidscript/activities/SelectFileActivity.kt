@@ -3,15 +3,14 @@ package com.example.androidscript.activities
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.widget.Spinner
-import com.example.androidscript.util.DebugMessage
+import com.example.androidscript.util.MyLog
 import com.example.androidscript.util.FileOperation
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
 import com.example.androidscript.R
 import android.widget.EditText
-import com.example.androidscript.util.SpnMaker
 import android.widget.TextView
-import java.lang.Exception
 import java.util.*
 import java.util.regex.Pattern
 
@@ -21,18 +20,16 @@ open class SelectFileActivity : AppCompatActivity() {
     private lateinit var output: TextView
     private lateinit var select: Spinner
     private lateinit var availableFile: Vector<String>
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_file)
         val classPath = intent.getStringExtra("next_destination")!!
             .split("\\.".toRegex()).toTypedArray()
-        DebugMessage.set(classPath[classPath.size - 2] + "/")
-        try {
-            availableFile =
-                FileOperation.browseAvailableFile(classPath[classPath.size - 2] + "/", ".blc")
-        } catch (e: Exception) {
-            DebugMessage.printStackTrace(e)
-            availableFile = Vector()
+        MyLog.set(classPath[classPath.size - 2] + "/")
+        availableFile =
+            FileOperation.browseAvailableFile(classPath[classPath.size - 2] + "/", ".blc")
+        if (availableFile.size == 0) {
             availableFile.add("Empty")
         }
         setupElements()
@@ -41,7 +38,10 @@ open class SelectFileActivity : AppCompatActivity() {
     private fun setupElements() {
         etNewName = findViewById(R.id.et_New_Name)
         output = findViewById(R.id.output) //Show some massage to user
-        select = SpnMaker.fromStringWithActivity(R.id.spinner_Select_Script, this, availableFile)
+        select = findViewById<Spinner>(R.id.spinner_Select_Script).also {
+            it.adapter =
+                ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, availableFile)
+        }
 
         findViewById<View>(R.id.btn_To_Load).setOnClickListener {
             val fileName = select.selectedItem.toString()

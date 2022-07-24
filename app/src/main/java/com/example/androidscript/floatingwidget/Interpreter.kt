@@ -61,12 +61,12 @@ open class Interpreter(
 
     //==========================================
     private var runArgs: ArrayList<String>? = null
-    private lateinit var screenShot: ScreenShotService.ScreenShotBinder
+    private lateinit var screenShot: ScreenShotService
 
-    fun runCode(argv: ArrayList<String>?, screenShotBinder: ScreenShotService.ScreenShotBinder) {
+    fun runCode(argv: ArrayList<String>?, screenShotService: ScreenShotService) {
         runArgs = argv
         runningFlag = true
-        screenShot = screenShotBinder
+        screenShot = screenShotService
         start()
     }
 
@@ -93,7 +93,7 @@ open class Interpreter(
             val arguments = command.copyOfRange(1, command.size)
             varsSubstitution(localVar, command[0], arguments)
             //=====================================================
-            DebugMessage.set("$pc  ${command.joinToString(" ")}")
+            MyLog.set("$pc  ${command.joinToString(" ")}")
             delay()
             when (command[0]) {
                 "Exit" -> {
@@ -111,11 +111,11 @@ open class Interpreter(
                 "ClickPic" -> {
                     val tmp = readImg(arguments[0])
                     val target = ImageHandler.findLocation(
-                        screenShot.service.shot(), tmp, arguments[1]
+                        screenShot.shot(), tmp, arguments[1]
                             .toDouble()
                     )
                     if (target != null) {
-                        DebugMessage.set("Clicking Picture:" + target.x + " " + target.y)
+                        MyLog.set("Clicking Picture:" + target.x + " " + target.y)
                         AutoClickService.click(target.x.toInt(), target.y.toInt())
                         localVar["\$R"] = "0"
                     } else {
@@ -142,7 +142,7 @@ open class Interpreter(
                     .toInt() - arguments[1].toInt()).toString()
                 "Var" -> localVar[arguments[0]] = arguments[1]
                 "Check" -> if (ImageHandler.checkColor(
-                        screenShot.service.shot(), arguments[0]
+                        screenShot.shot(), arguments[0]
                             .toInt(), arguments[1].toInt(), arguments[2].toInt()
                     )
                 ) {
@@ -160,8 +160,8 @@ open class Interpreter(
                     )
                 }
                 "Compare" -> {
-                    screenShot.service.shot() //Empty shot to make sure Image be the newest.
-                    localVar["\$R"] = screenShot.service.compare(
+                    screenShot.shot() //Empty shot to make sure Image be the newest.
+                    localVar["\$R"] = screenShot.compare(
                         readImg(arguments[4]), arguments[0]
                             .toInt(), arguments[1].toInt(), arguments[2].toInt(), arguments[3]
                             .toInt()
@@ -209,14 +209,6 @@ open class Interpreter(
         )
 
         //==================== Helper =======================
-
-        protected fun tagsSubstitution(
-            localVar: MutableMap<String, String>,
-            command: String,
-            args: Array<String>
-        ) {
-
-        }
 
         protected fun varsSubstitution(
             localVar: MutableMap<String, String>,

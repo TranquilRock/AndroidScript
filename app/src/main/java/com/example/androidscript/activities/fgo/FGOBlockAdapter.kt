@@ -6,11 +6,12 @@ import com.example.androidscript.uitemplate.BlockAdapter
 import com.example.androidscript.activities.fgo.FGOViewHolder.SkillVH
 import com.example.androidscript.activities.fgo.FGOViewHolder.NoblePhantasmsVH
 import com.example.androidscript.activities.fgo.FGOViewHolder.CraftSkillVH
-import com.example.androidscript.util.SpnMaker
 import com.example.androidscript.activities.fgo.FGOViewHolder.PreStageVH
 import com.example.androidscript.activities.fgo.FGOViewHolder.EndVH
 import android.os.*
 import android.view.*
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import java.lang.RuntimeException
 import java.util.*
 
@@ -45,7 +46,13 @@ class FGOBlockAdapter(_data: Vector<Vector<String>>) : BlockAdapter<FGOViewHolde
                         ".png"
                     )
                 )
-                SpnMaker.fromStringWithView(R.id.friend, view, friendList)
+
+                view.findViewById<Spinner>(R.id.friend).adapter = ArrayAdapter(
+                    view.context,
+                    android.R.layout.simple_spinner_dropdown_item,
+                    friendList
+                )
+
 
                 val craftList = Vector<String>()
                 craftList.add("None")
@@ -55,8 +62,12 @@ class FGOBlockAdapter(_data: Vector<Vector<String>>) : BlockAdapter<FGOViewHolde
                         ".png"
                     )
                 )
-                SpnMaker.fromStringWithView(R.id.craft, view, craftList)
 
+                view.findViewById<Spinner>(R.id.craft).adapter = ArrayAdapter(
+                    view.context,
+                    android.R.layout.simple_spinner_dropdown_item,
+                    craftList
+                )
                 return PreStageVH(view.findViewById(R.id.pre_stage))
             }
             4 -> {

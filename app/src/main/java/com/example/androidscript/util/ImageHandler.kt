@@ -45,7 +45,7 @@ object ImageHandler {
             matcher.match(screenDescriptor, targetDescriptor, ret)
             ret
         } catch (ex: CvException) {
-            DebugMessage.set("Matching failed $ex")
+            MyLog.set("Matching failed $ex")
             null
         }
     }
@@ -73,7 +73,7 @@ object ImageHandler {
                 matchCount++
             }
         }
-        DebugMessage.set("Match $matchCount points")
+        MyLog.set("Match $matchCount points")
         return matchCount
     }
 
@@ -91,7 +91,7 @@ object ImageHandler {
         val result = Mat()
         Imgproc.matchTemplate(image, template, result, Imgproc.TM_CCOEFF_NORMED)
         val mmr = Core.minMaxLoc(result)
-        DebugMessage.set("Confidence " + mmr.maxVal)
+        MyLog.set("Confidence " + mmr.maxVal)
         return if (mmr.maxVal > 0.75) {
             Point(mmr.maxLoc.x + template.width(), mmr.maxLoc.y + template.height())
         } else null
@@ -108,7 +108,7 @@ object ImageHandler {
         val result = Mat()
         Imgproc.matchTemplate(image, template, result, Imgproc.TM_CCOEFF_NORMED)
         val mmr = Core.minMaxLoc(result)
-        DebugMessage.set("Confidence " + mmr.maxVal)
+        MyLog.set("Confidence " + mmr.maxVal)
         return Point(mmr.maxLoc.x + template.width(), mmr.maxLoc.y + template.height())
     }
 

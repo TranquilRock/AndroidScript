@@ -2,9 +2,14 @@ package com.example.androidscript.floatingwidget
 
 import android.annotation.SuppressLint
 import android.app.*
+import android.app.Activity.RESULT_OK
+import android.content.ComponentName
 import android.content.Intent
+import android.content.ServiceConnection
 import android.graphics.PixelFormat
 import android.graphics.Point
+import android.media.projection.MediaProjection
+import android.media.projection.MediaProjectionManager
 import android.os.*
 import android.util.DisplayMetrics
 import android.view.*
@@ -12,9 +17,10 @@ import android.view.View.OnTouchListener
 import android.widget.TextView
 import com.example.androidscript.R
 import com.example.androidscript.activities.Menu
-import kotlin.collections.ArrayList
+import com.example.androidscript.util.MyLog
 import kotlin.math.abs
 import kotlin.math.ceil
+
 
 class FloatingWidgetService : Service() {
 
@@ -33,8 +39,10 @@ class FloatingWidgetService : Service() {
     private lateinit var statusBulletin: Bulletin
     private var args: ArrayList<String>? = null
     private lateinit var interpreter: Interpreter
-    private lateinit var screenShotBinder: ScreenShotService.ScreenShotBinder
+    private lateinit var mMediaProjectionManager: MediaProjectionManager
+    private lateinit var mMediaProjection: MediaProjection
 
+    @Suppress("DEPRECATION") // Allow lower api version.
     private val physicalWidth: Int
         get() = mWindowManager
             .run {
@@ -44,6 +52,7 @@ class FloatingWidgetService : Service() {
                 else currentWindowMetrics.bounds.width()
             }
 
+    @Suppress("DEPRECATION") // Allow lower api version.
     private val physicalHeight: Int
         get() = mWindowManager
             .run {
@@ -55,25 +64,42 @@ class FloatingWidgetService : Service() {
 
     // =========================================================================
 
-    // TODO bind screenshot service
+    private lateinit var screenShotService: ScreenShotService
+    private var screenShotConnection: ServiceConnection = object : ServiceConnection {
 
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            val binder: ScreenShotService.ScreenShotBinder =
+                service as ScreenShotService.ScreenShotBinder
+            screenShotService = binder.service
+            screenShotService.set(mMediaProjection)
+            MyLog.set("Connected")
+        }
+
+        override fun onServiceDisconnected(className: ComponentName) {
+            MyLog.set("onServiceDisconnected")
+        }
+    }
+
+    /*  return status bar height on basis of device display metrics  */
+    private val statusBarHeight: Int
+        get() = ceil((25 * applicationContext.resources.displayMetrics.density).toDouble())
+            .toInt()
 
     override fun onCreate() {
         super.onCreate()
-        //TODO create serviceConnection
+
         bindService(
             Intent(this, ScreenShotService::class.java),
-            null,
+            screenShotConnection,
             BIND_AUTO_CREATE
         )
 
         mWindowManager = getSystemService(WINDOW_SERVICE) as WindowManager
-        updateScreenBound()
-
         inflater = getSystemService(LAYOUT_INFLATER_SERVICE) as LayoutInflater
         mWidget = inflater.inflate(R.layout.floating_widget_layout, null)
 
         //Add the view to the window.
+        @Suppress("DEPRECATION") // Allow lower api version.
         val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,
@@ -89,6 +115,7 @@ class FloatingWidgetService : Service() {
         layoutParams.gravity = Gravity.TOP or Gravity.START
         layoutParams.x = 0
         layoutParams.y = 0
+
         mWindowManager.addView(mWidget, layoutParams)
         collapsedView = mWidget.findViewById(R.id.collapse_view)
         expandedView = mWidget.findViewById(R.id.expanded_container)
@@ -106,7 +133,7 @@ class FloatingWidgetService : Service() {
                     stopSelf()
                 }
             findViewById<View>(R.id.run_script).setOnClickListener {
-                interpreter.runCode(args, screenShotBinder = screenShotBinder)
+                interpreter.runCode(args, screenShotService)
                 resetPosition()
                 collapseView()
             }
@@ -122,12 +149,26 @@ class FloatingWidgetService : Service() {
                 floatingWidgetViewTouchListener
             )
         }
+
+        mMediaProjectionManager = getSystemService(MediaProjectionManager::class.java)
+        updateScreenBound()
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        createNotificationChannel()
+
+        Handler(Looper.getMainLooper()).post {
+            mMediaProjection =
+                mMediaProjectionManager.getMediaProjection(
+                    RESULT_OK,
+                    intent.getParcelableExtra<Intent>("MPM")!!
+                )
+        }
+
         val scriptFolderName = intent.getStringExtra(folderTAG)!!
         val scriptName = intent.getStringExtra(scriptTAG)!!
         args = intent.getStringArrayListExtra(argsTAG)
+
         interpreter = Interpreter(scriptFolderName, scriptName, statusBulletin)
         return super.onStartCommand(intent, flags, startId)
     }
@@ -192,6 +233,45 @@ class FloatingWidgetService : Service() {
             return value
         }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        unbindService(screenShotConnection)
+        mWindowManager.removeView(mWidget)
+        interpreter.runningFlag = false
+        interpreter.join()
+    }
+
+    override fun onBind(intent: Intent): IBinder? {
+        return null
+    }
+
+    // ============== helper =====================
+
+    private fun createNotificationChannel() {
+        val navigate = PendingIntent.getActivity(
+            this,
+            0,
+            Intent(this, Menu::class.java).putExtra("Message", "Reset"),
+            PendingIntent.FLAG_IMMUTABLE
+        )
+        val builder = Notification.Builder(applicationContext, "com.example.androidscript")
+        builder.setContentIntent(navigate)
+            .setContentTitle("AndroidScript")
+            .setContentText("Capturing Screen")
+            .setSmallIcon(R.drawable.ic_launcher_foreground) //Necessary
+            .build()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            builder.setChannelId("notification_id")
+            val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            val channel = NotificationChannel(
+                "notification_id",
+                "notification_name",
+                NotificationManager.IMPORTANCE_HIGH
+            )
+            notificationManager.createNotificationChannel(channel)
+        }
+        startForeground(13, builder.build())
+    }
     private fun updateScreenBound() {
         height = physicalHeight
         width = physicalWidth
@@ -205,16 +285,6 @@ class FloatingWidgetService : Service() {
         pos.y = 0
         mWindowManager.updateViewLayout(mWidget, pos)
     }
-
-    /*  return status bar height on basis of device display metrics  */
-    private val statusBarHeight: Int
-        get() = ceil((25 * applicationContext.resources.displayMetrics.density).toDouble())
-            .toInt()
-
-    override fun onBind(intent: Intent): IBinder? {
-        return null
-    }
-
 
     /*  on Floating widget click show expanded view  */
     private fun expandView() {
@@ -235,12 +305,6 @@ class FloatingWidgetService : Service() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        mWindowManager.removeView(mWidget)
-        interpreter.runningFlag = false
-        interpreter.join()
-    }
 
     class Bulletin internal constructor(private var board: TextView) {
         fun announce(announcement: String) {
