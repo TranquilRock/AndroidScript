@@ -1,10 +1,10 @@
 package com.example.androidscript.activities.fgo
 
-import com.example.androidscript.util.FileOperation
-import com.example.androidscript.util.ScriptCompiler
 import android.util.Size
 import com.example.androidscript.floatingwidget.ScreenShotService
-import org.opencv.core.*
+import com.example.androidscript.util.FileOperation
+import com.example.androidscript.util.ScriptCompiler
+import org.opencv.core.Point
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min

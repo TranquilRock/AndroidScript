@@ -2,18 +2,17 @@ package com.example.androidscript.floatingwidget
 
 import android.graphics.Bitmap
 import android.util.Log
-import com.example.androidscript.util.*
-import java.lang.Exception
-import java.lang.RuntimeException
+import com.example.androidscript.util.FileOperation
+import com.example.androidscript.util.ImageHandler
+import com.example.androidscript.util.MyLog
+import java.lang.Thread.sleep
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 open class Interpreter(
     private val ScriptFolderName: String,
     private val ScriptName: String,
     private val board: FloatingWidgetService.Bulletin
-) : Thread() {
+) : Runnable {
 
     private var scriptCode: HashMap<String, Code> = HashMap()
     var runningFlag = false
@@ -63,15 +62,14 @@ open class Interpreter(
     private var runArgs: ArrayList<String>? = null
     private lateinit var screenShot: ScreenShotService
 
-    fun runCode(argv: ArrayList<String>?, screenShotService: ScreenShotService) {
+    fun setup(argv: ArrayList<String>?, screenShotService: ScreenShotService) {
         runArgs = argv
-        runningFlag = true
         screenShot = screenShotService
-        start()
     }
 
     override fun run() {
         board.announce("Running")
+        runningFlag = true
         execute(ScriptName, runArgs, 0)
         runningFlag = false
         board.announce("IDLE")
@@ -103,7 +101,7 @@ open class Interpreter(
                 "Log" -> board.announce(arguments[0])
                 "JumpTo" -> pc = arguments[0].toInt() - 1 //One-based
                 "Wait" -> sleep(
-                    arguments[0].toInt()
+                    arguments[0].toLong()
                 )
                 "Call" -> localVar["\$R"] = execute(arguments[0], null, depth + 1).toString()
                 "Tag" -> {}
@@ -241,10 +239,6 @@ open class Interpreter(
                     argCount++
                 }
             }
-        }
-
-        protected fun sleep(ms: Int) {
-            sleep(ms.toLong())
         }
 
         protected fun delay() {

@@ -2,21 +2,20 @@ package com.example.androidscript.activities.arknights
 
 import android.app.Activity
 import android.content.Intent
-import android.media.projection.MediaProjectionManager
-import com.example.androidscript.util.MyLog
-import com.example.androidscript.util.FileOperation
 import android.os.Bundle
-import com.example.androidscript.R
-import com.example.androidscript.floatingwidget.FloatingWidgetService
-import android.widget.EditText
-import androidx.appcompat.widget.SwitchCompat
+import android.view.View
 import android.widget.CompoundButton
-import com.example.androidscript.floatingwidget.ScreenShotService
-import com.example.androidscript.activities.StartServiceActivity
-import android.view.*
+import android.widget.EditText
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.widget.SwitchCompat
+import com.example.androidscript.R
+import com.example.androidscript.activities.StartServiceActivity
+import com.example.androidscript.floatingwidget.FloatingWidgetService
+import com.example.androidscript.floatingwidget.ScreenShotService
 import com.example.androidscript.uitemplate.Editor
+import com.example.androidscript.util.FileOperation
+import com.example.androidscript.util.MyLog
 import java.lang.Integer.min
 import java.util.*
 
@@ -126,12 +125,6 @@ class ArkKnightsEditor : Editor() {
         buffer.add("ClickPic $1 $resizeRatio")
         buffer.add("Return \$R")
         FileOperation.writeLines(folderName + "TryPress.txt", buffer)
-    }
-
-
-    private fun startWidget() {
-        val mpm: MediaProjectionManager = getSystemService(MediaProjectionManager::class.java)
-        startWidgetLauncher.launch(mpm.createScreenCaptureIntent())
     }
 
     companion object {

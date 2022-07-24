@@ -1,24 +1,24 @@
 package com.example.androidscript.activities.basic
 
 import android.content.Intent
-import com.example.androidscript.util.MyLog
-import com.example.androidscript.util.FileOperation
-import com.example.androidscript.uitemplate.UIEditor
 import android.os.Bundle
-import com.example.androidscript.R
+import android.view.View
 import android.widget.Toast
-import android.view.*
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.androidscript.R
 import com.example.androidscript.activities.StartServiceActivity
 import com.example.androidscript.floatingwidget.Interpreter
-import java.lang.RuntimeException
+import com.example.androidscript.uitemplate.UIEditor
+import com.example.androidscript.util.FileOperation
+import com.example.androidscript.util.MyLog
 import java.util.*
 
 class BasicEditor : UIEditor() {
     override val folderName: String
         get() = BasicEditor.folderName
+
     companion object {
         const val folderName = "Basic/"
         var Blocks: MutableMap<String, Vector<String>> = HashMap()
@@ -48,12 +48,11 @@ class BasicEditor : UIEditor() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        findViewById<View>(R.id.start_service).setOnClickListener{
+        findViewById<View>(R.id.start_service).setOnClickListener {
             startServiceLauncher.launch(Intent(this, StartServiceActivity::class.java))
         }
-        
-        findViewById<View>(R.id.save_file).setOnClickListener{
+
+        findViewById<View>(R.id.save_file).setOnClickListener {
             var syntaxFlag = true
             for (Line in blockData) {
                 if (Line!!.contains("")) {
@@ -98,6 +97,7 @@ class BasicEditor : UIEditor() {
                 buttonData,
                 (blockView.adapter as BasicBlockAdapter).onOrderChange,
             )
+        super.onCreate(savedInstanceState)
     }
 
     override fun resourceInitialize() {

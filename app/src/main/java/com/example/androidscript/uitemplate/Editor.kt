@@ -2,15 +2,15 @@ package com.example.androidscript.uitemplate
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import com.example.androidscript.util.MyLog
-import com.example.androidscript.util.FileOperation
 import android.graphics.BitmapFactory
 import android.media.projection.MediaProjectionManager
 import android.os.Bundle
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
+import com.example.androidscript.util.FileOperation
+import com.example.androidscript.util.MyLog
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.*

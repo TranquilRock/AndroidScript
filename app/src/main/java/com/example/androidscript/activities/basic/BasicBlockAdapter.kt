@@ -1,17 +1,11 @@
 package com.example.androidscript.activities.basic
 
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.example.androidscript.R
+import com.example.androidscript.activities.basic.BasicViewHolder.*
 import com.example.androidscript.uitemplate.BlockAdapter
-import android.view.*
-
-import com.example.androidscript.activities.basic.BasicViewHolder.OneVH
-import com.example.androidscript.activities.basic.BasicViewHolder.ZeroVH
-import com.example.androidscript.activities.basic.BasicViewHolder.TwoVH
-import com.example.androidscript.activities.basic.BasicViewHolder.ThreeVH
-import com.example.androidscript.activities.basic.BasicViewHolder.FourVH
-import com.example.androidscript.activities.basic.BasicViewHolder.FiveVH
-
-import java.lang.RuntimeException
 import java.util.*
 
 class BasicBlockAdapter(content: Vector<Vector<String>>) : BlockAdapter<BasicViewHolder>() {

@@ -46,28 +46,32 @@ public abstract class CameraGLRendererBase implements GLSurfaceView.Renderer, Su
             + "  gl_FragColor = texture2D(sTexture,texCoord);\n" + "}";
 
     // coord-s
-    private final float vertices[] = {
+    private final float[] vertices = {
            -1, -1,
            -1,  1,
             1, -1,
             1,  1 };
-    private final float texCoordOES[] = {
+    private final float[] texCoordOES = {
             0,  1,
             0,  0,
             1,  1,
             1,  0 };
-    private final float texCoord2D[] = {
+    private final float[] texCoord2D = {
             0,  0,
             0,  1,
             1,  0,
             1,  1 };
 
-    private int[] texCamera = {0}, texFBO = {0}, texDraw = {0};
-    private int[] FBO = {0};
+    private final int[] texCamera = {0};
+    private final int[] texFBO = {0};
+    private final int[] texDraw = {0};
+    private final int[] FBO = {0};
     private int progOES = -1, prog2D = -1;
     private int vPosOES, vTCOES, vPos2D, vTC2D;
 
-    private FloatBuffer vert, texOES, tex2D;
+    private final FloatBuffer vert;
+    private final FloatBuffer texOES;
+    private final FloatBuffer tex2D;
 
     protected int mCameraWidth = -1, mCameraHeight = -1;
     protected int mFBOWidth = -1, mFBOHeight = -1;

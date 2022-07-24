@@ -1,18 +1,16 @@
 package com.example.androidscript.activities.fgo
 
-import com.example.androidscript.util.FileOperation
-import com.example.androidscript.R
-import com.example.androidscript.uitemplate.BlockAdapter
-import com.example.androidscript.activities.fgo.FGOViewHolder.SkillVH
-import com.example.androidscript.activities.fgo.FGOViewHolder.NoblePhantasmsVH
-import com.example.androidscript.activities.fgo.FGOViewHolder.CraftSkillVH
-import com.example.androidscript.activities.fgo.FGOViewHolder.PreStageVH
-import com.example.androidscript.activities.fgo.FGOViewHolder.EndVH
-import android.os.*
-import android.view.*
+import android.os.Handler
+import android.os.Looper
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import java.lang.RuntimeException
+import com.example.androidscript.R
+import com.example.androidscript.activities.fgo.FGOViewHolder.*
+import com.example.androidscript.uitemplate.BlockAdapter
+import com.example.androidscript.util.FileOperation
 import java.util.*
 
 class FGOBlockAdapter(_data: Vector<Vector<String>>) : BlockAdapter<FGOViewHolder>() {

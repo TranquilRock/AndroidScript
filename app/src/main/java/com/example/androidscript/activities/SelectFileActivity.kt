@@ -1,48 +1,53 @@
 package com.example.androidscript.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
-import android.widget.Spinner
-import com.example.androidscript.util.MyLog
-import com.example.androidscript.util.FileOperation
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
-import com.example.androidscript.R
 import android.widget.EditText
+import android.widget.Spinner
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.example.androidscript.R
+import com.example.androidscript.util.FileOperation
 import java.util.*
 import java.util.regex.Pattern
 
-// {getExternalFilesDir(null).getAbsolutePath() + "/}This would lead to an invisible dir (from studio)
 open class SelectFileActivity : AppCompatActivity() {
     private lateinit var etNewName: EditText
     private lateinit var output: TextView
     private lateinit var select: Spinner
     private lateinit var availableFile: Vector<String>
+    private lateinit var classPath: Array<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select_file)
-        val classPath = intent.getStringExtra("next_destination")!!
+        classPath = intent.getStringExtra("next_destination")!!
             .split("\\.".toRegex()).toTypedArray()
-        MyLog.set(classPath[classPath.size - 2] + "/")
+
+        setupElements()
+    }
+
+    override fun onResume() {
         availableFile =
             FileOperation.browseAvailableFile(classPath[classPath.size - 2] + "/", ".blc")
+                ?: Vector<String>()
         if (availableFile.size == 0) {
             availableFile.add("Empty")
         }
-        setupElements()
+        select.also {
+            it.adapter =
+                ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, availableFile)
+        }
+
+        super.onResume()
     }
 
     private fun setupElements() {
         etNewName = findViewById(R.id.et_New_Name)
         output = findViewById(R.id.output) //Show some massage to user
-        select = findViewById<Spinner>(R.id.spinner_Select_Script).also {
-            it.adapter =
-                ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, availableFile)
-        }
-
+        select = findViewById(R.id.spinner_Select_Script)
         findViewById<View>(R.id.btn_To_Load).setOnClickListener {
             val fileName = select.selectedItem.toString()
             if (fileName != "") {
@@ -51,6 +56,7 @@ open class SelectFileActivity : AppCompatActivity() {
                 output.text = "必須輸入檔名"
             }
         }
+
         findViewById<View>(R.id.btn_To_Create).setOnClickListener {
             val fileName = etNewName.text.toString()
             if (fileName != "") {
@@ -82,9 +88,12 @@ open class SelectFileActivity : AppCompatActivity() {
         return Pattern.matches(SUPPORTED_FILE_NAME_PATTERN, FileName) && FileName.length > 4
     }
 
-    // TODO refresh files onResume
-
     companion object {
         const val SUPPORTED_FILE_NAME_PATTERN = "([A-Za-z0-9_-]*).blc"
     }
+
+    /** Dev note
+     * {getExternalFilesDir(null).getAbsolutePath() + "/}
+     * This would lead to an invisible dir (from studio)
+     * */
 }

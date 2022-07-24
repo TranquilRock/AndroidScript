@@ -10,7 +10,10 @@ import android.graphics.PixelFormat
 import android.graphics.Point
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
-import android.os.*
+import android.os.Build
+import android.os.Handler
+import android.os.IBinder
+import android.os.Looper
 import android.util.DisplayMetrics
 import android.view.*
 import android.view.View.OnTouchListener
@@ -41,6 +44,8 @@ class FloatingWidgetService : Service() {
     private lateinit var interpreter: Interpreter
     private lateinit var mMediaProjectionManager: MediaProjectionManager
     private lateinit var mMediaProjection: MediaProjection
+    private var mThread: Thread? = null
+
 
     @Suppress("DEPRECATION") // Allow lower api version.
     private val physicalWidth: Int
@@ -133,14 +138,19 @@ class FloatingWidgetService : Service() {
                     stopSelf()
                 }
             findViewById<View>(R.id.run_script).setOnClickListener {
-                interpreter.runCode(args, screenShotService)
-                resetPosition()
-                collapseView()
+                mThread ?: run {
+                    interpreter.setup(args, screenShotService)
+                    mThread = Thread(interpreter)
+                    mThread!!.start()
+                    resetPosition()
+                    collapseView()
+                }
             }
             findViewById<View>(R.id.stop_script).setOnClickListener {
                 statusBulletin.announce("Stopping...")
                 interpreter.runningFlag = false
-                interpreter.join()
+                mThread?.join()
+                mThread = null
             }
             findViewById<View>(R.id.root_container).setOnTouchListener(
                 floatingWidgetViewTouchListener
@@ -161,7 +171,7 @@ class FloatingWidgetService : Service() {
             mMediaProjection =
                 mMediaProjectionManager.getMediaProjection(
                     RESULT_OK,
-                    intent.getParcelableExtra<Intent>("MPM")!!
+                    intent.getParcelableExtra("MPM")!!
                 )
         }
 
@@ -238,7 +248,8 @@ class FloatingWidgetService : Service() {
         unbindService(screenShotConnection)
         mWindowManager.removeView(mWidget)
         interpreter.runningFlag = false
-        interpreter.join()
+        mThread?.join()
+        mThread = null
     }
 
     override fun onBind(intent: Intent): IBinder? {
@@ -272,6 +283,7 @@ class FloatingWidgetService : Service() {
         }
         startForeground(13, builder.build())
     }
+
     private fun updateScreenBound() {
         height = physicalHeight
         width = physicalWidth

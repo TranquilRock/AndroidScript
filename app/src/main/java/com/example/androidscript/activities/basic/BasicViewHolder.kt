@@ -1,15 +1,14 @@
 package com.example.androidscript.activities.basic
 
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.View
+import android.widget.EditText
+import android.widget.ImageButton
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import com.example.androidscript.R
 import com.example.androidscript.uitemplate.BlockAdapter.Updater
-import android.widget.EditText
-import android.text.TextWatcher
-import android.text.Editable
-import android.widget.TextView
-import android.view.*
-import android.widget.Button
-import android.widget.ImageButton
-import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
 abstract class BasicViewHolder(protected var view: View) : RecyclerView.ViewHolder(

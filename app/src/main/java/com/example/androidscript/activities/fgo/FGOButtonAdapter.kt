@@ -2,7 +2,6 @@ package com.example.androidscript.activities.fgo
 
 import com.example.androidscript.uitemplate.BlockAdapter.Updater
 import com.example.androidscript.uitemplate.ButtonAdapter
-import java.lang.RuntimeException
 import java.util.*
 
 class FGOButtonAdapter(

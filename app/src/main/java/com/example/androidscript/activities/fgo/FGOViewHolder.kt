@@ -1,16 +1,12 @@
 package com.example.androidscript.activities.fgo
 
-import android.widget.Spinner
-import com.example.androidscript.R
-import android.widget.ImageButton
-import android.widget.EditText
-import androidx.appcompat.widget.SwitchCompat
-import android.widget.CompoundButton
-import android.widget.AdapterView
-import android.text.TextWatcher
 import android.text.Editable
-import android.view.*
+import android.text.TextWatcher
+import android.view.View
+import android.widget.*
+import androidx.appcompat.widget.SwitchCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.androidscript.R
 import com.example.androidscript.uitemplate.BlockAdapter.Updater
 import java.util.*
 

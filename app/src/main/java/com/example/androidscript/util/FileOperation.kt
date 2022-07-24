@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.Image
 import java.io.*
-import java.lang.StringBuilder
 import java.nio.charset.StandardCharsets
 import java.util.*
 
@@ -24,10 +23,10 @@ object FileOperation {
 
     fun saveBitmapAsJPG(bm: Bitmap, fileName: String) {
         val file = createFileAndParent(root + fileName)
-            val out = FileOutputStream(file)
-            bm.compress(Bitmap.CompressFormat.JPEG, 90, out)
-            out.flush()
-            out.close()
+        val out = FileOutputStream(file)
+        bm.compress(Bitmap.CompressFormat.JPEG, 90, out)
+        out.flush()
+        out.close()
     }
 
     fun saveBitmapAsPNG(bm: Bitmap, fileName: String) {
@@ -116,9 +115,12 @@ object FileOperation {
         FileOutputStream(createFileAndParent(root + fileName)).write(bytes)
     }
 
-    fun browseAvailableFile(folder: String, targetType: String): Vector<String> {
+    fun browseAvailableFile(folder: String, targetType: String): Vector<String>? {
+        val files = readDir(folder)
+        files ?: return null
+
         val ret = Vector<String>()
-        for (s in readDir(folder)!!) {
+        for (s in files) {
             if (s.endsWith(targetType)) {
                 ret.add(s)
             }

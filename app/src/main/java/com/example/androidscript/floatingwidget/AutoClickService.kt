@@ -1,12 +1,12 @@
 package com.example.androidscript.floatingwidget
 
-import com.example.androidscript.util.MyLog
 import android.accessibilityservice.AccessibilityService
-import android.view.accessibility.AccessibilityEvent
 import android.accessibilityservice.GestureDescription
 import android.accessibilityservice.GestureDescription.StrokeDescription
 import android.content.Intent
 import android.graphics.Path
+import android.view.accessibility.AccessibilityEvent
+import com.example.androidscript.util.MyLog
 
 class AutoClickService : AccessibilityService() {
 

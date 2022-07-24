@@ -6,17 +6,16 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
-        android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
         android:theme="@style/Theme.AndroidScript">
-        <activity android:name=".activities.StartServiceActivity"/>
+        <activity android:name=".activities.StartServiceActivity" />
         <activity android:name=".activities.arknights.ArkKnightsEditor" />
-        <activity android:name=".activities.fgo.FGOEditor"/>
-        <activity android:name=".activities.basic.BasicEditor"/>
-        <activity android:name=".activities.Menu"
+        <activity android:name=".activities.fgo.FGOEditor" />
+        <activity android:name=".activities.basic.BasicEditor" />
+        <activity
+            android:name=".activities.Menu"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,13 +26,13 @@
         <activity
             android:name=".activities.SelectFileActivity"
             android:parentActivityName=".activities.Menu" />
+
         <service
             android:name=".floatingwidget.AutoClickService"
             android:enabled="true"
-            android:label="自動點擊"
-            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE"
             android:exported="false"
-            android:foregroundServiceType="mediaProjection">
+            android:label="自動點擊"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
                 <action android:name="android.accessibilityservice.AccessibilityService" />
             </intent-filter>
@@ -45,14 +44,15 @@
         <service
             android:name=".floatingwidget.FloatingWidgetService"
             android:enabled="true"
-            android:label="FloatingWidgetService"
+            android:exported="false"
             android:foregroundServiceType="mediaProjection"
-            />
+            android:label="FloatingWidgetService" />
         <service
             android:name=".floatingwidget.ScreenShotService"
             android:enabled="true"
-            android:label="ScreenShot"
-            android:foregroundServiceType="mediaProjection"/>
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection"
+            android:label="ScreenShot" />
     </application>
 
 </manifest>

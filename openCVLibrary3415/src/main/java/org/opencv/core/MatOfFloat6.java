@@ -51,7 +51,7 @@ public class MatOfFloat6 extends Mat {
     public float[] toArray() {
         int num = checkVector(_channels, _depth);
         if(num < 0)
-            throw new RuntimeException("Native Mat has unexpected type or size: " + toString());
+            throw new RuntimeException("Native Mat has unexpected type or size: " + this);
         float[] a = new float[num * _channels];
         if(num == 0)
             return a;
@@ -62,8 +62,8 @@ public class MatOfFloat6 extends Mat {
     public void fromList(List<Float> lb) {
         if(lb==null || lb.size()==0)
             return;
-        Float ab[] = lb.toArray(new Float[0]);
-        float a[] = new float[ab.length];
+        Float[] ab = lb.toArray(new Float[0]);
+        float[] a = new float[ab.length];
         for(int i=0; i<ab.length; i++)
             a[i] = ab[i];
         fromArray(a);
@@ -71,7 +71,7 @@ public class MatOfFloat6 extends Mat {
 
     public List<Float> toList() {
         float[] a = toArray();
-        Float ab[] = new Float[a.length];
+        Float[] ab = new Float[a.length];
         for(int i=0; i<a.length; i++)
             ab[i] = a[i];
         return Arrays.asList(ab);

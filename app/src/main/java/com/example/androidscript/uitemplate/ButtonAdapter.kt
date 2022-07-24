@@ -1,10 +1,12 @@
 package com.example.androidscript.uitemplate
 
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import androidx.recyclerview.widget.RecyclerView
 import com.example.androidscript.R
 import com.example.androidscript.uitemplate.ButtonAdapter.ButtonViewHolder
-import android.view.*
-import android.widget.*
-import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
 abstract class ButtonAdapter(protected var buttonText: Vector<String>) :

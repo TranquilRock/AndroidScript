@@ -1,21 +1,18 @@
 package com.example.androidscript.floatingwidget
 
+import android.app.Service
 import android.content.Intent
-import android.graphics.Bitmap
-import com.example.androidscript.R
-import android.os.Build
-import android.os.IBinder
-import android.annotation.SuppressLint
-import android.app.*
 import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.PixelFormat
 import android.hardware.display.DisplayManager
 import android.hardware.display.VirtualDisplay
-import android.media.projection.MediaProjection
-import android.graphics.PixelFormat
 import android.media.ImageReader
+import android.media.projection.MediaProjection
 import android.os.Binder
-import com.example.androidscript.activities.Menu
-import com.example.androidscript.util.*
+import android.os.IBinder
+import com.example.androidscript.util.ImageHandler
+import com.example.androidscript.util.MyLog
 import kotlin.math.max
 import kotlin.math.min
 

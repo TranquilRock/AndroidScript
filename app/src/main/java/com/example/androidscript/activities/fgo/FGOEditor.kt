@@ -1,17 +1,17 @@
 package com.example.androidscript.activities.fgo
 
 import android.content.Intent
-import com.example.androidscript.util.FileOperation
-import com.example.androidscript.uitemplate.UIEditor
 import android.os.Bundle
-import com.example.androidscript.R
+import android.view.View
 import android.widget.Toast
-import com.example.androidscript.util.ScriptCompiler
-import android.view.*
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.androidscript.R
 import com.example.androidscript.activities.StartServiceActivity
+import com.example.androidscript.uitemplate.UIEditor
+import com.example.androidscript.util.FileOperation
+import com.example.androidscript.util.ScriptCompiler
 import java.util.*
 
 class FGOEditor : UIEditor() {

@@ -1,21 +1,19 @@
 package com.example.androidscript.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
 import android.os.Build
-import com.example.androidscript.util.FileOperation
 import android.os.Bundle
-import com.example.androidscript.R
-import com.example.androidscript.floatingwidget.FloatingWidgetService
-import com.example.androidscript.floatingwidget.ScreenShotService
 import android.util.DisplayMetrics
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import com.example.androidscript.R
 import com.example.androidscript.activities.arknights.ArkKnightsEditor
-import org.opencv.android.OpenCVLoader
-import android.view.*
 import com.example.androidscript.activities.basic.BasicEditor
 import com.example.androidscript.activities.fgo.FGOEditor
-import com.example.androidscript.util.MyLog
-import java.lang.AssertionError
+import com.example.androidscript.floatingwidget.FloatingWidgetService
+import com.example.androidscript.floatingwidget.ScreenShotService
+import com.example.androidscript.util.FileOperation
+import org.opencv.android.OpenCVLoader
 
 /** App entry
  *
@@ -27,7 +25,7 @@ import java.lang.AssertionError
  *
  * Since screen casting will need to decide the shape, we split Basic to two button here.
  *
- * TODO Consider dynamically reset cast orientation as a new feature.
+ * TODO Consider dynamically reset casting orientation as a new feature.
  */
 class Menu : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
