@@ -1,11 +1,12 @@
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 30
+    compileSdk 33
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        targetSdkVersion 30
+        targetSdkVersion 33
     }
 
     buildTypes {

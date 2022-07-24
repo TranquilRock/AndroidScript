@@ -1,7 +1,6 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/click"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"

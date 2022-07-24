@@ -31,7 +31,7 @@ public class Camera2Renderer extends CameraGLRendererBase {
 
     private HandlerThread mBackgroundThread;
     private Handler mBackgroundHandler;
-    private Semaphore mCameraOpenCloseLock = new Semaphore(1);
+    private final Semaphore mCameraOpenCloseLock = new Semaphore(1);
 
     Camera2Renderer(CameraGLSurfaceView view) {
         super(view);
@@ -101,7 +101,7 @@ public class Camera2Renderer extends CameraGLRendererBase {
         Log.i(LOGTAG, "openCamera");
         CameraManager manager = (CameraManager) mView.getContext().getSystemService(Context.CAMERA_SERVICE);
         try {
-            String camList[] = manager.getCameraIdList();
+            String[] camList = manager.getCameraIdList();
             if(camList.length == 0) {
                 Log.e(LOGTAG, "Error: camera isn't detected.");
                 return;

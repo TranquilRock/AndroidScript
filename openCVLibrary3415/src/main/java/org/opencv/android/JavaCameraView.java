@@ -32,7 +32,7 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
     private static final int MAGIC_TEXTURE_ID = 10;
     private static final String TAG = "JavaCameraView";
 
-    private byte mBuffer[];
+    private byte[] mBuffer;
     private Mat[] mFrameChain;
     private int mChainIdx = 0;
     private Thread mThread;
@@ -340,11 +340,11 @@ public class JavaCameraView extends CameraBridgeViewBase implements PreviewCallb
             mRgba.release();
         }
 
-        private Mat mYuvFrameData;
-        private Mat mRgba;
-        private int mWidth;
-        private int mHeight;
-    };
+        private final Mat mYuvFrameData;
+        private final Mat mRgba;
+        private final int mWidth;
+        private final int mHeight;
+    }
 
     private class CameraWorker implements Runnable {
 

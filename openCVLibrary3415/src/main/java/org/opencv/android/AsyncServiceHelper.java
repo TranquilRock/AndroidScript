@@ -74,7 +74,7 @@ class AsyncServiceHelper
         {
                 Log.d(TAG, "Request new service installation");
                 InstallCallbackInterface InstallQuery = new InstallCallbackInterface() {
-                private LoaderCallbackInterface mUserAppCallback = Callback;
+                private final LoaderCallbackInterface mUserAppCallback = Callback;
                 public String getPackageName()
                 {
                     return "OpenCV Manager";
@@ -120,7 +120,7 @@ class AsyncServiceHelper
         {
             Log.d(TAG, "Waiting current installation process");
             InstallCallbackInterface WaitQuery = new InstallCallbackInterface() {
-                private LoaderCallbackInterface mUserAppCallback = Callback;
+                private final LoaderCallbackInterface mUserAppCallback = Callback;
                 public String getPackageName()
                 {
                     return "OpenCV Manager";
@@ -211,7 +211,7 @@ class AsyncServiceHelper
                                             mUserAppCallback.onManagerConnected(LoaderCallbackInterface.MARKET_ERROR);
                                         }
                                     } catch (RemoteException e) {
-                                        e.printStackTrace();;
+                                        e.printStackTrace();
                                         Log.d(TAG, "Init finished with status " + LoaderCallbackInterface.INIT_FAILED);
                                         Log.d(TAG, "Unbind from service");
                                         mAppContext.unbindService(mServiceConnection);
