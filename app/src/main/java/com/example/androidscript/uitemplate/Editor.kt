@@ -23,7 +23,6 @@ abstract class Editor : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         resourceInitialize()
-
         startServiceLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
                 if (result.resultCode == Activity.RESULT_OK) {

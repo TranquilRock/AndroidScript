@@ -12,6 +12,9 @@ import android.util.DisplayMetrics
 import com.example.androidscript.activities.arknights.ArkKnightsEditor
 import org.opencv.android.OpenCVLoader
 import android.view.*
+import com.example.androidscript.activities.basic.BasicEditor
+import com.example.androidscript.activities.fgo.FGOEditor
+import com.example.androidscript.util.MyLog
 import java.lang.AssertionError
 
 /** App entry
@@ -63,7 +66,7 @@ class Menu : AppCompatActivity() {
             val intent = Intent(this, SelectFileActivity::class.java)
             intent.putExtra(
                 "next_destination",
-                "com.example.androidscript.Activities.FGO.FGOEditor"
+                FGOEditor::class.java.packageName + ".FGOEditor"
             )
             startActivity(intent)
         }
@@ -73,7 +76,7 @@ class Menu : AppCompatActivity() {
             val intent = Intent(this, SelectFileActivity::class.java)
             intent.putExtra(
                 "next_destination",
-                "com.example.androidscript.Activities.Basic.BasicEditor"
+                BasicEditor::class.java.packageName + ".BasicEditor"
             )
             startActivity(intent)
         }
@@ -83,7 +86,7 @@ class Menu : AppCompatActivity() {
             val intent = Intent(this, SelectFileActivity::class.java)
             intent.putExtra(
                 "next_destination",
-                "com.example.androidscript.Activities.Basic.BasicEditor"
+                BasicEditor::class.java.packageName + ".BasicEditor"
             )
             startActivity(intent)
         }

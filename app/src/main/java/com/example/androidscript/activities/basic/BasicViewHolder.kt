@@ -8,6 +8,7 @@ import android.text.Editable
 import android.widget.TextView
 import android.view.*
 import android.widget.Button
+import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import java.util.*
 
@@ -18,19 +19,19 @@ abstract class BasicViewHolder(protected var view: View) : RecyclerView.ViewHold
     lateinit var inputs: Array<EditText?>
 
     open fun onBind(order: Updater, position: Int, Data: Vector<Vector<String>>) {
-        (view.findViewById(R.id.btn_up) as Button).setOnClickListener {
+        (view.findViewById(R.id.btn_up) as ImageButton).setOnClickListener {
             order.swap(
                 position - 1,
                 position
             )
         }
-        (view.findViewById(R.id.btn_down) as Button).setOnClickListener {
+        (view.findViewById(R.id.btn_down) as ImageButton).setOnClickListener {
             order.swap(
                 position,
                 position + 1
             )
         }
-        (view.findViewById(R.id.btn_del) as Button).setOnClickListener {
+        (view.findViewById(R.id.btn_del) as ImageButton).setOnClickListener {
             order.delete(
                 position
             )

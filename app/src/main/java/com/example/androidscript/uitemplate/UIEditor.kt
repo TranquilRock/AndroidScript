@@ -8,6 +8,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.example.androidscript.R
 import androidx.recyclerview.widget.RecyclerView
+import com.example.androidscript.activities.arknights.ArkKnightsEditor
 import com.example.androidscript.floatingwidget.FloatingWidgetService
 import java.util.*
 
@@ -28,13 +29,15 @@ abstract class UIEditor : Editor() {
         blockView = findViewById(R.id.recycleview)
         blockData = Vector()
         buttonData = Vector()
-        resultLauncher =
+
+        startWidgetLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     this.startService(
                         Intent(this, FloatingWidgetService::class.java)
                             .putExtra(FloatingWidgetService.folderTAG, this.folderName)
                             .putExtra(FloatingWidgetService.scriptTAG, "Run.txt")
+                            .putExtra("MPM", result.data!!)
                     )
                     this.finishAffinity()
                 }

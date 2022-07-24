@@ -21,7 +21,7 @@ class FGOEditor : UIEditor() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         findViewById<View>(R.id.start_service).setOnClickListener {
-            resultLauncher.launch(
+            startServiceLauncher.launch(
                 Intent(this, StartServiceActivity::class.java)
             )
         }

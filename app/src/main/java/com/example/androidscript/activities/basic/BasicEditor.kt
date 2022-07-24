@@ -50,8 +50,9 @@ class BasicEditor : UIEditor() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         findViewById<View>(R.id.start_service).setOnClickListener{
-            resultLauncher.launch(Intent(this, StartServiceActivity::class.java))
+            startServiceLauncher.launch(Intent(this, StartServiceActivity::class.java))
         }
+        
         findViewById<View>(R.id.save_file).setOnClickListener{
             var syntaxFlag = true
             for (Line in blockData) {

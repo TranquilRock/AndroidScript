@@ -78,7 +78,7 @@ object FileOperation {
 
     fun readFromFileWords(fileName: String): Vector<Vector<String>> {
         val file = File(root + fileName)
-        assert(!file.exists())
+        assert(file.exists())
         val content = Vector<Vector<String>>()
         val myReader = Scanner(file)
         while (myReader.hasNextLine()) {

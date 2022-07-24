@@ -58,13 +58,6 @@ class ArkKnightsEditor : Editor() {
         eatMedicine = findViewById(R.id.EatMedicine)
         eatStone = findViewById(R.id.EatStone)
 
-        startServiceLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    startWidget()
-                }
-            }
-
         startWidgetLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
                 if (result.resultCode == Activity.RESULT_OK) {
