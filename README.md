@@ -9,8 +9,7 @@
 
 ## Intro/簡介
 
--
-Slides: https://docs.google.com/presentation/d/1p2pku1bjBfWljaol40b3c5a5rb4wGgAlyKgmD7n5bRQ/edit?usp=sharing
+- Slides: https://docs.google.com/presentation/d/1p2pku1bjBfWljaol40b3c5a5rb4wGgAlyKgmD7n5bRQ/edit?usp=sharing
 
 - Demo video
     1. UI: https://www.youtube.com/watch?v=CwXp0ZrnUg0
@@ -87,7 +86,6 @@ Slides: https://docs.google.com/presentation/d/1p2pku1bjBfWljaol40b3c5a5rb4wGgAl
     - FGO
         - 關卡前置
         - 御主技能
-        -
     - ArKnights
         - 只適用代理作戰，啟動腳本前先勾選代理。
         - 設定重複次數、選擇是否自動恢復理智(體力)。
@@ -186,5 +184,6 @@ Slides: https://docs.google.com/presentation/d/1p2pku1bjBfWljaol40b3c5a5rb4wGgAl
             - 帶有文字，更換時注意要維持相同解析度
 
 ## Class Graph (V1)
+
 - (Click pic for higher resolution)
 - ![](https://i.imgur.com/SauAxNZ.png)
