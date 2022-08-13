@@ -1,5 +1,6 @@
 package com.example.androidscript.floatingwidget
 
+import android.annotation.SuppressLint
 import android.app.Service
 import android.content.Intent
 import android.content.res.Resources
@@ -11,13 +12,12 @@ import android.media.ImageReader
 import android.media.projection.MediaProjection
 import android.os.Binder
 import android.os.IBinder
+import android.util.Log
 import com.example.androidscript.util.ImageHandler
-import com.example.androidscript.util.MyLog
 import kotlin.math.max
 import kotlin.math.min
 
 class ScreenShotService : Service() {
-
     private lateinit var serviceBinder: ScreenShotBinder
     private lateinit var imageReader: ImageReader
     private lateinit var virtualDisplay: VirtualDisplay
@@ -29,10 +29,17 @@ class ScreenShotService : Service() {
     }
 
     override fun onBind(intent: Intent): IBinder {
+        Log.i(LOG_TAG, "onBind")
         return serviceBinder
     }
 
+    override fun onUnbind(intent: Intent?): Boolean {
+        Log.i(LOG_TAG, "onUnbind")
+        return super.onUnbind(intent)
+    }
+
     override fun onDestroy() {
+        Log.i(LOG_TAG, "onDestroy")
         if (this::virtualDisplay.isInitialized) {
             virtualDisplay.release()
         }
@@ -42,6 +49,7 @@ class ScreenShotService : Service() {
         super.onDestroy()
     }
 
+    @SuppressLint("WrongConstant")
     fun set(mediaProjection: MediaProjection) {
         this.mediaProjection = mediaProjection
         imageReader = ImageReader.newInstance(width, height, PixelFormat.RGBA_8888, 3)
@@ -53,28 +61,17 @@ class ScreenShotService : Service() {
             DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
             this.imageReader.surface, null, null
         )
-        MyLog.set("""Start Screen Casting on ($height,$width) device""")
+        Log.i(LOG_TAG, """Start Screen Casting on ($height,$width) device""")
     }
 
     fun shot(): Bitmap? {
-        val img = imageReader.acquireLatestImage()
+        val img = imageReader.acquireLatestImage() ?: return null
 
-        // TODO remove this
-        MyLog.set("IMAGE " + img.width + " " + img.height)
-        val width: Int
-        val height: Int
+        Log.i(LOG_TAG, "IMAGE " + img.width + " " + img.height)
 
-        if (isLandscape) {
-            width = max(img.height, img.width)
-            height = min(img.height, img.width)
-        } else {
-            width = min(img.height, img.width)
-            height = max(img.height, img.width)
-        }
-        // =======
         val plane = img.planes[0]
         val buffer = plane.buffer
-        buffer.rewind()
+        buffer.rewind() // java.lang.RuntimeException: Buffer not large enough for pixels
         val pixelStride = plane.pixelStride //像素間距
         val rowStride = plane.rowStride //總間距
         val rowPadding = rowStride - pixelStride * width
@@ -89,20 +86,16 @@ class ScreenShotService : Service() {
     }
 
     fun compare(Target: Bitmap?, x1: Int, y1: Int, x2: Int, y2: Int): Int {
-        val screen = shot()
-        return if (screen == null) {
-            0
-        } else {
-            ImageHandler.matchPicture(
-                Bitmap.createBitmap(
-                    screen,
-                    x1,
-                    y1,
-                    x2 - x1,
-                    y2 - y1
-                ), Target
-            )
-        }
+        val screen = shot() ?: return 0
+        return ImageHandler.matchPicture(
+            Bitmap.createBitmap(
+                screen,
+                x1,
+                y1,
+                x2 - x1,
+                y2 - y1
+            ), Target
+        )
     }
 
     inner class ScreenShotBinder : Binder() {
@@ -111,6 +104,8 @@ class ScreenShotService : Service() {
     }
 
     companion object {
+
+        private val LOG_TAG = ScreenShotService::class.java.simpleName
 
         var height = 0
             private set

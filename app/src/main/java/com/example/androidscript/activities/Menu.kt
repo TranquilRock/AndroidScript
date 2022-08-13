@@ -64,7 +64,7 @@ class Menu : AppCompatActivity() {
             val intent = Intent(this, SelectFileActivity::class.java)
             intent.putExtra(
                 "next_destination",
-                FGOEditor::class.java.packageName + ".FGOEditor"
+                FGOEditor::class.qualifiedName
             )
             startActivity(intent)
         }
@@ -74,7 +74,7 @@ class Menu : AppCompatActivity() {
             val intent = Intent(this, SelectFileActivity::class.java)
             intent.putExtra(
                 "next_destination",
-                BasicEditor::class.java.packageName + ".BasicEditor"
+                BasicEditor::class.qualifiedName
             )
             startActivity(intent)
         }
@@ -84,26 +84,13 @@ class Menu : AppCompatActivity() {
             val intent = Intent(this, SelectFileActivity::class.java)
             intent.putExtra(
                 "next_destination",
-                BasicEditor::class.java.packageName + ".BasicEditor"
+                BasicEditor::class.qualifiedName
             )
             startActivity(intent)
         }
 
-        findViewById<View>(R.id.Exit).setOnClickListener { exit() }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        intent.getStringExtra("Message")?.also {
-            if (it == "Reset") {
-                exit()
-            }
+        findViewById<View>(R.id.Exit).setOnClickListener {
+            finishAffinity()
         }
-    }
-
-    private fun exit() {
-        stopService(Intent(this, ScreenShotService::class.java))
-        stopService(Intent(this, FloatingWidgetService::class.java))
-        finishAffinity()
     }
 }

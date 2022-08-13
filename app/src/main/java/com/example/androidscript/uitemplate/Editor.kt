@@ -5,17 +5,18 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.media.projection.MediaProjectionManager
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidscript.util.FileOperation
-import com.example.androidscript.util.MyLog
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.util.*
 
 abstract class Editor : AppCompatActivity() {
+
     protected lateinit var startServiceLauncher: ActivityResultLauncher<Intent>
     protected lateinit var startWidgetLauncher: ActivityResultLauncher<Intent>
     protected abstract fun resourceInitialize()
@@ -47,7 +48,7 @@ abstract class Editor : AppCompatActivity() {
                     val buffer = Vector<String>()
                     while (true) {
                         reader.readLine()?.run {
-                            MyLog.set(this)
+                            Log.i(LOG_TAG, this)
                             buffer.add(this)
                         } ?: break
                     }
@@ -65,5 +66,9 @@ abstract class Editor : AppCompatActivity() {
                     )
             }
         }
+    }
+
+    companion object {
+        private val LOG_TAG = Editor::class.java.simpleName
     }
 }

@@ -2,6 +2,7 @@ package com.example.androidscript.activities.basic
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -11,41 +12,14 @@ import com.example.androidscript.R
 import com.example.androidscript.activities.StartServiceActivity
 import com.example.androidscript.floatingwidget.Interpreter
 import com.example.androidscript.uitemplate.UIEditor
+import com.example.androidscript.util.Commands.getCommandLength
 import com.example.androidscript.util.FileOperation
-import com.example.androidscript.util.MyLog
 import java.util.*
 
 class BasicEditor : UIEditor() {
+
     override val folderName: String
         get() = BasicEditor.folderName
-
-    companion object {
-        const val folderName = "Basic/"
-        var Blocks: MutableMap<String, Vector<String>> = HashMap()
-        var compiler = BasicScriptCompiler()
-
-        private fun getCommandLength(Command: String): Int {
-            when (Command) {
-                "Exit" -> return 0
-                "Log", "JumpTo", "Wait", "Call", "Tag", "Return" -> return 1
-                "ClickPic", "Click", "CallArg", "IfGreater", "IfSmaller", "Add", "Subtract", "Var" -> return 2
-                "Check" -> return 3
-                "Swipe" -> return 4
-                "Compare" -> return 5
-            }
-            throw RuntimeException("Unrecognized command!")
-        }
-
-        init {
-            for (command in Interpreter.SUPPORTED_COMMAND) {
-                val key: String = command.split(" ".toRegex()).toTypedArray()[0]
-                val value = Vector<String>()
-                value.add(key)
-                for (z in 0 until getCommandLength(key)) value.add("")
-                Blocks[key] = value
-            }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         findViewById<View>(R.id.start_service).setOnClickListener {
@@ -77,11 +51,11 @@ class BasicEditor : UIEditor() {
         if (FileOperation.findFile(folderName, fileName)) {
             blockData = FileOperation.readFromFileWords(folderName + fileName)
         } else {
-            MyLog.set("No such file")
+            Log.i(LOG_TAG, "No such file")
             blockData.add(Vector(Blocks["Return"]!!))
         }
         for (blc in blockData) {
-            MyLog.set(blc.joinToString(":"))
+            Log.i(LOG_TAG, blc.joinToString(":"))
         }
         blockView.layoutManager = LinearLayoutManager(this)
         blockView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
@@ -94,8 +68,8 @@ class BasicEditor : UIEditor() {
         buttonView.adapter =
             BasicButtonAdapter(
                 blockData,
-                buttonData,
                 (blockView.adapter as BasicBlockAdapter).onOrderChange,
+                buttonData,
             )
         super.onCreate(savedInstanceState)
     }
@@ -105,6 +79,25 @@ class BasicEditor : UIEditor() {
         val allFiles = assets.list(folderName) //List all file
         for (file in allFiles!!) {
             getResource(folderName, file!!)
+        }
+    }
+
+    companion object {
+        private val LOG_TAG = BasicEditor::class.java.simpleName
+
+        const val folderName = "Basic/"
+        var Blocks: MutableMap<String, Vector<String>> = HashMap()
+        var compiler = BasicScriptCompiler()
+
+
+        init {
+            for (command in Interpreter.SUPPORTED_COMMAND) {
+                val key: String = command.split(" ".toRegex()).toTypedArray()[0]
+                val value = Vector<String>()
+                value.add(key)
+                for (z in 0 until getCommandLength(key)) value.add("")
+                Blocks[key] = value
+            }
         }
     }
 }
