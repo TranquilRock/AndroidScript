@@ -1,5 +1,3 @@
-@file:Suppress("unused")
-
 package com.example.androidscript.util
 
 import android.graphics.Bitmap
@@ -13,6 +11,8 @@ import kotlin.math.abs
 import kotlin.math.max
 
 object ImageHandler {
+    private val LOG_TAG = ImageHandler::class.java.simpleName
+
     private fun grayScale(bitmap: Bitmap): Mat {
         val tmp = Mat()
         Utils.bitmapToMat(bitmap, tmp)
@@ -45,15 +45,15 @@ object ImageHandler {
             matcher.match(screenDescriptor, targetDescriptor, ret)
             ret
         } catch (ex: CvException) {
-            MyLog.set("Matching failed $ex")
+            Log.i(LOG_TAG, "Matching failed $ex")
             null
         }
     }
 
     fun matchPicture(screenshot: Bitmap?, target: Bitmap?): Int {
-        if (screenshot == null || target == null) {
-            return 0
-        }
+        screenshot ?: return 0
+        target ?: return 0
+
         val sourceMat = grayScale(screenshot)
         val targetMat = grayScale(target)
         val screenDescriptor = featureExtraction(sourceMat) // Size:(totalFeatures, 32)
@@ -73,14 +73,12 @@ object ImageHandler {
                 matchCount++
             }
         }
-        MyLog.set("Match $matchCount points")
+        Log.i(LOG_TAG, "Match $matchCount points")
         return matchCount
     }
 
     fun findLocation(screenshot: Bitmap?, target: Bitmap?, resizeRatio: Double): Point? {
-        if (screenshot == null) {
-            return null
-        }
+        screenshot ?: return null
         val image = toMat(screenshot)
         val template = Mat()
         Imgproc.resize(
@@ -91,12 +89,20 @@ object ImageHandler {
         val result = Mat()
         Imgproc.matchTemplate(image, template, result, Imgproc.TM_CCOEFF_NORMED)
         val mmr = Core.minMaxLoc(result)
-        MyLog.set("Confidence " + mmr.maxVal)
-        return if (mmr.maxVal > 0.75) {
-            Point(mmr.maxLoc.x + template.width(), mmr.maxLoc.y + template.height())
-        } else null
+        Log.i(LOG_TAG, "Confidence " + mmr.maxVal)
+
+        return when {
+            mmr.maxVal > 0.75 -> Point(
+                mmr.maxLoc.x + template.width(),
+                mmr.maxLoc.y + template.height()
+            )
+            else -> {
+                null
+            }
+        }
     }
 
+    @Suppress("unused")
     fun findLocationAnyway(screenshot: Bitmap?, target: Bitmap, resizeRatio: Double): Point {
         val image = toMat(screenshot)
         val template = Mat()
@@ -108,7 +114,7 @@ object ImageHandler {
         val result = Mat()
         Imgproc.matchTemplate(image, template, result, Imgproc.TM_CCOEFF_NORMED)
         val mmr = Core.minMaxLoc(result)
-        MyLog.set("Confidence " + mmr.maxVal)
+        Log.i(LOG_TAG, "Confidence " + mmr.maxVal)
         return Point(mmr.maxLoc.x + template.width(), mmr.maxLoc.y + template.height())
     }
 

@@ -13,6 +13,7 @@ import com.example.androidscript.util.FileOperation
 import java.util.*
 import java.util.regex.Pattern
 
+// TODO:: Extract string resources.
 open class SelectFileActivity : AppCompatActivity() {
     private lateinit var etNewName: EditText
     private lateinit var output: TextView

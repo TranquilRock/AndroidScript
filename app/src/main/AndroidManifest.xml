@@ -16,7 +16,8 @@
         <activity android:name=".activities.basic.BasicEditor" />
         <activity
             android:name=".activities.Menu"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

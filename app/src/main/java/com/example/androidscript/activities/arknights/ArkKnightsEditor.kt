@@ -3,6 +3,7 @@ package com.example.androidscript.activities.arknights
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.CompoundButton
 import android.widget.EditText
@@ -15,11 +16,11 @@ import com.example.androidscript.floatingwidget.FloatingWidgetService
 import com.example.androidscript.floatingwidget.ScreenShotService
 import com.example.androidscript.uitemplate.Editor
 import com.example.androidscript.util.FileOperation
-import com.example.androidscript.util.MyLog
 import java.lang.Integer.min
 import java.util.*
 
 class ArkKnightsEditor : Editor() {
+
     private lateinit var tillEmpty: SwitchCompat
     private lateinit var eatMedicine: SwitchCompat
     private lateinit var eatStone: SwitchCompat
@@ -47,11 +48,7 @@ class ArkKnightsEditor : Editor() {
 
         tillEmpty = findViewById(R.id.tillEmpty)
         tillEmpty.setOnCheckedChangeListener { _: CompoundButton?, isChecked: Boolean ->
-            if (isChecked) {
-                repeat.visibility = View.GONE
-            } else {
-                repeat.visibility = View.VISIBLE
-            }
+            repeat.visibility = if (isChecked) View.GONE else View.VISIBLE
         }
 
         eatMedicine = findViewById(R.id.EatMedicine)
@@ -98,36 +95,41 @@ class ArkKnightsEditor : Editor() {
     override fun resourceInitialize() {
         FileOperation.readDir(folderName)
         for (file in assets.list(folderName)!!) {
-            MyLog.set(file)
+            Log.i(LOG_TAG, file)
             getResource(folderName, file!!)
         }
         resizeRatio = min(
             ScreenShotService.height,
             ScreenShotService.width
-        ) / 1152.0 //ArkKnights seems to be height dominate.
-        // resizeRatio = ScreenShot.getWidth() / 2432.0;
+        ) / 1152.0
+        // ArkKnights is height dominant.
+        // If becomes width dominant use this:
+        //  resizeRatio = ScreenShot.width / 2432.0
         writePress()
         writeTryPress()
     }
 
     private fun writePress() {
-        val buffer = Vector<String>()
-        buffer.add("Tag \$Start")
-        buffer.add("ClickPic $1 $resizeRatio")
-        buffer.add("Wait $2")
-        buffer.add("IfGreater \$R 0")
-        buffer.add("JumpTo \$Start")
-        FileOperation.writeLines(folderName + "Press.txt", buffer)
+        Vector<String>().run {
+            add("Tag \$Start")
+            add("ClickPic $1 $resizeRatio")
+            add("Wait $2")
+            add("IfGreater \$R 0")
+            add("JumpTo \$Start")
+            FileOperation.writeLines(folderName + "Press.txt", this)
+        }
     }
 
     private fun writeTryPress() {
-        val buffer = Vector<String>()
-        buffer.add("ClickPic $1 $resizeRatio")
-        buffer.add("Return \$R")
-        FileOperation.writeLines(folderName + "TryPress.txt", buffer)
+        Vector<String>().run {
+            add("ClickPic $1 $resizeRatio")
+            add("Return \$R")
+            FileOperation.writeLines(folderName + "TryPress.txt", this)
+        }
     }
 
     companion object {
         const val folderName = "ArkKnights/"
+        private val LOG_TAG = ArkKnightsEditor::class.java.simpleName
     }
 }

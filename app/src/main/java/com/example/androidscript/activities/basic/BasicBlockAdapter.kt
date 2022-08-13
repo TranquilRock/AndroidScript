@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import com.example.androidscript.R
 import com.example.androidscript.activities.basic.BasicViewHolder.*
 import com.example.androidscript.uitemplate.BlockAdapter
+import com.example.androidscript.util.Commands
+import com.example.androidscript.util.Commands.getCommandLength
 import java.util.*
 
 class BasicBlockAdapter(content: Vector<Vector<String>>) : BlockAdapter<BasicViewHolder>() {
@@ -50,67 +52,67 @@ class BasicBlockAdapter(content: Vector<Vector<String>>) : BlockAdapter<BasicVie
         holder.onBind(onOrderChange, position, data)
         holder.title.text = data[position][0]
         when (data[position][0]) {
-            "Exit" -> {}
-            "Log" -> holder.inputs[0]!!.hint = "LogString"
-            "JumpTo" -> holder.inputs[0]!!.hint = "Line"
-            "Wait" -> holder.inputs[0]!!.hint = "ms"
-            "Call" -> holder.inputs[0]!!.hint = ".txt"
-            "Tag" -> holder.inputs[0]!!.hint = "\$Var"
-            "Return" -> holder.inputs[0]!!.hint = "Value"
-            "ClickPic" -> {
+            Commands.EXIT -> {}
+            Commands.LOG -> holder.inputs[0]!!.hint = "LogString"
+            Commands.JUMP_TO -> holder.inputs[0]!!.hint = "Line"
+            Commands.WAIT -> holder.inputs[0]!!.hint = "ms"
+            Commands.CALL -> holder.inputs[0]!!.hint = ".txt"
+            Commands.TAG -> holder.inputs[0]!!.hint = "\$Var"
+            Commands.RETURN -> holder.inputs[0]!!.hint = "Value"
+            Commands.CLICK_PIC -> {
                 (holder as TwoVH).titleMiddle.text = ""
                 holder.inputs[0]!!.hint = "Image"
                 holder.inputs[1]!!.hint = "Ratio"
             }
-            "Click" -> {
+            Commands.CLICK -> {
                 (holder as TwoVH).titleMiddle.text = ""
                 holder.inputs[0]!!.hint = "X"
                 holder.inputs[1]!!.hint = "Y"
             }
-            "CallArg" -> {
+            Commands.CALL_ARG -> {
                 (holder as TwoVH).titleMiddle.text = ""
                 holder.inputs[0]!!.hint = ".txt"
                 holder.inputs[1]!!.hint = "Value"
             }
-            "IfGreater" -> {
+            Commands.IF_GREATER -> {
                 holder.title.text = "If"
                 (holder as TwoVH).titleMiddle.text = ">"
                 holder.inputs[0]!!.hint = "\$Var"
                 holder.inputs[1]!!.hint = "Value"
             }
-            "IfSmaller" -> {
+            Commands.IF_SMALLER -> {
                 holder.title.text = "If"
                 (holder as TwoVH).titleMiddle.text = "<"
                 holder.inputs[0]!!.hint = "\$Var"
                 holder.inputs[1]!!.hint = "Value"
             }
-            "Add" -> {
+            Commands.ADD -> {
                 (holder as TwoVH).titleMiddle.text = "+="
                 holder.inputs[0]!!.hint = "\$Var"
                 holder.inputs[1]!!.hint = "Value"
             }
-            "Subtract" -> {
+            Commands.SUBTRACT -> {
                 (holder as TwoVH).titleMiddle.text = "-="
                 holder.inputs[0]!!.hint = "\$Var"
                 holder.inputs[1]!!.hint = "Value"
             }
-            "Var" -> {
+            Commands.VAR -> {
                 (holder as TwoVH).titleMiddle.text = "="
                 holder.inputs[0]!!.hint = "\$Name"
                 holder.inputs[1]!!.hint = "Value"
             }
-            "Check" -> {
+            Commands.CHECK -> {
                 holder.inputs[0]!!.hint = "x"
                 holder.inputs[1]!!.hint = "y"
                 holder.inputs[2]!!.hint = "color"
             }
-            "Swipe" -> {
+            Commands.SWIPE -> {
                 holder.inputs[0]!!.hint = "FromX"
                 holder.inputs[1]!!.hint = "FromY"
                 holder.inputs[2]!!.hint = "ToX"
                 holder.inputs[3]!!.hint = "ToY"
             }
-            "Compare" -> {
+            Commands.COMPARE -> {
                 holder.inputs[0]!!.hint = "X1"
                 holder.inputs[1]!!.hint = "Y1"
                 holder.inputs[2]!!.hint = "X2"
@@ -120,21 +122,9 @@ class BasicBlockAdapter(content: Vector<Vector<String>>) : BlockAdapter<BasicVie
         }
     }
 
-    override fun getItemViewType(position: Int): Int {
-        when (data[position][0]) {
-            "Exit" -> return 0
-            "Log", "JumpTo", "Wait", "Call", "Tag", "Return" -> return 1
-            "ClickPic", "Click", "CallArg", "IfGreater", "IfSmaller", "Add", "Subtract", "Var" -> return 2
-            "Check" -> return 3
-            "Swipe" -> return 4
-            "Compare" -> return 5
-        }
-        throw RuntimeException("Invalid command: " + data[position][0])
-    }
+    override fun getItemViewType(position: Int) = getCommandLength(data[position][0])
 
-    override fun getItemCount(): Int {
-        return data.size
-    }
+    override fun getItemCount() = data.size
 
     init {
         data = content
@@ -153,10 +143,7 @@ class BasicBlockAdapter(content: Vector<Vector<String>>) : BlockAdapter<BasicVie
                 }
             }
 
-            override fun insert() {
-                notifyDataSetChanged()
-            }
-
+            override fun insert() = notifyDataSetChanged()
             override fun self(index: Int) {}
         }
     }

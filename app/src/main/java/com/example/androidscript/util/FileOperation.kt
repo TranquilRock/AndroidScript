@@ -5,11 +5,13 @@ package com.example.androidscript.util
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.media.Image
+import android.util.Log
 import java.io.*
 import java.nio.charset.StandardCharsets
 import java.util.*
 
 object FileOperation {
+    private val LOG_TAG = FileOperation::class.java.simpleName
 
     lateinit var root: String
 
@@ -143,12 +145,12 @@ object FileOperation {
     }
 
     private fun createFileAndParent(fileName: String): File {
-        MyLog.set("Writing File: $fileName")
+        Log.i(LOG_TAG, "Writing File: $fileName")
         val file = File(fileName)
         if (file.exists() && file.delete()) {
-            MyLog.set("Overwriting $fileName")
+            Log.i(LOG_TAG, "Overwriting $fileName")
         } else if (file.parentFile?.mkdir() == true) {
-            MyLog.set("Creating Parent Dir of $fileName")
+            Log.i(LOG_TAG, "Creating Parent Dir of $fileName")
         }
         return file
     }

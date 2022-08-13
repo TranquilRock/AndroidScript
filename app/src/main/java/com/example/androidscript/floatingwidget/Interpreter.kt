@@ -4,10 +4,11 @@ import android.graphics.Bitmap
 import android.util.Log
 import com.example.androidscript.util.FileOperation
 import com.example.androidscript.util.ImageHandler
-import com.example.androidscript.util.MyLog
 import java.lang.Thread.sleep
 import java.util.*
 
+/** Every child needs to specify where and how to fetch files, as well as what kind of commands
+ *  are accepted. */
 open class Interpreter(
     private val ScriptFolderName: String,
     private val ScriptName: String,
@@ -70,9 +71,16 @@ open class Interpreter(
     override fun run() {
         board.announce("Running")
         runningFlag = true
-        execute(ScriptName, runArgs, 0)
-        runningFlag = false
-        board.announce("IDLE")
+
+        try {
+            execute(ScriptName, runArgs, 0)
+            board.announce("IDLE")
+        } catch (e: AutoClickService.AccessibilityServiceOffException) {
+            Log.i(LOG_TAG, "AutoClickDead, terminating.")
+            board.announce("AutoClick Failed.")
+        } finally {
+            runningFlag = false
+        }
     }
 
     private fun execute(
@@ -91,7 +99,7 @@ open class Interpreter(
             val arguments = command.copyOfRange(1, command.size)
             varsSubstitution(localVar, command[0], arguments)
             //=====================================================
-            MyLog.set("$pc  ${command.joinToString(" ")}")
+            Log.i(LOG_TAG, "$pc  ${command.joinToString(" ")}")
             delay()
             when (command[0]) {
                 "Exit" -> {
@@ -113,7 +121,7 @@ open class Interpreter(
                             .toDouble()
                     )
                     if (target != null) {
-                        MyLog.set("Clicking Picture:" + target.x + " " + target.y)
+                        Log.i(LOG_TAG, "Clicking Picture:" + target.x + " " + target.y)
                         AutoClickService.click(target.x.toInt(), target.y.toInt())
                         localVar["\$R"] = "0"
                     } else {
@@ -173,8 +181,8 @@ open class Interpreter(
     }
 
     companion object {
-        // Every child only need to specify where and how to fetch files, as well as what kind of commands are accepted;
         // private const val strFormat = "([A-Za-z0-9_-]*)"
+        private val LOG_TAG = Interpreter::class.java.simpleName
         private const val imgFormat = "([A-Za-z0-9_/-]*).(jpg|png)"
         private const val scriptFormat = "([A-Za-z0-9_-]*).txt"
         private const val varFormat = "\\$([A-Za-z0-9_-]*)"

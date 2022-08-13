@@ -15,12 +15,11 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.*
 import android.view.View.OnTouchListener
 import android.widget.TextView
 import com.example.androidscript.R
-import com.example.androidscript.activities.Menu
-import com.example.androidscript.util.MyLog
 import kotlin.math.abs
 import kotlin.math.ceil
 
@@ -77,11 +76,13 @@ class FloatingWidgetService : Service() {
                 service as ScreenShotService.ScreenShotBinder
             screenShotService = binder.service
             screenShotService.set(mMediaProjection)
-            MyLog.set("Connected")
+            Log.i(LOG_TAG, "ScreenShot Service connected.")
         }
 
         override fun onServiceDisconnected(className: ComponentName) {
-            MyLog.set("onServiceDisconnected")
+            Log.i(LOG_TAG, "ScreenShot Service disconnected!")
+            this@FloatingWidgetService.stopForeground(STOP_FOREGROUND_REMOVE)
+            this@FloatingWidgetService.stopSelf()
         }
     }
 
@@ -129,28 +130,27 @@ class FloatingWidgetService : Service() {
         mWidget.run {
             findViewById<View>(R.id.open_activity_button)
                 .setOnClickListener {
-                    val intent = Intent(this@FloatingWidgetService, Menu::class.java).putExtra(
-                        "Message",
-                        "Reset"
-                    )
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
+                    stopForeground(STOP_FOREGROUND_REMOVE)
                     stopSelf()
                 }
             findViewById<View>(R.id.run_script).setOnClickListener {
-                mThread ?: run {
-                    interpreter.setup(args, screenShotService)
-                    mThread = Thread(interpreter)
-                    mThread!!.start()
-                    resetPosition()
-                    collapseView()
+                if (AutoClickService.running()) {
+                    mThread ?: run {
+                        interpreter.setup(args, screenShotService)
+                        mThread = Thread(interpreter)
+                        mThread!!.start()
+                        resetPosition()
+                        collapseView()
+                    }
                 }
+
             }
             findViewById<View>(R.id.stop_script).setOnClickListener {
                 statusBulletin.announce("Stopping...")
                 interpreter.runningFlag = false
                 mThread?.join()
                 mThread = null
+                statusBulletin.announce("IDLE")
             }
             findViewById<View>(R.id.root_container).setOnTouchListener(
                 floatingWidgetViewTouchListener
@@ -165,9 +165,16 @@ class FloatingWidgetService : Service() {
     }
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        if (intent.action == "STOP") {
+            stopForeground(STOP_FOREGROUND_REMOVE)
+            stopSelf()
+            return 0
+        }
+
         createNotificationChannel()
 
         Handler(Looper.getMainLooper()).post {
+            @Suppress("DEPRECATION")
             mMediaProjection =
                 mMediaProjectionManager.getMediaProjection(
                     RESULT_OK,
@@ -259,24 +266,24 @@ class FloatingWidgetService : Service() {
     // ============== helper =====================
 
     private fun createNotificationChannel() {
-        val navigate = PendingIntent.getActivity(
+        val navigate = PendingIntent.getService(
             this,
             0,
-            Intent(this, Menu::class.java).putExtra("Message", "Reset"),
+            Intent(this, FloatingWidgetService::class.java).setAction("STOP"),
             PendingIntent.FLAG_IMMUTABLE
         )
         val builder = Notification.Builder(applicationContext, "com.example.androidscript")
         builder.setContentIntent(navigate)
             .setContentTitle("AndroidScript")
-            .setContentText("Capturing Screen")
+            .setContentText("Capturing")
             .setSmallIcon(R.drawable.ic_launcher_foreground) //Necessary
             .build()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             builder.setChannelId("notification_id")
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             val channel = NotificationChannel(
-                "notification_id",
-                "notification_name",
+                "id",
+                "name",
                 NotificationManager.IMPORTANCE_HIGH
             )
             notificationManager.createNotificationChannel(channel)
@@ -325,6 +332,7 @@ class FloatingWidgetService : Service() {
     }
 
     companion object {
+        private val LOG_TAG = FloatingWidgetService::class.java.simpleName
         var folderTAG: String = "ScriptFolderName"
         var scriptTAG: String = "ScriptName"
         var argsTAG: String = "Args"
