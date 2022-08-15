@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidscript.R
 import com.example.androidscript.activities.StartServiceActivity
-import com.example.androidscript.floatingwidget.Interpreter
 import com.example.androidscript.uitemplate.UIEditor
+import com.example.androidscript.util.Commands
 import com.example.androidscript.util.Commands.getCommandLength
 import com.example.androidscript.util.FileOperation
 import java.util.*
@@ -91,7 +91,7 @@ class BasicEditor : UIEditor() {
 
 
         init {
-            for (command in Interpreter.SUPPORTED_COMMAND) {
+            for (command in Commands.SUPPORTED_COMMAND) {
                 val key: String = command.split(" ".toRegex()).toTypedArray()[0]
                 val value = Vector<String>()
                 value.add(key)

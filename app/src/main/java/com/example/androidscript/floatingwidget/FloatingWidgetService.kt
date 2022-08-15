@@ -91,6 +91,7 @@ class FloatingWidgetService : Service() {
         get() = ceil((25 * applicationContext.resources.displayMetrics.density).toDouble())
             .toInt()
 
+    @SuppressLint("InflateParams")
     override fun onCreate() {
         super.onCreate()
 
@@ -168,7 +169,7 @@ class FloatingWidgetService : Service() {
         if (intent.action == "STOP") {
             stopForeground(STOP_FOREGROUND_REMOVE)
             stopSelf()
-            return 0
+            return START_NOT_STICKY
         }
 
         createNotificationChannel()
@@ -272,23 +273,25 @@ class FloatingWidgetService : Service() {
             Intent(this, FloatingWidgetService::class.java).setAction("STOP"),
             PendingIntent.FLAG_IMMUTABLE
         )
-        val builder = Notification.Builder(applicationContext, "com.example.androidscript")
-        builder.setContentIntent(navigate)
-            .setContentTitle("AndroidScript")
-            .setContentText("Capturing")
-            .setSmallIcon(R.drawable.ic_launcher_foreground) //Necessary
-            .build()
+
+        @Suppress("DEPRECATION")
+        val builder = Notification.Builder(applicationContext).apply {
+            setContentIntent(navigate)
+            setContentTitle("AndroidScript")
+            setContentText("Capturing")
+            setSmallIcon(R.drawable.ic_launcher_foreground)
+        }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            builder.setChannelId("notification_id")
+            builder.setChannelId(packageName)
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             val channel = NotificationChannel(
-                "id",
-                "name",
+                packageName,
+                FloatingWidgetService::class.java.simpleName,
                 NotificationManager.IMPORTANCE_HIGH
             )
             notificationManager.createNotificationChannel(channel)
         }
-        startForeground(13, builder.build())
+        startForeground(42, builder.build())
     }
 
     private fun updateScreenBound() {

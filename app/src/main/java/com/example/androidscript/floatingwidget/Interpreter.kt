@@ -2,6 +2,7 @@ package com.example.androidscript.floatingwidget
 
 import android.graphics.Bitmap
 import android.util.Log
+import com.example.androidscript.util.Commands
 import com.example.androidscript.util.FileOperation
 import com.example.androidscript.util.ImageHandler
 import java.lang.Thread.sleep
@@ -31,7 +32,7 @@ open class Interpreter(
     }
 
     private fun interpret(fileName: String) {
-        val code = Code(SUPPORTED_COMMAND, readCode(fileName))
+        val code = Code(Commands.SUPPORTED_COMMAND, readCode(fileName))
 
         val tagVar: HashMap<String, String> = HashMap()
 
@@ -102,19 +103,19 @@ open class Interpreter(
             Log.i(LOG_TAG, "$pc  ${command.joinToString(" ")}")
             delay()
             when (command[0]) {
-                "Exit" -> {
+                Commands.EXIT -> {
                     runningFlag = false
                     return 1
                 }
-                "Log" -> board.announce(arguments[0])
-                "JumpTo" -> pc = arguments[0].toInt() - 1 //One-based
-                "Wait" -> sleep(
+                Commands.LOG -> board.announce(arguments[0])
+                Commands.JUMP_TO -> pc = arguments[0].toInt() - 1 //One-based
+                Commands.WAIT -> sleep(
                     arguments[0].toLong()
                 )
-                "Call" -> localVar["\$R"] = execute(arguments[0], null, depth + 1).toString()
-                "Tag" -> {}
-                "Return" -> return arguments[0].toInt()
-                "ClickPic" -> {
+                Commands.CALL -> localVar["\$R"] = execute(arguments[0], null, depth + 1).toString()
+                Commands.TAG -> {}
+                Commands.RETURN -> return arguments[0].toInt()
+                Commands.CLICK_PIC -> {
                     val tmp = readImg(arguments[0])
                     val target = ImageHandler.findLocation(
                         screenShot.shot(), tmp, arguments[1]
@@ -128,26 +129,26 @@ open class Interpreter(
                         localVar["\$R"] = "1"
                     }
                 }
-                "Click" -> {
+                Commands.CLICK -> {
                     AutoClickService.click(arguments[0].toInt(), arguments[1].toInt())
                 }
-                "CallArg" -> {
+                Commands.CALL_ARG -> {
                     val nextArgv =
                         arguments.copyOfRange(1, command.size - 1).toCollection(ArrayList())
                     localVar["\$R"] = execute(arguments[0], nextArgv, depth + 1).toString()
                 }
-                "IfGreater" -> if (arguments[0].toInt() <= arguments[1].toInt()) { //Failed, skip next line
+                Commands.IF_GREATER -> if (arguments[0].toInt() <= arguments[1].toInt()) { //Failed, skip next line
                     pc++
                 }
-                "IfSmaller" -> if (arguments[0].toInt() >= arguments[1].toInt()) { //Failed, skip next line
+                Commands.IF_SMALLER -> if (arguments[0].toInt() >= arguments[1].toInt()) { //Failed, skip next line
                     pc++
                 }
-                "Add" -> localVar[arguments[0]] = (localVar[arguments[0]]!!
+                Commands.ADD -> localVar[arguments[0]] = (localVar[arguments[0]]!!
                     .toInt() + arguments[1].toInt()).toString()
-                "Subtract" -> localVar[arguments[0]] = (localVar[arguments[0]]!!
+                Commands.SUBTRACT -> localVar[arguments[0]] = (localVar[arguments[0]]!!
                     .toInt() - arguments[1].toInt()).toString()
-                "Var" -> localVar[arguments[0]] = arguments[1]
-                "Check" -> if (ImageHandler.checkColor(
+                Commands.VAR -> localVar[arguments[0]] = arguments[1]
+                Commands.CHECK -> if (ImageHandler.checkColor(
                         screenShot.shot(), arguments[0]
                             .toInt(), arguments[1].toInt(), arguments[2].toInt()
                     )
@@ -156,7 +157,7 @@ open class Interpreter(
                 } else {
                     localVar["\$R"] = "1"
                 }
-                "Swipe" -> {
+                Commands.SWIPE -> {
                     delay()
                     AutoClickService.swipe(
                         arguments[0].toInt(),
@@ -165,7 +166,7 @@ open class Interpreter(
                         arguments[3].toInt(),
                     )
                 }
-                "Compare" -> {
+                Commands.COMPARE -> {
                     screenShot.shot() //Empty shot to make sure Image be the newest.
                     localVar["\$R"] = screenShot.compare(
                         readImg(arguments[4]), arguments[0]
@@ -181,38 +182,8 @@ open class Interpreter(
     }
 
     companion object {
-        // private const val strFormat = "([A-Za-z0-9_-]*)"
         private val LOG_TAG = Interpreter::class.java.simpleName
-        private const val imgFormat = "([A-Za-z0-9_/-]*).(jpg|png)"
-        private const val scriptFormat = "([A-Za-z0-9_-]*).txt"
-        private const val varFormat = "\\$([A-Za-z0-9_-]*)"
-        private const val intFormat = "[0-9-]*"
-        private const val floatFormat = "[0-9.]*"
-        private const val intVarFormat = "($intFormat||$varFormat)"
-        private const val floatVarFormat = "($floatFormat||$varFormat)"
-        private const val imgVarFormat = "($imgFormat||$varFormat)"
-        private const val intVarFloatFormat = "($intFormat||$varFormat||$floatFormat)"
-        private const val anyFormat = "[a-zA-Z.0-9 $]*"
-        val SUPPORTED_COMMAND = arrayOf(
-            "Exit",
-            "Log $anyFormat",
-            "JumpTo $intVarFormat",
-            "Wait $intVarFormat",
-            "Call $scriptFormat",
-            "Tag $varFormat",
-            "Return $intVarFormat",
-            "ClickPic $imgVarFormat $floatVarFormat",
-            "Click $intVarFormat $intVarFormat",
-            "CallArg $scriptFormat $anyFormat",
-            "IfGreater $intVarFormat $intVarFormat",
-            "IfSmaller $intVarFormat $intVarFormat",
-            "Add $varFormat $intVarFormat",
-            "Subtract $varFormat $intVarFormat",
-            "Var $varFormat $intVarFloatFormat",
-            "Check $intVarFormat $intVarFormat $intFormat",
-            "Swipe $intVarFormat $intVarFormat $intVarFormat $intVarFormat",
-            "Compare $intVarFormat $intVarFormat $intVarFormat $intVarFormat $imgVarFormat"
-        )
+
 
         //==================== Helper =======================
 

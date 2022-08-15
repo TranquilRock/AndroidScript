@@ -2,7 +2,7 @@ package com.example.androidscript.util
 
 object Commands {
     const val EXIT = "Exit"
-    const val LOG = "LOG"
+    const val LOG = "Log"
     const val JUMP_TO = "JumpTo"
     const val WAIT = "Wait"
     const val CALL = "Call"
@@ -17,8 +17,42 @@ object Commands {
     const val SUBTRACT = "Subtract"
     const val VAR = "Var"
     const val CHECK = "Check"
-    const val SWIPE = "SWIPE"
+    const val SWIPE = "Swipe"
     const val COMPARE = "Compare"
+
+    private const val strFormat = "([A-Za-z0-9_-]*)"
+    private const val imgFormat = "$strFormat.(jpg|png)"
+    private const val scriptFormat = "$strFormat.txt"
+    private const val varFormat = "\\$$strFormat"
+    private const val intFormat = "[0-9-]*"
+    private const val floatFormat = "[0-9.]*"
+    private const val intVarFormat = "($intFormat||$varFormat)"
+    private const val floatVarFormat = "($floatFormat||$varFormat)"
+    private const val imgVarFormat = "($imgFormat||$varFormat)"
+    private const val intVarFloatFormat = "($intFormat||$varFormat||$floatFormat)"
+    private const val anyFormat = "[a-zA-Z.0-9 $]*"
+
+    val SUPPORTED_COMMAND = arrayOf(
+        EXIT,
+        "$LOG $anyFormat",
+        "$JUMP_TO $intVarFormat",
+        "$WAIT $intVarFormat",
+        "$CALL $scriptFormat",
+        "$TAG $varFormat",
+        "$RETURN $intVarFormat",
+        "$CLICK_PIC $imgVarFormat $floatVarFormat",
+        "$CLICK $intVarFormat $intVarFormat",
+        "$CALL_ARG $scriptFormat $anyFormat",
+        "$IF_GREATER $intVarFormat $intVarFormat",
+        "$IF_SMALLER $intVarFormat $intVarFormat",
+        "$ADD $varFormat $intVarFormat",
+        "$SUBTRACT $varFormat $intVarFormat",
+        "$VAR $varFormat $intVarFloatFormat",
+        "$CHECK $intVarFormat $intVarFormat $intFormat",
+        "$SWIPE $intVarFormat $intVarFormat $intVarFormat $intVarFormat",
+        "$COMPARE $intVarFormat $intVarFormat $intVarFormat $intVarFormat $imgVarFormat"
+    )
+
 
     private val L0_COMMAND_LIST = listOf(EXIT)
     private val L1_COMMAND_LIST = listOf(LOG, JUMP_TO, WAIT, CALL, TAG, RETURN)
@@ -28,6 +62,7 @@ object Commands {
     private val L3_COMMAND_LIST = listOf(CHECK)
     private val L4_COMMAND_LIST = listOf(SWIPE)
     private val L5_COMMAND_LIST = listOf(COMPARE)
+
     val ALL_COMMAND_LIST =
         L0_COMMAND_LIST + L1_COMMAND_LIST + L2_COMMAND_LIST +
                 L3_COMMAND_LIST + L4_COMMAND_LIST + L5_COMMAND_LIST
