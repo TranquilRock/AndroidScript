@@ -1,5 +1,8 @@
 # AndroidScript
 
+## DevLog
+- Looking forward to replacing OpenCV with self defined matching functions, as OpenCV takes up way too many resoure to provide simply functionality.
+
 ## Updates
 
 - 2022/08/13
