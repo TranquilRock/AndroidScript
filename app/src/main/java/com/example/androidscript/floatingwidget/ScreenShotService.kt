@@ -25,6 +25,7 @@ class ScreenShotService : Service() {
 
     override fun onCreate() {
         super.onCreate()
+        Log.i(LOG_TAG, "onCreate")
         serviceBinder = ScreenShotBinder()
     }
 

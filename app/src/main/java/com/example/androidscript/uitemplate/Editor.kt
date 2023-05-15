@@ -54,11 +54,13 @@ abstract class Editor : AppCompatActivity() {
                     }
                     FileOperation.writeLines(folderName + fileName, buffer)
                 }
+
                 ".png" ->
                     FileOperation.saveBitmapAsPNG(
                         BitmapFactory.decodeStream(assets.open(folderName + fileName)),
                         folderName + fileName
                     )
+
                 ".jpg" ->
                     FileOperation.saveBitmapAsJPG(
                         BitmapFactory.decodeStream(assets.open(folderName + fileName)),
