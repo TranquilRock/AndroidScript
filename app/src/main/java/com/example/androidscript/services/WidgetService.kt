@@ -1,4 +1,4 @@
-package com.example.androidscript.floatingwidget
+package com.example.androidscript.services
 
 import android.annotation.SuppressLint
 import android.app.*
@@ -20,6 +20,7 @@ import android.view.*
 import android.view.View.OnTouchListener
 import android.widget.TextView
 import com.example.androidscript.R
+import com.example.androidscript.core.Interpreter
 import kotlin.math.abs
 import kotlin.math.ceil
 

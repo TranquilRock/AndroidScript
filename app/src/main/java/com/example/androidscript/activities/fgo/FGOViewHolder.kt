@@ -7,7 +7,7 @@ import android.widget.*
 import androidx.appcompat.widget.SwitchCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidscript.R
-import com.example.androidscript.uitemplate.BlockAdapter.Updater
+import com.example.androidscript.activities.template.BlockAdapter.Updater
 import java.util.*
 
 abstract class FGOViewHolder(protected var view: View) : RecyclerView.ViewHolder(

@@ -5,9 +5,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.androidscript.R
 import com.example.androidscript.activities.basic.BasicViewHolder.*
-import com.example.androidscript.uitemplate.BlockAdapter
-import com.example.androidscript.util.Commands
-import com.example.androidscript.util.Commands.getCommandLength
+import com.example.androidscript.activities.template.BlockAdapter
+import com.example.androidscript.core.Commands
+import com.example.androidscript.core.Commands.getCommandLength
 import java.util.*
 
 class BasicBlockAdapter(content: Vector<Vector<String>>) : BlockAdapter<BasicViewHolder>() {

@@ -10,9 +10,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidscript.R
 import com.example.androidscript.activities.StartServiceActivity
-import com.example.androidscript.uitemplate.UIEditor
-import com.example.androidscript.util.Commands
-import com.example.androidscript.util.Commands.getCommandLength
+import com.example.androidscript.activities.template.UIEditor
+import com.example.androidscript.core.Commands
+import com.example.androidscript.core.Commands.getCommandLength
 import com.example.androidscript.util.FileOperation
 import java.util.*
 
@@ -87,7 +87,7 @@ class BasicEditor : UIEditor() {
 
         const val folderName = "Basic/"
         var Blocks: MutableMap<String, Vector<String>> = HashMap()
-        var compiler = BasicScriptCompiler()
+        var compiler = BasicUICompiler()
 
 
         init {

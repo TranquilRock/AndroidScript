@@ -1,7 +1,7 @@
 package com.example.androidscript.activities.fgo
 
-import com.example.androidscript.uitemplate.BlockAdapter.Updater
-import com.example.androidscript.uitemplate.ButtonAdapter
+import com.example.androidscript.activities.template.BlockAdapter.Updater
+import com.example.androidscript.activities.template.ButtonAdapter
 import java.util.*
 
 class FGOButtonAdapter(

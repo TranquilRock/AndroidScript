@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import com.example.androidscript.R
 import com.example.androidscript.activities.fgo.FGOViewHolder.*
-import com.example.androidscript.uitemplate.BlockAdapter
+import com.example.androidscript.activities.template.BlockAdapter
 import com.example.androidscript.util.FileOperation
 import java.util.*
 

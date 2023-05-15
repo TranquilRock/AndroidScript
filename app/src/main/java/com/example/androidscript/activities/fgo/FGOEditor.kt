@@ -9,9 +9,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidscript.R
 import com.example.androidscript.activities.StartServiceActivity
-import com.example.androidscript.uitemplate.UIEditor
+import com.example.androidscript.activities.template.UIEditor
 import com.example.androidscript.util.FileOperation
-import com.example.androidscript.util.ScriptCompiler
+import com.example.androidscript.activities.template.UICompiler
 import java.util.*
 
 class FGOEditor : UIEditor() {
@@ -93,6 +93,6 @@ class FGOEditor : UIEditor() {
         val CraftSkillBlock = arrayOf("CraftSkill", "0", "0", "0", "0")
         val NoblePhantasmsBlock = arrayOf("NoblePhantasms", "0", "0", "0", "0")
         val EndBlock = arrayOf("End")
-        val compiler: ScriptCompiler = FGOScriptCompiler()
+        val compiler: UICompiler = FGOUICompiler()
     }
 }

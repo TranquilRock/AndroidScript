@@ -10,7 +10,7 @@ import com.example.androidscript.R
 import com.example.androidscript.activities.arknights.ArkKnightsEditor
 import com.example.androidscript.activities.basic.BasicEditor
 import com.example.androidscript.activities.fgo.FGOEditor
-import com.example.androidscript.floatingwidget.ScreenShotService
+import com.example.androidscript.services.ScreenShotService
 import com.example.androidscript.util.FileOperation
 import org.opencv.android.OpenCVLoader
 
