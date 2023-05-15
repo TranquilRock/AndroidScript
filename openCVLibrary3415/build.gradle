@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 
 android {
     compileSdk 33
-    buildToolsVersion "30.0.3"
+    buildToolsVersion "33.0.0"
 
     defaultConfig {
         targetSdkVersion 33
@@ -15,4 +15,8 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+    buildFeatures {
+        aidl true
+    }
+    namespace 'org.opencv'
 }
