@@ -22,6 +22,7 @@ class BasicEditor : UIEditor() {
         get() = BasicEditor.folderName
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         findViewById<View>(R.id.start_service).setOnClickListener {
             startServiceLauncher.launch(Intent(this, StartServiceActivity::class.java))
         }
@@ -71,7 +72,6 @@ class BasicEditor : UIEditor() {
                 (blockView.adapter as BasicBlockAdapter).onOrderChange,
                 buttonData,
             )
-        super.onCreate(savedInstanceState)
     }
 
     override fun resourceInitialize() {
