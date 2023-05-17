@@ -83,7 +83,6 @@ class FGOEditor : UIEditor() {
                 getResource(folder, file!!)
             }
         }
-
     }
 
     companion object {
