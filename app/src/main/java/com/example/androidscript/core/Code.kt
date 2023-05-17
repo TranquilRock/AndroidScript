@@ -15,7 +15,7 @@ class Code(RawCode: Vector<String>) {
                 if (format.let { Pattern.matches(it, line) }) {
                     valid = true
                     val command: Array<String> = line!!.split(" ".toRegex()).toTypedArray()
-                    if (command[0] == "Call" || command[0] == "CallArg") {
+                    if (command[0] == Commands.CALL || command[0] == Commands.CALL_ARG) {
                         dependency.add(command[1])
                     }
                     codes.add(command)
