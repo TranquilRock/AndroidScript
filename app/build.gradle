@@ -37,14 +37,23 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    splits {
+        abi {
+            enable true
+            reset()
+            include "x86", "armeabi-v7a", "mips", "arm64-v8a", "x86_64"
+            universalApk false
+        }
+    }
+    namespace 'com.example.androidscript'
 }
 
 dependencies {
     implementation 'androidx.core:core-ktx:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.5.0'
-    implementation 'com.google.android.material:material:1.6.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.navigation:navigation-ui:2.5.1'
+    implementation 'androidx.navigation:navigation-ui:2.5.3'
     implementation 'org.jetbrains:annotations:23.0.0'
     implementation project(path: ':openCVLibrary3415')
 }
