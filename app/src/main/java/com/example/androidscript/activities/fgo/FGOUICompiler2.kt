@@ -12,22 +12,20 @@ interface UICompiler {
     fun compile(data: Vector<Vector<String>>)
 
     class ImageLocation(
-        private val upperLeftX: Float,
-        private val upperLeftY: Float,
-        private val lowerRightX: Float,
-        private val lowerRightY: Float
+
+        private val upperLeft: Pair<Int, Int>,
+        private val lowerRight: Pair<Int, Int>
     ) {
         override fun toString(): String {
-            return "$upperLeftX $upperLeftY $lowerRightX $lowerRightY"
+            return "${upperLeft.first} ${upperLeft.second} ${lowerRight.first} ${lowerRight.second}"
         }
     }
 
     class PointLocation(
-        private val x: Float,
-        private val y: Float
+        private val p: Pair<Int, Int>
     ) {
         override fun toString(): String {
-            return "$x $y"
+            return "${p.first} ${p.second}"
         }
     }
 }
@@ -81,23 +79,40 @@ interface FGOUICompiler2 : UICompiler {
         private lateinit var userSize: Size
         private lateinit var userOffset: Point
         private var ratio = 0.0
+        private fun transformX(x: Float): String {
+            return (ratio * (x - devOffset.x) + userOffset.x).toInt().toString()
+        }
 
+        private fun transformY(y: Float): String {
+            return (ratio * (y - devOffset.y) + userOffset.y).toInt().toString()
+        }
+
+        private fun transform(x: Float, y: Float): Pair<Int, Int> {
+            return Pair(
+                (ratio * (x - devOffset.x) + userOffset.x).toInt(),
+                (ratio * (y - devOffset.y) + userOffset.y).toInt()
+            )
+        }
 
         private val skillButtonLocations: Array<UICompiler.PointLocation> = arrayOf(
-            UICompiler.PointLocation(-1f, 930f),
-            UICompiler.PointLocation(114f, 930f),
-            UICompiler.PointLocation(241f, 930f),
-            UICompiler.PointLocation(380f, 930f),
-            UICompiler.PointLocation(581f, 930f),
-            UICompiler.PointLocation(718f, 930f),
-            UICompiler.PointLocation(862f, 930f),
-            UICompiler.PointLocation(1055f, 930f),
-            UICompiler.PointLocation(1200f, 930f),
-            UICompiler.PointLocation(1333f, 930f),
+            UICompiler.PointLocation(transform(-1f, 930f)),
+            UICompiler.PointLocation(transform(114f, 930f)),
+            UICompiler.PointLocation(transform(241f, 930f)),
+            UICompiler.PointLocation(transform(380f, 930f)),
+            UICompiler.PointLocation(transform(581f, 930f)),
+            UICompiler.PointLocation(transform(718f, 930f)),
+            UICompiler.PointLocation(transform(862f, 930f)),
+            UICompiler.PointLocation(transform(1055f, 930f)),
+            UICompiler.PointLocation(transform(1200f, 930f)),
+            UICompiler.PointLocation(transform(1333f, 930f)),
         )
 
-        private val skillXCoordinate =
-            intArrayOf(-1, 114, 241, 380, 581, 718, 862, 1055, 1200, 1333)
+        private val skillTargetLocations: Array<UICompiler.PointLocation> = arrayOf(
+            UICompiler.PointLocation(transform(507f, 731f)),
+            UICompiler.PointLocation(transform(957f, 731f)),
+            UICompiler.PointLocation(transform(1434f, 731f))
+        )
+
         private val masterCraftXCoordinate = intArrayOf(-1, 1366, 1490, 1616)
         private val noblePhantasmsXCoordinate = intArrayOf(-1, 611, 972, 1330)
 
@@ -374,8 +389,11 @@ interface FGOUICompiler2 : UICompiler {
         }
     }
 
-    private fun skillAux(x: Float, servant: Float) {
-        fileContent.add("Click " + transformX(x) + " " + transformY(930f)) //開技能
+    private fun servantCraftSkillWithTarget(
+        skillLocation: UICompiler.PointLocation,
+        targetedServant: UICompiler.PointLocation
+    ) {
+        fileContent.add("Click $skillLocation")
         fileContent.add("Wait 500")
         fileContent.add(
             "Compare " + transformX(382f) + " " + transformY(626f) + " " + transformX(
@@ -384,7 +402,7 @@ interface FGOUICompiler2 : UICompiler {
         )
         fileContent.add("IfGreater \$R 5")
         fileContent.add("JumpTo \$Skill$tagCount")
-        fileContent.add("Click " + transformX(servant) + " " + transformY(731f)) //從者一
+        fileContent.add("Click $targetedServant")
         fileContent.add("JumpTo \$SkillEnd$tagCount")
         fileContent.add("Tag \$Skill$tagCount")
         fileContent.add("Click " + transformX(645f) + " " + transformY(696f)) //取消BUG
@@ -394,16 +412,13 @@ interface FGOUICompiler2 : UICompiler {
         tagCount++
     }
 
-
     private fun skill(block: Vector<String>) {
-        var x: Float
         for (j in 1..9) {
-            val sk = skillButtonLocations[j]
-            x = skillXCoordinate[j].toFloat()
+            val skillLocation = skillButtonLocations[j]
             when (block[j]) {
-                "0" -> {}
-                "1" -> {
-                    fileContent.add("Click $sk") //開技能
+                "0" -> {} // Don't use skill.
+                "1" -> { // Craft skill without a target.
+                    fileContent.add("Click $skillLocation")
                     fileContent.add("Wait 500")
                     fileContent.add(
                         "Compare " + transformX(382f) + " " + transformY(626f) + " " + transformX(
@@ -414,16 +429,17 @@ interface FGOUICompiler2 : UICompiler {
                     fileContent.add("JumpTo \$Skill$tagCount")
                     fileContent.add("JumpTo \$SkillEnd$tagCount")
                     fileContent.add("Tag \$Skill$tagCount")
-                    fileContent.add("Click " + transformX(645f) + " " + transformY(696f)) //取消BUG
+                    // Click to cancel, in case the skill is a targeting skill.
+                    fileContent.add("Click " + transformX(645f) + " " + transformY(696f))
                     fileContent.add("JumpTo \$SkillEnd$tagCount")
                     fileContent.add("Tag \$SkillEnd$tagCount")
                     fileContent.add("Wait 2500")
                     tagCount++
                 }
 
-                "2" -> skillAux(x, 507f)
-                "3" -> skillAux(x, 957f)
-                "4" -> skillAux(x, 1434f)
+                "2" -> servantCraftSkillWithTarget(skillLocation, skillTargetLocations[0])
+                "3" -> servantCraftSkillWithTarget(skillLocation, skillTargetLocations[1])
+                "4" -> servantCraftSkillWithTarget(skillLocation, skillTargetLocations[2])
             }
         }
     }
@@ -546,14 +562,6 @@ interface FGOUICompiler2 : UICompiler {
             userSize.width / devSize.width.toDouble(),
             userSize.height / devSize.height.toDouble()
         )
-    }
-
-    private fun transformX(x: Float): String {
-        return (ratio * (x - devOffset.x) + userOffset.x).toInt().toString()
-    }
-
-    private fun transformY(y: Float): String {
-        return (ratio * (y - devOffset.y) + userOffset.y).toInt().toString()
     }
 
 
