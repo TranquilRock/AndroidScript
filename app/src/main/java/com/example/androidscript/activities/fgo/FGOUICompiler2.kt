@@ -35,40 +35,39 @@ interface UICompiler {
     }
 }
 
-@Suppress("SameParameterValue") //For readability
 interface FGOUICompiler2 : UICompiler {
     override fun compile(data: Vector<Vector<String>>) {
         fileContent = Vector()
         tagCount = 0
         setUpScreenPara(data[0])
-        for (block in data) {
-            when (block[0]) {
+        for (blockData in data) {
+            when (blockData[0]) {
                 PRESTAGE_BLOCK -> {
                     fileContent.add("Log $PRESTAGE_BLOCK")
-                    preStage(block)
+                    preStage(blockData)
                 }
 
                 CRAFT_SKILL_BLOCK -> {
                     fileContent.add("Log $CRAFT_SKILL_BLOCK")
                     waitUntilAttackButton()
-                    craftSkillBlock(block)
+                    craftSkillBlock(blockData)
                 }
 
                 SKILL_BLOCK -> {
                     fileContent.add("Log $SKILL_BLOCK")
                     waitUntilAttackButton()
-                    skillBlock(block)
+                    skillBlock(blockData)
                 }
 
                 NOBLE_PHANTASM_BLOCK -> {
                     fileContent.add("Log $NOBLE_PHANTASM_BLOCK")
                     waitUntilAttackButton()
-                    noblePhantasmBlock(block)
+                    noblePhantasmBlock(blockData)
                 }
 
                 END_BLOCK -> {
                     fileContent.add("Log $END_BLOCK")
-                    end()
+                    endBlock()
                 }
             }
         }
@@ -99,7 +98,7 @@ interface FGOUICompiler2 : UICompiler {
             )
         }
 
-        // ========================= Locations ===============================
+        // ============================= Battle Scene Locations ====================================
         private val servantLocations: Array<UICompiler.PointLocation> = arrayOf(
             UICompiler.PointLocation(transform(507f, 731f)),
             UICompiler.PointLocation(transform(957f, 731f)),
@@ -118,6 +117,12 @@ interface FGOUICompiler2 : UICompiler {
             UICompiler.PointLocation(transform(1200f, 930f)),
             UICompiler.PointLocation(transform(1333f, 930f)),
         )
+        private val cancelSkillButtonImageLocation = UICompiler.ImageLocation(
+            transform(382f, 626f),
+            transform(908f, 766f),
+            "cancel_btn.png"
+        )
+        private val cancelSkillButtonLocation = UICompiler.PointLocation(transform(645f, 696f))
 
         private val craftListLocation = UICompiler.PointLocation(transform(1798f, 530f))
         private val craftButtonLocations: Array<UICompiler.PointLocation> = arrayOf(
@@ -136,8 +141,11 @@ interface FGOUICompiler2 : UICompiler {
         )
         private val craftSwitchButtonLocation = UICompiler.PointLocation(transform(950f, 1000f))
 
-        private val attackButtonImageLocation =
-            UICompiler.ImageLocation(transform(1560f, 830f), transform(1843f, 1109f), "attack.png")
+        private val attackButtonImageLocation = UICompiler.ImageLocation(
+            transform(1560f, 830f),
+            transform(1843f, 1109f),
+            "attack.png"
+        )
         private val attackButtonLocation = UICompiler.PointLocation(transform(1694f, 969f))
         private val commandCardLocations: Array<UICompiler.PointLocation> = arrayOf(
             UICompiler.PointLocation(transform(190f, 835f)),
@@ -153,18 +161,38 @@ interface FGOUICompiler2 : UICompiler {
             UICompiler.PointLocation(transform(1330f, 364f)),
         )
 
+        // ============================= Pre-Stage Scene Locations =================================
         private val stageEntryButtonLocation = UICompiler.PointLocation(transform(1400f, 320f))
-        private val continueStageButtonImageLocation =
-            UICompiler.ImageLocation(transform(1046f, 852f), transform(1472f, 975f), "contdbtn.png")
-        private val menuButtonImageLocation =
-            UICompiler.ImageLocation(transform(1665f, 1039f), transform(1910f, 1130f), "menu.png")
-        private val endStageButtonImageLocation =
-            UICompiler.ImageLocation(transform(1556f, 1031f), transform(1777f, 1116f), "end.png")
-        private val cancelSkillButtonImageLocation =
-            UICompiler.ImageLocation(transform(382f, 626f), transform(908f, 766f), "cancel_btn.png")
-        private val cancelSkillButtonLocation = UICompiler.PointLocation(transform(645f, 696f))
+        private val closeAppleButtonImageLocation = UICompiler.ImageLocation(
+            transform(757f, 922f),
+            transform(1149f, 1041f),
+            "close_btn.png"
+        )
+        private val supportSelectionImageLocation = UICompiler.ImageLocation(
+            transform(1551f, 67f),
+            transform(1917f, 154f),
+            "support_select.png"
+        )
+        private val continueStageButtonImageLocation = UICompiler.ImageLocation(
+            transform(1046f, 852f),
+            transform(1472f, 975f),
+            "contdbtn.png"
+        )
+        private val menuButtonImageLocation = UICompiler.ImageLocation(
+            transform(1665f, 1039f),
+            transform(1910f, 1130f),
+            "menu.png"
+        )
+        private val endStageButtonImageLocation = UICompiler.ImageLocation(
+            transform(1556f, 1031f),
+            transform(1777f, 1116f),
+            "end.png"
+        )
 
+        // ================================== Helper Locations =====================================
         private val safeClickLocation = UICompiler.PointLocation(transform(1278f, 85f))
+
+        // ================================== Supportive Items =====================================
         private val clickAllPhantasmBlockContent = Vector<String>()
 
         init {
@@ -175,10 +203,11 @@ interface FGOUICompiler2 : UICompiler {
         }
     }
 
-    private fun countDownAndExit(varName: String, n: String?) {
-        fileContent.add("IfGreater $varName $n")
+    private fun exitCountDown(n: String?) {
+
+        fileContent.add("IfGreater \$Loop $n")
         fileContent.add("Exit")
-        fileContent.add("Add $varName 1")
+        fileContent.add("Add \$Loop 1")
     }
 
     private fun waitUntilMenuThenSelectStage() {
@@ -194,21 +223,13 @@ interface FGOUICompiler2 : UICompiler {
     }
 
     private fun checkFriendPage(trueTag: String) {
-        fileContent.add(
-            "Compare " + transformX(1551f) + " " + transformY(67f) + " " + transformX(
-                1917f
-            ) + " " + transformY(154f) + " support_select.png"
-        )
+        fileContent.add("Compare $supportSelectionImageLocation")
         fileContent.add("IfGreater \$R 15")
         fileContent.add("JumpTo $trueTag")
     }
 
     private fun checkApplePage(trueTag: String) {
-        fileContent.add(
-            "Compare " + transformX(757f) + " " + transformY(922f) + " " + transformX(
-                1149f
-            ) + " " + transformY(1041f) + " close_btn.png"
-        )
+        fileContent.add("Compare $closeAppleButtonImageLocation")
         fileContent.add("IfGreater \$R 5")
         fileContent.add("JumpTo $trueTag")
     }
@@ -281,11 +302,7 @@ interface FGOUICompiler2 : UICompiler {
     }
 
     private fun eatApple(EntryTag: String, appleType: String?) {
-        fileContent.add(
-            "Compare " + transformX(757f) + " " + transformY(922f) + " " + transformX(
-                1149f
-            ) + " " + transformY(1041f) + " close_btn.png"
-        )
+        fileContent.add("Compare $closeAppleButtonImageLocation")
         fileContent.add("IfGreater \$R 5")
         fileContent.add("JumpTo $EntryTag")
         fileContent.add("JumpTo \$AppleEnd")
@@ -321,7 +338,7 @@ interface FGOUICompiler2 : UICompiler {
         fileContent.add("Var \$Loop 1")
         //================Start=====================
         fileContent.add("Tag \$Start")
-        countDownAndExit("\$Loop", block[4])
+        exitCountDown(block[4])
         fileContent.add("IfGreater \$Continue 0")
         fileContent.add("JumpTo \$BeforeEnter")
         waitUntilMenuThenSelectStage()
@@ -366,7 +383,7 @@ interface FGOUICompiler2 : UICompiler {
     ) {
         fileContent.add("Click $craftListLocation")
         fileContent.add("Wait 500")
-        fileContent.add("Click " + transformX(1622f) + " " + transformY(530f)) //開技能
+        fileContent.add("Click $craftButtonLocations")
         fileContent.add("Wait 500")
         fileContent.add("Compare $cancelSkillButtonImageLocation")
         fileContent.add("IfGreater \$R 5")
@@ -508,7 +525,7 @@ interface FGOUICompiler2 : UICompiler {
         fileContent.add("Wait 8000")
     }
 
-    private fun end() {
+    private fun endBlock() {
         fileContent.add("Wait 3000")
         fileContent.add("Tag \$EndStageAgain")
         fileContent.add("Compare $endStageButtonImageLocation")
