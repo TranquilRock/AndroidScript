@@ -12,7 +12,6 @@ interface UICompiler {
     fun compile(data: Vector<Vector<String>>)
 
     class ImageLocation(
-
         private val upperLeft: Pair<Int, Int>,
         private val lowerRight: Pair<Int, Int>
     ) {
@@ -52,7 +51,7 @@ interface FGOUICompiler2 : UICompiler {
                 "Skill" -> {
                     fileContent.add("Log Skill")
                     waitUntilAttackButton()
-                    skill(block)
+                    skillBlock(block)
                 }
 
                 "NoblePhantasms" -> {
@@ -389,7 +388,7 @@ interface FGOUICompiler2 : UICompiler {
         }
     }
 
-    private fun servantCraftSkillWithTarget(
+    private fun servantCastSkillWithOneTarget(
         skillLocation: UICompiler.PointLocation,
         targetedServant: UICompiler.PointLocation
     ) {
@@ -412,7 +411,7 @@ interface FGOUICompiler2 : UICompiler {
         tagCount++
     }
 
-    private fun skill(block: Vector<String>) {
+    private fun skillBlock(block: Vector<String>) {
         for (j in 1..9) {
             val skillLocation = skillButtonLocations[j]
             when (block[j]) {
@@ -437,9 +436,9 @@ interface FGOUICompiler2 : UICompiler {
                     tagCount++
                 }
 
-                "2" -> servantCraftSkillWithTarget(skillLocation, skillTargetLocations[0])
-                "3" -> servantCraftSkillWithTarget(skillLocation, skillTargetLocations[1])
-                "4" -> servantCraftSkillWithTarget(skillLocation, skillTargetLocations[2])
+                "2" -> servantCastSkillWithOneTarget(skillLocation, skillTargetLocations[0])
+                "3" -> servantCastSkillWithOneTarget(skillLocation, skillTargetLocations[1])
+                "4" -> servantCastSkillWithOneTarget(skillLocation, skillTargetLocations[2])
             }
         }
     }
