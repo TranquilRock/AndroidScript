@@ -57,7 +57,7 @@ interface FGOUICompiler2 : UICompiler {
                 "NoblePhantasms" -> {
                     fileContent.add("Log NoblePhantasms")
                     waitUntilAttackButton()
-                    noblePhantasms(block)
+                    noblePhantasmBlock(block)
                 }
 
                 "End" -> {
@@ -130,8 +130,20 @@ interface FGOUICompiler2 : UICompiler {
         )
         private val craftSwitchButtonLocation = UICompiler.PointLocation(transform(950f, 1000f))
 
-        private val masterCraftXCoordinate = intArrayOf(-1, 1366, 1490, 1616)
-        private val noblePhantasmsXCoordinate = intArrayOf(-1, 611, 972, 1330)
+        private val attackButtonLocation = UICompiler.PointLocation(transform(1694f, 969f))
+        private val commandCardLocations: Array<UICompiler.PointLocation> = arrayOf(
+            UICompiler.PointLocation(transform(190f, 835f)),
+            UICompiler.PointLocation(transform(611f, 835f)),
+            UICompiler.PointLocation(transform(1032f, 835f)),
+            UICompiler.PointLocation(transform(1453f, 835f)),
+            UICompiler.PointLocation(transform(1874f, 835f)),
+        )
+        private val noblePhantasmLocations: Array<UICompiler.PointLocation> = arrayOf(
+            UICompiler.PointLocation(transform(-1f, -1f)),
+            UICompiler.PointLocation(transform(611f, 364f)),
+            UICompiler.PointLocation(transform(972f, 364f)),
+            UICompiler.PointLocation(transform(1330f, 364f)),
+        )
 
         private val ClickAll = Vector<String>()
 
@@ -501,23 +513,15 @@ interface FGOUICompiler2 : UICompiler {
         }
     }
 
-    private fun noblePhantasms(block: Vector<String>) {
-        fileContent.add("Click " + transformX(1694f) + " " + transformY(969f)) //Attack
+    private fun noblePhantasmBlock(block: Vector<String>) {
+        fileContent.add("Click $attackButtonLocation")
         fileContent.add("Wait 2300")
         for (j in 1..3) {
             if (block[j] == "1") {
-                fileContent.add(
-                    "Click " + transformX(
-                        noblePhantasmsXCoordinate[j].toFloat()
-                    ) + " " + transformY(364f)
-                ) //Noble Phantasms
+                fileContent.add("Click ${noblePhantasmLocations[j]}") //Noble Phantasms
             }
         }
-        fileContent.add("Click " + transformX(190f) + " " + transformY(835f)) //Command Card
-        fileContent.add("Click " + transformX(611f) + " " + transformY(835f)) //Command Card
-        fileContent.add("Click " + transformX(1032f) + " " + transformY(835f)) //Command Card
-        fileContent.add("Click " + transformX(1453f) + " " + transformY(835f)) //Command Card
-        fileContent.add("Click " + transformX(1874f) + " " + transformY(835f)) //Command Card
+        for (j in 0..4) fileContent.add("Click ${commandCardLocations[j]}")
         fileContent.add("Wait 8000")
     }
 
@@ -542,7 +546,7 @@ interface FGOUICompiler2 : UICompiler {
         fileContent.add("Wait 2000")
         fileContent.add("JumpTo \$EndStageAgain")
         fileContent.add("Tag \$EndStageBattle")
-        noblePhantasms(ClickAll)
+        noblePhantasmBlock(ClickAll)
         fileContent.add("JumpTo \$EndStageAgain")
         fileContent.add("Tag \$EndStage")
         fileContent.add("Wait 1000")
