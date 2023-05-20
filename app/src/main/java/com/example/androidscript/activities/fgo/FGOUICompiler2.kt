@@ -45,7 +45,7 @@ interface FGOUICompiler2 : UICompiler {
                 "CraftSkill" -> {
                     fileContent.add("Log CraftSkill")
                     waitUntilAttackButton()
-                    craftSkill(block)
+                    craftSkillBlock(block)
                 }
 
                 "Skill" -> {
@@ -93,8 +93,15 @@ interface FGOUICompiler2 : UICompiler {
             )
         }
 
+        // ========================= Locations ===============================
+        private val servantLocations: Array<UICompiler.PointLocation> = arrayOf(
+            UICompiler.PointLocation(transform(507f, 731f)),
+            UICompiler.PointLocation(transform(957f, 731f)),
+            UICompiler.PointLocation(transform(1434f, 731f))
+        )
+
         private val skillButtonLocations: Array<UICompiler.PointLocation> = arrayOf(
-            UICompiler.PointLocation(transform(-1f, 930f)),
+            UICompiler.PointLocation(transform(-1f, -1f)),
             UICompiler.PointLocation(transform(114f, 930f)),
             UICompiler.PointLocation(transform(241f, 930f)),
             UICompiler.PointLocation(transform(380f, 930f)),
@@ -106,11 +113,22 @@ interface FGOUICompiler2 : UICompiler {
             UICompiler.PointLocation(transform(1333f, 930f)),
         )
 
-        private val skillTargetLocations: Array<UICompiler.PointLocation> = arrayOf(
-            UICompiler.PointLocation(transform(507f, 731f)),
-            UICompiler.PointLocation(transform(957f, 731f)),
-            UICompiler.PointLocation(transform(1434f, 731f))
+        private val craftListLocation = UICompiler.PointLocation(transform(1798f, 530f))
+        private val craftButtonLocations: Array<UICompiler.PointLocation> = arrayOf(
+            UICompiler.PointLocation(transform(-1f, -1f)),
+            UICompiler.PointLocation(transform(1366f, 530f)),
+            UICompiler.PointLocation(transform(1490f, 530f)),
+            UICompiler.PointLocation(transform(1616f, 530f))
         )
+        private val craftSwitchServantsLocations: Array<UICompiler.PointLocation> = arrayOf(
+            UICompiler.PointLocation(transform(210f, 530f)),
+            UICompiler.PointLocation(transform(507f, 530f)),
+            UICompiler.PointLocation(transform(810f, 530f)),
+            UICompiler.PointLocation(transform(1120f, 530f)),
+            UICompiler.PointLocation(transform(1414f, 530f)),
+            UICompiler.PointLocation(transform(1700f, 530f))
+        )
+        private val craftSwitchButtonLocation = UICompiler.PointLocation(transform(950f, 1000f))
 
         private val masterCraftXCoordinate = intArrayOf(-1, 1366, 1490, 1616)
         private val noblePhantasmsXCoordinate = intArrayOf(-1, 611, 972, 1330)
@@ -295,10 +313,13 @@ interface FGOUICompiler2 : UICompiler {
         fileContent.add("Var \$Continue 0")
     }
 
-    private fun craftSkillAux(x: Float, servant: Float) {
-        fileContent.add("Click " + transformX(1798f) + " " + transformY(530f)) //Click Master Craft Skill
+    private fun craftCastSkillWithOneTarget(
+        btnLocation: UICompiler.PointLocation,
+        targetLocation: UICompiler.PointLocation
+    ) {
+        fileContent.add("Click $craftListLocation")
         fileContent.add("Wait 500")
-        fileContent.add("Click " + transformX(x) + " " + transformY(530f)) //開技能
+        fileContent.add("Click $btnLocation") //開技能
         fileContent.add(
             "Compare " + transformX(382f) + " " + transformY(626f) + " " + transformX(
                 908f
@@ -307,7 +328,7 @@ interface FGOUICompiler2 : UICompiler {
         fileContent.add("IfGreater \$R 5")
         fileContent.add("JumpTo \$CraftSkill$tagCount")
         fileContent.add("Wait 300")
-        fileContent.add("Click " + transformX(servant) + " " + transformY(731f)) //從者
+        fileContent.add("Click $targetLocation")
         fileContent.add("JumpTo \$CraftSkillEnd$tagCount")
         fileContent.add("Tag \$CraftSkill$tagCount")
         fileContent.add("Click " + transformX(645f) + " " + transformY(696f)) //取消BUG
@@ -317,8 +338,11 @@ interface FGOUICompiler2 : UICompiler {
         tagCount++
     }
 
-    private fun craftSkillChangeAux(servant1: Float, servant2: Float) {
-        fileContent.add("Click " + transformX(1798f) + " " + transformY(530f)) //御主技能
+    private fun craftSwitchServants(
+        targetLocation1: UICompiler.PointLocation,
+        targetLocation2: UICompiler.PointLocation
+    ) {
+        fileContent.add("Click $craftListLocation")
         fileContent.add("Wait 500")
         fileContent.add("Click " + transformX(1622f) + " " + transformY(530f)) //開技能
         fileContent.add("Wait 500")
@@ -329,30 +353,29 @@ interface FGOUICompiler2 : UICompiler {
         )
         fileContent.add("IfGreater \$R 5")
         fileContent.add("JumpTo \$CraftSkill$tagCount")
-        fileContent.add("Click " + transformX(servant1) + " " + transformY(590f)) //Target 1
-        fileContent.add("Click " + transformX(servant2) + " " + transformY(590f)) //Target 2
-        fileContent.add("Click " + transformX(950f) + " " + transformY(1000f))
+        fileContent.add("Click $targetLocation1")
+        fileContent.add("Click $targetLocation2")
+        fileContent.add("Click $craftSwitchButtonLocation")
         fileContent.add("JumpTo \$CraftSkillEnd$tagCount")
         fileContent.add("Tag \$CraftSkill$tagCount")
         fileContent.add("Click " + transformX(645f) + " " + transformY(696f)) //取消BUG
         fileContent.add("Wait 500")
-        fileContent.add("Click " + transformX(1798f) + " " + transformY(530f)) //御主技能
+        fileContent.add("Click $craftListLocation")
         fileContent.add("JumpTo \$CraftSkillEnd$tagCount")
         fileContent.add("Tag \$CraftSkillEnd$tagCount")
         fileContent.add("Wait 8000")
         tagCount++
     }
 
-    private fun craftSkill(block: Vector<String>) {
-        var x: Float
+    private fun craftSkillBlock(block: Vector<String>) {
         for (j in 1..3) {
-            x = masterCraftXCoordinate[j].toFloat()
+            val btnLocation = craftButtonLocations[j]
             when (block[j]) {
-                "0" -> {}
-                "1" -> {
-                    fileContent.add("Click " + transformX(1798f) + " " + transformY(530f)) //御主技能
+                "0" -> {} // Don't use.
+                "1" -> { // Use without any target.
+                    fileContent.add("Click $craftListLocation")
                     fileContent.add("Wait 1000")
-                    fileContent.add("Click " + transformX(x) + " " + transformY(530f)) //開技能
+                    fileContent.add("Click $btnLocation")
                     fileContent.add(
                         "Compare " + transformX(382f) + " " + transformY(626f) + " " + transformX(
                             908f
@@ -369,30 +392,65 @@ interface FGOUICompiler2 : UICompiler {
                     tagCount++
                 }
 
-                "2" -> craftSkillAux(x, 507f)
-                "3" -> craftSkillAux(x, 957f)
-                "4" -> craftSkillAux(x, 1434f)
+                "2" -> craftCastSkillWithOneTarget(btnLocation, servantLocations[0])
+                "3" -> craftCastSkillWithOneTarget(btnLocation, servantLocations[1])
+                "4" -> craftCastSkillWithOneTarget(btnLocation, servantLocations[2])
             }
         }
         when (block[4]) {
-            "0" -> {}
-            "1" -> craftSkillChangeAux(210f, 1120f)
-            "2" -> craftSkillChangeAux(210f, 1414f)
-            "3" -> craftSkillChangeAux(210f, 1700f)
-            "4" -> craftSkillChangeAux(507f, 1120f)
-            "5" -> craftSkillChangeAux(507f, 1414f)
-            "6" -> craftSkillChangeAux(507f, 1700f)
-            "7" -> craftSkillChangeAux(810f, 1120f)
-            "8" -> craftSkillChangeAux(810f, 1414f)
-            "9" -> craftSkillChangeAux(810f, 1700f)
+            "0" -> {} // Don't switch.
+            "1" -> craftSwitchServants(
+                craftSwitchServantsLocations[0],
+                craftSwitchServantsLocations[3]
+            )
+
+            "2" -> craftSwitchServants(
+                craftSwitchServantsLocations[0],
+                craftSwitchServantsLocations[4]
+            )
+
+            "3" -> craftSwitchServants(
+                craftSwitchServantsLocations[0],
+                craftSwitchServantsLocations[5]
+            )
+
+            "4" -> craftSwitchServants(
+                craftSwitchServantsLocations[1],
+                craftSwitchServantsLocations[3]
+            )
+
+            "5" -> craftSwitchServants(
+                craftSwitchServantsLocations[1],
+                craftSwitchServantsLocations[4]
+            )
+
+            "6" -> craftSwitchServants(
+                craftSwitchServantsLocations[1],
+                craftSwitchServantsLocations[5]
+            )
+
+            "7" -> craftSwitchServants(
+                craftSwitchServantsLocations[2],
+                craftSwitchServantsLocations[3]
+            )
+
+            "8" -> craftSwitchServants(
+                craftSwitchServantsLocations[2],
+                craftSwitchServantsLocations[4]
+            )
+
+            "9" -> craftSwitchServants(
+                craftSwitchServantsLocations[2],
+                craftSwitchServantsLocations[5]
+            )
         }
     }
 
     private fun servantCastSkillWithOneTarget(
-        skillLocation: UICompiler.PointLocation,
-        targetedServant: UICompiler.PointLocation
+        btnLocation: UICompiler.PointLocation,
+        targetLocation: UICompiler.PointLocation
     ) {
-        fileContent.add("Click $skillLocation")
+        fileContent.add("Click $btnLocation")
         fileContent.add("Wait 500")
         fileContent.add(
             "Compare " + transformX(382f) + " " + transformY(626f) + " " + transformX(
@@ -401,7 +459,7 @@ interface FGOUICompiler2 : UICompiler {
         )
         fileContent.add("IfGreater \$R 5")
         fileContent.add("JumpTo \$Skill$tagCount")
-        fileContent.add("Click $targetedServant")
+        fileContent.add("Click $targetLocation")
         fileContent.add("JumpTo \$SkillEnd$tagCount")
         fileContent.add("Tag \$Skill$tagCount")
         fileContent.add("Click " + transformX(645f) + " " + transformY(696f)) //取消BUG
@@ -413,11 +471,11 @@ interface FGOUICompiler2 : UICompiler {
 
     private fun skillBlock(block: Vector<String>) {
         for (j in 1..9) {
-            val skillLocation = skillButtonLocations[j]
+            val btnLocation = skillButtonLocations[j]
             when (block[j]) {
                 "0" -> {} // Don't use skill.
                 "1" -> { // Craft skill without a target.
-                    fileContent.add("Click $skillLocation")
+                    fileContent.add("Click $btnLocation")
                     fileContent.add("Wait 500")
                     fileContent.add(
                         "Compare " + transformX(382f) + " " + transformY(626f) + " " + transformX(
@@ -436,9 +494,9 @@ interface FGOUICompiler2 : UICompiler {
                     tagCount++
                 }
 
-                "2" -> servantCastSkillWithOneTarget(skillLocation, skillTargetLocations[0])
-                "3" -> servantCastSkillWithOneTarget(skillLocation, skillTargetLocations[1])
-                "4" -> servantCastSkillWithOneTarget(skillLocation, skillTargetLocations[2])
+                "2" -> servantCastSkillWithOneTarget(btnLocation, servantLocations[0])
+                "3" -> servantCastSkillWithOneTarget(btnLocation, servantLocations[1])
+                "4" -> servantCastSkillWithOneTarget(btnLocation, servantLocations[2])
             }
         }
     }
