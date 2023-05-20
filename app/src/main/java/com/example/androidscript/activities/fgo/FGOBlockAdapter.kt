@@ -54,7 +54,6 @@ class FGOBlockAdapter(_data: Vector<Vector<String>>) : BlockAdapter<FGOViewHolde
                     friendList
                 )
 
-
                 val craftList = Vector<String>()
                 craftList.add("None")
                 craftList.addAll(
@@ -98,9 +97,7 @@ class FGOBlockAdapter(_data: Vector<Vector<String>>) : BlockAdapter<FGOViewHolde
         }
     }
 
-    override fun getItemCount(): Int {
-        return data.size
-    }
+    override fun getItemCount() = data.size
 
     init {
         data = _data
