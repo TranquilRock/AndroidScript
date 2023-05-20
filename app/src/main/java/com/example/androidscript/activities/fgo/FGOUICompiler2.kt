@@ -1,6 +1,11 @@
 package com.example.androidscript.activities.fgo
 
 import android.util.Size
+import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.CRAFT_SKILL_BLOCK
+import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.END_BLOCK
+import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.NOBLE_PHANTASM_BLOCK
+import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.PRESTAGE_BLOCK
+import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.SKILL_BLOCK
 import com.example.androidscript.services.ScreenShotService
 import com.example.androidscript.util.FileOperation
 import org.opencv.core.Point
@@ -37,31 +42,31 @@ interface FGOUICompiler2 : UICompiler {
         setUpScreenPara(data[0])
         for (block in data) {
             when (block[0]) {
-                "PreStage" -> {
-                    fileContent.add("Log PreStage")
+                PRESTAGE_BLOCK -> {
+                    fileContent.add("Log $PRESTAGE_BLOCK")
                     preStage(block)
                 }
 
-                "CraftSkill" -> {
-                    fileContent.add("Log CraftSkill")
+                CRAFT_SKILL_BLOCK -> {
+                    fileContent.add("Log $CRAFT_SKILL_BLOCK")
                     waitUntilAttackButton()
                     craftSkillBlock(block)
                 }
 
-                "Skill" -> {
-                    fileContent.add("Log Skill")
+                SKILL_BLOCK -> {
+                    fileContent.add("Log $SKILL_BLOCK")
                     waitUntilAttackButton()
                     skillBlock(block)
                 }
 
-                "NoblePhantasms" -> {
-                    fileContent.add("Log NoblePhantasms")
+                NOBLE_PHANTASM_BLOCK -> {
+                    fileContent.add("Log $NOBLE_PHANTASM_BLOCK")
                     waitUntilAttackButton()
                     noblePhantasmBlock(block)
                 }
 
-                "End" -> {
-                    fileContent.add("Log End")
+                END_BLOCK -> {
+                    fileContent.add("Log $END_BLOCK")
                     end()
                 }
             }
@@ -145,13 +150,13 @@ interface FGOUICompiler2 : UICompiler {
             UICompiler.PointLocation(transform(1330f, 364f)),
         )
 
-        private val ClickAll = Vector<String>()
+        private val clickAllPhantasmBlockContent = Vector<String>()
 
         init {
-            ClickAll.add("")
-            ClickAll.add("1")
-            ClickAll.add("1")
-            ClickAll.add("1")
+            clickAllPhantasmBlockContent.add("NoblePhantasms")
+            clickAllPhantasmBlockContent.add("1")
+            clickAllPhantasmBlockContent.add("1")
+            clickAllPhantasmBlockContent.add("1")
         }
     }
 
@@ -546,7 +551,7 @@ interface FGOUICompiler2 : UICompiler {
         fileContent.add("Wait 2000")
         fileContent.add("JumpTo \$EndStageAgain")
         fileContent.add("Tag \$EndStageBattle")
-        noblePhantasmBlock(ClickAll)
+        noblePhantasmBlock(clickAllPhantasmBlockContent)
         fileContent.add("JumpTo \$EndStageAgain")
         fileContent.add("Tag \$EndStage")
         fileContent.add("Wait 1000")

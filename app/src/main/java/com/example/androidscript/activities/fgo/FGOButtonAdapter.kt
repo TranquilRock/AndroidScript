@@ -14,10 +14,10 @@ class FGOButtonAdapter(
     override fun onBindViewHolder(holder: ButtonViewHolder, position: Int) {
         when (buttonText[position]) {
             "ServantSkill" -> {
-                holder.button.text = "從者技能"
+                holder.button.text = "從者技能" // TODO extract string resources.
                 holder.button.setOnClickListener {
                     blockContent.insertElementAt(
-                        Vector(listOf(*FGOEditor.SkillBlock)),
+                        Vector(listOf(*FGOEditor.skillBlockData)),
                         insertPosition
                     )
                     onInsert.insert()
@@ -27,7 +27,7 @@ class FGOButtonAdapter(
                 holder.button.text = "自動選卡"
                 holder.button.setOnClickListener {
                     blockContent.insertElementAt(
-                        Vector(listOf(*FGOEditor.NoblePhantasmsBlock)),
+                        Vector(listOf(*FGOEditor.noblePhantasmBlockData)),
                         insertPosition
                     )
                     onInsert.insert()
@@ -37,7 +37,7 @@ class FGOButtonAdapter(
                 holder.button.text = "御主技能"
                 holder.button.setOnClickListener {
                     blockContent.insertElementAt(
-                        Vector(listOf(*FGOEditor.CraftSkillBlock)),
+                        Vector(listOf(*FGOEditor.craftSkillBlockData)),
                         insertPosition
                     )
                     onInsert.insert()

@@ -22,16 +22,19 @@ class FGOBlockAdapter(_data: Vector<Vector<String>>) : BlockAdapter<FGOViewHolde
                     .inflate(R.layout.script_skills, parent, false)
                 return SkillVH(view.findViewById(R.id.skills))
             }
+
             1 -> {
                 view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.script_noble_phantasms, parent, false)
                 return NoblePhantasmsVH(view.findViewById(R.id.noble_phantasms))
             }
+
             2 -> {
                 view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.script_craft_skills, parent, false)
                 return CraftSkillVH(view.findViewById(R.id.craft_skills))
             }
+
             3 -> {
                 view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.script_prestage, parent, false)
@@ -68,6 +71,7 @@ class FGOBlockAdapter(_data: Vector<Vector<String>>) : BlockAdapter<FGOViewHolde
                 )
                 return PreStageVH(view.findViewById(R.id.pre_stage))
             }
+
             4 -> {
                 view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.script_endstage, parent, false)
@@ -83,11 +87,11 @@ class FGOBlockAdapter(_data: Vector<Vector<String>>) : BlockAdapter<FGOViewHolde
 
     override fun getItemViewType(position: Int): Int {
         return when (data[position][0]) {
-            "Skill" -> 0
-            "NoblePhantasms" -> 1
-            "CraftSkill" -> 2
-            "PreStage" -> 3
-            "End" -> 4
+            SKILL_BLOCK -> 0
+            NOBLE_PHANTASM_BLOCK -> 1
+            CRAFT_SKILL_BLOCK -> 2
+            PRESTAGE_BLOCK -> 3
+            END_BLOCK -> 4
             else -> {
                 throw RuntimeException("Invalid block " + data[position][0])
             }
@@ -123,5 +127,13 @@ class FGOBlockAdapter(_data: Vector<Vector<String>>) : BlockAdapter<FGOViewHolde
                 Handler(Looper.getMainLooper()).post { notifyItemChanged(index) }
             }
         }
+    }
+
+    companion object {
+        const val SKILL_BLOCK = "Skill"
+        const val NOBLE_PHANTASM_BLOCK = "NoblePhantasms"
+        const val CRAFT_SKILL_BLOCK = "CraftSkill"
+        const val PRESTAGE_BLOCK = "PreStage"
+        const val END_BLOCK = "End"
     }
 }
