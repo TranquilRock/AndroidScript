@@ -18,10 +18,11 @@ interface UICompiler {
 
     class ImageLocation(
         private val upperLeft: Pair<Int, Int>,
-        private val lowerRight: Pair<Int, Int>
+        private val lowerRight: Pair<Int, Int>,
+        private val imageFileName: String
     ) {
         override fun toString(): String {
-            return "${upperLeft.first} ${upperLeft.second} ${lowerRight.first} ${lowerRight.second}"
+            return "${upperLeft.first} ${upperLeft.second} ${lowerRight.first} ${lowerRight.second} $imageFileName"
         }
     }
 
@@ -135,6 +136,8 @@ interface FGOUICompiler2 : UICompiler {
         )
         private val craftSwitchButtonLocation = UICompiler.PointLocation(transform(950f, 1000f))
 
+        private val attackButtonImageLocation =
+            UICompiler.ImageLocation(transform(1560f, 830f), transform(1843f, 1109f), "attack.png")
         private val attackButtonLocation = UICompiler.PointLocation(transform(1694f, 969f))
         private val commandCardLocations: Array<UICompiler.PointLocation> = arrayOf(
             UICompiler.PointLocation(transform(190f, 835f)),
@@ -150,6 +153,18 @@ interface FGOUICompiler2 : UICompiler {
             UICompiler.PointLocation(transform(1330f, 364f)),
         )
 
+        private val stageEntryButtonLocation = UICompiler.PointLocation(transform(1400f, 320f))
+        private val continueStageButtonImageLocation =
+            UICompiler.ImageLocation(transform(1046f, 852f), transform(1472f, 975f), "contdbtn.png")
+        private val menuButtonImageLocation =
+            UICompiler.ImageLocation(transform(1665f, 1039f), transform(1910f, 1130f), "menu.png")
+        private val endStageButtonImageLocation =
+            UICompiler.ImageLocation(transform(1556f, 1031f), transform(1777f, 1116f), "end.png")
+        private val cancelSkillButtonImageLocation =
+            UICompiler.ImageLocation(transform(382f, 626f), transform(908f, 766f), "cancel_btn.png")
+        private val cancelSkillButtonLocation = UICompiler.PointLocation(transform(645f, 696f))
+
+        private val safeClickLocation = UICompiler.PointLocation(transform(1278f, 85f))
         private val clickAllPhantasmBlockContent = Vector<String>()
 
         init {
@@ -166,20 +181,16 @@ interface FGOUICompiler2 : UICompiler {
         fileContent.add("Add $varName 1")
     }
 
-    private fun waitUntilMenuAndSelectStage() {
+    private fun waitUntilMenuThenSelectStage() {
         fileContent.add("Tag \$NotReadyToEnterStage")
-        fileContent.add(
-            "Compare " + transformX(1665f) + " " + transformY(1039f) + " " + transformX(
-                1910f
-            ) + " " + transformY(1130f) + " menu.png"
-        )
+        fileContent.add("Compare $menuButtonImageLocation")
         fileContent.add("IfGreater \$R 15")
         fileContent.add("JumpTo \$ReadyToEnterStage")
         fileContent.add("Wait 1000")
         fileContent.add("JumpTo \$NotReadyToEnterStage")
         fileContent.add("Tag \$ReadyToEnterStage")
         fileContent.add("Wait 1000")
-        fileContent.add("Click " + transformX(1400f) + " " + transformY(320f)) //Select stage
+        fileContent.add("Click $stageEntryButtonLocation")
     }
 
     private fun checkFriendPage(trueTag: String) {
@@ -313,7 +324,7 @@ interface FGOUICompiler2 : UICompiler {
         countDownAndExit("\$Loop", block[4])
         fileContent.add("IfGreater \$Continue 0")
         fileContent.add("JumpTo \$BeforeEnter")
-        waitUntilMenuAndSelectStage()
+        waitUntilMenuThenSelectStage()
         fileContent.add("Tag \$BeforeEnter")
         checkFriendPage("\$ChooseFriend")
         checkApplePage("\$EatApple")
@@ -331,24 +342,19 @@ interface FGOUICompiler2 : UICompiler {
     }
 
     private fun craftCastSkillWithOneTarget(
-        btnLocation: UICompiler.PointLocation,
-        targetLocation: UICompiler.PointLocation
+        btnLocation: UICompiler.PointLocation, targetLocation: UICompiler.PointLocation
     ) {
         fileContent.add("Click $craftListLocation")
         fileContent.add("Wait 500")
         fileContent.add("Click $btnLocation") //開技能
-        fileContent.add(
-            "Compare " + transformX(382f) + " " + transformY(626f) + " " + transformX(
-                908f
-            ) + " " + transformY(766f) + " cancel_btn.png"
-        )
+        fileContent.add("Compare $cancelSkillButtonImageLocation")
         fileContent.add("IfGreater \$R 5")
         fileContent.add("JumpTo \$CraftSkill$tagCount")
         fileContent.add("Wait 300")
         fileContent.add("Click $targetLocation")
         fileContent.add("JumpTo \$CraftSkillEnd$tagCount")
         fileContent.add("Tag \$CraftSkill$tagCount")
-        fileContent.add("Click " + transformX(645f) + " " + transformY(696f)) //取消BUG
+        fileContent.add("Click $cancelSkillButtonLocation")
         fileContent.add("JumpTo \$CraftSkillEnd$tagCount")
         fileContent.add("Tag \$CraftSkillEnd$tagCount")
         fileContent.add("Wait 2500")
@@ -356,18 +362,13 @@ interface FGOUICompiler2 : UICompiler {
     }
 
     private fun craftSwitchServants(
-        targetLocation1: UICompiler.PointLocation,
-        targetLocation2: UICompiler.PointLocation
+        targetLocation1: UICompiler.PointLocation, targetLocation2: UICompiler.PointLocation
     ) {
         fileContent.add("Click $craftListLocation")
         fileContent.add("Wait 500")
         fileContent.add("Click " + transformX(1622f) + " " + transformY(530f)) //開技能
         fileContent.add("Wait 500")
-        fileContent.add(
-            "Compare " + transformX(382f) + " " + transformY(626f) + " " + transformX(
-                908f
-            ) + " " + transformY(766f) + " cancel_btn.png"
-        )
+        fileContent.add("Compare $cancelSkillButtonImageLocation")
         fileContent.add("IfGreater \$R 5")
         fileContent.add("JumpTo \$CraftSkill$tagCount")
         fileContent.add("Click $targetLocation1")
@@ -375,7 +376,7 @@ interface FGOUICompiler2 : UICompiler {
         fileContent.add("Click $craftSwitchButtonLocation")
         fileContent.add("JumpTo \$CraftSkillEnd$tagCount")
         fileContent.add("Tag \$CraftSkill$tagCount")
-        fileContent.add("Click " + transformX(645f) + " " + transformY(696f)) //取消BUG
+        fileContent.add("Click $cancelSkillButtonLocation")
         fileContent.add("Wait 500")
         fileContent.add("Click $craftListLocation")
         fileContent.add("JumpTo \$CraftSkillEnd$tagCount")
@@ -393,16 +394,12 @@ interface FGOUICompiler2 : UICompiler {
                     fileContent.add("Click $craftListLocation")
                     fileContent.add("Wait 1000")
                     fileContent.add("Click $btnLocation")
-                    fileContent.add(
-                        "Compare " + transformX(382f) + " " + transformY(626f) + " " + transformX(
-                            908f
-                        ) + " " + transformY(766f) + " cancel_btn.png"
-                    )
+                    fileContent.add("Compare $cancelSkillButtonImageLocation")
                     fileContent.add("IfGreater \$R 5")
                     fileContent.add("JumpTo \$CraftSkill$tagCount")
                     fileContent.add("JumpTo \$CraftSkillEnd$tagCount")
                     fileContent.add("Tag \$CraftSkill$tagCount")
-                    fileContent.add("Click " + transformX(645f) + " " + transformY(696f)) //取消BUG
+                    fileContent.add("Click $cancelSkillButtonLocation")
                     fileContent.add("JumpTo \$CraftSkillEnd$tagCount")
                     fileContent.add("Tag \$CraftSkillEnd$tagCount")
                     fileContent.add("Wait 2500")
@@ -417,69 +414,55 @@ interface FGOUICompiler2 : UICompiler {
         when (block[4]) {
             "0" -> {} // Don't switch.
             "1" -> craftSwitchServants(
-                craftSwitchServantsLocations[0],
-                craftSwitchServantsLocations[3]
+                craftSwitchServantsLocations[0], craftSwitchServantsLocations[3]
             )
 
             "2" -> craftSwitchServants(
-                craftSwitchServantsLocations[0],
-                craftSwitchServantsLocations[4]
+                craftSwitchServantsLocations[0], craftSwitchServantsLocations[4]
             )
 
             "3" -> craftSwitchServants(
-                craftSwitchServantsLocations[0],
-                craftSwitchServantsLocations[5]
+                craftSwitchServantsLocations[0], craftSwitchServantsLocations[5]
             )
 
             "4" -> craftSwitchServants(
-                craftSwitchServantsLocations[1],
-                craftSwitchServantsLocations[3]
+                craftSwitchServantsLocations[1], craftSwitchServantsLocations[3]
             )
 
             "5" -> craftSwitchServants(
-                craftSwitchServantsLocations[1],
-                craftSwitchServantsLocations[4]
+                craftSwitchServantsLocations[1], craftSwitchServantsLocations[4]
             )
 
             "6" -> craftSwitchServants(
-                craftSwitchServantsLocations[1],
-                craftSwitchServantsLocations[5]
+                craftSwitchServantsLocations[1], craftSwitchServantsLocations[5]
             )
 
             "7" -> craftSwitchServants(
-                craftSwitchServantsLocations[2],
-                craftSwitchServantsLocations[3]
+                craftSwitchServantsLocations[2], craftSwitchServantsLocations[3]
             )
 
             "8" -> craftSwitchServants(
-                craftSwitchServantsLocations[2],
-                craftSwitchServantsLocations[4]
+                craftSwitchServantsLocations[2], craftSwitchServantsLocations[4]
             )
 
             "9" -> craftSwitchServants(
-                craftSwitchServantsLocations[2],
-                craftSwitchServantsLocations[5]
+                craftSwitchServantsLocations[2], craftSwitchServantsLocations[5]
             )
         }
     }
 
     private fun servantCastSkillWithOneTarget(
-        btnLocation: UICompiler.PointLocation,
-        targetLocation: UICompiler.PointLocation
+        btnLocation: UICompiler.PointLocation, targetLocation: UICompiler.PointLocation
     ) {
         fileContent.add("Click $btnLocation")
         fileContent.add("Wait 500")
-        fileContent.add(
-            "Compare " + transformX(382f) + " " + transformY(626f) + " " + transformX(
-                908f
-            ) + " " + transformY(766f) + " cancel_btn.png"
-        )
+        fileContent.add("Compare $cancelSkillButtonImageLocation")
         fileContent.add("IfGreater \$R 5")
         fileContent.add("JumpTo \$Skill$tagCount")
         fileContent.add("Click $targetLocation")
         fileContent.add("JumpTo \$SkillEnd$tagCount")
         fileContent.add("Tag \$Skill$tagCount")
-        fileContent.add("Click " + transformX(645f) + " " + transformY(696f)) //取消BUG
+        fileContent.add("Click $cancelSkillButtonLocation")
         fileContent.add("JumpTo \$SkillEnd$tagCount")
         fileContent.add("Tag \$SkillEnd$tagCount")
         fileContent.add("Wait 2500")
@@ -494,17 +477,12 @@ interface FGOUICompiler2 : UICompiler {
                 "1" -> { // Craft skill without a target.
                     fileContent.add("Click $btnLocation")
                     fileContent.add("Wait 500")
-                    fileContent.add(
-                        "Compare " + transformX(382f) + " " + transformY(626f) + " " + transformX(
-                            908f
-                        ) + " " + transformY(766f) + " cancel_btn.png"
-                    )
+                    fileContent.add("Compare $cancelSkillButtonImageLocation")
                     fileContent.add("IfGreater \$R 5")
                     fileContent.add("JumpTo \$Skill$tagCount")
                     fileContent.add("JumpTo \$SkillEnd$tagCount")
                     fileContent.add("Tag \$Skill$tagCount")
-                    // Click to cancel, in case the skill is a targeting skill.
-                    fileContent.add("Click " + transformX(645f) + " " + transformY(696f))
+                    fileContent.add("Click $cancelSkillButtonLocation")
                     fileContent.add("JumpTo \$SkillEnd$tagCount")
                     fileContent.add("Tag \$SkillEnd$tagCount")
                     fileContent.add("Wait 2500")
@@ -533,21 +511,13 @@ interface FGOUICompiler2 : UICompiler {
     private fun end() {
         fileContent.add("Wait 3000")
         fileContent.add("Tag \$EndStageAgain")
-        fileContent.add(
-            "Compare " + transformX(1556f) + " " + transformY(1031f) + " " + transformX(
-                1777f
-            ) + " " + transformY(1116f) + " end.png"
-        )
+        fileContent.add("Compare $endStageButtonImageLocation")
         fileContent.add("IfGreater \$R 5")
         fileContent.add("JumpTo \$EndStage")
-        fileContent.add(
-            "Compare " + transformX(1560f) + " " + transformY(830f) + " " + transformX(
-                1843f
-            ) + " " + transformY(1109f) + " attack.png"
-        )
+        fileContent.add("Compare $attackButtonImageLocation")
         fileContent.add("IfGreater \$R 30")
         fileContent.add("JumpTo \$EndStageBattle")
-        safeClick()
+        fileContent.add("Click $safeClickLocation")
         fileContent.add("Wait 2000")
         fileContent.add("JumpTo \$EndStageAgain")
         fileContent.add("Tag \$EndStageBattle")
@@ -559,21 +529,12 @@ interface FGOUICompiler2 : UICompiler {
         fileContent.add("Wait 1000")
         fileContent.add("Click " + transformX(1658f) + " " + transformY(1073f))
         fileContent.add("Tag \$Ending")
-        //Check is menu
-        fileContent.add(
-            "Compare " + transformX(1665f) + " " + transformY(1039f) + " " + transformX(
-                1910f
-            ) + " " + transformY(1130f) + " menu.png"
-        )
+        fileContent.add("Compare $menuButtonImageLocation")
         fileContent.add("IfGreater \$R 15")
         fileContent.add("JumpTo \$Start")
 
         //Check Continue
-        fileContent.add(
-            "Compare " + transformX(1046f) + " " + transformY(852f) + " " + transformX(
-                1472f
-            ) + " " + transformY(975f) + " contdbtn.png"
-        )
+        fileContent.add("Compare $continueStageButtonImageLocation")
         fileContent.add("IfSmaller \$R 15")
         fileContent.add("JumpTo \$SafeClick")
         fileContent.add("Click " + transformX(1211f) + " " + transformY(910f))
@@ -586,15 +547,11 @@ interface FGOUICompiler2 : UICompiler {
 
     private fun waitUntilAttackButton() {
         fileContent.add("Tag \$StillBattleAgain$tagCount")
-        fileContent.add(
-            "Compare " + transformX(1560f) + " " + transformY(830f) + " " + transformX(
-                1843f
-            ) + " " + transformY(1109f) + " attack.png"
-        )
+        fileContent.add("Compare $attackButtonImageLocation")
         fileContent.add("IfGreater \$R 30")
         fileContent.add("JumpTo \$StillBattle$tagCount")
         fileContent.add("Wait 1000")
-        safeClick()
+        fileContent.add("Click $safeClickLocation")
         fileContent.add("JumpTo \$StillBattleAgain$tagCount")
         fileContent.add("Tag \$StillBattle$tagCount")
         fileContent.add("Wait 1000")
@@ -620,19 +577,11 @@ interface FGOUICompiler2 : UICompiler {
                 config[6]!!.toInt().toDouble(), config[7]!!.toInt().toDouble()
             )
             userSize = Size(
-                config[8]!!.toInt() - config[6]!!.toInt(),
-                config[9]!!.toInt() - config[7]!!.toInt()
+                config[8]!!.toInt() - config[6]!!.toInt(), config[9]!!.toInt() - config[7]!!.toInt()
             )
         }
         ratio = min(
-            userSize.width / devSize.width.toDouble(),
-            userSize.height / devSize.height.toDouble()
+            userSize.width / devSize.width.toDouble(), userSize.height / devSize.height.toDouble()
         )
     }
-
-
-    private fun safeClick() {
-        fileContent.add("Click " + transformX(1278f) + " " + transformY(85f))
-    }
-
 }
