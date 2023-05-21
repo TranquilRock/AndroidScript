@@ -12,9 +12,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SwitchCompat
 import com.example.androidscript.R
 import com.example.androidscript.activities.StartServiceActivity
-import com.example.androidscript.floatingwidget.FloatingWidgetService
-import com.example.androidscript.floatingwidget.ScreenShotService
-import com.example.androidscript.uitemplate.Editor
+import com.example.androidscript.services.FloatingWidgetService
+import com.example.androidscript.services.ScreenShotService
+import com.example.androidscript.activities.template.Editor
 import com.example.androidscript.util.FileOperation
 import java.lang.Integer.min
 import java.util.*

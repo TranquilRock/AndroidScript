@@ -9,9 +9,14 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.androidscript.R
 import com.example.androidscript.activities.StartServiceActivity
-import com.example.androidscript.uitemplate.UIEditor
+import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.CRAFT_SKILL_BLOCK
+import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.END_BLOCK
+import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.NOBLE_PHANTASM_BLOCK
+import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.PRESTAGE_BLOCK
+import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.SKILL_BLOCK
+import com.example.androidscript.activities.template.UIEditor
 import com.example.androidscript.util.FileOperation
-import com.example.androidscript.util.ScriptCompiler
+import com.example.androidscript.activities.template.UICompiler
 import java.util.*
 
 class FGOEditor : UIEditor() {
@@ -49,11 +54,11 @@ class FGOEditor : UIEditor() {
         if (FileOperation.findFile(folderName, fileName)) {
             blockData = FileOperation.readFromFileWords(folderName + fileName)
         } else {
-            blockData.add(Vector(listOf(*PreStageBlock)))
-            blockData.add(Vector(listOf(*SkillBlock)))
-            blockData.add(Vector(listOf(*NoblePhantasmsBlock)))
-            blockData.add(Vector(listOf(*CraftSkillBlock)))
-            blockData.add(Vector(listOf(*EndBlock)))
+            blockData.add(Vector(listOf(*preStageBlockData)))
+            blockData.add(Vector(listOf(*skillBlockData)))
+            blockData.add(Vector(listOf(*noblePhantasmBlockData)))
+            blockData.add(Vector(listOf(*craftSkillBlockData)))
+            blockData.add(Vector(listOf(*endBlockData)))
         }
         blockView.layoutManager = LinearLayoutManager(this)
         blockView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
@@ -87,11 +92,11 @@ class FGOEditor : UIEditor() {
 
     companion object {
         const val folderName = "FGO/"
-        val PreStageBlock = arrayOf("PreStage", "0", "0", "0", "1", "0", "0", "0", "0", "0")
-        val SkillBlock = arrayOf("Skill", "0", "0", "0", "0", "0", "0", "0", "0", "0")
-        val CraftSkillBlock = arrayOf("CraftSkill", "0", "0", "0", "0")
-        val NoblePhantasmsBlock = arrayOf("NoblePhantasms", "0", "0", "0", "0")
-        val EndBlock = arrayOf("End")
-        val compiler: ScriptCompiler = FGOScriptCompiler()
+        val preStageBlockData = arrayOf(PRESTAGE_BLOCK, "0", "0", "0", "1", "0", "0", "0", "0", "0")
+        val skillBlockData = arrayOf(SKILL_BLOCK, "0", "0", "0", "0", "0", "0", "0", "0", "0")
+        val craftSkillBlockData = arrayOf(CRAFT_SKILL_BLOCK, "0", "0", "0", "0")
+        val noblePhantasmBlockData = arrayOf(NOBLE_PHANTASM_BLOCK, "0", "0", "0", "0")
+        val endBlockData = arrayOf(END_BLOCK)
+        val compiler: UICompiler = FGOUICompiler()
     }
 }

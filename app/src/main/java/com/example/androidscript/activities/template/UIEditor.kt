@@ -1,4 +1,4 @@
-package com.example.androidscript.uitemplate
+package com.example.androidscript.activities.template
 
 import android.app.Activity
 import android.content.Intent
@@ -7,7 +7,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidscript.R
-import com.example.androidscript.floatingwidget.FloatingWidgetService
+import com.example.androidscript.services.FloatingWidgetService
 import java.util.*
 
 abstract class UIEditor : Editor() {

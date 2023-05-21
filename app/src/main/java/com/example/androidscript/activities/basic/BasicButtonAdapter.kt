@@ -1,9 +1,9 @@
 package com.example.androidscript.activities.basic
 
 import android.view.View
-import com.example.androidscript.uitemplate.BlockAdapter.Updater
-import com.example.androidscript.uitemplate.ButtonAdapter
-import com.example.androidscript.util.Commands
+import com.example.androidscript.activities.template.BlockAdapter.Updater
+import com.example.androidscript.activities.template.ButtonAdapter
+import com.example.androidscript.core.Commands
 import java.util.*
 
 class BasicButtonAdapter(

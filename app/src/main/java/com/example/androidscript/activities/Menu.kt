@@ -10,7 +10,7 @@ import com.example.androidscript.R
 import com.example.androidscript.activities.arknights.ArkKnightsEditor
 import com.example.androidscript.activities.basic.BasicEditor
 import com.example.androidscript.activities.fgo.FGOEditor
-import com.example.androidscript.floatingwidget.ScreenShotService
+import com.example.androidscript.services.ScreenShotService
 import com.example.androidscript.util.FileOperation
 import org.opencv.android.OpenCVLoader
 
@@ -34,7 +34,11 @@ class Menu : AppCompatActivity() {
             throw AssertionError("OpenCV unavailable!")
         }
 
+        // TODO stop service
         // Pre-setup
+        // TODO make activity to handle it's own root.
+        // A known issue is that when we re-enter this activity, onCreate won't be called
+        // and root is not initialized.
         FileOperation.root = (externalMediaDirs[0].absolutePath + "/")
 
         @Suppress("DEPRECATION") // For old api version
@@ -58,6 +62,7 @@ class Menu : AppCompatActivity() {
             startActivity(Intent(this, ArkKnightsEditor::class.java))
         }
 
+        // TODO combine SelectFileActivity.kt with this, so that no putExtra is needed.
         findViewById<View>(R.id.button_to_FGO).setOnClickListener {
             ScreenShotService.setShotOrientation(isLandscape = true)
             val intent = Intent(this, SelectFileActivity::class.java)
@@ -88,6 +93,7 @@ class Menu : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // TODO Remove this button.
         findViewById<View>(R.id.Exit).setOnClickListener {
             finishAffinity()
         }

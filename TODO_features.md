@@ -6,6 +6,7 @@
 - SelectFile Merge 進 Menu
 - StartServiceActivity -> Editor Method
 - Extract FileOperation's root into a function argument
+- Maintain the state graph, so that when re-entering the activities, the service won't crash.
 
 # B
 - FGO選卡選牌，要判關卡結束

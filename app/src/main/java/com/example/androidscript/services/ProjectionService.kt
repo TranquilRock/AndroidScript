@@ -1,4 +1,4 @@
-package com.example.androidscript.floatingwidget
+package com.example.androidscript.services
 
 import android.annotation.SuppressLint
 import android.app.Service
@@ -121,7 +121,7 @@ class ScreenShotService : Service() {
         }
 
         fun setShotOrientation(isLandscape: Boolean) {
-            this.isLandscape = isLandscape
+            Companion.isLandscape = isLandscape
             if (isLandscape) {
                 val tmp = max(height, width)
                 height = min(height, width)

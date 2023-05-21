@@ -8,7 +8,7 @@ import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidscript.R
-import com.example.androidscript.uitemplate.BlockAdapter.Updater
+import com.example.androidscript.activities.template.BlockAdapter.Updater
 import java.util.*
 
 abstract class BasicViewHolder(protected var view: View) : RecyclerView.ViewHolder(

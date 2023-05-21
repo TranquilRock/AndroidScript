@@ -1,4 +1,4 @@
-package com.example.androidscript.floatingwidget
+package com.example.androidscript.services
 
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
