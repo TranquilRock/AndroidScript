@@ -1,542 +1,584 @@
 package com.example.androidscript.activities.fgo
 
 import android.util.Size
+import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.CRAFT_SKILL_BLOCK
+import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.END_BLOCK
+import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.NOBLE_PHANTASM_BLOCK
+import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.PRESTAGE_BLOCK
+import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.SKILL_BLOCK
+import com.example.androidscript.activities.template.UICompiler
 import com.example.androidscript.services.ProjectionService
 import com.example.androidscript.util.FileOperation
-import com.example.androidscript.activities.template.UICompiler
 import org.opencv.core.Point
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 
-@Suppress("SameParameterValue") //For readability
-class FGOUICompiler : UICompiler() {
+
+class FGOUICompiler : UICompiler {
     override fun compile(data: Vector<Vector<String>>) {
-        save = Vector()
-        tag_count = 0
+        fileContent = Vector()
+        tagCount = 0
         setUpScreenPara(data[0])
-        for (block in data) {
-            when (block[0]) {
-                "PreStage" -> {
-                    save.add("Log PreStage")
-                    preStage(block)
+        for (blockData in data) {
+            when (blockData[0]) {
+                PRESTAGE_BLOCK -> {
+                    fileContent.add("Log $PRESTAGE_BLOCK")
+                    preStage(blockData)
                 }
-                "CraftSkill" -> {
-                    save.add("Log CraftSkill")
+
+                CRAFT_SKILL_BLOCK -> {
+                    fileContent.add("Log $CRAFT_SKILL_BLOCK")
                     waitUntilAttackButton()
-                    craftSkill(block)
+                    craftSkillBlock(blockData)
                 }
-                "Skill" -> {
-                    save.add("Log Skill")
+
+                SKILL_BLOCK -> {
+                    fileContent.add("Log $SKILL_BLOCK")
                     waitUntilAttackButton()
-                    skill(block)
+                    skillBlock(blockData)
                 }
-                "NoblePhantasms" -> {
-                    save.add("Log NoblePhantasms")
+
+                NOBLE_PHANTASM_BLOCK -> {
+                    fileContent.add("Log $NOBLE_PHANTASM_BLOCK")
                     waitUntilAttackButton()
-                    noblePhantasms(block)
+                    noblePhantasmBlock(blockData)
                 }
-                "End" -> {
-                    save.add("Log End")
-                    end()
+
+                END_BLOCK -> {
+                    fileContent.add("Log $END_BLOCK")
+                    endBlock()
                 }
             }
         }
-        FileOperation.writeLines(FGOEditor.folderName + "Run.txt", save)
+        FileOperation.writeLines(FGOEditor.folderName + "Run.txt", fileContent)
     }
 
     companion object {
-        // TODO
-        // Discussion 2022/01/26
-        //    public class resourceLocation{
-        //        public final int x1;
-        //        public final int y1;
-        //        public final int x2;
-        //        public final int y2;
-        //        public resourceLocation(int _x1,int _y1, int _x2, int _y2){
-        //            this.x1 = _x1;
-        //            this.y1 = _y1;
-        //            this.x2 = _x2;
-        //            this.y2 = _y2;
-        //        }
-        //
-        //        @Override
-        //        public String toString() {
-        //            return "resourceLocation{" +
-        //                    "x1=" + x1 +
-        //                    ", y1=" + y1 +
-        //                    ", x2=" + x2 +
-        //                    ", y2=" + y2 +
-        //                    '}';
-        //        }
-        //    }
-        //
-        //    private resourceLocation menuButton = new resourceLocation(1,1,2,2);
-        //
-        var tag_count = 0
-        private val dev_size = Size(1920, 1070)
-        private val dev_offset = Point(0.0, 64.0)
-        private lateinit var user_size: Size
-        private lateinit var user_offset: Point
+        var tagCount = 0
+        private lateinit var fileContent: Vector<String>
+
+        private val devSize = Size(1920, 1070)
+        private val devOffset = Point(0.0, 64.0)
+        private lateinit var userSize: Size
+        private lateinit var userOffset: Point
         private var ratio = 0.0
-        private lateinit var save: Vector<String>
-
-        private fun countDownAndExit(varName: String, n: String?) {
-            save.add("IfGreater $varName $n")
-            save.add("Exit")
-            save.add("Add $varName 1")
+        private fun transformX(x: Float): String {
+            return (ratio * (x - devOffset.x) + userOffset.x).toInt().toString()
         }
 
-        private fun waitUntilMenuAndSelectStage() {
-            save.add("Tag \$NotReadyToEnterStage")
-            save.add(
-                "Compare " + transformX(1665f) + " " + transformY(1039f) + " " + transformX(
-                    1910f
-                ) + " " + transformY(1130f) + " menu.png"
+        private fun transformY(y: Float): String {
+            return (ratio * (y - devOffset.y) + userOffset.y).toInt().toString()
+        }
+
+        private fun transform(x: Float, y: Float): Pair<Int, Int> {
+            return Pair(
+                (ratio * (x - devOffset.x) + userOffset.x).toInt(),
+                (ratio * (y - devOffset.y) + userOffset.y).toInt()
             )
-            save.add("IfGreater \$R 15")
-            save.add("JumpTo \$ReadyToEnterStage")
-            save.add("Wait 1000")
-            save.add("JumpTo \$NotReadyToEnterStage")
-            save.add("Tag \$ReadyToEnterStage")
-            save.add("Wait 1000")
-            save.add("Click " + transformX(1400f) + " " + transformY(320f)) //Select stage
         }
 
-        private fun checkFriendPage(trueTag: String) {
-            save.add(
-                "Compare " + transformX(1551f) + " " + transformY(67f) + " " + transformX(
-                    1917f
-                ) + " " + transformY(154f) + " support_select.png"
+        // ============================= Battle Scene Locations ====================================
+        private val servantLocations: Array<UICompiler.PointLocation> = arrayOf(
+            UICompiler.PointLocation(transform(507f, 731f)),
+            UICompiler.PointLocation(transform(957f, 731f)),
+            UICompiler.PointLocation(transform(1434f, 731f))
+        )
+
+        private val skillButtonLocations: Array<UICompiler.PointLocation> = arrayOf(
+            UICompiler.PointLocation(transform(-1f, -1f)),
+            UICompiler.PointLocation(transform(114f, 930f)),
+            UICompiler.PointLocation(transform(241f, 930f)),
+            UICompiler.PointLocation(transform(380f, 930f)),
+            UICompiler.PointLocation(transform(581f, 930f)),
+            UICompiler.PointLocation(transform(718f, 930f)),
+            UICompiler.PointLocation(transform(862f, 930f)),
+            UICompiler.PointLocation(transform(1055f, 930f)),
+            UICompiler.PointLocation(transform(1200f, 930f)),
+            UICompiler.PointLocation(transform(1333f, 930f)),
+        )
+        private val cancelSkillButtonImageLocation = UICompiler.ImageLocation(
+            transform(382f, 626f),
+            transform(908f, 766f),
+            "cancel_btn.png"
+        )
+        private val cancelSkillButtonLocation = UICompiler.PointLocation(transform(645f, 696f))
+
+        private val craftListLocation = UICompiler.PointLocation(transform(1798f, 530f))
+        private val craftButtonLocations: Array<UICompiler.PointLocation> = arrayOf(
+            UICompiler.PointLocation(transform(-1f, -1f)),
+            UICompiler.PointLocation(transform(1366f, 530f)),
+            UICompiler.PointLocation(transform(1490f, 530f)),
+            UICompiler.PointLocation(transform(1616f, 530f))
+        )
+        private val craftSwitchServantsLocations: Array<UICompiler.PointLocation> = arrayOf(
+            UICompiler.PointLocation(transform(210f, 530f)),
+            UICompiler.PointLocation(transform(507f, 530f)),
+            UICompiler.PointLocation(transform(810f, 530f)),
+            UICompiler.PointLocation(transform(1120f, 530f)),
+            UICompiler.PointLocation(transform(1414f, 530f)),
+            UICompiler.PointLocation(transform(1700f, 530f))
+        )
+        private val craftSwitchButtonLocation = UICompiler.PointLocation(transform(950f, 1000f))
+
+        private val attackButtonImageLocation = UICompiler.ImageLocation(
+            transform(1560f, 830f),
+            transform(1843f, 1109f),
+            "attack.png"
+        )
+        private val attackButtonLocation = UICompiler.PointLocation(transform(1694f, 969f))
+        private val commandCardLocations: Array<UICompiler.PointLocation> = arrayOf(
+            UICompiler.PointLocation(transform(190f, 835f)),
+            UICompiler.PointLocation(transform(611f, 835f)),
+            UICompiler.PointLocation(transform(1032f, 835f)),
+            UICompiler.PointLocation(transform(1453f, 835f)),
+            UICompiler.PointLocation(transform(1874f, 835f)),
+        )
+        private val noblePhantasmLocations: Array<UICompiler.PointLocation> = arrayOf(
+            UICompiler.PointLocation(transform(-1f, -1f)),
+            UICompiler.PointLocation(transform(611f, 364f)),
+            UICompiler.PointLocation(transform(972f, 364f)),
+            UICompiler.PointLocation(transform(1330f, 364f)),
+        )
+
+        // ============================= Pre-Stage Scene Locations =================================
+        private val stageEntryButtonLocation = UICompiler.PointLocation(transform(1400f, 320f))
+        private val closeAppleButtonImageLocation = UICompiler.ImageLocation(
+            transform(757f, 922f),
+            transform(1149f, 1041f),
+            "close_btn.png"
+        )
+        private val supportSelectionImageLocation = UICompiler.ImageLocation(
+            transform(1551f, 67f),
+            transform(1917f, 154f),
+            "support_select.png"
+        )
+        private val continueStageButtonImageLocation = UICompiler.ImageLocation(
+            transform(1046f, 852f),
+            transform(1472f, 975f),
+            "contdbtn.png"
+        )
+        private val menuButtonImageLocation = UICompiler.ImageLocation(
+            transform(1665f, 1039f),
+            transform(1910f, 1130f),
+            "menu.png"
+        )
+        private val endStageButtonImageLocation = UICompiler.ImageLocation(
+            transform(1556f, 1031f),
+            transform(1777f, 1116f),
+            "end.png"
+        )
+
+        // ================================== Helper Locations =====================================
+        private val safeClickLocation = UICompiler.PointLocation(transform(1278f, 85f))
+
+        // ================================== Supportive Items =====================================
+        private val clickAllPhantasmBlockContent = Vector<String>()
+
+        init {
+            clickAllPhantasmBlockContent.add("NoblePhantasms")
+            clickAllPhantasmBlockContent.add("1")
+            clickAllPhantasmBlockContent.add("1")
+            clickAllPhantasmBlockContent.add("1")
+        }
+    }
+
+    private fun exitCountDown(n: String?) {
+
+        fileContent.add("IfGreater \$Loop $n")
+        fileContent.add("Exit")
+        fileContent.add("Add \$Loop 1")
+    }
+
+    private fun waitUntilMenuThenSelectStage() {
+        fileContent.add("Tag \$NotReadyToEnterStage")
+        fileContent.add("Compare $menuButtonImageLocation")
+        fileContent.add("IfGreater \$R 15")
+        fileContent.add("JumpTo \$ReadyToEnterStage")
+        fileContent.add("Wait 1000")
+        fileContent.add("JumpTo \$NotReadyToEnterStage")
+        fileContent.add("Tag \$ReadyToEnterStage")
+        fileContent.add("Wait 1000")
+        fileContent.add("Click $stageEntryButtonLocation")
+    }
+
+    private fun checkFriendPage(trueTag: String) {
+        fileContent.add("Compare $supportSelectionImageLocation")
+        fileContent.add("IfGreater \$R 15")
+        fileContent.add("JumpTo $trueTag")
+    }
+
+    private fun checkApplePage(trueTag: String) {
+        fileContent.add("Compare $closeAppleButtonImageLocation")
+        fileContent.add("IfGreater \$R 5")
+        fileContent.add("JumpTo $trueTag")
+    }
+
+    private fun selectFriend(EntryTag: String, Servant: String?, Craft: String?) {
+        fileContent.add("Tag $EntryTag")
+        val servantClass = Servant!!.split("_".toRegex()).toTypedArray()
+        when (servantClass[servantClass.size - 1]) {
+            "All" -> fileContent.add("Click " + transformX(148f) + " " + transformY(260f))
+            "Saber" -> fileContent.add("Click " + transformX(248f) + " " + transformY(260f))
+            "Archer" -> fileContent.add("Click " + transformX(348f) + " " + transformY(260f))
+            "Lancer" -> fileContent.add("Click " + transformX(448f) + " " + transformY(260f))
+            "Rider" -> fileContent.add("Click " + transformX(548f) + " " + transformY(260f))
+            "Caster" -> fileContent.add("Click " + transformX(648f) + " " + transformY(260f))
+            "Assassin" -> fileContent.add("Click " + transformX(748f) + " " + transformY(260f))
+            "Berserker" -> fileContent.add("Click " + transformX(848f) + " " + transformY(260f))
+            "Extra" -> fileContent.add("Click " + transformX(948f) + " " + transformY(260f))
+            else -> fileContent.add("Click " + transformX(1048f) + " " + transformY(260f))
+        }
+        fileContent.add("Wait 500")
+        fileContent.add("Tag \$FriendsDNE")
+        fileContent.add("Var \$FriendsDown 0")
+        fileContent.add("IfGreater \$FriendsDown 5")
+        fileContent.add("JumpTo \$Refresh")
+        fileContent.add("JumpTo \$RefreshSkip")
+        fileContent.add("Tag \$Refresh")
+        fileContent.add("Click " + transformX(1271f) + " " + transformY(254f))
+        fileContent.add("Wait 2000")
+        fileContent.add("Click " + transformX(1259f) + " " + transformY(905f))
+        fileContent.add("Wait 2000")
+        fileContent.add("Tag \$RefreshSkip")
+        if ("None" != Servant) {
+            fileContent.add(
+                "Compare " + transformX(70f) + " " + transformY(340f) + " " + transformX(
+                    330f
+                ) + " " + transformY(624f) + " Friend/" + Servant + ".png"
             )
-            save.add("IfGreater \$R 15")
-            save.add("JumpTo $trueTag")
+            fileContent.add("IfGreater \$R 50")
         }
-
-        private fun checkApplePage(trueTag: String) {
-            save.add(
-                "Compare " + transformX(757f) + " " + transformY(922f) + " " + transformX(
-                    1149f
-                ) + " " + transformY(1041f) + " close_btn.png"
+        fileContent.add("JumpTo \$Friends")
+        fileContent.add("Wait 2000")
+        fileContent.add(
+            "Swipe " + transformX(960f) + " " + transformY(937f) + " " + transformX(
+                960f
+            ) + " " + transformY(689f)
+        )
+        fileContent.add("JumpTo \$FriendsDNE")
+        fileContent.add("Tag \$Friends")
+        if ("None" != Craft) { //Servant Craft
+            fileContent.add(
+                "Compare " + transformX(70f) + " " + transformY(480f) + " " + transformX(
+                    330f
+                ) + " " + transformY(700f) + " Craft/" + Craft + ".png"
             )
-            save.add("IfGreater \$R 5")
-            save.add("JumpTo $trueTag")
-        }
-
-        private fun selectFriend(EntryTag: String, Servant: String?, Craft: String?) {
-            save.add("Tag $EntryTag")
-            val servantClass = Servant!!.split("_".toRegex()).toTypedArray()
-            when (servantClass[servantClass.size - 1]) {
-                "All" -> save.add("Click " + transformX(148f) + " " + transformY(260f))
-                "Saber" -> save.add("Click " + transformX(248f) + " " + transformY(260f))
-                "Archer" -> save.add("Click " + transformX(348f) + " " + transformY(260f))
-                "Lancer" -> save.add("Click " + transformX(448f) + " " + transformY(260f))
-                "Rider" -> save.add("Click " + transformX(548f) + " " + transformY(260f))
-                "Caster" -> save.add("Click " + transformX(648f) + " " + transformY(260f))
-                "Assassin" -> save.add("Click " + transformX(748f) + " " + transformY(260f))
-                "Berserker" -> save.add("Click " + transformX(848f) + " " + transformY(260f))
-                "Extra" -> save.add("Click " + transformX(948f) + " " + transformY(260f))
-                else -> save.add("Click " + transformX(1048f) + " " + transformY(260f))
-            }
-            save.add("Wait 500")
-            save.add("Tag \$FriendsDNE")
-            save.add("Var \$FriendsDown 0")
-            save.add("IfGreater \$FriendsDown 5")
-            save.add("JumpTo \$Refresh")
-            save.add("JumpTo \$RefreshSkip")
-            save.add("Tag \$Refresh")
-            save.add("Click " + transformX(1271f) + " " + transformY(254f))
-            save.add("Wait 2000")
-            save.add("Click " + transformX(1259f) + " " + transformY(905f))
-            save.add("Wait 2000")
-            save.add("Tag \$RefreshSkip")
-            if ("None" != Servant) {
-                save.add(
-                    "Compare " + transformX(70f) + " " + transformY(340f) + " " + transformX(
-                        330f
-                    ) + " " + transformY(624f) + " Friend/" + Servant + ".png"
-                )
-                save.add("IfGreater \$R 50")
-            }
-            save.add("JumpTo \$Friends")
-            save.add("Wait 2000")
-            save.add(
+            fileContent.add("IfGreater \$R 5")
+            fileContent.add("JumpTo \$Craft")
+            fileContent.add("Wait 2000")
+            fileContent.add(
                 "Swipe " + transformX(960f) + " " + transformY(937f) + " " + transformX(
                     960f
                 ) + " " + transformY(689f)
             )
-            save.add("JumpTo \$FriendsDNE")
-            save.add("Tag \$Friends")
-            if ("None" != Craft) { //Servant Craft
-                save.add(
-                    "Compare " + transformX(70f) + " " + transformY(480f) + " " + transformX(
-                        330f
-                    ) + " " + transformY(700f) + " Craft/" + Craft + ".png"
+            fileContent.add("JumpTo \$FriendsDNE")
+            fileContent.add("Tag \$Craft")
+            fileContent.add("JumpTo \$CraftEnd")
+            fileContent.add("Tag \$CraftEnd")
+        }
+        fileContent.add("Click " + transformX(800f) + " " + transformY(540f))
+        fileContent.add("Tag \$FriendsEnd")
+    }
+
+    private fun eatApple(EntryTag: String, appleType: String?) {
+        fileContent.add("Compare $closeAppleButtonImageLocation")
+        fileContent.add("IfGreater \$R 5")
+        fileContent.add("JumpTo $EntryTag")
+        fileContent.add("JumpTo \$AppleEnd")
+        fileContent.add("Tag $EntryTag")
+        when (appleType) {
+            "0" -> {
+                fileContent.add("Wait 300000")
+                fileContent.add("Click " + transformX(960f) + " " + transformY(987f))
+                fileContent.add("JumpTo \$NotReadyToEnterStage")
+            }
+
+            "1" -> fileContent.add("Click " + transformX(960f) + " " + transformY(330f))
+            "2" -> fileContent.add("Click " + transformX(960f) + " " + transformY(540f))
+            "3" -> fileContent.add("Click " + transformX(960f) + " " + transformY(750f))
+            "4" -> fileContent.add("Click " + transformX(960f) + " " + transformY(904f))
+        }
+        fileContent.add("Wait 3000")
+        fileContent.add("Click " + transformX(1260f) + " " + transformY(900f))
+        fileContent.add("Wait 3000")
+        fileContent.add("Tag \$AppleEnd")
+        fileContent.add("Wait 1000")
+    }
+
+    private fun waitUntilClickEnter() {
+        //TODO:: Compare before click
+        fileContent.add("Wait 3000")
+        fileContent.add("Click " + transformX(1785f) + " " + transformY(1077f)) //Start Operation
+    }
+
+    private fun preStage(block: Vector<String>) {
+        //================Init======================
+        fileContent.add("Var \$Continue 0")
+        fileContent.add("Var \$Loop 1")
+        //================Start=====================
+        fileContent.add("Tag \$Start")
+        exitCountDown(block[4])
+        fileContent.add("IfGreater \$Continue 0")
+        fileContent.add("JumpTo \$BeforeEnter")
+        waitUntilMenuThenSelectStage()
+        fileContent.add("Tag \$BeforeEnter")
+        checkFriendPage("\$ChooseFriend")
+        checkApplePage("\$EatApple")
+        fileContent.add("JumpTo \$BeforeEnter")
+        eatApple("\$EatApple", block[1])
+        fileContent.add("Tag \$WaitToSelectFriend")
+        checkFriendPage("\$ChooseFriend")
+        fileContent.add("JumpTo \$WaitToSelectFriend")
+        selectFriend("\$ChooseFriend", block[2], block[3])
+        fileContent.add("IfGreater \$Continue 0")
+        fileContent.add("JumpTo \$PreStageEnd")
+        waitUntilClickEnter()
+        fileContent.add("Tag \$PreStageEnd")
+        fileContent.add("Var \$Continue 0")
+    }
+
+    private fun craftCastSkillWithOneTarget(
+        btnLocation: UICompiler.PointLocation, targetLocation: UICompiler.PointLocation
+    ) {
+        fileContent.add("Click $craftListLocation")
+        fileContent.add("Wait 500")
+        fileContent.add("Click $btnLocation") //開技能
+        fileContent.add("Compare $cancelSkillButtonImageLocation")
+        fileContent.add("IfGreater \$R 5")
+        fileContent.add("JumpTo \$CraftSkill$tagCount")
+        fileContent.add("Wait 300")
+        fileContent.add("Click $targetLocation")
+        fileContent.add("JumpTo \$CraftSkillEnd$tagCount")
+        fileContent.add("Tag \$CraftSkill$tagCount")
+        fileContent.add("Click $cancelSkillButtonLocation")
+        fileContent.add("JumpTo \$CraftSkillEnd$tagCount")
+        fileContent.add("Tag \$CraftSkillEnd$tagCount")
+        fileContent.add("Wait 2500")
+        tagCount++
+    }
+
+    private fun craftSwitchServants(
+        targetLocation1: UICompiler.PointLocation, targetLocation2: UICompiler.PointLocation
+    ) {
+        fileContent.add("Click $craftListLocation")
+        fileContent.add("Wait 500")
+        fileContent.add("Click $craftButtonLocations")
+        fileContent.add("Wait 500")
+        fileContent.add("Compare $cancelSkillButtonImageLocation")
+        fileContent.add("IfGreater \$R 5")
+        fileContent.add("JumpTo \$CraftSkill$tagCount")
+        fileContent.add("Click $targetLocation1")
+        fileContent.add("Click $targetLocation2")
+        fileContent.add("Click $craftSwitchButtonLocation")
+        fileContent.add("JumpTo \$CraftSkillEnd$tagCount")
+        fileContent.add("Tag \$CraftSkill$tagCount")
+        fileContent.add("Click $cancelSkillButtonLocation")
+        fileContent.add("Wait 500")
+        fileContent.add("Click $craftListLocation")
+        fileContent.add("JumpTo \$CraftSkillEnd$tagCount")
+        fileContent.add("Tag \$CraftSkillEnd$tagCount")
+        fileContent.add("Wait 8000")
+        tagCount++
+    }
+
+    private fun craftSkillBlock(block: Vector<String>) {
+        for (j in 1..3) {
+            val btnLocation = craftButtonLocations[j]
+            when (block[j]) {
+                "0" -> {} // Don't use.
+                "1" -> { // Use without any target.
+                    fileContent.add("Click $craftListLocation")
+                    fileContent.add("Wait 1000")
+                    fileContent.add("Click $btnLocation")
+                    fileContent.add("Compare $cancelSkillButtonImageLocation")
+                    fileContent.add("IfGreater \$R 5")
+                    fileContent.add("JumpTo \$CraftSkill$tagCount")
+                    fileContent.add("JumpTo \$CraftSkillEnd$tagCount")
+                    fileContent.add("Tag \$CraftSkill$tagCount")
+                    fileContent.add("Click $cancelSkillButtonLocation")
+                    fileContent.add("JumpTo \$CraftSkillEnd$tagCount")
+                    fileContent.add("Tag \$CraftSkillEnd$tagCount")
+                    fileContent.add("Wait 2500")
+                    tagCount++
+                }
+
+                "2" -> craftCastSkillWithOneTarget(btnLocation, servantLocations[0])
+                "3" -> craftCastSkillWithOneTarget(btnLocation, servantLocations[1])
+                "4" -> craftCastSkillWithOneTarget(btnLocation, servantLocations[2])
+            }
+        }
+        when (block[4]) {
+            "0" -> {} // Don't switch.
+            "1" -> craftSwitchServants(
+                craftSwitchServantsLocations[0], craftSwitchServantsLocations[3]
+            )
+
+            "2" -> craftSwitchServants(
+                craftSwitchServantsLocations[0], craftSwitchServantsLocations[4]
+            )
+
+            "3" -> craftSwitchServants(
+                craftSwitchServantsLocations[0], craftSwitchServantsLocations[5]
+            )
+
+            "4" -> craftSwitchServants(
+                craftSwitchServantsLocations[1], craftSwitchServantsLocations[3]
+            )
+
+            "5" -> craftSwitchServants(
+                craftSwitchServantsLocations[1], craftSwitchServantsLocations[4]
+            )
+
+            "6" -> craftSwitchServants(
+                craftSwitchServantsLocations[1], craftSwitchServantsLocations[5]
+            )
+
+            "7" -> craftSwitchServants(
+                craftSwitchServantsLocations[2], craftSwitchServantsLocations[3]
+            )
+
+            "8" -> craftSwitchServants(
+                craftSwitchServantsLocations[2], craftSwitchServantsLocations[4]
+            )
+
+            "9" -> craftSwitchServants(
+                craftSwitchServantsLocations[2], craftSwitchServantsLocations[5]
+            )
+        }
+    }
+
+    private fun servantCastSkillWithOneTarget(
+        btnLocation: UICompiler.PointLocation, targetLocation: UICompiler.PointLocation
+    ) {
+        fileContent.add("Click $btnLocation")
+        fileContent.add("Wait 500")
+        fileContent.add("Compare $cancelSkillButtonImageLocation")
+        fileContent.add("IfGreater \$R 5")
+        fileContent.add("JumpTo \$Skill$tagCount")
+        fileContent.add("Click $targetLocation")
+        fileContent.add("JumpTo \$SkillEnd$tagCount")
+        fileContent.add("Tag \$Skill$tagCount")
+        fileContent.add("Click $cancelSkillButtonLocation")
+        fileContent.add("JumpTo \$SkillEnd$tagCount")
+        fileContent.add("Tag \$SkillEnd$tagCount")
+        fileContent.add("Wait 2500")
+        tagCount++
+    }
+
+    private fun skillBlock(block: Vector<String>) {
+        for (j in 1..9) {
+            val btnLocation = skillButtonLocations[j]
+            when (block[j]) {
+                "0" -> {} // Don't use skill.
+                "1" -> { // Craft skill without a target.
+                    fileContent.add("Click $btnLocation")
+                    fileContent.add("Wait 500")
+                    fileContent.add("Compare $cancelSkillButtonImageLocation")
+                    fileContent.add("IfGreater \$R 5")
+                    fileContent.add("JumpTo \$Skill$tagCount")
+                    fileContent.add("JumpTo \$SkillEnd$tagCount")
+                    fileContent.add("Tag \$Skill$tagCount")
+                    fileContent.add("Click $cancelSkillButtonLocation")
+                    fileContent.add("JumpTo \$SkillEnd$tagCount")
+                    fileContent.add("Tag \$SkillEnd$tagCount")
+                    fileContent.add("Wait 2500")
+                    tagCount++
+                }
+
+                "2" -> servantCastSkillWithOneTarget(btnLocation, servantLocations[0])
+                "3" -> servantCastSkillWithOneTarget(btnLocation, servantLocations[1])
+                "4" -> servantCastSkillWithOneTarget(btnLocation, servantLocations[2])
+            }
+        }
+    }
+
+    private fun noblePhantasmBlock(block: Vector<String>) {
+        fileContent.add("Click $attackButtonLocation")
+        fileContent.add("Wait 2300")
+        for (j in 1..3) {
+            if (block[j] == "1") {
+                fileContent.add("Click ${noblePhantasmLocations[j]}") //Noble Phantasms
+            }
+        }
+        for (j in 0..4) fileContent.add("Click ${commandCardLocations[j]}")
+        fileContent.add("Wait 8000")
+    }
+
+    private fun endBlock() {
+        fileContent.add("Wait 3000")
+        fileContent.add("Tag \$EndStageAgain")
+        fileContent.add("Compare $endStageButtonImageLocation")
+        fileContent.add("IfGreater \$R 5")
+        fileContent.add("JumpTo \$EndStage")
+        fileContent.add("Compare $attackButtonImageLocation")
+        fileContent.add("IfGreater \$R 30")
+        fileContent.add("JumpTo \$EndStageBattle")
+        fileContent.add("Click $safeClickLocation")
+        fileContent.add("Wait 2000")
+        fileContent.add("JumpTo \$EndStageAgain")
+        fileContent.add("Tag \$EndStageBattle")
+        noblePhantasmBlock(clickAllPhantasmBlockContent)
+        fileContent.add("JumpTo \$EndStageAgain")
+        fileContent.add("Tag \$EndStage")
+        fileContent.add("Wait 1000")
+        fileContent.add("Click " + transformX(1658f) + " " + transformY(1073f))
+        fileContent.add("Wait 1000")
+        fileContent.add("Click " + transformX(1658f) + " " + transformY(1073f))
+        fileContent.add("Tag \$Ending")
+        fileContent.add("Compare $menuButtonImageLocation")
+        fileContent.add("IfGreater \$R 15")
+        fileContent.add("JumpTo \$Start")
+
+        //Check Continue
+        fileContent.add("Compare $continueStageButtonImageLocation")
+        fileContent.add("IfSmaller \$R 15")
+        fileContent.add("JumpTo \$SafeClick")
+        fileContent.add("Click " + transformX(1211f) + " " + transformY(910f))
+        fileContent.add("Var \$Continue 1")
+        fileContent.add("JumpTo \$Start")
+        fileContent.add("Tag \$SafeClick")
+        fileContent.add("Wait 1000")
+        fileContent.add("JumpTo \$Ending")
+    }
+
+    private fun waitUntilAttackButton() {
+        fileContent.add("Tag \$StillBattleAgain$tagCount")
+        fileContent.add("Compare $attackButtonImageLocation")
+        fileContent.add("IfGreater \$R 30")
+        fileContent.add("JumpTo \$StillBattle$tagCount")
+        fileContent.add("Wait 1000")
+        fileContent.add("Click $safeClickLocation")
+        fileContent.add("JumpTo \$StillBattleAgain$tagCount")
+        fileContent.add("Tag \$StillBattle$tagCount")
+        fileContent.add("Wait 1000")
+        tagCount++
+    }
+
+    //====================================================================-
+    private fun setUpScreenPara(config: Vector<String>) {
+        if (config[5] == "0") {
+            userSize = Size(
+                max(ProjectionService.height, ProjectionService.width),
+                min(ProjectionService.height, ProjectionService.width)
+            )
+            userOffset = if (userSize.width * 9 >= userSize.height * 16) {
+                Point(
+                    userSize.width / 2.0 - userSize.height * 8.0 / 9, 0.0
                 )
-                save.add("IfGreater \$R 5")
-                save.add("JumpTo \$Craft")
-                save.add("Wait 2000")
-                save.add(
-                    "Swipe " + transformX(960f) + " " + transformY(937f) + " " + transformX(
-                        960f
-                    ) + " " + transformY(689f)
-                )
-                save.add("JumpTo \$FriendsDNE")
-                save.add("Tag \$Craft")
-                save.add("JumpTo \$CraftEnd")
-                save.add("Tag \$CraftEnd")
-            }
-            save.add("Click " + transformX(800f) + " " + transformY(540f))
-            save.add("Tag \$FriendsEnd")
-        }
-
-        private fun eatApple(EntryTag: String, appleType: String?) {
-            save.add(
-                "Compare " + transformX(757f) + " " + transformY(922f) + " " + transformX(
-                    1149f
-                ) + " " + transformY(1041f) + " close_btn.png"
-            )
-            save.add("IfGreater \$R 5")
-            save.add("JumpTo $EntryTag")
-            save.add("JumpTo \$AppleEnd")
-            save.add("Tag $EntryTag")
-            when (appleType) {
-                "0" -> {
-                    save.add("Wait 300000")
-                    save.add("Click " + transformX(960f) + " " + transformY(987f))
-                    save.add("JumpTo \$NotReadyToEnterStage")
-                }
-                "1" -> save.add("Click " + transformX(960f) + " " + transformY(330f))
-                "2" -> save.add("Click " + transformX(960f) + " " + transformY(540f))
-                "3" -> save.add("Click " + transformX(960f) + " " + transformY(750f))
-                "4" -> save.add("Click " + transformX(960f) + " " + transformY(904f))
-            }
-            save.add("Wait 3000")
-            save.add("Click " + transformX(1260f) + " " + transformY(900f))
-            save.add("Wait 3000")
-            save.add("Tag \$AppleEnd")
-            save.add("Wait 1000")
-        }
-
-        private fun waitUntilClickEnter() {
-            //TODO:: Compare before click
-            save.add("Wait 3000")
-            save.add("Click " + transformX(1785f) + " " + transformY(1077f)) //Start Operation
-        }
-
-        private fun preStage(block: Vector<String>) {
-            //================Init======================
-            save.add("Var \$Continue 0")
-            save.add("Var \$Loop 1")
-            //================Start=====================
-            save.add("Tag \$Start")
-            countDownAndExit("\$Loop", block[4])
-            save.add("IfGreater \$Continue 0")
-            save.add("JumpTo \$BeforeEnter")
-            waitUntilMenuAndSelectStage()
-            save.add("Tag \$BeforeEnter")
-            checkFriendPage("\$ChooseFriend")
-            checkApplePage("\$EatApple")
-            save.add("JumpTo \$BeforeEnter")
-            eatApple("\$EatApple", block[1])
-            save.add("Tag \$WaitToSelectFriend")
-            checkFriendPage("\$ChooseFriend")
-            save.add("JumpTo \$WaitToSelectFriend")
-            selectFriend("\$ChooseFriend", block[2], block[3])
-            save.add("IfGreater \$Continue 0")
-            save.add("JumpTo \$PreStageEnd")
-            waitUntilClickEnter()
-            save.add("Tag \$PreStageEnd")
-            save.add("Var \$Continue 0")
-        }
-
-        private fun craftSkillAux(x: Float, servant: Float) {
-            save.add("Click " + transformX(1798f) + " " + transformY(530f)) //Click Master Craft Skill
-            save.add("Wait 500")
-            save.add("Click " + transformX(x) + " " + transformY(530f)) //開技能
-            save.add(
-                "Compare " + transformX(382f) + " " + transformY(626f) + " " + transformX(
-                    908f
-                ) + " " + transformY(766f) + " cancel_btn.png"
-            )
-            save.add("IfGreater \$R 5")
-            save.add("JumpTo \$CraftSkill$tag_count")
-            save.add("Wait 300")
-            save.add("Click " + transformX(servant) + " " + transformY(731f)) //從者
-            save.add("JumpTo \$CraftSkillEnd$tag_count")
-            save.add("Tag \$CraftSkill$tag_count")
-            save.add("Click " + transformX(645f) + " " + transformY(696f)) //取消BUG
-            save.add("JumpTo \$CraftSkillEnd$tag_count")
-            save.add("Tag \$CraftSkillEnd$tag_count")
-            save.add("Wait 2500")
-            tag_count++
-        }
-
-        private fun craftSkillChangeAux(servant1: Float, servant2: Float) {
-            save.add("Click " + transformX(1798f) + " " + transformY(530f)) //御主技能
-            save.add("Wait 500")
-            save.add("Click " + transformX(1622f) + " " + transformY(530f)) //開技能
-            save.add("Wait 500")
-            save.add(
-                "Compare " + transformX(382f) + " " + transformY(626f) + " " + transformX(
-                    908f
-                ) + " " + transformY(766f) + " cancel_btn.png"
-            )
-            save.add("IfGreater \$R 5")
-            save.add("JumpTo \$CraftSkill$tag_count")
-            save.add("Click " + transformX(servant1) + " " + transformY(590f)) //Target 1
-            save.add("Click " + transformX(servant2) + " " + transformY(590f)) //Target 2
-            save.add("Click " + transformX(950f) + " " + transformY(1000f))
-            save.add("JumpTo \$CraftSkillEnd$tag_count")
-            save.add("Tag \$CraftSkill$tag_count")
-            save.add("Click " + transformX(645f) + " " + transformY(696f)) //取消BUG
-            save.add("Wait 500")
-            save.add("Click " + transformX(1798f) + " " + transformY(530f)) //御主技能
-            save.add("JumpTo \$CraftSkillEnd$tag_count")
-            save.add("Tag \$CraftSkillEnd$tag_count")
-            save.add("Wait 8000")
-            tag_count++
-        }
-
-        private val master_craft_x_coordinate = intArrayOf(-1, 1366, 1490, 1616)
-        private fun craftSkill(block: Vector<String>) {
-            var x: Float
-            for (j in 1..3) {
-                x = master_craft_x_coordinate[j].toFloat()
-                when (block[j]) {
-                    "0" -> {}
-                    "1" -> {
-                        save.add("Click " + transformX(1798f) + " " + transformY(530f)) //御主技能
-                        save.add("Wait 1000")
-                        save.add("Click " + transformX(x) + " " + transformY(530f)) //開技能
-                        save.add(
-                            "Compare " + transformX(382f) + " " + transformY(626f) + " " + transformX(
-                                908f
-                            ) + " " + transformY(766f) + " cancel_btn.png"
-                        )
-                        save.add("IfGreater \$R 5")
-                        save.add("JumpTo \$CraftSkill$tag_count")
-                        save.add("JumpTo \$CraftSkillEnd$tag_count")
-                        save.add("Tag \$CraftSkill$tag_count")
-                        save.add("Click " + transformX(645f) + " " + transformY(696f)) //取消BUG
-                        save.add("JumpTo \$CraftSkillEnd$tag_count")
-                        save.add("Tag \$CraftSkillEnd$tag_count")
-                        save.add("Wait 2500")
-                        tag_count++
-                    }
-                    "2" -> craftSkillAux(x, 507f)
-                    "3" -> craftSkillAux(x, 957f)
-                    "4" -> craftSkillAux(x, 1434f)
-                }
-            }
-            when (block[4]) {
-                "0" -> {}
-                "1" -> craftSkillChangeAux(210f, 1120f)
-                "2" -> craftSkillChangeAux(210f, 1414f)
-                "3" -> craftSkillChangeAux(210f, 1700f)
-                "4" -> craftSkillChangeAux(507f, 1120f)
-                "5" -> craftSkillChangeAux(507f, 1414f)
-                "6" -> craftSkillChangeAux(507f, 1700f)
-                "7" -> craftSkillChangeAux(810f, 1120f)
-                "8" -> craftSkillChangeAux(810f, 1414f)
-                "9" -> craftSkillChangeAux(810f, 1700f)
-            }
-        }
-
-        private fun skillAux(x: Float, servant: Float) {
-            save.add("Click " + transformX(x) + " " + transformY(930f)) //開技能
-            save.add("Wait 500")
-            save.add(
-                "Compare " + transformX(382f) + " " + transformY(626f) + " " + transformX(
-                    908f
-                ) + " " + transformY(766f) + " cancel_btn.png"
-            )
-            save.add("IfGreater \$R 5")
-            save.add("JumpTo \$Skill$tag_count")
-            save.add("Click " + transformX(servant) + " " + transformY(731f)) //從者一
-            save.add("JumpTo \$SkillEnd$tag_count")
-            save.add("Tag \$Skill$tag_count")
-            save.add("Click " + transformX(645f) + " " + transformY(696f)) //取消BUG
-            save.add("JumpTo \$SkillEnd$tag_count")
-            save.add("Tag \$SkillEnd$tag_count")
-            save.add("Wait 2500")
-            tag_count++
-        }
-
-        private val skill_x_coordinate =
-            intArrayOf(-1, 114, 241, 380, 581, 718, 862, 1055, 1200, 1333)
-
-        private fun skill(block: Vector<String>) {
-            var x: Float
-            for (j in 1..9) {
-                x = skill_x_coordinate[j].toFloat()
-                when (block[j]) {
-                    "0" -> {}
-                    "1" -> {
-                        save.add("Click " + transformX(x) + " " + transformY(930f)) //開技能
-                        save.add("Wait 500")
-                        save.add(
-                            "Compare " + transformX(382f) + " " + transformY(626f) + " " + transformX(
-                                908f
-                            ) + " " + transformY(766f) + " cancel_btn.png"
-                        )
-                        save.add("IfGreater \$R 5")
-                        save.add("JumpTo \$Skill$tag_count")
-                        save.add("JumpTo \$SkillEnd$tag_count")
-                        save.add("Tag \$Skill$tag_count")
-                        save.add("Click " + transformX(645f) + " " + transformY(696f)) //取消BUG
-                        save.add("JumpTo \$SkillEnd$tag_count")
-                        save.add("Tag \$SkillEnd$tag_count")
-                        save.add("Wait 2500")
-                        tag_count++
-                    }
-                    "2" -> skillAux(x, 507f)
-                    "3" -> skillAux(x, 957f)
-                    "4" -> skillAux(x, 1434f)
-                }
-            }
-        }
-
-        private val noble_phantasms_x_coordinate = intArrayOf(-1, 611, 972, 1330)
-        private fun noblePhantasms(block: Vector<String>) {
-            save.add("Click " + transformX(1694f) + " " + transformY(969f)) //Attack
-            save.add("Wait 2300")
-            for (j in 1..3) {
-                if (block[j] == "1") {
-                    save.add(
-                        "Click " + transformX(
-                            noble_phantasms_x_coordinate[j].toFloat()
-                        ) + " " + transformY(364f)
-                    ) //Noble Phantasms
-                }
-            }
-            save.add("Click " + transformX(190f) + " " + transformY(835f)) //Command Card
-            save.add("Click " + transformX(611f) + " " + transformY(835f)) //Command Card
-            save.add("Click " + transformX(1032f) + " " + transformY(835f)) //Command Card
-            save.add("Click " + transformX(1453f) + " " + transformY(835f)) //Command Card
-            save.add("Click " + transformX(1874f) + " " + transformY(835f)) //Command Card
-            save.add("Wait 8000")
-        }
-
-        private val ClickAll = Vector<String>()
-        private fun end() {
-            save.add("Wait 3000")
-            save.add("Tag \$EndStageAgain")
-            save.add(
-                "Compare " + transformX(1556f) + " " + transformY(1031f) + " " + transformX(
-                    1777f
-                ) + " " + transformY(1116f) + " end.png"
-            )
-            save.add("IfGreater \$R 5")
-            save.add("JumpTo \$EndStage")
-            save.add(
-                "Compare " + transformX(1560f) + " " + transformY(830f) + " " + transformX(
-                    1843f
-                ) + " " + transformY(1109f) + " attack.png"
-            )
-            save.add("IfGreater \$R 30")
-            save.add("JumpTo \$EndStageBattle")
-            safeClick()
-            save.add("Wait 2000")
-            save.add("JumpTo \$EndStageAgain")
-            save.add("Tag \$EndStageBattle")
-            noblePhantasms(ClickAll)
-            save.add("JumpTo \$EndStageAgain")
-            save.add("Tag \$EndStage")
-            save.add("Wait 1000")
-            save.add("Click " + transformX(1658f) + " " + transformY(1073f))
-            save.add("Wait 1000")
-            save.add("Click " + transformX(1658f) + " " + transformY(1073f))
-            save.add("Tag \$Ending")
-            //Check is menu
-            save.add(
-                "Compare " + transformX(1665f) + " " + transformY(1039f) + " " + transformX(
-                    1910f
-                ) + " " + transformY(1130f) + " menu.png"
-            )
-            save.add("IfGreater \$R 15")
-            save.add("JumpTo \$Start")
-
-            //Check Continue
-            save.add(
-                "Compare " + transformX(1046f) + " " + transformY(852f) + " " + transformX(
-                    1472f
-                ) + " " + transformY(975f) + " contdbtn.png"
-            )
-            save.add("IfSmaller \$R 15")
-            save.add("JumpTo \$SafeClick")
-            save.add("Click " + transformX(1211f) + " " + transformY(910f))
-            save.add("Var \$Continue 1")
-            save.add("JumpTo \$Start")
-            save.add("Tag \$SafeClick")
-            save.add("Wait 1000")
-            safeClick()
-            save.add("JumpTo \$Ending")
-        }
-
-        private fun waitUntilAttackButton() {
-            save.add("Tag \$StillBattleAgain$tag_count")
-            save.add(
-                "Compare " + transformX(1560f) + " " + transformY(830f) + " " + transformX(
-                    1843f
-                ) + " " + transformY(1109f) + " attack.png"
-            )
-            save.add("IfGreater \$R 30")
-            save.add("JumpTo \$StillBattle$tag_count")
-            save.add("Wait 1000")
-            safeClick()
-            save.add("JumpTo \$StillBattleAgain$tag_count")
-            save.add("Tag \$StillBattle$tag_count")
-            save.add("Wait 1000")
-            tag_count++
-        }
-
-        //====================================================================-
-        private fun setUpScreenPara(config: Vector<String>) {
-            if (config[5] == "0") {
-                user_size = Size(
-                    max(ProjectionService.height, ProjectionService.width),
-                    min(ProjectionService.height, ProjectionService.width)
-                )
-                user_offset = if (user_size.width * 9 >= user_size.height * 16) {
-                    Point(
-                        user_size.width / 2.0 - user_size.height * 8.0 / 9, 0.0
-                    )
-                } else {
-                    Point(0.0, user_size.height / 2.0 - user_size.width * 9.0 / 32)
-                }
             } else {
-                user_offset = Point(
-                    config[6]!!.toInt().toDouble(), config[7]!!.toInt().toDouble()
-                )
-                user_size = Size(
-                    config[8]!!.toInt() - config[6]!!.toInt(),
-                    config[9]!!.toInt() - config[7]!!.toInt()
-                )
+                Point(0.0, userSize.height / 2.0 - userSize.width * 9.0 / 32)
             }
-            ratio = min(
-                user_size.width / dev_size.width.toDouble(),
-                user_size.height / dev_size.height.toDouble()
+        } else {
+            userOffset = Point(
+                config[6]!!.toInt().toDouble(), config[7]!!.toInt().toDouble()
+            )
+            userSize = Size(
+                config[8]!!.toInt() - config[6]!!.toInt(), config[9]!!.toInt() - config[7]!!.toInt()
             )
         }
-
-        private fun transformX(x: Float): String {
-            return (ratio * (x - dev_offset.x) + user_offset.x).toInt().toString()
-        }
-
-        private fun transformY(y: Float): String {
-            return (ratio * (y - dev_offset.y) + user_offset.y).toInt().toString()
-        }
-
-        private fun safeClick() {
-            save.add("Click " + transformX(1278f) + " " + transformY(85f))
-        }
-
-        init {
-            ClickAll.add("")
-            ClickAll.add("1")
-            ClickAll.add("1")
-            ClickAll.add("1")
-        }
+        ratio = min(
+            userSize.width / devSize.width.toDouble(), userSize.height / devSize.height.toDouble()
+        )
     }
 }

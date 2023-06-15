@@ -7,7 +7,6 @@ import android.util.DisplayMetrics
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.example.androidscript.R
-import com.example.androidscript.activities.arknights.ArkKnightsEditor
 import com.example.androidscript.activities.basic.BasicEditor
 import com.example.androidscript.activities.fgo.FGOEditor
 import com.example.androidscript.services.ProjectionService
@@ -56,11 +55,6 @@ class Menu : AppCompatActivity() {
 
         // View-setup
         setContentView(R.layout.activity_menu)
-
-        findViewById<View>(R.id.button_to_ArkUI).setOnClickListener {
-            ProjectionService.setShotOrientation(isLandscape = true)
-            startActivity(Intent(this, ArkKnightsEditor::class.java))
-        }
 
         // TODO combine SelectFileActivity.kt with this, so that no putExtra is needed.
         findViewById<View>(R.id.button_to_FGO).setOnClickListener {

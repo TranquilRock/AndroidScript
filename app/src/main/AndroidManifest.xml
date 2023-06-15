@@ -13,7 +13,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:theme="@style/Theme.AndroidScript">
         <activity android:name=".activities.StartServiceActivity" />
-        <activity android:name=".activities.arknights.ArkKnightsEditor" />
         <activity android:name=".activities.fgo.FGOEditor" />
         <activity android:name=".activities.basic.BasicEditor" />
         <activity
