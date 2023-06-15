@@ -31,7 +31,7 @@
             android:parentActivityName=".activities.Menu" />
 
         <service
-            android:name=".services.AutoClickService"
+            android:name=".services.ClickService"
             android:enabled="true"
             android:exported="false"
             android:label="自動點擊"
@@ -45,13 +45,13 @@
                 android:resource="@xml/accessibility_service_config" />
         </service>
         <service
-            android:name=".services.FloatingWidgetService"
+            android:name=".services.WidgetService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="mediaProjection"
             android:label="FloatingWidgetService" />
         <service
-            android:name=".services.ScreenShotService"
+            android:name=".services.ProjectionService"
             android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="mediaProjection"

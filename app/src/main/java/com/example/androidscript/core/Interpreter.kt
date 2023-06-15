@@ -2,9 +2,9 @@ package com.example.androidscript.core
 
 import android.graphics.Bitmap
 import android.util.Log
-import com.example.androidscript.services.AutoClickService
-import com.example.androidscript.services.FloatingWidgetService
-import com.example.androidscript.services.ScreenShotService
+import com.example.androidscript.services.ClickService
+import com.example.androidscript.services.WidgetService
+import com.example.androidscript.services.ProjectionService
 import com.example.androidscript.util.FileOperation
 import com.example.androidscript.util.ImageHandler
 import java.lang.Thread.sleep
@@ -15,7 +15,7 @@ import java.util.*
 open class Interpreter(
     private val ScriptFolderName: String,
     private val ScriptName: String,
-    private val board: FloatingWidgetService.Bulletin
+    private val board: WidgetService.Bulletin
 ) : Runnable {
 
     private var scriptCode: HashMap<String, Code> = HashMap()
@@ -64,11 +64,11 @@ open class Interpreter(
 
     //==========================================
     private var runArgs: ArrayList<String>? = null
-    private lateinit var screenShot: ScreenShotService
+    private lateinit var screenShot: ProjectionService
 
-    fun setup(argv: ArrayList<String>?, screenShotService: ScreenShotService) {
+    fun setup(argv: ArrayList<String>?, projectionService: ProjectionService) {
         runArgs = argv
-        screenShot = screenShotService
+        screenShot = projectionService
     }
 
     override fun run() {
@@ -78,7 +78,7 @@ open class Interpreter(
         try {
             execute(ScriptName, runArgs, 0)
             board.announce("IDLE")
-        } catch (e: AutoClickService.AccessibilityServiceOffException) {
+        } catch (e: ClickService.AccessibilityServiceOffException) {
             Log.i(LOG_TAG, "AutoClickDead, terminating.")
             board.announce("AutoClick Failed.")
         } finally {
@@ -125,14 +125,14 @@ open class Interpreter(
                     )
                     if (target != null) {
                         Log.i(LOG_TAG, "Clicking Picture:" + target.x + " " + target.y)
-                        AutoClickService.click(target.x.toInt(), target.y.toInt())
+                        ClickService.click(target.x.toInt(), target.y.toInt())
                         localVar["\$R"] = "0"
                     } else {
                         localVar["\$R"] = "1"
                     }
                 }
                 Commands.CLICK -> {
-                    AutoClickService.click(arguments[0].toInt(), arguments[1].toInt())
+                    ClickService.click(arguments[0].toInt(), arguments[1].toInt())
                 }
                 Commands.CALL_ARG -> {
                     val nextArgv =
@@ -161,7 +161,7 @@ open class Interpreter(
                 }
                 Commands.SWIPE -> {
                     delay()
-                    AutoClickService.swipe(
+                    ClickService.swipe(
                         arguments[0].toInt(),
                         arguments[1].toInt(),
                         arguments[2].toInt(),

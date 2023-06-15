@@ -10,7 +10,7 @@ import com.example.androidscript.R
 import com.example.androidscript.activities.arknights.ArkKnightsEditor
 import com.example.androidscript.activities.basic.BasicEditor
 import com.example.androidscript.activities.fgo.FGOEditor
-import com.example.androidscript.services.ScreenShotService
+import com.example.androidscript.services.ProjectionService
 import com.example.androidscript.util.FileOperation
 import org.opencv.android.OpenCVLoader
 
@@ -47,10 +47,10 @@ class Menu : AppCompatActivity() {
                 DisplayMetrics().also {
                     defaultDisplay.getRealMetrics(it)
                 }.run {
-                    ScreenShotService.setScreenDim(heightPixels, widthPixels)
+                    ProjectionService.setScreenDim(heightPixels, widthPixels)
                 }
             } else currentWindowMetrics.bounds.run {
-                ScreenShotService.setScreenDim(height(), width())
+                ProjectionService.setScreenDim(height(), width())
             }
         }
 
@@ -58,13 +58,13 @@ class Menu : AppCompatActivity() {
         setContentView(R.layout.activity_menu)
 
         findViewById<View>(R.id.button_to_ArkUI).setOnClickListener {
-            ScreenShotService.setShotOrientation(isLandscape = true)
+            ProjectionService.setShotOrientation(isLandscape = true)
             startActivity(Intent(this, ArkKnightsEditor::class.java))
         }
 
         // TODO combine SelectFileActivity.kt with this, so that no putExtra is needed.
         findViewById<View>(R.id.button_to_FGO).setOnClickListener {
-            ScreenShotService.setShotOrientation(isLandscape = true)
+            ProjectionService.setShotOrientation(isLandscape = true)
             val intent = Intent(this, SelectFileActivity::class.java)
             intent.putExtra(
                 "next_destination",
@@ -74,7 +74,7 @@ class Menu : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.button_to_basic_landscape).setOnClickListener {
-            ScreenShotService.setShotOrientation(isLandscape = true)
+            ProjectionService.setShotOrientation(isLandscape = true)
             val intent = Intent(this, SelectFileActivity::class.java)
             intent.putExtra(
                 "next_destination",
@@ -84,7 +84,7 @@ class Menu : AppCompatActivity() {
         }
 
         findViewById<View>(R.id.button_to_basic_portrait).setOnClickListener {
-            ScreenShotService.setShotOrientation(isLandscape = false)
+            ProjectionService.setShotOrientation(isLandscape = false)
             val intent = Intent(this, SelectFileActivity::class.java)
             intent.putExtra(
                 "next_destination",

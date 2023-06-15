@@ -6,14 +6,14 @@ import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.END_BL
 import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.NOBLE_PHANTASM_BLOCK
 import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.PRESTAGE_BLOCK
 import com.example.androidscript.activities.fgo.FGOBlockAdapter.Companion.SKILL_BLOCK
-import com.example.androidscript.services.ScreenShotService
+import com.example.androidscript.services.ProjectionService
 import com.example.androidscript.util.FileOperation
 import org.opencv.core.Point
 import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 
-interface UICompiler {
+interface UICompiler2 {
     fun compile(data: Vector<Vector<String>>)
 
     class ImageLocation(
@@ -35,7 +35,7 @@ interface UICompiler {
     }
 }
 
-interface FGOUICompiler2 : UICompiler {
+interface FGOUICompiler2 : UICompiler2 {
     override fun compile(data: Vector<Vector<String>>) {
         fileContent = Vector()
         tagCount = 0
@@ -99,98 +99,98 @@ interface FGOUICompiler2 : UICompiler {
         }
 
         // ============================= Battle Scene Locations ====================================
-        private val servantLocations: Array<UICompiler.PointLocation> = arrayOf(
-            UICompiler.PointLocation(transform(507f, 731f)),
-            UICompiler.PointLocation(transform(957f, 731f)),
-            UICompiler.PointLocation(transform(1434f, 731f))
+        private val servantLocations: Array<UICompiler2.PointLocation> = arrayOf(
+            UICompiler2.PointLocation(transform(507f, 731f)),
+            UICompiler2.PointLocation(transform(957f, 731f)),
+            UICompiler2.PointLocation(transform(1434f, 731f))
         )
 
-        private val skillButtonLocations: Array<UICompiler.PointLocation> = arrayOf(
-            UICompiler.PointLocation(transform(-1f, -1f)),
-            UICompiler.PointLocation(transform(114f, 930f)),
-            UICompiler.PointLocation(transform(241f, 930f)),
-            UICompiler.PointLocation(transform(380f, 930f)),
-            UICompiler.PointLocation(transform(581f, 930f)),
-            UICompiler.PointLocation(transform(718f, 930f)),
-            UICompiler.PointLocation(transform(862f, 930f)),
-            UICompiler.PointLocation(transform(1055f, 930f)),
-            UICompiler.PointLocation(transform(1200f, 930f)),
-            UICompiler.PointLocation(transform(1333f, 930f)),
+        private val skillButtonLocations: Array<UICompiler2.PointLocation> = arrayOf(
+            UICompiler2.PointLocation(transform(-1f, -1f)),
+            UICompiler2.PointLocation(transform(114f, 930f)),
+            UICompiler2.PointLocation(transform(241f, 930f)),
+            UICompiler2.PointLocation(transform(380f, 930f)),
+            UICompiler2.PointLocation(transform(581f, 930f)),
+            UICompiler2.PointLocation(transform(718f, 930f)),
+            UICompiler2.PointLocation(transform(862f, 930f)),
+            UICompiler2.PointLocation(transform(1055f, 930f)),
+            UICompiler2.PointLocation(transform(1200f, 930f)),
+            UICompiler2.PointLocation(transform(1333f, 930f)),
         )
-        private val cancelSkillButtonImageLocation = UICompiler.ImageLocation(
+        private val cancelSkillButtonImageLocation = UICompiler2.ImageLocation(
             transform(382f, 626f),
             transform(908f, 766f),
             "cancel_btn.png"
         )
-        private val cancelSkillButtonLocation = UICompiler.PointLocation(transform(645f, 696f))
+        private val cancelSkillButtonLocation = UICompiler2.PointLocation(transform(645f, 696f))
 
-        private val craftListLocation = UICompiler.PointLocation(transform(1798f, 530f))
-        private val craftButtonLocations: Array<UICompiler.PointLocation> = arrayOf(
-            UICompiler.PointLocation(transform(-1f, -1f)),
-            UICompiler.PointLocation(transform(1366f, 530f)),
-            UICompiler.PointLocation(transform(1490f, 530f)),
-            UICompiler.PointLocation(transform(1616f, 530f))
+        private val craftListLocation = UICompiler2.PointLocation(transform(1798f, 530f))
+        private val craftButtonLocations: Array<UICompiler2.PointLocation> = arrayOf(
+            UICompiler2.PointLocation(transform(-1f, -1f)),
+            UICompiler2.PointLocation(transform(1366f, 530f)),
+            UICompiler2.PointLocation(transform(1490f, 530f)),
+            UICompiler2.PointLocation(transform(1616f, 530f))
         )
-        private val craftSwitchServantsLocations: Array<UICompiler.PointLocation> = arrayOf(
-            UICompiler.PointLocation(transform(210f, 530f)),
-            UICompiler.PointLocation(transform(507f, 530f)),
-            UICompiler.PointLocation(transform(810f, 530f)),
-            UICompiler.PointLocation(transform(1120f, 530f)),
-            UICompiler.PointLocation(transform(1414f, 530f)),
-            UICompiler.PointLocation(transform(1700f, 530f))
+        private val craftSwitchServantsLocations: Array<UICompiler2.PointLocation> = arrayOf(
+            UICompiler2.PointLocation(transform(210f, 530f)),
+            UICompiler2.PointLocation(transform(507f, 530f)),
+            UICompiler2.PointLocation(transform(810f, 530f)),
+            UICompiler2.PointLocation(transform(1120f, 530f)),
+            UICompiler2.PointLocation(transform(1414f, 530f)),
+            UICompiler2.PointLocation(transform(1700f, 530f))
         )
-        private val craftSwitchButtonLocation = UICompiler.PointLocation(transform(950f, 1000f))
+        private val craftSwitchButtonLocation = UICompiler2.PointLocation(transform(950f, 1000f))
 
-        private val attackButtonImageLocation = UICompiler.ImageLocation(
+        private val attackButtonImageLocation = UICompiler2.ImageLocation(
             transform(1560f, 830f),
             transform(1843f, 1109f),
             "attack.png"
         )
-        private val attackButtonLocation = UICompiler.PointLocation(transform(1694f, 969f))
-        private val commandCardLocations: Array<UICompiler.PointLocation> = arrayOf(
-            UICompiler.PointLocation(transform(190f, 835f)),
-            UICompiler.PointLocation(transform(611f, 835f)),
-            UICompiler.PointLocation(transform(1032f, 835f)),
-            UICompiler.PointLocation(transform(1453f, 835f)),
-            UICompiler.PointLocation(transform(1874f, 835f)),
+        private val attackButtonLocation = UICompiler2.PointLocation(transform(1694f, 969f))
+        private val commandCardLocations: Array<UICompiler2.PointLocation> = arrayOf(
+            UICompiler2.PointLocation(transform(190f, 835f)),
+            UICompiler2.PointLocation(transform(611f, 835f)),
+            UICompiler2.PointLocation(transform(1032f, 835f)),
+            UICompiler2.PointLocation(transform(1453f, 835f)),
+            UICompiler2.PointLocation(transform(1874f, 835f)),
         )
-        private val noblePhantasmLocations: Array<UICompiler.PointLocation> = arrayOf(
-            UICompiler.PointLocation(transform(-1f, -1f)),
-            UICompiler.PointLocation(transform(611f, 364f)),
-            UICompiler.PointLocation(transform(972f, 364f)),
-            UICompiler.PointLocation(transform(1330f, 364f)),
+        private val noblePhantasmLocations: Array<UICompiler2.PointLocation> = arrayOf(
+            UICompiler2.PointLocation(transform(-1f, -1f)),
+            UICompiler2.PointLocation(transform(611f, 364f)),
+            UICompiler2.PointLocation(transform(972f, 364f)),
+            UICompiler2.PointLocation(transform(1330f, 364f)),
         )
 
         // ============================= Pre-Stage Scene Locations =================================
-        private val stageEntryButtonLocation = UICompiler.PointLocation(transform(1400f, 320f))
-        private val closeAppleButtonImageLocation = UICompiler.ImageLocation(
+        private val stageEntryButtonLocation = UICompiler2.PointLocation(transform(1400f, 320f))
+        private val closeAppleButtonImageLocation = UICompiler2.ImageLocation(
             transform(757f, 922f),
             transform(1149f, 1041f),
             "close_btn.png"
         )
-        private val supportSelectionImageLocation = UICompiler.ImageLocation(
+        private val supportSelectionImageLocation = UICompiler2.ImageLocation(
             transform(1551f, 67f),
             transform(1917f, 154f),
             "support_select.png"
         )
-        private val continueStageButtonImageLocation = UICompiler.ImageLocation(
+        private val continueStageButtonImageLocation = UICompiler2.ImageLocation(
             transform(1046f, 852f),
             transform(1472f, 975f),
             "contdbtn.png"
         )
-        private val menuButtonImageLocation = UICompiler.ImageLocation(
+        private val menuButtonImageLocation = UICompiler2.ImageLocation(
             transform(1665f, 1039f),
             transform(1910f, 1130f),
             "menu.png"
         )
-        private val endStageButtonImageLocation = UICompiler.ImageLocation(
+        private val endStageButtonImageLocation = UICompiler2.ImageLocation(
             transform(1556f, 1031f),
             transform(1777f, 1116f),
             "end.png"
         )
 
         // ================================== Helper Locations =====================================
-        private val safeClickLocation = UICompiler.PointLocation(transform(1278f, 85f))
+        private val safeClickLocation = UICompiler2.PointLocation(transform(1278f, 85f))
 
         // ================================== Supportive Items =====================================
         private val clickAllPhantasmBlockContent = Vector<String>()
@@ -359,7 +359,7 @@ interface FGOUICompiler2 : UICompiler {
     }
 
     private fun craftCastSkillWithOneTarget(
-        btnLocation: UICompiler.PointLocation, targetLocation: UICompiler.PointLocation
+        btnLocation: UICompiler2.PointLocation, targetLocation: UICompiler2.PointLocation
     ) {
         fileContent.add("Click $craftListLocation")
         fileContent.add("Wait 500")
@@ -379,7 +379,7 @@ interface FGOUICompiler2 : UICompiler {
     }
 
     private fun craftSwitchServants(
-        targetLocation1: UICompiler.PointLocation, targetLocation2: UICompiler.PointLocation
+        targetLocation1: UICompiler2.PointLocation, targetLocation2: UICompiler2.PointLocation
     ) {
         fileContent.add("Click $craftListLocation")
         fileContent.add("Wait 500")
@@ -469,7 +469,7 @@ interface FGOUICompiler2 : UICompiler {
     }
 
     private fun servantCastSkillWithOneTarget(
-        btnLocation: UICompiler.PointLocation, targetLocation: UICompiler.PointLocation
+        btnLocation: UICompiler2.PointLocation, targetLocation: UICompiler2.PointLocation
     ) {
         fileContent.add("Click $btnLocation")
         fileContent.add("Wait 500")
@@ -579,8 +579,8 @@ interface FGOUICompiler2 : UICompiler {
     private fun setUpScreenPara(config: Vector<String>) {
         if (config[5] == "0") {
             userSize = Size(
-                max(ScreenShotService.height, ScreenShotService.width),
-                min(ScreenShotService.height, ScreenShotService.width)
+                max(ProjectionService.height, ProjectionService.width),
+                min(ProjectionService.height, ProjectionService.width)
             )
             userOffset = if (userSize.width * 9 >= userSize.height * 16) {
                 Point(

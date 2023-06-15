@@ -1,7 +1,7 @@
 package com.example.androidscript.activities.fgo
 
 import android.util.Size
-import com.example.androidscript.services.ScreenShotService
+import com.example.androidscript.services.ProjectionService
 import com.example.androidscript.util.FileOperation
 import com.example.androidscript.activities.template.UICompiler
 import org.opencv.core.Point
@@ -495,8 +495,8 @@ class FGOUICompiler : UICompiler() {
         private fun setUpScreenPara(config: Vector<String>) {
             if (config[5] == "0") {
                 user_size = Size(
-                    max(ScreenShotService.height, ScreenShotService.width),
-                    min(ScreenShotService.height, ScreenShotService.width)
+                    max(ProjectionService.height, ProjectionService.width),
+                    min(ProjectionService.height, ProjectionService.width)
                 )
                 user_offset = if (user_size.width * 9 >= user_size.height * 16) {
                     Point(

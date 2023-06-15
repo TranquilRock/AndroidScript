@@ -7,7 +7,7 @@ import android.graphics.Path
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 
-class AutoClickService : AccessibilityService() {
+class ClickService : AccessibilityService() {
 
     public override fun onServiceConnected() {
         super.onServiceConnected()
@@ -25,8 +25,8 @@ class AutoClickService : AccessibilityService() {
     }
 
     companion object {
-        private val LOG_TAG = AutoClickService::class.java.simpleName
-        private var instance: AutoClickService? = null
+        private val LOG_TAG = ClickService::class.java.simpleName
+        private var instance: ClickService? = null
 
         fun running(): Boolean {
             return (instance != null)

@@ -12,8 +12,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.SwitchCompat
 import com.example.androidscript.R
 import com.example.androidscript.activities.StartServiceActivity
-import com.example.androidscript.services.FloatingWidgetService
-import com.example.androidscript.services.ScreenShotService
+import com.example.androidscript.services.WidgetService
+import com.example.androidscript.services.ProjectionService
 import com.example.androidscript.activities.template.Editor
 import com.example.androidscript.util.FileOperation
 import java.lang.Integer.min
@@ -76,10 +76,10 @@ class ArkKnightsEditor : Editor() {
                             mutableListOf(nRepetition) as ArrayList<String>
                     }
                     this.startService(
-                        Intent(this, FloatingWidgetService::class.java)
-                            .putExtra(FloatingWidgetService.folderTAG, folderName)
-                            .putExtra(FloatingWidgetService.scriptTAG, scriptName)
-                            .putExtra(FloatingWidgetService.argsTAG, arguments)
+                        Intent(this, WidgetService::class.java)
+                            .putExtra(WidgetService.folderTAG, folderName)
+                            .putExtra(WidgetService.scriptTAG, scriptName)
+                            .putExtra(WidgetService.argsTAG, arguments)
                             .putExtra("MPM", result.data!!)
                     )
                     this.finishAffinity()
@@ -99,8 +99,8 @@ class ArkKnightsEditor : Editor() {
             getResource(folderName, file!!)
         }
         resizeRatio = min(
-            ScreenShotService.height,
-            ScreenShotService.width
+            ProjectionService.height,
+            ProjectionService.width
         ) / 1152.0
         // ArkKnights is height dominant.
         // If becomes width dominant use this:

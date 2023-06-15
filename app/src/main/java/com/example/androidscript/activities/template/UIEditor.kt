@@ -7,7 +7,7 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidscript.R
-import com.example.androidscript.services.FloatingWidgetService
+import com.example.androidscript.services.WidgetService
 import java.util.*
 
 abstract class UIEditor : Editor() {
@@ -31,9 +31,9 @@ abstract class UIEditor : Editor() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
                 if (result.resultCode == Activity.RESULT_OK) {
                     this.startService(
-                        Intent(this, FloatingWidgetService::class.java)
-                            .putExtra(FloatingWidgetService.folderTAG, this.folderName)
-                            .putExtra(FloatingWidgetService.scriptTAG, "Run.txt")
+                        Intent(this, WidgetService::class.java)
+                            .putExtra(WidgetService.folderTAG, this.folderName)
+                            .putExtra(WidgetService.scriptTAG, "Run.txt")
                             .putExtra("MPM", result.data!!)
                     )
                     this.finishAffinity()

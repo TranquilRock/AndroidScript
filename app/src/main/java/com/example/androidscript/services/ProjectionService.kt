@@ -17,7 +17,7 @@ import com.example.androidscript.util.ImageHandler
 import kotlin.math.max
 import kotlin.math.min
 
-class ScreenShotService : Service() {
+class ProjectionService : Service() {
     private lateinit var serviceBinder: ScreenShotBinder
     private lateinit var imageReader: ImageReader
     private lateinit var virtualDisplay: VirtualDisplay
@@ -100,13 +100,13 @@ class ScreenShotService : Service() {
     }
 
     inner class ScreenShotBinder : Binder() {
-        val service: ScreenShotService
-            get() = this@ScreenShotService
+        val service: ProjectionService
+            get() = this@ProjectionService
     }
 
     companion object {
 
-        private val LOG_TAG = ScreenShotService::class.java.simpleName
+        private val LOG_TAG = ProjectionService::class.java.simpleName
 
         var height = 0
             private set

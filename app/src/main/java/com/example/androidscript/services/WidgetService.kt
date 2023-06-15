@@ -25,7 +25,7 @@ import kotlin.math.abs
 import kotlin.math.ceil
 
 
-class FloatingWidgetService : Service() {
+class WidgetService : Service() {
 
     private lateinit var mWindowManager: WindowManager
     private lateinit var mWidget: View
@@ -69,21 +69,21 @@ class FloatingWidgetService : Service() {
 
     // =========================================================================
 
-    private lateinit var screenShotService: ScreenShotService
+    private lateinit var projectionService: ProjectionService
     private var screenShotConnection: ServiceConnection = object : ServiceConnection {
 
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            val binder: ScreenShotService.ScreenShotBinder =
-                service as ScreenShotService.ScreenShotBinder
-            screenShotService = binder.service
-            screenShotService.set(mMediaProjection)
+            val binder: ProjectionService.ScreenShotBinder =
+                service as ProjectionService.ScreenShotBinder
+            projectionService = binder.service
+            projectionService.set(mMediaProjection)
             Log.i(LOG_TAG, "ScreenShot Service connected.")
         }
 
         override fun onServiceDisconnected(className: ComponentName) {
             Log.i(LOG_TAG, "ScreenShot Service disconnected!")
-            this@FloatingWidgetService.stopForeground(STOP_FOREGROUND_REMOVE)
-            this@FloatingWidgetService.stopSelf()
+            this@WidgetService.stopForeground(STOP_FOREGROUND_REMOVE)
+            this@WidgetService.stopSelf()
         }
     }
 
@@ -97,7 +97,7 @@ class FloatingWidgetService : Service() {
         super.onCreate()
 
         bindService(
-            Intent(this, ScreenShotService::class.java),
+            Intent(this, ProjectionService::class.java),
             screenShotConnection,
             BIND_AUTO_CREATE
         )
@@ -136,9 +136,9 @@ class FloatingWidgetService : Service() {
                     stopSelf()
                 }
             findViewById<View>(R.id.run_script).setOnClickListener {
-                if (AutoClickService.running()) {
+                if (ClickService.running()) {
                     mThread ?: run {
-                        interpreter.setup(args, screenShotService)
+                        interpreter.setup(args, projectionService)
                         mThread = Thread(interpreter)
                         mThread!!.start()
                         resetPosition()
@@ -271,7 +271,7 @@ class FloatingWidgetService : Service() {
         val navigate = PendingIntent.getService(
             this,
             0,
-            Intent(this, FloatingWidgetService::class.java).setAction("STOP"),
+            Intent(this, WidgetService::class.java).setAction("STOP"),
             PendingIntent.FLAG_IMMUTABLE
         )
 
@@ -287,7 +287,7 @@ class FloatingWidgetService : Service() {
             val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
             val channel = NotificationChannel(
                 packageName,
-                FloatingWidgetService::class.java.simpleName,
+                WidgetService::class.java.simpleName,
                 NotificationManager.IMPORTANCE_HIGH
             )
             notificationManager.createNotificationChannel(channel)
@@ -336,7 +336,7 @@ class FloatingWidgetService : Service() {
     }
 
     companion object {
-        private val LOG_TAG = FloatingWidgetService::class.java.simpleName
+        private val LOG_TAG = WidgetService::class.java.simpleName
         var folderTAG: String = "ScriptFolderName"
         var scriptTAG: String = "ScriptName"
         var argsTAG: String = "Args"
