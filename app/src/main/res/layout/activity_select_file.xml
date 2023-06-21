@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".activity.SelectFileActivity">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="@string/select_file_description"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/output"
+        />
+
+    <Spinner
+        android:id="@+id/spinner_Select_Script"
+        android:layout_width="171dp"
+        android:layout_height="47dp" />
+    <Button
+        android:id="@+id/btn_To_Load"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/loadScript"
+        android:layout_gravity="center"
+        />
+
+    <EditText
+        android:id="@+id/et_New_Name"
+        android:layout_width="200dp"
+        android:hint="@string/scriptName"
+        android:text=".blc"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
+
+    <Button
+        android:id="@+id/btn_To_Create"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/newScript"
+        android:layout_gravity="center"/>
+
+</LinearLayout>

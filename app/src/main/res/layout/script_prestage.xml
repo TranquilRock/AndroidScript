@@ -1,0 +1,188 @@
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    card_view:cardCornerRadius="10dp"
+    card_view:contentPadding="3dp"
+    card_view:cardBackgroundColor="@color/green"
+    android:id="@+id/pre_stage">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/pre_stage_bg">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="7dp"
+            android:text="@string/preStage"
+            android:textSize="10pt"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/config"
+            android:layout_width="131dp"
+            android:layout_height="29dp"
+            android:layout_marginStart="156dp"
+            android:layout_marginTop="8dp"
+            android:text="特殊版面"
+            card_view:layout_constraintStart_toEndOf="@+id/textView"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:layout_marginTop="54dp"
+            android:text="@string/eatApple"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="37dp"
+            android:layout_marginTop="54dp"
+            android:text="@string/selectFriends"
+            card_view:layout_constraintStart_toEndOf="@+id/textView2"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="52dp"
+            android:text="@string/repeat"
+            card_view:layout_constraintStart_toEndOf="@+id/textView4"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="37dp"
+            android:layout_marginTop="54dp"
+            android:text="@string/selectCraft"
+            card_view:layout_constraintStart_toEndOf="@+id/textView3"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <Spinner
+            android:id="@+id/stamina"
+            android:layout_width="80dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="7dp"
+            android:background="@color/pre_stage_bg"
+            android:entries="@array/apples"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        <Spinner
+            android:id="@+id/friend"
+            android:layout_width="76dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="17dp"
+            android:background="@color/pre_stage_bg"
+            android:entries="@array/friends"
+            card_view:layout_constraintStart_toEndOf="@+id/stamina"
+            card_view:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+        <Spinner
+            android:id="@+id/craft"
+            android:layout_width="76dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="17dp"
+            android:background="@color/pre_stage_bg"
+            android:entries="@array/craft"
+            android:visibility="visible"
+            card_view:layout_constraintStart_toEndOf="@+id/friend"
+            card_view:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <EditText
+            android:id="@+id/n_repeat"
+            android:layout_width="110dp"
+            android:layout_height="37dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="@string/repeat"
+            android:inputType="number"
+            android:text="1"
+            android:textSize="14sp"
+            card_view:layout_constraintLeft_toRightOf="@+id/craft"
+            card_view:layout_constraintTop_toTopOf="@id/textView4" />
+
+        <TextView
+            android:id="@+id/game_pos"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="7dp"
+            android:textSize="20sp"
+            android:layout_marginTop="20dp"
+            android:text="@string/game_position"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@+id/stamina"/>
+
+
+
+
+        <EditText
+            android:id="@+id/x1"
+            android:layout_width="70dp"
+            android:layout_height="37dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="110dp"
+            android:hint="x1"
+            android:inputType="number"
+            android:textSize="14sp"
+            card_view:layout_constraintStart_toEndOf="@+id/game_pos"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/y1"
+            android:layout_width="70dp"
+            android:layout_height="37dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="110dp"
+            android:hint="y1"
+            android:inputType="number"
+            android:textSize="14sp"
+            card_view:layout_constraintStart_toEndOf="@+id/x1"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+
+        <EditText
+            android:id="@+id/x2"
+            android:layout_width="70dp"
+            android:layout_height="37dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="110dp"
+            android:hint="x2"
+            android:inputType="number"
+            android:textSize="14sp"
+            card_view:layout_constraintStart_toEndOf="@+id/y1"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/y2"
+            android:layout_width="70dp"
+            android:layout_height="37dp"
+            android:layout_marginTop="110dp"
+            android:hint="y2"
+            android:inputType="number"
+            android:textSize="14sp"
+            card_view:layout_constraintStart_toEndOf="@+id/x2"
+            card_view:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
