@@ -1,0 +1,22 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdk 33
+    buildToolsVersion "33.0.0"
+
+    defaultConfig {
+        targetSdkVersion 33
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+    buildFeatures {
+        aidl true
+    }
+    namespace 'org.opencv'
+}
