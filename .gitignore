@@ -40,3 +40,4 @@ google-services.json
 build
 *.adb
 *.asta
+/tmp
