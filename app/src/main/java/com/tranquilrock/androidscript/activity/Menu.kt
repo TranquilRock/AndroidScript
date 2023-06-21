@@ -3,6 +3,7 @@
  */
 package com.tranquilrock.androidscript.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -26,6 +27,7 @@ class Menu : AppCompatActivity() {
 
         findViewById<View>(R.id.menu_enter).setOnClickListener {
             Log.d(TAG, "Button Clicked!")
+            startActivity(Intent(this, SelectActivity::class.java))
         }
     }
 }

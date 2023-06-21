@@ -1,12 +1,16 @@
 <resources>
     <string name="app_name">AndroidScript</string>
     <string name="menu_enter">Edit</string>
+    <string name="select_activity__invalid_name">Alpha-numeric characters and underscores</string>
+    <string name="select_activity__name_empty">Filename cannot be empty!</string>
+    <string name="select_activity__script_name">New Script File Name</string>
+    <string name="select_activity__load">Load</string>
+    <string name="select_activity__create">Create</string>
+    <string name="select_activity__description">Select or Create Script File</string>
 
 
     <!-- TODO: CLEANUP OLD RESOURCES -->
-    <string name="loadScript">選擇腳本</string>
-    <string name="newScript">建立腳本</string>
-    <string name="scriptName">請輸入新檔案名稱</string>
+
     <string name="state">IDLE</string>
     <string name="selectFriends">選擇好友</string>
     <string name="selectCraft">選擇禮裝</string>
@@ -73,7 +77,6 @@
     <string name="fgo">FGO</string>
     <string name="ark_knights">ArkKnights</string>
     <string name="basic_editor">通用腳本(橫向)</string>
-    <string name="select_file_description">選擇現有腳本或是輸入新的腳本名稱</string>
     <string name="ark_knights_description_content">自動周回指定關卡，開始前請先開啟點選關卡並點選代理指揮</string>
     <string name="Save">儲存/載入</string>
     <string name="StartService">啟動服務</string>
