@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.arknights.ArkKnightsEditor">
+
+    <TextView
+        android:id="@+id/ark_knights_title"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="90dp"
+        android:text="@string/ark_knights_description"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <TextView
+        android:id="@+id/ark_knights_description"
+        android:layout_width="315dp"
+        android:layout_height="wrap_content"
+        android:textSize="8pt"
+        android:text="@string/ark_knights_description_content"
+        app:layout_constraintRight_toRightOf="@+id/ark_knights_title"
+        app:layout_constraintTop_toBottomOf="@+id/ark_knights_title" />
+    <EditText
+        android:id="@+id/Repetition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:ems="10"
+        android:hint="@string/hint"
+        android:inputType="number"
+        android:layout_marginStart="15dp"
+
+        app:layout_constraintStart_toEndOf="@+id/tillEmpty"
+        app:layout_constraintTop_toBottomOf="@+id/ark_knights_description" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/tillEmpty"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/TillEmpty"
+        app:layout_constraintStart_toStartOf="@+id/ark_knights_description"
+        app:layout_constraintTop_toBottomOf="@+id/ark_knights_description" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/EatMedicine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="@string/EatMedicine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ark_knights_description" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/EatStone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="@string/EatStone"
+        app:layout_constraintEnd_toEndOf="@+id/EatMedicine"
+        app:layout_constraintStart_toStartOf="@+id/EatMedicine"
+        app:layout_constraintTop_toBottomOf="@+id/EatMedicine" />
+
+<!--    <Button-->
+<!--        android:id="@+id/set_service"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="30dp"-->
+<!--        android:text="啟動服務"-->
+<!--        app:layout_constraintEnd_toEndOf="@+id/EatStone"-->
+<!--        app:layout_constraintStart_toStartOf="@+id/EatStone"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/EatStone" />-->
+<!--    app:layout_constraintEnd_toEndOf="@+id/set_service"-->
+<!--    app:layout_constraintStart_toStartOf="@+id/set_service"-->
+<!--    app:layout_constraintTop_toBottomOf="@+id/set_service"-->
+    <Button
+        android:id="@+id/set_script"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="開啟腳本"
+        app:layout_constraintEnd_toEndOf="@+id/EatStone"
+        app:layout_constraintStart_toStartOf="@+id/EatStone"
+        app:layout_constraintTop_toBottomOf="@+id/EatStone"
+         />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
