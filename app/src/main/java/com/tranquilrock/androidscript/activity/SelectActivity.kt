@@ -32,7 +32,7 @@ open class SelectActivity : AppCompatActivity() {
         textViewDialogBox = findViewById(R.id.select_dialog_box)
         spinnerFileList = findViewById(R.id.select_file_list)
         findViewById<View>(R.id.select_load).setOnClickListener {
-            openFile(spinnerFileList.selectedItem.toString())
+            openFile(spinnerFileList.selectedItem?.toString())
         }
 
         findViewById<View>(R.id.select_create).setOnClickListener {
@@ -42,19 +42,19 @@ open class SelectActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        availableFile = readDir("").filter { filename ->
+        Log.d(TAG, externalMediaDirs[0].absolutePath)
+        availableFile = readDir(externalMediaDirs[0].absolutePath).filter { filename ->
             filename.endsWith(FILE_TYPE)
         }
         spinnerFileList.adapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, availableFile)
     }
 
-    private fun openFile(fileName: String) {
-        if(fileName.isEmpty()){
+    private fun openFile(fileName: String?) {
+        if (fileName.isNullOrBlank() || fileName.isEmpty()) {
             textViewDialogBox.text = getString(R.string.select_activity__name_empty)
-
-        }
-        else if (checkFilename(fileName)) {
+        } else if (checkFilename(fileName)) {
+            textViewDialogBox.text = "TMP GOOD"
             Log.d(TAG, fileName)
         } else {
             textViewDialogBox.text = getString(R.string.select_activity__invalid_name)
