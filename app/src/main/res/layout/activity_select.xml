@@ -6,46 +6,47 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".activity.SelectFileActivity">
+    tools:context=".activity.SelectActivity">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:text="@string/select_file_description"/>
+        android:text="@string/select_activity__description"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/output"
+        android:id="@+id/select_dialog_box"
         />
 
     <Spinner
-        android:id="@+id/spinner_Select_Script"
+        android:id="@+id/select_file_list"
         android:layout_width="171dp"
         android:layout_height="47dp" />
     <Button
-        android:id="@+id/btn_To_Load"
+        android:id="@+id/select_load"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/loadScript"
+        android:text="@string/select_activity__load"
         android:layout_gravity="center"
         />
 
     <EditText
-        android:id="@+id/et_New_Name"
+        android:id="@+id/select_new_name"
         android:layout_width="200dp"
-        android:hint="@string/scriptName"
-        android:text=".blc"
+        android:hint="@string/select_activity__script_name"
+        android:text=""
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        />
 
 
     <Button
-        android:id="@+id/btn_To_Create"
+        android:id="@+id/select_create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="@string/newScript"
+        android:text="@string/select_activity__create"
         android:layout_gravity="center"/>
 
 </LinearLayout>
