@@ -2,6 +2,7 @@
     <string name="app_name">AndroidScript</string>
     <string name="menu_enter">Edit</string>
     <string name="select_activity__invalid_name">Alpha-numeric characters and underscores</string>
+    <string name="select_activity__file_exists">File already exists!!!</string>
     <string name="select_activity__name_empty">Filename cannot be empty!</string>
     <string name="select_activity__script_name">New Script File Name</string>
     <string name="select_activity__load">Load</string>
