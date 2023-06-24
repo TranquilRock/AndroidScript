@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <!-- Needed to get the list of applications to start when creating an intent action.-->
+    <!-- Needed to get the list of applications to start when creating an intent action. -->
     <queries>
         <intent>
             <action android:name="android.intent.action.MAIN" />
+
             <category android:name="android.intent.category.LAUNCHER" />
         </intent>
     </queries>
@@ -19,25 +19,26 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidScript"
         tools:ignore="DataExtractionRules">
-
         <activity
-            android:name="com.tranquilrock.androidscript.activity.Menu"
+            android:name=".activity.Menu"
             android:exported="true"
             android:screenOrientation="locked">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.SelectActivity"
             android:exported="false"
             android:screenOrientation="locked"
-            android:windowSoftInputMode="adjustResize">
-
-        </activity>
-
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.editor.EditActivity"
+            android:exported="false"
+            android:screenOrientation="locked"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>
