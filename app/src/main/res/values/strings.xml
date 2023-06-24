@@ -2,7 +2,7 @@
     <string name="app_name">AndroidScript</string>
     <string name="menu_enter">Edit</string>
     <string name="select_activity__invalid_name">Alpha-numeric characters and underscores</string>
-    <string name="select_activity__file_exists">File already exists!!!</string>
+    <string name="select_activity__file_exists">File created!!!</string>
     <string name="select_activity__name_empty">Filename cannot be empty!</string>
     <string name="select_activity__script_name">New Script File Name</string>
     <string name="select_activity__load">Load</string>
@@ -85,4 +85,5 @@
     <string name="game_position">遊戲位置</string>
     <string name="basic_portrait">通用腳本(直向)</string>
     <string name="block_name">Title</string>
+    <string name="title_activity_edit">EditActivity</string>
 </resources>

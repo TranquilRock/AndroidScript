@@ -5,6 +5,7 @@
 package com.tranquilrock.androidscript.activity
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,6 +15,7 @@ import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.tranquilrock.androidscript.R
+import com.tranquilrock.androidscript.activity.editor.EditActivity
 import java.io.File
 import java.util.regex.Pattern
 
@@ -35,6 +37,7 @@ open class SelectActivity : AppCompatActivity() {
 
     private val scriptFolder: File
         get() = this.getDir(scriptType, Context.MODE_PRIVATE)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select)
@@ -53,12 +56,14 @@ open class SelectActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         Log.d(TAG, scriptFolder.absolutePath)
-        for (c in scriptFolder.list()!!){
+        for (c in scriptFolder.list()!!) {
             Log.d(TAG, c)
         }
         availableFile = scriptFolder.list()?.filter { filename ->
             filename.endsWith(FILE_TYPE)
-        } ?: emptyList()
+        }?.map { a -> a.removeSuffix(FILE_TYPE) } ?: emptyList()
+
+        Log.d(TAG, availableFile.joinToString(" "))
         spinnerFileList.adapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, availableFile)
     }
@@ -73,6 +78,8 @@ open class SelectActivity : AppCompatActivity() {
             if (!File(scriptFolder, fileName + FILE_TYPE).createNewFile()) {
                 textViewDialogBox.text = getString(R.string.select_activity__file_exists)
             }
+
+            startActivity(Intent(this, EditActivity::class.java))
         }
     }
 

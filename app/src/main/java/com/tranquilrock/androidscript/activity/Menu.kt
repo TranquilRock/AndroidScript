@@ -1,5 +1,8 @@
 /** App Menu
  * The display shall be updated, this is the placeholder version.
+ * TODO
+ * 1. Add download
+ * 2. Put Extra
  */
 package com.tranquilrock.androidscript.activity
 
