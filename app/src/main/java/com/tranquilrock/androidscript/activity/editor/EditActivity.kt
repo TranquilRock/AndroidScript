@@ -1,33 +1,49 @@
+/* UI for editing scripts.
+ * This will read from scriptClass.meta to get blocks and buttons definition, for example:
+ * {
+ *      "Exit": [],
+ *      "Call": ["file", "arg1"],
+ *      "ClickPic": ["Pic"],
+ * }
+ * {"Exit":"[]","T":"[(Spinner, [1, 2, 3]), (EditText, [Placeholder])]"}
+ * */
 package com.tranquilrock.androidscript.activity.editor
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.tranquilrock.androidscript.R
 import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.internal.LinkedTreeMap
+import com.tranquilrock.androidscript.activity.UseInternalStorage
 import com.tranquilrock.androidscript.activity.editor.component.BlockAdapter
 import com.tranquilrock.androidscript.activity.editor.component.ButtonAdapter
 import com.tranquilrock.androidscript.core.Command
+import org.json.JSONObject
 import java.util.Vector
 
-class EditActivity : AppCompatActivity() {
-    lateinit var blockView: RecyclerView
-    lateinit var buttonView: RecyclerView
-    lateinit var blockData: MutableList<MutableList<String>>
-    lateinit var buttonData: MutableList<String>
-    lateinit var fileName: String
-    lateinit var folderName: String
+class EditActivity : AppCompatActivity(), UseInternalStorage {
+    private lateinit var blockView: RecyclerView
+    private lateinit var buttonView: RecyclerView
+    private lateinit var blockData: MutableList<MutableList<String>>
+    private lateinit var buttonData: List<Array<*>>
+    private lateinit var fileName: String
+    private lateinit var scriptClass: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
 
-//        fileName = intent.getStringE("FileName", "a")!!
+        scriptClass = intent.getStringExtra("SCRIPT_CLASS")!!
+        fileName = intent.getStringExtra("SCRIPT_NAME")!!
+
         buttonView = findViewById(R.id.edit_button_grid)
-        buttonData = Vector()
+        buttonData = getScriptMetadata(this, scriptClass)
+        Log.d(TAG, buttonData.toString())
         blockView = findViewById(R.id.edit_code_grid)
         blockData = Vector()
 
@@ -50,7 +66,7 @@ class EditActivity : AppCompatActivity() {
 //                        .putExtra(FloatingWidgetService.scriptTAG, "Run.txt")
 //                        .putExtra("MPM", result.data!!)
 //                )
-                // TODO check permission and start services
+            // TODO check permission and start services
 //            }
         }
 
@@ -69,24 +85,19 @@ class EditActivity : AppCompatActivity() {
         }
 
         // TODO read file and setup blockData.
-
         blockView.layoutManager = LinearLayoutManager(this)
         blockView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         blockView.adapter = BlockAdapter(blockData)
-        //SetButtonData
-        for (key in Command.COMMAND_LIST) {
-            buttonData.add(key)
-        }
+
         buttonView.layoutManager = GridLayoutManager(this, 2)
-        buttonView.adapter =
-            ButtonAdapter(
-                blockData,
-                (blockView.adapter as BlockAdapter).onOrderChange,
-                buttonData,
-            )
+        buttonView.adapter = ButtonAdapter(
+            blockData,
+            (blockView.adapter as BlockAdapter).onOrderChange,
 
-
+            buttonData,
+        )
     }
+
 
     companion object {
         private val TAG = EditActivity::class.java.simpleName

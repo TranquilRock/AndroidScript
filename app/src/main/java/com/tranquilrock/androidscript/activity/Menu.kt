@@ -16,7 +16,7 @@ import org.opencv.android.OpenCVLoader
 
 class Menu : AppCompatActivity() {
     companion object {
-        const val TAG = "Menu"
+        private val TAG = Menu::class.java.simpleName
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,6 +27,9 @@ class Menu : AppCompatActivity() {
         }
 
         setContentView(R.layout.activity_menu)
+
+        // TODO add download button
+        // TODO add extra to select Activity
 
         findViewById<View>(R.id.menu_enter).setOnClickListener {
             Log.d(TAG, "Button Clicked!")

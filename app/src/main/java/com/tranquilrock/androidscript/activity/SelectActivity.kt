@@ -4,66 +4,80 @@
  * */
 package com.tranquilrock.androidscript.activity
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.activity.editor.EditActivity
-import java.io.File
+import org.json.JSONArray
+import org.json.JSONObject
 import java.util.regex.Pattern
 
-open class SelectActivity : AppCompatActivity() {
 
-    private val editTextNewName: EditText
-        get() = findViewById(R.id.select_new_name)
-    private val textViewDialogBox: TextView
-        get() = findViewById(R.id.select_dialog_box)
-    private val spinnerFileList: Spinner
-        get() = findViewById(R.id.select_file_list)
-    private val buttonLoad: View
-        get() = findViewById(R.id.select_load)
-    private val buttonCreate: View
-        get() = findViewById(R.id.select_create)
+open class SelectActivity : AppCompatActivity(), UseInternalStorage {
 
-    private lateinit var scriptType: String
+    private lateinit var editTextNewName: EditText
+    private lateinit var textViewDialogBox: TextView
+    private lateinit var spinnerFileList: Spinner
+    private lateinit var buttonLoad: View
+    private lateinit var buttonCreate: View
+
+    private lateinit var scriptClass: String
     private lateinit var availableFile: List<String>
-
-    private val scriptFolder: File
-        get() = this.getDir(scriptType, Context.MODE_PRIVATE)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_select)
+        editTextNewName = findViewById(R.id.select_new_name)
+        textViewDialogBox = findViewById(R.id.select_dialog_box)
+        spinnerFileList = findViewById(R.id.select_file_list)
+        buttonLoad = findViewById(R.id.select_load)
+        buttonCreate = findViewById(R.id.select_create)
 
         buttonLoad.setOnClickListener {
             openFile(spinnerFileList.selectedItem?.toString())
         }
-
         buttonCreate.setOnClickListener {
             openFile(editTextNewName.text.toString())
         }
 
-        scriptType = intent.extras?.getString("TYPE") ?: "BASIC"
+        scriptClass = intent.extras?.getString("TYPE") ?: "BASIC"
+        deleteFile(this, scriptClass, "meta.json")
+        if (createScriptFile(this, scriptClass, "meta.json")) {
+            /* Basic not initialized yet*/
+            val basicMeta = Gson().toJson(
+                listOf(
+                    listOf(
+                        "GGWP",
+                        listOf("Spinner", "1", "2", "3"),
+                        listOf("EditText", "Placeholder")
+                    ),
+                    listOf(
+                        "Exit"
+                    )
+                )
+            )
+            writeScriptFile(
+                this,
+                scriptClass,
+                "meta.json",
+                listOf(basicMeta.toString())
+            )
+        }
+
     }
 
     override fun onResume() {
         super.onResume()
-        Log.d(TAG, scriptFolder.absolutePath)
-        for (c in scriptFolder.list()!!) {
-            Log.d(TAG, c)
-        }
-        availableFile = scriptFolder.list()?.filter { filename ->
+        availableFile = getScriptFolder(this, scriptClass).list()?.filter { filename ->
             filename.endsWith(FILE_TYPE)
         }?.map { a -> a.removeSuffix(FILE_TYPE) } ?: emptyList()
-
-        Log.d(TAG, availableFile.joinToString(" "))
         spinnerFileList.adapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, availableFile)
     }
@@ -75,16 +89,18 @@ open class SelectActivity : AppCompatActivity() {
             textViewDialogBox.text = getString(R.string.select_activity__invalid_name)
         } else {
             textViewDialogBox.text = ""
-            if (!File(scriptFolder, fileName + FILE_TYPE).createNewFile()) {
+            if (!createScriptFile(this, scriptClass, fileName + FILE_TYPE)) {
                 textViewDialogBox.text = getString(R.string.select_activity__file_exists)
             }
-
-            startActivity(Intent(this, EditActivity::class.java))
+            val goToEditIndent = Intent(this, EditActivity::class.java)
+            goToEditIndent.putExtra("SCRIPT_CLASS", scriptClass)
+            goToEditIndent.putExtra("SCRIPT_NAME", fileName)
+            startActivity(goToEditIndent)
         }
     }
 
     companion object {
-        const val TAG = "SELECT_ACTIVITY"
+        private val TAG = SelectActivity::class.java.simpleName
         const val FILE_TYPE = ".txt"
         private const val VALID_FILENAME_PATTERN = "([A-Za-z0-9_-]*)"
 

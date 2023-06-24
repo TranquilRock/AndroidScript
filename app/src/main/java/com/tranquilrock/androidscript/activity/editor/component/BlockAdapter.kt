@@ -13,30 +13,25 @@ class BlockAdapter(content: MutableList<MutableList<String>>) :
     RecyclerView.Adapter<BlockViewHolder>() {
 
     var data: MutableList<MutableList<String>>
-    var onOrderChange: Updater
+    val onOrderChange: Updater
 
     init {
         data = content
-        // TODO check these notify works properly
         onOrderChange = object : Updater {
-            override fun swap(a: Int, b: Int) {
-                if (a >= 0 && b < data.size && a < b) {
-                    Collections.swap(data, a, b)
-//                    notifyDataSetChanged()
-                    notifyItemMoved(a, b)
+            override fun swap(id1: Int, id2: Int) {
+                if (id1 >= 0 && id2 < data.size && id1 < id2) {
+                    Collections.swap(data, id1, id2)
+                    notifyItemMoved(id1, id2)
                 }
             }
-
-            override fun delete(a: Int) {
-                if (a >= 0 && a <= data.size - 1) {
-                    data.removeAt(a)
-//                    notifyDataSetChanged()
-                    notifyItemRemoved(a)
+            override fun delete(id: Int) {
+                if (id >= 0 && id <= data.size - 1) {
+                    data.removeAt(id)
+                    notifyItemRemoved(id)
                 }
             }
-
-            override fun insert() = notifyItemInserted(0)// notifyDataSetChanged()
-            override fun self(index: Int) {}
+            override fun insert() = notifyItemInserted(0)
+            override fun self(id: Int) = notifyItemChanged(id)
         }
     }
 
@@ -85,86 +80,7 @@ class BlockAdapter(content: MutableList<MutableList<String>>) :
     override fun onBindViewHolder(holder: BlockViewHolder, position: Int) {
         holder.onBind(onOrderChange, data)
         holder.title.text = data[position][0]
-        when (data[position][0]) {
-            // TODO extract this to Basic.meta
-            Command.EXIT -> {}
-            Command.LOG -> holder.inputs[0].hint = "LogString"
-            Command.JUMP_TO -> holder.inputs[0].hint = "Line"
-            Command.WAIT -> holder.inputs[0].hint = "ms"
-            Command.CALL -> holder.inputs[0].hint = ".txt"
-            Command.TAG -> holder.inputs[0].hint = "\$Var"
-            Command.RETURN -> holder.inputs[0].hint = "Value"
-            Command.CLICK_PIC -> {
-                (holder as BlockViewHolder.TwoVH).titleMiddle.text = ""
-                holder.inputs[0].hint = "Image"
-                holder.inputs[1].hint = "Ratio"
-            }
 
-            Command.CLICK -> {
-                (holder as BlockViewHolder.TwoVH).titleMiddle.text = ""
-                holder.inputs[0].hint = "X"
-                holder.inputs[1].hint = "Y"
-            }
-
-            Command.CALL_ARG -> {
-                (holder as BlockViewHolder.TwoVH).titleMiddle.text = ""
-                holder.inputs[0].hint = ".txt"
-                holder.inputs[1].hint = "Value"
-            }
-
-            Command.IF_GREATER -> {
-                holder.title.text = "If"
-                (holder as BlockViewHolder.TwoVH).titleMiddle.text = ">"
-                holder.inputs[0].hint = "\$Var"
-                holder.inputs[1].hint = "Value"
-            }
-
-            Command.IF_SMALLER -> {
-                holder.title.text = "If"
-                (holder as BlockViewHolder.TwoVH).titleMiddle.text = "<"
-                holder.inputs[0].hint = "\$Var"
-                holder.inputs[1].hint = "Value"
-            }
-
-            Command.ADD -> {
-                (holder as BlockViewHolder.TwoVH).titleMiddle.text = "+="
-                holder.inputs[0].hint = "\$Var"
-                holder.inputs[1].hint = "Value"
-            }
-
-            Command.SUBTRACT -> {
-                (holder as BlockViewHolder.TwoVH).titleMiddle.text = "-="
-                holder.inputs[0].hint = "\$Var"
-                holder.inputs[1].hint = "Value"
-            }
-
-            Command.VAR -> {
-                (holder as BlockViewHolder.TwoVH).titleMiddle.text = "="
-                holder.inputs[0].hint = "\$Name"
-                holder.inputs[1].hint = "Value"
-            }
-
-            Command.CHECK -> {
-                holder.inputs[0].hint = "x"
-                holder.inputs[1].hint = "y"
-                holder.inputs[2].hint = "color"
-            }
-
-            Command.SWIPE -> {
-                holder.inputs[0].hint = "FromX"
-                holder.inputs[1].hint = "FromY"
-                holder.inputs[2].hint = "ToX"
-                holder.inputs[3].hint = "ToY"
-            }
-
-            Command.COMPARE -> {
-                holder.inputs[0].hint = "X1"
-                holder.inputs[1].hint = "Y1"
-                holder.inputs[2].hint = "X2"
-                holder.inputs[3].hint = "Y2"
-                holder.inputs[4].hint = "Image"
-            }
-        }
     }
 
     override fun getItemViewType(position: Int) = Command.getCommandLength(data[position][0])

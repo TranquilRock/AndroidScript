@@ -49,7 +49,6 @@ abstract class BlockViewHolder(protected var view: View) : RecyclerView.ViewHold
             inputs[0].addTextChangedListener(getTextWatcher(Data, 1, this))
         }
     }
-
     class TwoVH(view: View) : BlockViewHolder(view) {
         lateinit var titleMiddle: TextView
         override fun onBind(order: Updater, Data: MutableList<MutableList<String>>) {
@@ -73,7 +72,6 @@ abstract class BlockViewHolder(protected var view: View) : RecyclerView.ViewHold
             }
         }
     }
-
     class ThreeVH(view: View) : BlockViewHolder(view) {
         override fun onBind(order: Updater, Data: MutableList<MutableList<String>>) {
             super.onBind(order, Data)
@@ -94,7 +92,6 @@ abstract class BlockViewHolder(protected var view: View) : RecyclerView.ViewHold
             }
         }
     }
-
     class FourVH(view: View) : BlockViewHolder(view) {
         override fun onBind(order: Updater, Data: MutableList<MutableList<String>>) {
             super.onBind(order, Data)
@@ -116,7 +113,6 @@ abstract class BlockViewHolder(protected var view: View) : RecyclerView.ViewHold
             }
         }
     }
-
     class FiveVH(view: View) : BlockViewHolder(view) {
         override fun onBind(order: Updater, Data: MutableList<MutableList<String>>) {
             super.onBind(order, Data)

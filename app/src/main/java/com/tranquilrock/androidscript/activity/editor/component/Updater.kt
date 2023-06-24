@@ -1,8 +1,8 @@
 package com.tranquilrock.androidscript.activity.editor.component
 
 interface Updater {
-    fun swap(a: Int, b: Int)
-    fun delete(a: Int)
+    fun swap(id1: Int, id2: Int)
+    fun delete(id: Int)
     fun insert()
-    fun self(index: Int)
+    fun self(id: Int)
 }

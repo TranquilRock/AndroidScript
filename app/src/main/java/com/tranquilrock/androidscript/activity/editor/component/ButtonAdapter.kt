@@ -8,9 +8,9 @@ import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.core.Command
 
 class ButtonAdapter(
-    private val blockContent: MutableList<MutableList<String>>,
+    private val blockData: MutableList<MutableList<String>>,
     private val onInsert: Updater,
-    private val buttonText: MutableList<String>
+    private val buttonData: List<Array<*>>
 ) : RecyclerView.Adapter<ButtonViewHolder>() {
 
     override fun onCreateViewHolder(
@@ -24,24 +24,24 @@ class ButtonAdapter(
 
     override fun onBindViewHolder(holder: ButtonViewHolder, position: Int) {
         holder.run {
-            button.text = buttonText[position]
-            when (buttonText[position]) {
-                in Command.ALL_COMMAND_LIST -> button.setOnClickListener {
-                    blockContent.add(
-                        INSERT_START_POSITION,
-                        MutableList(Command.getCommandLength(buttonText[position]) + 1) { "" }.apply {
-                            this[0] = buttonText[position]
-                        }
-                    )
-                    onInsert.insert()
-                }
-                else -> throw RuntimeException("$TAG:: Unrecognized button!")
+            button.text = buttonData[position][0] as CharSequence?
+            button.setOnClickListener {
+                blockData.add(
+                    INSERT_START_POSITION,
+                    MutableList(
+                        buttonData[position].size
+                    ) { "" }.apply {
+                        // TODO change data to be add
+                        this[0] = buttonData[position][0] as String
+                    }
+                )
+                onInsert.insert()
             }
         }
     }
 
     override fun getItemCount(): Int {
-        return buttonText.size
+        return buttonData.size
     }
 
     companion object {
