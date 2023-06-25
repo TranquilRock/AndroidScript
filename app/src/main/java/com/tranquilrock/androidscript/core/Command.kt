@@ -1,3 +1,8 @@
+/* Lists all fundamental commands here.
+ * Suppress Unused and Visibility for future use.
+ */
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
+
 package com.tranquilrock.androidscript.core
 
 
