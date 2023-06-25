@@ -1,8 +1,5 @@
 /** App Menu
  * The display shall be updated, this is the placeholder version.
- * TODO
- * 1. Add download
- * 2. Put Extra
  */
 package com.tranquilrock.androidscript.activity
 
@@ -15,9 +12,6 @@ import com.tranquilrock.androidscript.R
 import org.opencv.android.OpenCVLoader
 
 class Menu : AppCompatActivity() {
-    companion object {
-        private val TAG = Menu::class.java.simpleName
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +27,13 @@ class Menu : AppCompatActivity() {
 
         findViewById<View>(R.id.menu_enter).setOnClickListener {
             Log.d(TAG, "Button Clicked!")
-            startActivity(Intent(this, SelectActivity::class.java))
+            val toSelectIntent = Intent(this, SelectActivity::class.java)
+            toSelectIntent.putExtra(SelectActivity.TYPE_KEY, "BASIC")
+            startActivity(toSelectIntent)
         }
+    }
+
+    companion object {
+        private val TAG = Menu::class.java.simpleName
     }
 }

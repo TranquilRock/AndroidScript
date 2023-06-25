@@ -9,6 +9,10 @@ import org.json.JSONObject
 import java.io.File
 
 interface UseInternalStorage {
+
+    val META_FILE : String
+        get() = "meta.json"
+
     fun getScriptFolder(context: Context, scriptClass: String): File {
         return context.getDir(scriptClass, Context.MODE_PRIVATE)
     }
@@ -42,7 +46,7 @@ interface UseInternalStorage {
         }
     }
 
-    fun deleteFile(context: Context, scriptClass: String, fileName: String){
+    fun deleteFile(context: Context, scriptClass: String, fileName: String) {
         File(getScriptFolder(context, scriptClass), fileName).delete()
     }
 }

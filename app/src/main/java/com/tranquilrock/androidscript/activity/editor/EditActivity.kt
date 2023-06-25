@@ -18,33 +18,31 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.internal.LinkedTreeMap
 import com.tranquilrock.androidscript.activity.UseInternalStorage
 import com.tranquilrock.androidscript.activity.editor.component.BlockAdapter
 import com.tranquilrock.androidscript.activity.editor.component.ButtonAdapter
-import com.tranquilrock.androidscript.core.Command
-import org.json.JSONObject
 import java.util.Vector
 
 class EditActivity : AppCompatActivity(), UseInternalStorage {
     private lateinit var blockView: RecyclerView
     private lateinit var buttonView: RecyclerView
     private lateinit var blockData: MutableList<MutableList<String>>
-    private lateinit var buttonData: List<Array<*>>
+    private lateinit var blockMeta: List<Array<*>>
     private lateinit var fileName: String
     private lateinit var scriptClass: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
-
-        scriptClass = intent.getStringExtra("SCRIPT_CLASS")!!
-        fileName = intent.getStringExtra("SCRIPT_NAME")!!
-
         buttonView = findViewById(R.id.edit_button_grid)
-        buttonData = getScriptMetadata(this, scriptClass)
-        Log.d(TAG, buttonData.toString())
         blockView = findViewById(R.id.edit_code_grid)
+
+        scriptClass = intent.getStringExtra(SCRIPT_TYPE_KEY)!!
+        fileName = intent.getStringExtra(SCRIPT_NAME_KEY)!!
+
+        blockMeta = getScriptMetadata(this, scriptClass).also {
+            Log.d(TAG, "Metadata: $it")
+        }
         blockData = Vector()
 
         findViewById<View>(R.id.start_service).setOnClickListener {
@@ -66,7 +64,7 @@ class EditActivity : AppCompatActivity(), UseInternalStorage {
 //                        .putExtra(FloatingWidgetService.scriptTAG, "Run.txt")
 //                        .putExtra("MPM", result.data!!)
 //                )
-            // TODO check permission and start services
+//                TODO check permission and start services
 //            }
         }
 
@@ -81,20 +79,19 @@ class EditActivity : AppCompatActivity(), UseInternalStorage {
 //                    Toast.LENGTH_LONG
 //                ).show()
 //            }
-            // TODO check code valid && store file
+//            TODO check code valid && store file
         }
 
         // TODO read file and setup blockData.
         blockView.layoutManager = LinearLayoutManager(this)
         blockView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
-        blockView.adapter = BlockAdapter(blockData)
+        blockView.adapter = BlockAdapter(blockMeta, blockData)
 
         buttonView.layoutManager = GridLayoutManager(this, 2)
         buttonView.adapter = ButtonAdapter(
+            blockMeta,
             blockData,
             (blockView.adapter as BlockAdapter).onOrderChange,
-
-            buttonData,
         )
     }
 
@@ -102,5 +99,7 @@ class EditActivity : AppCompatActivity(), UseInternalStorage {
     companion object {
         private val TAG = EditActivity::class.java.simpleName
         private const val FOREGROUND_REQUEST_CODE = 111
+        const val SCRIPT_TYPE_KEY = "SCRIPT_TYPE"
+        const val SCRIPT_NAME_KEY = "SCRIPT_NAME"
     }
 }

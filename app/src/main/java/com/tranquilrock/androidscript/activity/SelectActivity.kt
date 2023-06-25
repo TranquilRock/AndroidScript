@@ -15,8 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.gson.Gson
 import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.activity.editor.EditActivity
-import org.json.JSONArray
-import org.json.JSONObject
 import java.util.regex.Pattern
 
 
@@ -28,7 +26,7 @@ open class SelectActivity : AppCompatActivity(), UseInternalStorage {
     private lateinit var buttonLoad: View
     private lateinit var buttonCreate: View
 
-    private lateinit var scriptClass: String
+    private lateinit var scriptType: String
     private lateinit var availableFile: List<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,9 +45,11 @@ open class SelectActivity : AppCompatActivity(), UseInternalStorage {
             openFile(editTextNewName.text.toString())
         }
 
-        scriptClass = intent.extras?.getString("TYPE") ?: "BASIC"
-        deleteFile(this, scriptClass, "meta.json")
-        if (createScriptFile(this, scriptClass, "meta.json")) {
+        scriptType = intent.extras?.getString(TYPE_KEY) ?: basicType
+
+
+        deleteFile(this, basicType, META_FILE) // For test only
+        if (createScriptFile(this, basicType, META_FILE)) {
             /* Basic not initialized yet*/
             val basicMeta = Gson().toJson(
                 listOf(
@@ -65,7 +65,7 @@ open class SelectActivity : AppCompatActivity(), UseInternalStorage {
             )
             writeScriptFile(
                 this,
-                scriptClass,
+                scriptType,
                 "meta.json",
                 listOf(basicMeta.toString())
             )
@@ -75,7 +75,7 @@ open class SelectActivity : AppCompatActivity(), UseInternalStorage {
 
     override fun onResume() {
         super.onResume()
-        availableFile = getScriptFolder(this, scriptClass).list()?.filter { filename ->
+        availableFile = getScriptFolder(this, scriptType).list()?.filter { filename ->
             filename.endsWith(FILE_TYPE)
         }?.map { a -> a.removeSuffix(FILE_TYPE) } ?: emptyList()
         spinnerFileList.adapter =
@@ -89,12 +89,12 @@ open class SelectActivity : AppCompatActivity(), UseInternalStorage {
             textViewDialogBox.text = getString(R.string.select_activity__invalid_name)
         } else {
             textViewDialogBox.text = ""
-            if (!createScriptFile(this, scriptClass, fileName + FILE_TYPE)) {
+            if (!createScriptFile(this, scriptType, fileName + FILE_TYPE)) {
                 textViewDialogBox.text = getString(R.string.select_activity__file_exists)
             }
             val goToEditIndent = Intent(this, EditActivity::class.java)
-            goToEditIndent.putExtra("SCRIPT_CLASS", scriptClass)
-            goToEditIndent.putExtra("SCRIPT_NAME", fileName)
+            goToEditIndent.putExtra(EditActivity.SCRIPT_TYPE_KEY, scriptType)
+            goToEditIndent.putExtra(EditActivity.SCRIPT_NAME_KEY, fileName)
             startActivity(goToEditIndent)
         }
     }
@@ -103,7 +103,8 @@ open class SelectActivity : AppCompatActivity(), UseInternalStorage {
         private val TAG = SelectActivity::class.java.simpleName
         const val FILE_TYPE = ".txt"
         private const val VALID_FILENAME_PATTERN = "([A-Za-z0-9_-]*)"
-
+        private const val basicType = "BASIC"
+        const val TYPE_KEY = "TYPE"
 
         fun isValidFileName(FileName: String): Boolean {
             return Pattern.matches(
