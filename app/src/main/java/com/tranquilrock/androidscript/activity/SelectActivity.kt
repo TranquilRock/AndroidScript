@@ -12,7 +12,6 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
 import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.activity.editor.EditActivity
 import java.util.regex.Pattern
@@ -47,37 +46,13 @@ open class SelectActivity : AppCompatActivity(), UseInternalStorage {
 
         scriptType = intent.extras?.getString(TYPE_KEY) ?: basicType
 
-
-        deleteFile(this, basicType, META_FILE) // For test only
-        if (createScriptFile(this, basicType, META_FILE)) {
-            /* Basic not initialized yet*/
-            val basicMeta = Gson().toJson(
-                listOf(
-                    listOf(
-                        "GGWP",
-                        listOf("Spinner", "1", "2", "3"),
-                        listOf("EditText", "Placeholder")
-                    ),
-                    listOf(
-                        "Exit"
-                    )
-                )
-            )
-            writeScriptFile(
-                this,
-                scriptType,
-                "meta.json",
-                listOf(basicMeta.toString())
-            )
-        }
-
+        // TODO Remove this
+        testOnlyInitBasic(this)
     }
 
     override fun onResume() {
         super.onResume()
-        availableFile = getScriptFolder(this, scriptType).list()?.filter { filename ->
-            filename.endsWith(FILE_TYPE)
-        }?.map { a -> a.removeSuffix(FILE_TYPE) } ?: emptyList()
+        availableFile = getScriptList(this, scriptType)
         spinnerFileList.adapter =
             ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, availableFile)
     }
@@ -89,21 +64,22 @@ open class SelectActivity : AppCompatActivity(), UseInternalStorage {
             textViewDialogBox.text = getString(R.string.select_activity__invalid_name)
         } else {
             textViewDialogBox.text = ""
-            if (!createScriptFile(this, scriptType, fileName + FILE_TYPE)) {
+            if (!createScriptFile(this, scriptType, fileName)) {
                 textViewDialogBox.text = getString(R.string.select_activity__file_exists)
             }
-            val goToEditIndent = Intent(this, EditActivity::class.java)
-            goToEditIndent.putExtra(EditActivity.SCRIPT_TYPE_KEY, scriptType)
-            goToEditIndent.putExtra(EditActivity.SCRIPT_NAME_KEY, fileName)
+
+            val goToEditIndent = Intent(this, EditActivity::class.java).apply {
+                putExtra(EditActivity.SCRIPT_TYPE_KEY, scriptType)
+                putExtra(EditActivity.SCRIPT_NAME_KEY, fileName)
+            }
             startActivity(goToEditIndent)
         }
     }
 
     companion object {
         private val TAG = SelectActivity::class.java.simpleName
-        const val FILE_TYPE = ".txt"
         private const val VALID_FILENAME_PATTERN = "([A-Za-z0-9_-]*)"
-        private const val basicType = "BASIC"
+        const val basicType = "BASIC"
         const val TYPE_KEY = "TYPE"
 
         fun isValidFileName(FileName: String): Boolean {

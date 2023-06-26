@@ -24,6 +24,7 @@ import com.tranquilrock.androidscript.activity.editor.component.BlockAdapter
 import com.tranquilrock.androidscript.activity.editor.component.ButtonAdapter
 import java.util.Vector
 import android.provider.Settings
+import android.widget.Toast
 import com.tranquilrock.androidscript.activity.GetPermission
 
 class EditActivity : AppCompatActivity(), UseInternalStorage, GetPermission {
@@ -47,7 +48,7 @@ class EditActivity : AppCompatActivity(), UseInternalStorage, GetPermission {
         blockMeta = getScriptMetadata(this, scriptClass).also {
             Log.d(TAG, "Metadata: $it")
         }
-        blockData = Vector()
+        blockData = getScriptData(this, scriptClass, fileName)
 
         findViewById<View>(R.id.start_service).setOnClickListener {
             if (!canDrawOverlays(this)) {
@@ -63,22 +64,18 @@ class EditActivity : AppCompatActivity(), UseInternalStorage, GetPermission {
 //                        .putExtra(FloatingWidgetService.scriptTAG, "Run.txt")
 //                        .putExtra("MPM", result.data!!)
 //                )
-                Log.d(TAG, "Saving Files")
+                Log.d(TAG, "Start Service")
                 // TODO Start Widget
             }
         }
 
         findViewById<View>(R.id.save_file).setOnClickListener {
-//            if (Code.isValid(blockData.toList())) {
-//                FileOperation.writeWords(folderName + fileName, blockData)
-//                Toast.makeText(this.applicationContext, "Successful!", Toast.LENGTH_LONG).show()
-//            } else {
-//                Toast.makeText(
-//                    this.applicationContext,
-//                    "Arguments can't be empty",
-//                    Toast.LENGTH_LONG
-//                ).show()
-//            }
+            saveScriptFile(this, scriptClass, fileName, blockData)
+            Toast.makeText(
+                this,
+                "Arguments can't be empty",
+                Toast.LENGTH_LONG
+            ).show()
 //            TODO check code valid && store file
         }
 
