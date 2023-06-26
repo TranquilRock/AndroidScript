@@ -51,6 +51,13 @@
 
         <!-- Service -->
         <service
+            android:name=".service.WidgetService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection"
+            android:label="WidgetService" />
+
+        <service
             android:name=".service.ClickService"
             android:enabled="true"
             android:exported="false"

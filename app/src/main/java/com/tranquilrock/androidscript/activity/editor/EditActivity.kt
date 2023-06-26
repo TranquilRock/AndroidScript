@@ -10,8 +10,12 @@
 package com.tranquilrock.androidscript.activity.editor
 
 import android.content.Intent
+import android.media.projection.MediaProjection
+import android.media.projection.MediaProjectionManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import com.tranquilrock.androidscript.R
 import android.view.View
@@ -25,7 +29,11 @@ import com.tranquilrock.androidscript.activity.editor.component.ButtonAdapter
 import java.util.Vector
 import android.provider.Settings
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import com.tranquilrock.androidscript.activity.GetPermission
+import com.tranquilrock.androidscript.service.WidgetService
+import com.tranquilrock.androidscript.service.WidgetService.Companion.MEDIA_PROJECTION_KEY
 
 class EditActivity : AppCompatActivity(), UseInternalStorage, GetPermission {
     private lateinit var blockView: RecyclerView
@@ -50,6 +58,28 @@ class EditActivity : AppCompatActivity(), UseInternalStorage, GetPermission {
         }
         blockData = getScriptData(this, scriptClass, fileName)
 
+
+        val mediaProjectionManager = getSystemService(MediaProjectionManager::class.java)
+
+        val startMediaProjection = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val startServiceIntent = Intent(this, WidgetService::class.java).apply {
+                    putExtra(MEDIA_PROJECTION_KEY, result.data!!)
+                }
+                this.startService(startServiceIntent)
+                Log.d(TAG, "Start Service")
+                // TODO stopself
+            } else {
+                Toast.makeText(
+                    this,
+                    "Please Enable Media Projection",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        }
+
         findViewById<View>(R.id.start_service).setOnClickListener {
             if (!canDrawOverlays(this)) {
                 Log.d(TAG, "Requesting Overlays")
@@ -58,14 +88,8 @@ class EditActivity : AppCompatActivity(), UseInternalStorage, GetPermission {
                 requestAccessibility(this)
                 Log.d(TAG, "Requesting Accessibility")
             } else {
-//                this.startService(
-//                    Intent(this, FloatingWidgetService::class.java)
-//                        .putExtra(FloatingWidgetService.folderTAG, this.folderName)
-//                        .putExtra(FloatingWidgetService.scriptTAG, "Run.txt")
-//                        .putExtra("MPM", result.data!!)
-//                )
-                Log.d(TAG, "Start Service")
-                // TODO Start Widget
+                startMediaProjection.launch(mediaProjectionManager.createScreenCaptureIntent())
+                // Start Service Within Callback.
             }
         }
 
@@ -73,13 +97,11 @@ class EditActivity : AppCompatActivity(), UseInternalStorage, GetPermission {
             saveScriptFile(this, scriptClass, fileName, blockData)
             Toast.makeText(
                 this,
-                "Arguments can't be empty",
+                "File Saved",
                 Toast.LENGTH_LONG
             ).show()
-//            TODO check code valid && store file
         }
 
-        // TODO read file and setup blockData.
         blockView.layoutManager = LinearLayoutManager(this)
         blockView.addItemDecoration(DividerItemDecoration(this, DividerItemDecoration.VERTICAL))
         blockView.adapter = BlockAdapter(blockMeta, blockData)

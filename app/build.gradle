@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId 'com.tranquilrock.androidscript'
-        minSdkVersion 24
+        minSdkVersion 30
         targetSdk 33
         versionCode 2
         versionName '2.1.0'
