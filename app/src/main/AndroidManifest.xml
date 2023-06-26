@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- For floating widget -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <!-- For media projection -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+
     <!-- Needed to get the list of applications to start when creating an intent action. -->
     <queries>
         <intent>

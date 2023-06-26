@@ -9,6 +9,7 @@
  * */
 package com.tranquilrock.androidscript.activity.editor
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -22,14 +23,17 @@ import com.tranquilrock.androidscript.activity.UseInternalStorage
 import com.tranquilrock.androidscript.activity.editor.component.BlockAdapter
 import com.tranquilrock.androidscript.activity.editor.component.ButtonAdapter
 import java.util.Vector
+import android.provider.Settings
+import com.tranquilrock.androidscript.activity.GetPermission
 
-class EditActivity : AppCompatActivity(), UseInternalStorage {
+class EditActivity : AppCompatActivity(), UseInternalStorage, GetPermission {
     private lateinit var blockView: RecyclerView
     private lateinit var buttonView: RecyclerView
     private lateinit var blockData: MutableList<MutableList<String>>
     private lateinit var blockMeta: List<Array<*>>
     private lateinit var fileName: String
     private lateinit var scriptClass: String
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,26 +50,22 @@ class EditActivity : AppCompatActivity(), UseInternalStorage {
         blockData = Vector()
 
         findViewById<View>(R.id.start_service).setOnClickListener {
-//            if (!Settings.canDrawOverlays(applicationContext)) { //Floating Widget
-//                startActivity(Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION))
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-//                    requestPermissions(arrayOfNulls<String>(1), FOREGROUND_REQUEST_CODE)
-//                }
-//            } else if (Settings.Secure.getInt(
-//                    contentResolver,
-//                    Settings.Secure.ACCESSIBILITY_ENABLED
-//                ) == 0
-//            ) {
-//                startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS)) //Get permission
-//            } else {
+            if (!canDrawOverlays(this)) {
+                Log.d(TAG, "Requesting Overlays")
+                requestDrawOverlays(this)
+            } else if (!accessibilityEnabled(contentResolver)) {
+                requestAccessibility(this)
+                Log.d(TAG, "Requesting Accessibility")
+            } else {
 //                this.startService(
 //                    Intent(this, FloatingWidgetService::class.java)
 //                        .putExtra(FloatingWidgetService.folderTAG, this.folderName)
 //                        .putExtra(FloatingWidgetService.scriptTAG, "Run.txt")
 //                        .putExtra("MPM", result.data!!)
 //                )
-//                TODO check permission and start services
-//            }
+                Log.d(TAG, "Saving Files")
+                // TODO Start Widget
+            }
         }
 
         findViewById<View>(R.id.save_file).setOnClickListener {
