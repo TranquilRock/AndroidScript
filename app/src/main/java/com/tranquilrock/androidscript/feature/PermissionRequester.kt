@@ -1,4 +1,4 @@
-package com.tranquilrock.androidscript.activity
+package com.tranquilrock.androidscript.feature
 
 import android.content.ComponentName
 import android.content.ContentResolver
@@ -9,7 +9,7 @@ import android.provider.Settings
 import com.tranquilrock.androidscript.BuildConfig
 import com.tranquilrock.androidscript.service.ClickService
 
-interface GetPermission {
+interface PermissionRequester {
 
     companion object {
         private const val EXTRA_FRAGMENT_ARG_KEY = ":settings:fragment_args_key"

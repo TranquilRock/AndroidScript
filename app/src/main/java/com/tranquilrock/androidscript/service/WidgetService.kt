@@ -18,7 +18,7 @@ import android.view.View.OnTouchListener
 import android.widget.TextView
 import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.activity.Menu
-import com.tranquilrock.androidscript.utils.ProjectionReader
+import com.tranquilrock.androidscript.feature.ProjectionReader
 import java.lang.Integer.max
 import java.lang.Integer.min
 import kotlin.math.abs

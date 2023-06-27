@@ -1,11 +1,12 @@
 /* Gather activities' FILE read write here.
  *
  * */
-package com.tranquilrock.androidscript.activity
+package com.tranquilrock.androidscript.feature
 
 import android.content.Context
 import android.util.Log
 import com.google.gson.Gson
+import com.tranquilrock.androidscript.activity.SelectActivity
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -16,12 +17,12 @@ import java.io.ObjectOutputStream
 import java.util.Vector
 
 
-interface UseInternalStorage {
+interface InternalStorageReader {
 
     companion object {
         const val SCRIPT_FILE_TYPE = ".blc"
         const val META_FILE = "meta.json"
-        private val TAG = UseInternalStorage::class.java.simpleName
+        private val TAG = InternalStorageReader::class.java.simpleName
     }
 
     private fun getScriptFolder(context: Context, scriptClass: String): File {

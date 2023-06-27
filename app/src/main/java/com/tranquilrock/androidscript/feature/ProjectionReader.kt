@@ -1,4 +1,4 @@
-package com.tranquilrock.androidscript.utils
+package com.tranquilrock.androidscript.feature
 
 
 import android.annotation.SuppressLint

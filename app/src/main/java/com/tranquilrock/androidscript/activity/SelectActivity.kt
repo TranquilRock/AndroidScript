@@ -14,10 +14,11 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.activity.editor.EditActivity
+import com.tranquilrock.androidscript.feature.InternalStorageReader
 import java.util.regex.Pattern
 
 
-open class SelectActivity : AppCompatActivity(), UseInternalStorage {
+open class SelectActivity : AppCompatActivity(), InternalStorageReader {
 
     private lateinit var editTextNewName: EditText
     private lateinit var textViewDialogBox: TextView

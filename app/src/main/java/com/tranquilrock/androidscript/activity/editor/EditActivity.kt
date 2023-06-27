@@ -10,12 +10,9 @@
 package com.tranquilrock.androidscript.activity.editor
 
 import android.content.Intent
-import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import com.tranquilrock.androidscript.R
 import android.view.View
@@ -23,19 +20,16 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.tranquilrock.androidscript.activity.UseInternalStorage
+import com.tranquilrock.androidscript.feature.InternalStorageReader
 import com.tranquilrock.androidscript.activity.editor.component.BlockAdapter
 import com.tranquilrock.androidscript.activity.editor.component.ButtonAdapter
-import java.util.Vector
-import android.provider.Settings
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import com.tranquilrock.androidscript.activity.GetPermission
+import com.tranquilrock.androidscript.feature.PermissionRequester
 import com.tranquilrock.androidscript.service.WidgetService
 import com.tranquilrock.androidscript.service.WidgetService.Companion.MEDIA_PROJECTION_KEY
 
-class EditActivity : AppCompatActivity(), UseInternalStorage, GetPermission {
+class EditActivity : AppCompatActivity(), InternalStorageReader, PermissionRequester {
     private lateinit var blockView: RecyclerView
     private lateinit var buttonView: RecyclerView
     private lateinit var blockData: MutableList<MutableList<String>>

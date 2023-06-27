@@ -3,6 +3,7 @@ package com.tranquilrock.androidscript.utils
 import android.graphics.Bitmap
 import android.util.Log
 import android.view.WindowManager
+import com.tranquilrock.androidscript.feature.ProjectionReader
 import org.opencv.core.Mat
 import org.opencv.imgproc.Imgproc
 import org.opencv.android.Utils
