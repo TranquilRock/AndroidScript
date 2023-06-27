@@ -33,7 +33,7 @@ class Interpreter(
                 rootRawCode.add(block.joinToString(" "))
             } else {
                 // Replace block typeNum with block name
-                block[0] = blockMeta[block[0].toInt()][0] as String + EXECUTABLE_EXTENSION_NAME
+                block[0] = blockMeta[block[0].toInt()][0] as String
                 rootRawCode.add(Command.CALL + " " + block.joinToString(" "))
             }
         }
@@ -81,7 +81,7 @@ class Interpreter(
             val parameters = command.copyOfRange(1, command.size)
             varsSubstitution(localVar, command[0], parameters)
             //=====================================================
-            Log.d(LOG_TAG, "$pc  ${command.joinToString(" ")}")
+            Log.d(TAG, "$pc  ${command.joinToString(" ")}")
             when (command[0]) {
                 Command.EXIT -> {
                     runningFlag = false
@@ -101,7 +101,7 @@ class Interpreter(
                     val tmp = mockReadImage(parameters[0])
                     val target = imageParser.findLocTODO(tmp, parameters[1].toDouble())
                     if (target != null) {
-                        Log.i(LOG_TAG, "Clicking Picture:" + target.x + " " + target.y)
+                        Log.i(TAG, "Clicking Picture:" + target.x + " " + target.y)
                         clicker?.click(target.x.toInt(), target.y.toInt())
                         localVar["\$R"] = "0"
                     } else {
@@ -154,7 +154,7 @@ class Interpreter(
                         parameters[1].toInt(),
                         parameters[2].toInt(),
                         parameters[3].toInt(),
-                    ) ?: Log.e(LOG_TAG, "")
+                    ) ?: Log.e(TAG, "")
                 }
 
                 Command.COMPARE -> {
@@ -181,24 +181,30 @@ class Interpreter(
     private fun mockReadImage(@Suppress("UNUSED_PARAMETER") fileName: String) =
         Bitmap.createBitmap(0, 0, Bitmap.Config.ALPHA_8)
 
-
+//class ResourceReader(private applicationContext: Context): InternalStorageReader{
+//    fun readCode(fileName: String): File {
+//     return
+//    }
+//
+//}
     companion object {
-        private const val EXECUTABLE_EXTENSION_NAME = ".txt"
         private const val ROOT_RAW_CODE_KEY = "ROOT_RAW_CODE"
-        private val LOG_TAG = Interpreter::class.java.simpleName
+        private val TAG = Interpreter::class.java.simpleName
 
         //==================== Helper =======================
         fun varsSubstitution(
-            localVar: MutableMap<String, String>, command: String, parameters: Array<String>
+            localNameValMap: MutableMap<String, String>, command: String, parameters: Array<String>
         ) {
-            if (parameters.isNotEmpty() && parameters[0][0] == '$' //Exit Has No Arg
-                && command != "Var" && command != "Subtract" && command != "Add"
+            Log.d(TAG, command + " '" + parameters.joinToString { "' '" } + "'")
+            // Exit Has No Arg
+            if (parameters.isNotEmpty() && parameters[0][0] == '$' // Only left value is assigned.
+                && command != Command.VAR && command != "Subtract" && command != "Add"
             ) {
-                parameters[0] = localVar[parameters[0]]!!
+                parameters[0] = localNameValMap[parameters[0]]!!
             }
             for (z in 1 until parameters.size) {
                 if (parameters[z][0] == '$') { //There might be Var command, that should replace $V
-                    parameters[z] = localVar[parameters[z]]!!
+                    parameters[z] = localNameValMap[parameters[z]]!!
                 }
             }
         }

@@ -79,9 +79,10 @@ object Command {
         "$COMPARE $intVarFormat $intVarFormat $intVarFormat $intVarFormat $imgVarFormat"
     )
 
+    /** CALL & CALL_ARG are not exposed. */
     val BASIC_META = listOf(
         listOf(
-            Command.EXIT
+            EXIT
         ),
         listOf(
             LOG, listOf("EditText", "Info")
@@ -92,10 +93,6 @@ object Command {
         listOf(
             WAIT, listOf("EditText", "Millis")
         ),
-        // Call is hided to UI user.
-//        listOf(
-//            CALL, listOf("EditText", "Script")
-//        ),
         listOf(
             TAG, listOf("EditText", "\$Name")
         ),
@@ -108,9 +105,6 @@ object Command {
         listOf(
             CLICK, listOf("EditText", "x"), listOf("EditText", "y"),
         ),
-//        listOf(
-//            CALL_ARG, listOf("EditText", "Placeholder"), listOf("EditText", "Placeholder"),
-//        ),
         listOf(
             IF_GREATER, listOf("EditText", "var1"), listOf("EditText", "var2"),
         ),

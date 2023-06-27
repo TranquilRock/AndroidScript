@@ -109,6 +109,7 @@ class EditActivity : AppCompatActivity(), InternalStorageReader, PermissionReque
 
     private fun startWidgetService(data: Intent) {
         val startServiceIntent = Intent(this, WidgetService::class.java).apply {
+            putExtra(SCRIPT_TYPE_KEY, scriptClass)
             putExtra(MEDIA_PROJECTION_KEY, data)
             putExtra(BLOCK_DATA_KEY, blockData)
             putExtra(BLOCK_META_KEY, blockMeta)

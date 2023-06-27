@@ -19,7 +19,9 @@ import android.view.View.OnTouchListener
 import android.widget.TextView
 import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.activity.Menu
+import com.tranquilrock.androidscript.activity.editor.EditActivity.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.core.Interpreter
+import com.tranquilrock.androidscript.feature.InternalStorageReader
 import com.tranquilrock.androidscript.feature.ProjectionReader
 import com.tranquilrock.androidscript.service.ClickService.Companion.clicker
 import com.tranquilrock.androidscript.utils.ImageParser
@@ -47,6 +49,8 @@ class WidgetService : Service(), ProjectionReader {
 
     private lateinit var interpreter: Interpreter
     private lateinit var statusBulletin: Bulletin
+
+    private lateinit var scriptType: String
 
     private var job: Job? = null
     private val scope = CoroutineScope(Dispatchers.IO + Job())
@@ -138,6 +142,7 @@ class WidgetService : Service(), ProjectionReader {
         createNotificationChannel()
 
         try {
+            scriptType = intent.getStringExtra(SCRIPT_TYPE_KEY)!!
             val projectionIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 intent.getParcelableExtra(MEDIA_PROJECTION_KEY, Intent::class.java)!!
             } else {
@@ -168,9 +173,15 @@ class WidgetService : Service(), ProjectionReader {
                 }) as Array<Array<Any>>
             val imageParser = ImageParser(this, windowManager)
 
-            interpreter = Interpreter(blockData, blockMeta, clicker, imageParser, statusBulletin)
+            interpreter = Interpreter(
+                blockData,
+                blockMeta,
+                clicker,
+                imageParser,
+                statusBulletin
+            )
         } catch (e: NullPointerException) {
-            Log.e(TAG, "No intent!")
+            Log.e(TAG, "No intent extra!")
             e.printStackTrace()
             stopSelf()
         }

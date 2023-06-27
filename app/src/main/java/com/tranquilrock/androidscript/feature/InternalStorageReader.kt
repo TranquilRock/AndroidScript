@@ -20,6 +20,7 @@ import java.io.ObjectOutputStream
 interface InternalStorageReader {
 
     companion object {
+        const val CODE_FILE_TYPE = ".txt"
         const val SCRIPT_FILE_TYPE = ".blc"
         const val META_FILE = "meta.json"
         private val TAG = InternalStorageReader::class.java.simpleName
@@ -31,6 +32,10 @@ interface InternalStorageReader {
 
     private fun getScriptFile(context: Context, scriptClass: String, fileName: String): File {
         return File(getScriptFolder(context, scriptClass), fileName + SCRIPT_FILE_TYPE)
+    }
+
+    private fun getCodeFile(context: Context, scriptClass: String, fileName: String): File {
+        return File(getScriptFolder(context, scriptClass), fileName + CODE_FILE_TYPE)
     }
 
     /* Creates script files under scriptClass, return whether the operation succeeded. */
@@ -95,14 +100,12 @@ interface InternalStorageReader {
         return data ?: ArrayList()
     }
 
-    fun writeScriptFile(
-        context: Context, scriptClass: String, fileName: String, lines: List<String>
-    ) {
-        getScriptFile(context, scriptClass, fileName).bufferedWriter().use { out ->
-            lines.forEach {
-                out.write(it)
-            }
-        }
+    fun getCodeData(
+        context: Context, scriptClass: String, fileName: String
+    ): List<String> {
+        val file = getScriptFile(context, scriptClass, fileName)
+        if (!file.exists()) throw FileNotFoundException()
+        return file.readLines()
     }
 
     fun testOnlyInitBasic(context: Context) {
