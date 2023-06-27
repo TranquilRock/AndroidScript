@@ -43,7 +43,7 @@ interface UseInternalStorage {
 
     fun getScriptMetadata(context: Context, scriptClass: String): List<Array<Any>> {
         return Gson().fromJson(
-            getScriptFile(context, scriptClass, META_FILE).readText(),
+            File(getScriptFolder(context, scriptClass), META_FILE).readText(),
             Array<Array<Any>>::class.java
         ).asList()
     }

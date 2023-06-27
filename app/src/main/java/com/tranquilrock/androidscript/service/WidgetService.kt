@@ -5,6 +5,8 @@ import android.app.*
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.PixelFormat
+import android.hardware.display.VirtualDisplay
+import android.media.ImageReader
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
 import android.os.Handler
@@ -20,8 +22,7 @@ import java.lang.Integer.min
 import kotlin.math.abs
 
 
-class WidgetService : Service() {
-
+class WidgetService : Service(), ProjectionUtil {
 
     private lateinit var widgetView: View
     private lateinit var collapsedView: View
@@ -31,15 +32,16 @@ class WidgetService : Service() {
     private lateinit var layoutInflater: LayoutInflater
 
     private lateinit var statusBulletin: Bulletin
-    private lateinit var mediaProjection: MediaProjection
 
     private var xInitMargin = 0
     private var yInitMargin = 0
 
-    private val physicalWidth: Int
+    override lateinit var imageReader: ImageReader
+    override lateinit var virtualDisplay: VirtualDisplay
+    override lateinit var mediaProjection: MediaProjection
+    override val screenWidth: Int
         get() = windowManager.currentWindowMetrics.bounds.width()
-
-    private val physicalHeight: Int
+    override val screenHeight: Int
         get() = windowManager.currentWindowMetrics.bounds.height()
 
     private val layoutParams: WindowManager.LayoutParams = WindowManager.LayoutParams(
@@ -222,14 +224,14 @@ class WidgetService : Service() {
                         yCordDestination =
                             min(
                                 max(yCordDestination, 0),
-                                physicalHeight// - (widgetView.height + statusBarHeight)
+                                screenHeight// - (widgetView.height + statusBarHeight)
                             )
 
                         xCordDestination = xInitMargin + xDiff
                         xCordDestination =
                             min(
                                 max(xCordDestination, 0),
-                                physicalWidth// - widgetView.width
+                                screenWidth// - widgetView.width
                             )
 
                         layoutParams.y = yCordDestination
@@ -246,12 +248,12 @@ class WidgetService : Service() {
                         yCordDestination =
                             min(
                                 max(yCordDestination, 0),
-                                physicalHeight// - (widgetView.height + statusBarHeight)
+                                screenHeight// - (widgetView.height + statusBarHeight)
                             )
                         xCordDestination =
                             min(
                                 max(xCordDestination, 0),
-                                physicalWidth// - widgetView.width
+                                screenWidth// - widgetView.width
                             )
 
                         layoutParams.x = xCordDestination
@@ -275,7 +277,8 @@ class WidgetService : Service() {
     companion object {
         private val TAG = WidgetService::class.java.simpleName
         const val MEDIA_PROJECTION_KEY = "MEDIA_PROJECTION"
-//        private const val folderTAG: String = "ScriptFolderName"
+
+        //        private const val folderTAG: String = "ScriptFolderName"
 //        private const val scriptTAG: String = "ScriptName"
 //        private const val ARGS_TAG: String = "Args"
         private const val CHANNEL_ID = "AndroidScript"

@@ -22,13 +22,13 @@ import kotlin.math.max
 @Suppress("unused")
 interface ProjectionUtil {
 
-    val mediaProjection: MediaProjection
+    var mediaProjection: MediaProjection
 
     var imageReader: ImageReader
     var virtualDisplay: VirtualDisplay
 
-    val width: Int
-    val height: Int
+    val screenWidth: Int
+    val screenHeight: Int
 
     fun stopProjection() {
         Log.d(TAG, "onDestroy")
@@ -38,16 +38,16 @@ interface ProjectionUtil {
 
     @SuppressLint("WrongConstant")
     fun setupProjection() {
-        imageReader = ImageReader.newInstance(width, height, PixelFormat.RGBA_8888, NUM_MAX_IMAGES)
+        imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, NUM_MAX_IMAGES)
         virtualDisplay = mediaProjection.createVirtualDisplay(
             VIRTUAL_DISPLAY_NAME,
-            width,
-            height,
+            screenWidth,
+            screenHeight,
             Resources.getSystem().displayMetrics.densityDpi,
             DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR,
             imageReader.surface, null, null
         )
-        Log.d(TAG, "Start Screen Casting on ($height,$width) device")
+        Log.d(TAG, "Start Screen Casting on ($screenHeight,$screenWidth) device")
     }
 
     suspend fun shot(): Bitmap? {
@@ -60,13 +60,13 @@ interface ProjectionUtil {
         buffer.rewind() // java.lang.RuntimeException: Buffer not large enough for pixels
         val pixelStride = plane.pixelStride //像素間距
         val rowStride = plane.rowStride //總間距
-        val rowPadding = rowStride - pixelStride * width
+        val rowPadding = rowStride - pixelStride * screenWidth
         var bitmap = Bitmap.createBitmap(
-            width + rowPadding / pixelStride, height,
+            screenWidth + rowPadding / pixelStride, screenHeight,
             Bitmap.Config.ARGB_8888
         )
         bitmap.copyPixelsFromBuffer(buffer)
-        bitmap = Bitmap.createBitmap(bitmap, 0, 0, width, height)
+        bitmap = Bitmap.createBitmap(bitmap, 0, 0, screenWidth, screenHeight)
         img.close()
         return bitmap
     }
@@ -84,7 +84,6 @@ interface ProjectionUtil {
 //            ), Target
 //        )
     }
-
 
     private fun bitmapToGrayScaleMat(bitmap: Bitmap): Mat {
         val tmp = Mat()
