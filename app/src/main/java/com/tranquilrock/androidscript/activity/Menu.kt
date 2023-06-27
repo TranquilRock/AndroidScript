@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.tranquilrock.androidscript.R
+import com.tranquilrock.androidscript.service.WidgetService
 import org.opencv.android.OpenCVLoader
 
 class Menu : AppCompatActivity() {
@@ -31,6 +32,11 @@ class Menu : AppCompatActivity() {
             toSelectIntent.putExtra(SelectActivity.TYPE_KEY, "BASIC")
             startActivity(toSelectIntent)
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        stopService(Intent(this, WidgetService::class.java))
     }
 
     companion object {

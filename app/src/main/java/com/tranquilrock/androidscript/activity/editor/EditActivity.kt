@@ -56,7 +56,9 @@ class EditActivity : AppCompatActivity(), UseInternalStorage, GetPermission {
         blockMeta = getScriptMetadata(this, scriptClass).also {
             Log.d(TAG, "Metadata: $it")
         }
-        blockData = getScriptData(this, scriptClass, fileName)
+        blockData = getScriptData(this, scriptClass, fileName).also {
+            Log.d(TAG, "Blockdata: $it")
+        }
 
 
         val mediaProjectionManager = getSystemService(MediaProjectionManager::class.java)
@@ -71,6 +73,7 @@ class EditActivity : AppCompatActivity(), UseInternalStorage, GetPermission {
                 this.startService(startServiceIntent)
                 Log.d(TAG, "Start Service")
                 // TODO stopself
+                finishAffinity()
             } else {
                 Toast.makeText(
                     this,
