@@ -2,7 +2,16 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Needed to get the list of applications to start when creating an intent action.-->
+    <!-- For floating widget -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <!-- For media projection -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <!-- For widget service to post notification -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <!-- Needed to get the list of applications to start when creating an intent action. -->
     <queries>
         <intent>
             <action android:name="android.intent.action.MAIN" />
@@ -20,24 +29,49 @@
         android:theme="@style/Theme.AndroidScript"
         tools:ignore="DataExtractionRules">
 
+        <!-- Activity -->
         <activity
-            android:name="com.tranquilrock.androidscript.activity.Menu"
+            android:name=".activity.Menu"
             android:exported="true"
             android:screenOrientation="locked">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".activity.SelectActivity"
             android:exported="false"
             android:screenOrientation="locked"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".activity.editor.EditActivity"
+            android:exported="false"
+            android:screenOrientation="locked"
+            android:windowSoftInputMode="adjustResize" />
 
-        </activity>
+        <!-- Service -->
+        <service
+            android:name=".service.WidgetService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection"
+            android:label="WidgetService" />
 
+        <service
+            android:name=".service.ClickService"
+            android:enabled="true"
+            android:exported="false"
+            android:label="AndroidScript"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
     </application>
 
 </manifest>

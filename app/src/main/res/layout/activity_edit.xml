@@ -39,7 +39,7 @@
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/buttongrid"
+            android:id="@+id/edit_button_grid"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center" />
@@ -47,7 +47,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleview"
+        android:id="@+id/edit_code_grid"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
