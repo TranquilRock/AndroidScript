@@ -27,13 +27,15 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import com.tranquilrock.androidscript.feature.PermissionRequester
 import com.tranquilrock.androidscript.service.WidgetService
+import com.tranquilrock.androidscript.service.WidgetService.Companion.BLOCK_DATA_KEY
+import com.tranquilrock.androidscript.service.WidgetService.Companion.BLOCK_META_KEY
 import com.tranquilrock.androidscript.service.WidgetService.Companion.MEDIA_PROJECTION_KEY
 
 class EditActivity : AppCompatActivity(), InternalStorageReader, PermissionRequester {
     private lateinit var blockView: RecyclerView
     private lateinit var buttonView: RecyclerView
-    private lateinit var blockData: MutableList<MutableList<String>>
-    private lateinit var blockMeta: List<Array<*>>
+    private lateinit var blockData: ArrayList<ArrayList<String>>
+    private lateinit var blockMeta: Array<Array<Any>>
     private lateinit var fileName: String
     private lateinit var scriptClass: String
 
@@ -51,7 +53,7 @@ class EditActivity : AppCompatActivity(), InternalStorageReader, PermissionReque
             Log.d(TAG, "Metadata: $it")
         }
         blockData = getScriptData(this, scriptClass, fileName).also {
-            Log.d(TAG, "Blockdata: $it")
+            Log.d(TAG, "Block data: $it")
         }
 
 
@@ -61,13 +63,7 @@ class EditActivity : AppCompatActivity(), InternalStorageReader, PermissionReque
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
             if (result.resultCode == RESULT_OK) {
-                val startServiceIntent = Intent(this, WidgetService::class.java).apply {
-                    putExtra(MEDIA_PROJECTION_KEY, result.data!!)
-                }
-                this.startService(startServiceIntent)
-                Log.d(TAG, "Start Service")
-                // TODO stopself
-                finishAffinity()
+                startWidgetService(result.data!!)
             } else {
                 Toast.makeText(
                     this,
@@ -111,10 +107,20 @@ class EditActivity : AppCompatActivity(), InternalStorageReader, PermissionReque
         )
     }
 
+    private fun startWidgetService(data: Intent) {
+        val startServiceIntent = Intent(this, WidgetService::class.java).apply {
+            putExtra(MEDIA_PROJECTION_KEY, data)
+            putExtra(BLOCK_DATA_KEY, blockData)
+            putExtra(BLOCK_META_KEY, blockMeta)
+        }
+
+        this.startService(startServiceIntent)
+        finishAffinity()
+        Log.d(TAG, "Start Service")
+    }
 
     companion object {
         private val TAG = EditActivity::class.java.simpleName
-        private const val FOREGROUND_REQUEST_CODE = 111
         const val SCRIPT_TYPE_KEY = "SCRIPT_TYPE"
         const val SCRIPT_NAME_KEY = "SCRIPT_NAME"
     }

@@ -5,18 +5,19 @@ import android.util.Log
 import com.tranquilrock.androidscript.service.ClickService
 import com.tranquilrock.androidscript.service.WidgetService
 import com.tranquilrock.androidscript.utils.ImageParser
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.lang.Thread.sleep
 import java.util.Vector
-import kotlin.collections.HashMap
 
 /**
  * Class that handles block to code.
  * */
 @Suppress("unused")
 class Interpreter(
-    blockData: MutableList<MutableList<String>>,
-    blockMeta: List<List<String>>,
-    private val clicker: ClickService,
+    blockData: ArrayList<ArrayList<String>>,
+    blockMeta: Array<Array<Any>>,
+    private val clicker: ClickService?,
     private val imageParser: ImageParser,
     private val board: WidgetService.Bulletin,
 ) {
@@ -28,8 +29,8 @@ class Interpreter(
 
         for (block in blockData) {
             // Replace block typeNum with block name
-            block[0] = blockMeta[block[0].toInt()][0] + EXECUTABLE_EXTENSION_NAME
-            rootRawCode.add(Command.CALL_ARG + block.joinToString(" "))
+            block[0] = blockMeta[block[0].toInt()][0] as String + EXECUTABLE_EXTENSION_NAME
+            rootRawCode.add(Command.CALL + " " + block.joinToString(" "))
         }
         Code(rootRawCode).run {
             scriptCode[ROOT_RAW_CODE_KEY] = this
@@ -84,7 +85,7 @@ class Interpreter(
 
                 Command.LOG -> board.announce(parameters[0])
                 Command.JUMP_TO -> pc = parameters[0].toInt() - 1 // One-based to zero-based
-                Command.WAIT -> sleep(parameters[0].toLong())
+                Command.WAIT -> delay(parameters[0].toLong())
                 Command.CALL -> localVar["\$R"] =
                     execute(parameters[0], emptyList(), depth + 1).toString()
 
@@ -96,7 +97,7 @@ class Interpreter(
                     val target = imageParser.findLocTODO(tmp, parameters[1].toDouble())
                     if (target != null) {
                         Log.i(LOG_TAG, "Clicking Picture:" + target.x + " " + target.y)
-                        clicker.click(target.x.toInt(), target.y.toInt())
+                        clicker?.click(target.x.toInt(), target.y.toInt())
                         localVar["\$R"] = "0"
                     } else {
                         localVar["\$R"] = "1"
@@ -104,7 +105,7 @@ class Interpreter(
                 }
 
                 Command.CLICK -> {
-                    clicker.click(parameters[0].toInt(), parameters[1].toInt())
+                    clicker?.click(parameters[0].toInt(), parameters[1].toInt())
                 }
 
                 Command.CALL_ARG -> {
@@ -143,12 +144,12 @@ class Interpreter(
                 }
 
                 Command.SWIPE -> {
-                    clicker.swipe(
+                    clicker?.swipe(
                         parameters[0].toInt(),
                         parameters[1].toInt(),
                         parameters[2].toInt(),
                         parameters[3].toInt(),
-                    )
+                    ) ?: Log.e(LOG_TAG, "")
                 }
 
                 Command.COMPARE -> {
@@ -169,8 +170,11 @@ class Interpreter(
         return 0
     }
 
+    private suspend fun delay(millis: Long = 200L) = withContext(Dispatchers.IO) { sleep(millis) }
+
     private fun mockRead(@Suppress("UNUSED_PARAMETER") fileName: String): List<String> = emptyList()
-    private fun mockReadImage(@Suppress("UNUSED_PARAMETER") fileName: String) = Bitmap.createBitmap(0, 0, Bitmap.Config.ALPHA_8)
+    private fun mockReadImage(@Suppress("UNUSED_PARAMETER") fileName: String) =
+        Bitmap.createBitmap(0, 0, Bitmap.Config.ALPHA_8)
 
 
     companion object {
@@ -203,6 +207,5 @@ class Interpreter(
             return localVariables
         }
 
-        fun delay() = sleep(100)
     }
 }

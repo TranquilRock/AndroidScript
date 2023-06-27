@@ -5,13 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tranquilrock.androidscript.R
-import com.tranquilrock.androidscript.core.Command
 import java.util.Collections
 
 
 class BlockAdapter(
-    private val blockMeta: List<Array<*>>,
-    val blockData: MutableList<MutableList<String>>
+    private val blockMeta: Array<Array<Any>>,
+    val blockData: ArrayList<ArrayList<String>>
 ) :
     RecyclerView.Adapter<BlockViewHolder>() {
 

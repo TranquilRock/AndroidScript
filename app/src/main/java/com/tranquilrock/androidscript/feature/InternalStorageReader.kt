@@ -14,7 +14,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
-import java.util.Vector
 
 
 interface InternalStorageReader {
@@ -42,11 +41,11 @@ interface InternalStorageReader {
         getScriptFile(context, scriptClass, fileName).delete()
     }
 
-    fun getScriptMetadata(context: Context, scriptClass: String): List<Array<Any>> {
+    fun getScriptMetadata(context: Context, scriptClass: String): Array<Array<Any>> {
         return Gson().fromJson(
             File(getScriptFolder(context, scriptClass), META_FILE).readText(),
             Array<Array<Any>>::class.java
-        ).asList()
+        )
     }
 
     fun getScriptList(context: Context, scriptClass: String): List<String> {
@@ -59,7 +58,7 @@ interface InternalStorageReader {
         context: Context,
         scriptClass: String,
         fileName: String,
-        data: MutableList<MutableList<String>>
+        data: ArrayList<ArrayList<String>>
     ) {
         val file = getScriptFile(context, scriptClass, fileName)
 
@@ -78,18 +77,17 @@ interface InternalStorageReader {
         context: Context,
         scriptClass: String,
         fileName: String
-    ): MutableList<MutableList<String>> {
+    ): ArrayList<ArrayList<String>> {
 
         val file = getScriptFile(context, scriptClass, fileName)
         if (!file.exists()) throw FileNotFoundException()
 
-        var data: MutableList<MutableList<String>>? = null
+        var data: ArrayList<ArrayList<String>>? = null
 
         if (file.length() > 0L) {
             try {
-
                 ObjectInputStream(FileInputStream(file)).run {
-                    data = readObject() as? MutableList<MutableList<String>> ?: null
+                    data = readObject() as? ArrayList<ArrayList<String>>
                     close()
                 }
             } catch (e: Exception) {
@@ -98,7 +96,7 @@ interface InternalStorageReader {
             }
         }
 
-        return data ?: Vector()
+        return data ?: ArrayList()
     }
 
     fun writeScriptFile(
@@ -134,5 +132,9 @@ interface InternalStorageReader {
             .bufferedWriter()
             .use { out -> out.write(data) }
 
+
+        File(getScriptFolder(context, SelectActivity.basicType), "Exit.txt")
+            .bufferedWriter()
+            .use { out -> out.write("Exit") }
     }
 }

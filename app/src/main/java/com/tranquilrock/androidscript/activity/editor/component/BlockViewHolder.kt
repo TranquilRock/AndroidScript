@@ -21,7 +21,7 @@ abstract class BlockViewHolder(protected var view: View, val blockDef: Array<*>)
     // TODO change `inputs` to InputView
     lateinit var inputs: List<EditText>
     lateinit var title: TextView
-    open fun onBind(order: Updater, blockData: MutableList<MutableList<String>>) {
+    open fun onBind(order: Updater, blockData: ArrayList<ArrayList<String>>) {
         (view.findViewById(R.id.btn_up) as ImageButton).setOnClickListener {
             order.swap(
                 adapterPosition - 1,
@@ -46,7 +46,7 @@ abstract class BlockViewHolder(protected var view: View, val blockDef: Array<*>)
         // TODO config view based on blockDef
 
     class OneVH(view: View, blockDef: Array<*>) : BlockViewHolder(view, blockDef) {
-        override fun onBind(order: Updater, blockData: MutableList<MutableList<String>>) {
+        override fun onBind(order: Updater, blockData: ArrayList<ArrayList<String>>) {
             super.onBind(order, blockData)
             inputs = listOf(view.findViewById(R.id.OneVarInput))
             inputs[0].setText(blockData[adapterPosition][1])
@@ -57,7 +57,7 @@ abstract class BlockViewHolder(protected var view: View, val blockDef: Array<*>)
 
     class TwoVH(view: View, blockDef: Array<*>) : BlockViewHolder(view, blockDef) {
         lateinit var titleMiddle: TextView
-        override fun onBind(order: Updater, blockData: MutableList<MutableList<String>>) {
+        override fun onBind(order: Updater, blockData: ArrayList<ArrayList<String>>) {
             super.onBind(order, blockData)
             titleMiddle = view.findViewById(R.id.TwoVarTextMiddle)
 
@@ -81,7 +81,7 @@ abstract class BlockViewHolder(protected var view: View, val blockDef: Array<*>)
 
 
     class ThreeVH(view: View, blockDef: Array<*>) : BlockViewHolder(view, blockDef) {
-        override fun onBind(order: Updater, blockData: MutableList<MutableList<String>>) {
+        override fun onBind(order: Updater, blockData: ArrayList<ArrayList<String>>) {
             super.onBind(order, blockData)
             inputs = listOf(
                 view.findViewById(R.id.ThreeVarInputLeft),
@@ -103,7 +103,7 @@ abstract class BlockViewHolder(protected var view: View, val blockDef: Array<*>)
 
 
     class FourVH(view: View, blockDef: Array<*>) : BlockViewHolder(view, blockDef) {
-        override fun onBind(order: Updater, blockData: MutableList<MutableList<String>>) {
+        override fun onBind(order: Updater, blockData: ArrayList<ArrayList<String>>) {
             super.onBind(order, blockData)
             inputs = listOf(
                 view.findViewById(R.id.FourVarInputLeftUp),
@@ -126,7 +126,7 @@ abstract class BlockViewHolder(protected var view: View, val blockDef: Array<*>)
 
 
     class FiveVH(view: View, blockDef: Array<*>) : BlockViewHolder(view, blockDef) {
-        override fun onBind(order: Updater, blockData: MutableList<MutableList<String>>) {
+        override fun onBind(order: Updater, blockData: ArrayList<ArrayList<String>>) {
             super.onBind(order, blockData)
             inputs = listOf(
                 view.findViewById(R.id.FiveVarInputLeftUp),
@@ -150,7 +150,7 @@ abstract class BlockViewHolder(protected var view: View, val blockDef: Array<*>)
 
     companion object {
         protected fun getTextWatcher(
-            blockData: MutableList<MutableList<String>>,
+            blockData: ArrayList<ArrayList<String>>,
             index: Int,
             blockViewHolder: BlockViewHolder
         ): TextWatcher {
