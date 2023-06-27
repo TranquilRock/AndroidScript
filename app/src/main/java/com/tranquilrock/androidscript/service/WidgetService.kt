@@ -17,6 +17,7 @@ import android.view.*
 import android.view.View.OnTouchListener
 import android.widget.TextView
 import com.tranquilrock.androidscript.R
+import com.tranquilrock.androidscript.activity.Menu
 import java.lang.Integer.max
 import java.lang.Integer.min
 import kotlin.math.abs
@@ -100,17 +101,13 @@ class WidgetService : Service(), ProjectionUtil {
         }
     }
 
-
+    /**
+     * Acquires media projection on service start.
+     * */
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand")
-        if (intent.action == NOTIFICATION_STOP_WIDGET) {
-            stopForeground(STOP_FOREGROUND_REMOVE)
-            stopSelf()
-            return START_NOT_STICKY
-        }
 
         createNotificationChannel()
-
         Handler(Looper.getMainLooper()).post {
             @Suppress("DEPRECATION")
             mediaProjection =
@@ -118,48 +115,51 @@ class WidgetService : Service(), ProjectionUtil {
                     RESULT_OK,
                     intent.getParcelableExtra(MEDIA_PROJECTION_KEY)!!
                 )
+            setupProjection()
         }
 
         return super.onStartCommand(intent, flags, startId)
     }
 
-    /*  Implement Touch Listener to Floating Widget Root View  */
 
     override fun onDestroy() {
-        super.onDestroy()
         Log.d(TAG, "onDestroy")
-        windowManager.removeView(widgetView)
-        mediaProjection.stop()
+        if (::windowManager.isInitialized) windowManager.removeView(widgetView)
+        if (::mediaProjection.isInitialized) mediaProjection.stop()
+        if (::virtualDisplay.isInitialized) virtualDisplay.release()
+        super.onDestroy()
     }
 
-    // ============== helper =====================
-
+    /**
+     * Create a notification to become a foreground service.
+     * */
     private fun createNotificationChannel() {
-        val navigate = PendingIntent.getService(
+        val navigateIntent = PendingIntent.getActivity(
             this,
             0,
-            Intent(this, WidgetService::class.java).setAction(NOTIFICATION_STOP_WIDGET),
+            Intent(this, Menu::class.java),
             PendingIntent.FLAG_IMMUTABLE
         )
-
-        val builder = Notification.Builder(applicationContext, CHANNEL_ID).apply {
-            setContentIntent(navigate)
+        val notificationBuilder = Notification.Builder(applicationContext, CHANNEL_ID).apply {
+            setContentIntent(navigateIntent)
             setContentTitle(NOTIFICATION_CONTENT_TITLE)
             setContentText(NOTIFICATION_CONTENT_TEXT)
             setSmallIcon(R.drawable.ic_launcher_foreground)
         }
-        builder.setChannelId(packageName)
-        val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        val channel = NotificationChannel(
-            packageName,
+        val notificationChannel = NotificationChannel(
+            CHANNEL_ID,
             WidgetService::class.java.simpleName,
             NotificationManager.IMPORTANCE_HIGH
         )
-        notificationManager.createNotificationChannel(channel)
-        startForeground(42, builder.build())
+        getSystemService(NotificationManager::class.java).createNotificationChannel(
+            notificationChannel
+        )
+        startForeground(CHANNEL_ID.toInt(), notificationBuilder.build())
     }
 
-    /*  Reset position of Floating Widget view on dragging  */
+    /**
+     * Resets position of Widget view on script start.
+     * */
     private fun resetPosition() {
         layoutParams.run {
             x = 0; y = 0
@@ -167,7 +167,6 @@ class WidgetService : Service(), ProjectionUtil {
         }
     }
 
-    /*  on Floating widget click show expanded view  */
     private fun expandView() {
         expandedView.visibility = View.VISIBLE
         collapsedView.visibility = View.GONE
@@ -178,6 +177,9 @@ class WidgetService : Service(), ProjectionUtil {
         expandedView.visibility = View.GONE
     }
 
+    /**
+     * Triggered on Floating widget click or script starts/ends.
+     * */
     private fun switchView() {
         if (collapsedView.visibility == View.VISIBLE) {
             expandView()
@@ -186,7 +188,10 @@ class WidgetService : Service(), ProjectionUtil {
         }
     }
 
-    // TODO not checked yet.
+    /**
+     * Handles widget's movement.
+     * A minor known bug is that on switching views the originally hidden one will flash.
+     * */
     private val floatingWidgetViewTouchListener: OnTouchListener
         get() = object : OnTouchListener {
             var xInitCord = 0
@@ -267,8 +272,17 @@ class WidgetService : Service(), ProjectionUtil {
             }
         }
 
-
+    /**
+     * Encapsulates widget text view update.
+     *
+     * This class is used for the script to show messages.
+     *
+     * @property board the TextView to put messages on.
+     * */
     class Bulletin internal constructor(private var board: TextView) {
+        /**
+         * Display a short message [announcement] to users.
+         */
         fun announce(announcement: String) {
             Handler(Looper.getMainLooper()).post { board.text = announcement }
         }
@@ -277,40 +291,15 @@ class WidgetService : Service(), ProjectionUtil {
     companion object {
         private val TAG = WidgetService::class.java.simpleName
         const val MEDIA_PROJECTION_KEY = "MEDIA_PROJECTION"
-
-        //        private const val folderTAG: String = "ScriptFolderName"
-//        private const val scriptTAG: String = "ScriptName"
-//        private const val ARGS_TAG: String = "Args"
-        private const val CHANNEL_ID = "AndroidScript"
-        private const val NOTIFICATION_STOP_WIDGET: String = "STOP"
+        private const val CHANNEL_ID = "8763"
         private const val NOTIFICATION_CONTENT_TITLE = "AndroidScript"
         private const val NOTIFICATION_CONTENT_TEXT = "Widget Running :)"
     }
 
+    /**
+     * By design, this widget service is unbounded.
+     * */
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }
-
-
-//    bindService(
-//    Intent(this, ProjectionService::class.java),
-//    screenShotConnection,
-//    BIND_AUTO_CREATE
-//    ) // This will then trigger `screenShotConnect`'s methods.
-    //    private lateinit var projectionService: ProjectionService
-//    private val screenShotConnection = object : ServiceConnection {
-//        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-//            val binder: ProjectionService.ScreenShotBinder =
-//                service as ProjectionService.ScreenShotBinder
-//            projectionService = binder.service
-//            projectionService.set(mediaProjection)
-//            Log.i(LOG_TAG, "ScreenShot Service connected.")
-//        }
-//
-//        override fun onServiceDisconnected(className: ComponentName) {
-//            Log.i(LOG_TAG, "ScreenShot Service disconnected!")
-//            this@WidgetService.stopForeground(STOP_FOREGROUND_REMOVE)
-//            this@WidgetService.stopSelf()
-//        }
-//    }
 }

@@ -8,6 +8,8 @@
     <!-- For media projection -->
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
+    <!-- For widget service to post notification -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- Needed to get the list of applications to start when creating an intent action. -->
     <queries>

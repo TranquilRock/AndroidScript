@@ -30,12 +30,6 @@ interface ProjectionUtil {
     val screenWidth: Int
     val screenHeight: Int
 
-    fun stopProjection() {
-        Log.d(TAG, "onDestroy")
-        virtualDisplay.release()
-        mediaProjection.stop()
-    }
-
     @SuppressLint("WrongConstant")
     fun setupProjection() {
         imageReader = ImageReader.newInstance(screenWidth, screenHeight, PixelFormat.RGBA_8888, NUM_MAX_IMAGES)
