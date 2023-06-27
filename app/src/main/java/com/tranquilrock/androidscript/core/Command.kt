@@ -79,6 +79,75 @@ object Command {
         "$COMPARE $intVarFormat $intVarFormat $intVarFormat $intVarFormat $imgVarFormat"
     )
 
+    val BASIC_META = listOf(
+        listOf(
+            Command.EXIT
+        ),
+        listOf(
+            LOG, listOf("EditText", "Info")
+        ),
+        listOf(
+            JUMP_TO, listOf("EditText", "LineNum")
+        ),
+        listOf(
+            WAIT, listOf("EditText", "Millis")
+        ),
+        // Call is hided to UI user.
+//        listOf(
+//            CALL, listOf("EditText", "Script")
+//        ),
+        listOf(
+            TAG, listOf("EditText", "\$Name")
+        ),
+        listOf(
+            RETURN, listOf("EditText", "Value")
+        ),
+        listOf(
+            CLICK_PIC, listOf("EditText", "Image"), listOf("EditText", "Ratio"),
+        ),
+        listOf(
+            CLICK, listOf("EditText", "x"), listOf("EditText", "y"),
+        ),
+//        listOf(
+//            CALL_ARG, listOf("EditText", "Placeholder"), listOf("EditText", "Placeholder"),
+//        ),
+        listOf(
+            IF_GREATER, listOf("EditText", "var1"), listOf("EditText", "var2"),
+        ),
+        listOf(
+            IF_SMALLER, listOf("EditText", "var1"), listOf("EditText", "var2"),
+        ),
+        listOf(
+            ADD, listOf("EditText", "\$Name"), listOf("EditText", "Value"),
+        ),
+        listOf(
+            SUBTRACT, listOf("EditText", "\$Name"), listOf("EditText", "Value"),
+        ),
+        listOf(
+            VAR, listOf("EditText", "\$Name"), listOf("EditText", "value"),
+        ),
+        listOf(
+            CHECK,
+            listOf("EditText", "x"),
+            listOf("EditText", "y"),
+            listOf("EditText", "Color"),
+        ),
+        listOf(
+            SWIPE,
+            listOf("EditText", "x1"),
+            listOf("EditText", "y1"),
+            listOf("EditText", "x2"),
+            listOf("EditText", "y2"),
+        ),
+        listOf(
+            COMPARE,
+            listOf("EditText", "x1"),
+            listOf("EditText", "y1"),
+            listOf("EditText", "x2"),
+            listOf("EditText", "y2"),
+            listOf("EditText", "Image"),
+        ),
+    )
 
     private val L0_COMMAND_LIST = listOf(EXIT)
     private val L1_COMMAND_LIST = listOf(LOG, JUMP_TO, WAIT, CALL, TAG, RETURN)
@@ -90,8 +159,7 @@ object Command {
     private val L5_COMMAND_LIST = listOf(COMPARE)
 
     val ALL_COMMAND_LIST =
-        L0_COMMAND_LIST + L1_COMMAND_LIST + L2_COMMAND_LIST +
-                L3_COMMAND_LIST + L4_COMMAND_LIST + L5_COMMAND_LIST
+        L0_COMMAND_LIST + L1_COMMAND_LIST + L2_COMMAND_LIST + L3_COMMAND_LIST + L4_COMMAND_LIST + L5_COMMAND_LIST
 
     fun getCommandLength(Command: String): Int {
         return when (Command) {

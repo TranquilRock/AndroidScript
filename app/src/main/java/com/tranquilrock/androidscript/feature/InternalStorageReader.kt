@@ -7,6 +7,7 @@ import android.content.Context
 import android.util.Log
 import com.google.gson.Gson
 import com.tranquilrock.androidscript.activity.SelectActivity
+import com.tranquilrock.androidscript.core.Command
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -55,10 +56,7 @@ interface InternalStorageReader {
     }
 
     fun saveScriptFile(
-        context: Context,
-        scriptClass: String,
-        fileName: String,
-        data: ArrayList<ArrayList<String>>
+        context: Context, scriptClass: String, fileName: String, data: ArrayList<ArrayList<String>>
     ) {
         val file = getScriptFile(context, scriptClass, fileName)
 
@@ -74,9 +72,7 @@ interface InternalStorageReader {
     }
 
     fun getScriptData(
-        context: Context,
-        scriptClass: String,
-        fileName: String
+        context: Context, scriptClass: String, fileName: String
     ): ArrayList<ArrayList<String>> {
 
         val file = getScriptFile(context, scriptClass, fileName)
@@ -100,10 +96,7 @@ interface InternalStorageReader {
     }
 
     fun writeScriptFile(
-        context: Context,
-        scriptClass: String,
-        fileName: String,
-        lines: List<String>
+        context: Context, scriptClass: String, fileName: String, lines: List<String>
     ) {
         getScriptFile(context, scriptClass, fileName).bufferedWriter().use { out ->
             lines.forEach {
@@ -114,27 +107,11 @@ interface InternalStorageReader {
 
     fun testOnlyInitBasic(context: Context) {
         File(getScriptFolder(context, SelectActivity.basicType), META_FILE).delete()
-        val data =
-            Gson().toJson(
-                listOf(
-                    listOf(
-                        "GGWP",
-                        listOf("Spinner", "1", "2", "3"),
-                        listOf("EditText", "Placeholder")
-                    ),
-                    listOf(
-                        "Exit"
-                    )
-                )
-            )
+        val data = Gson().toJson(
+            Command.BASIC_META
+        )
 
-        File(getScriptFolder(context, SelectActivity.basicType), META_FILE)
-            .bufferedWriter()
+        File(getScriptFolder(context, SelectActivity.basicType), META_FILE).bufferedWriter()
             .use { out -> out.write(data) }
-
-
-        File(getScriptFolder(context, SelectActivity.basicType), "Exit.txt")
-            .bufferedWriter()
-            .use { out -> out.write("Exit") }
     }
 }

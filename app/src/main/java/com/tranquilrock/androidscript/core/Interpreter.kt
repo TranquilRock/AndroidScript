@@ -28,9 +28,14 @@ class Interpreter(
         val rootRawCode = Vector<String>()
 
         for (block in blockData) {
-            // Replace block typeNum with block name
-            block[0] = blockMeta[block[0].toInt()][0] as String + EXECUTABLE_EXTENSION_NAME
-            rootRawCode.add(Command.CALL + " " + block.joinToString(" "))
+            if (blockMeta[0][0] as String == "Exit") { // Check if basic TODO change this
+                block[0] = blockMeta[block[0].toInt()][0] as String
+                rootRawCode.add(block.joinToString(" "))
+            } else {
+                // Replace block typeNum with block name
+                block[0] = blockMeta[block[0].toInt()][0] as String + EXECUTABLE_EXTENSION_NAME
+                rootRawCode.add(Command.CALL + " " + block.joinToString(" "))
+            }
         }
         Code(rootRawCode).run {
             scriptCode[ROOT_RAW_CODE_KEY] = this
@@ -52,11 +57,11 @@ class Interpreter(
         }
     }
 
+    private var runningFlag = false
+
     /**
      * Script entry.
      * */
-
-    private var runningFlag = false
     suspend fun run() {
         board.announce("Running")
         runningFlag = true
