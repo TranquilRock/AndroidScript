@@ -18,12 +18,13 @@ import android.view.View.OnTouchListener
 import android.widget.TextView
 import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.activity.Menu
+import com.tranquilrock.androidscript.utils.ProjectionReader
 import java.lang.Integer.max
 import java.lang.Integer.min
 import kotlin.math.abs
 
 
-class WidgetService : Service(), ProjectionUtil {
+class WidgetService : Service(), ProjectionReader {
 
     private lateinit var widgetView: View
     private lateinit var collapsedView: View
