@@ -1,13 +1,12 @@
 package com.tranquilrock.androidscript.service
 
+import android.annotation.SuppressLint
 import android.app.*
 import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.graphics.PixelFormat
-import android.graphics.Point
 import android.media.projection.MediaProjection
 import android.media.projection.MediaProjectionManager
-import android.os.Build
 import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
@@ -19,7 +18,6 @@ import com.tranquilrock.androidscript.R
 import java.lang.Integer.max
 import java.lang.Integer.min
 import kotlin.math.abs
-import kotlin.math.ceil
 
 
 class WidgetService : Service() {
@@ -34,8 +32,6 @@ class WidgetService : Service() {
 
     private lateinit var statusBulletin: Bulletin
     private lateinit var mediaProjection: MediaProjection
-
-    private val windowSize = Point()
 
     private var xInitMargin = 0
     private var yInitMargin = 0
@@ -67,6 +63,7 @@ class WidgetService : Service() {
         Log.d(TAG, "onCreate")
 
         layoutInflater = getSystemService(LayoutInflater::class.java)
+        @SuppressLint("InflateParams")
         widgetView = layoutInflater.inflate(R.layout.floating_widget_layout, null)
         collapsedView = widgetView.findViewById(R.id.collapse_view)
         expandedView = widgetView.findViewById(R.id.expanded_container)
@@ -101,11 +98,6 @@ class WidgetService : Service() {
         }
     }
 
-    /*  return status bar height on basis of device display metrics  */
-    private val statusBarHeight: Int
-        get() = ceil((25 * applicationContext.resources.displayMetrics.density).toDouble())
-            .toInt()
-
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Log.d(TAG, "onStartCommand")
@@ -118,6 +110,7 @@ class WidgetService : Service() {
         createNotificationChannel()
 
         Handler(Looper.getMainLooper()).post {
+            @Suppress("DEPRECATION")
             mediaProjection =
                 getSystemService(MediaProjectionManager::class.java).getMediaProjection(
                     RESULT_OK,
@@ -134,6 +127,7 @@ class WidgetService : Service() {
         super.onDestroy()
         Log.d(TAG, "onDestroy")
         windowManager.removeView(widgetView)
+        mediaProjection.stop()
     }
 
     // ============== helper =====================
@@ -146,7 +140,7 @@ class WidgetService : Service() {
             PendingIntent.FLAG_IMMUTABLE
         )
 
-        val builder = Notification.Builder(applicationContext).apply {
+        val builder = Notification.Builder(applicationContext, CHANNEL_ID).apply {
             setContentIntent(navigate)
             setContentTitle(NOTIFICATION_CONTENT_TITLE)
             setContentText(NOTIFICATION_CONTENT_TEXT)
@@ -166,15 +160,15 @@ class WidgetService : Service() {
     /*  Reset position of Floating Widget view on dragging  */
     private fun resetPosition() {
         layoutParams.run {
-            x = 0; y = 0;
+            x = 0; y = 0
             windowManager.updateViewLayout(widgetView, this)
         }
     }
 
     /*  on Floating widget click show expanded view  */
     private fun expandView() {
-        collapsedView.visibility = View.GONE //Invisible
         expandedView.visibility = View.VISIBLE
+        collapsedView.visibility = View.GONE
     }
 
     private fun collapseView() {
@@ -221,6 +215,7 @@ class WidgetService : Service() {
                         if (abs(xDiff) < 5 && abs(yDiff) < 5) {
                             if (System.currentTimeMillis() - time_start < 800) {
                                 switchView()
+                                return true
                             }
                         }
                         yCordDestination = yInitMargin + yDiff
@@ -280,9 +275,10 @@ class WidgetService : Service() {
     companion object {
         private val TAG = WidgetService::class.java.simpleName
         const val MEDIA_PROJECTION_KEY = "MEDIA_PROJECTION"
-        private const val folderTAG: String = "ScriptFolderName"
-        private const val scriptTAG: String = "ScriptName"
-        private const val ARGS_TAG: String = "Args"
+//        private const val folderTAG: String = "ScriptFolderName"
+//        private const val scriptTAG: String = "ScriptName"
+//        private const val ARGS_TAG: String = "Args"
+        private const val CHANNEL_ID = "AndroidScript"
         private const val NOTIFICATION_STOP_WIDGET: String = "STOP"
         private const val NOTIFICATION_CONTENT_TITLE = "AndroidScript"
         private const val NOTIFICATION_CONTENT_TEXT = "Widget Running :)"
