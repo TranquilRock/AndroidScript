@@ -3,9 +3,11 @@ package com.tranquilrock.androidscript.service
 import android.accessibilityservice.AccessibilityService
 import android.accessibilityservice.GestureDescription
 import android.accessibilityservice.GestureDescription.StrokeDescription
+import android.content.Intent
 import android.graphics.Path
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
+import android.widget.Toast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.resume
@@ -15,8 +17,10 @@ class ClickService : AccessibilityService() {
 
     public override fun onServiceConnected() {
         super.onServiceConnected()
-        instance = this
         Log.d(TAG, "onServiceConnected")
+
+        instance = this
+        Toast.makeText(this, "ClickService On", Toast.LENGTH_SHORT).show()
     }
 
     class OffException : Exception("AccessibilityService Not On!")
@@ -73,18 +77,28 @@ class ClickService : AccessibilityService() {
         }
     }
 
-
+    /**
+     * AccessibilityEvent Callback, as all events got filtered, will not be called.
+     * */
     override fun onAccessibilityEvent(event: AccessibilityEvent) {
         Log.d(TAG, "onAccessibilityEvent")
     }
 
+    /**
+     * Android Developers `Callback for interrupting the accessibility feedback.`
+     * Unused in this service
+     * */
     override fun onInterrupt() {
-        instance = null
         Log.d(TAG, "onInterrupt")
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         Log.d(TAG, "onDestroy")
+
+        instance = null
+
+        Toast.makeText(this, "ClickService Down", Toast.LENGTH_SHORT).show()
+        stopService(Intent(this, WidgetService::class.java))
+        super.onDestroy()
     }
 }
