@@ -1,5 +1,5 @@
 /* Gather activities' FILE read write here.
- *
+ * /data/user/0/com.tranquilrock.androidscript/files
  * */
 package com.tranquilrock.androidscript.feature
 

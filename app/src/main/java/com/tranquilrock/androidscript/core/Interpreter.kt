@@ -186,7 +186,7 @@ class Interpreter(
         private fun varsSubstitution(
             localNameValMap: MutableMap<String, String>, command: String, parameters: Array<String>
         ) {
-            Log.d(TAG, command + " '" + parameters.joinToString { "' '" } + "'")
+            Log.d(TAG, command + " '" + parameters.joinToString("' '") + "'")
             // Exit Has No Arg
             if (parameters.isNotEmpty() && parameters[0][0] == '$' // Only left value is assigned.
                 && command != Command.VAR && command != "Subtract" && command != "Add"
