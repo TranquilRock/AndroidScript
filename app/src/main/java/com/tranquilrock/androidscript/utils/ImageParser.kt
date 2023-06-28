@@ -1,9 +1,7 @@
 package com.tranquilrock.androidscript.utils
 
 import android.graphics.Bitmap
-import android.graphics.Matrix
 import android.util.Log
-import android.view.WindowManager
 import com.tranquilrock.androidscript.feature.ProjectionReader
 import org.opencv.android.Utils
 import org.opencv.core.Core
@@ -21,27 +19,22 @@ import kotlin.math.max
 
 
 class ImageParser(
-    private val projectionReader: ProjectionReader, private val windowManager: WindowManager
+    private val projectionReader: ProjectionReader
 ) {
 
     suspend fun checkScreenColor(x: Int, y: Int, color: Int): Boolean =
         checkColor(getScreenShotBitmap(), x, y, color)
 
-    suspend fun testScreenShot(): Bitmap? {
-        return getScreenShotBitmap()
-    }
 
     suspend fun exist(Target: Bitmap): Boolean {
-        getScreenShotBitmap() // Empty Shot
         val screen = getScreenShotBitmap() ?: return false
-        return matchPictures(screen, Target) > 20
+        return matchPictures(screen, Target) > 50
     }
 
     suspend fun compare(Target: Bitmap, x1: Int, y1: Int, x2: Int, y2: Int): Int {
-        getScreenShotBitmap() // Empty Shot
         val screen = getScreenShotBitmap()
         if (screen == null || x1 > x2 || y1 > y2 || x2 > screen.width || y2 > screen.height) {
-            Log.d(TAG, "Compare:: ImageSize too small")
+            Log.w(TAG, "Compare:: ImageSize too small")
             return 0
         }
         return matchPictures(
@@ -54,12 +47,6 @@ class ImageParser(
     suspend fun findLocation(target: Bitmap?, resizeRatio: Double): Point? =
         findLocation(getScreenShotBitmap(), target, resizeRatio)
 
-    private val screenWidth: Int
-        get() = windowManager.currentWindowMetrics.bounds.width()
-    private val screenHeight: Int
-        get() = windowManager.currentWindowMetrics.bounds.height()
-
-
     private suspend fun getScreenShotBitmap(): Bitmap? {
         val image = projectionReader.screenShot()
         image ?: return null
@@ -69,51 +56,24 @@ class ImageParser(
         val pixelStride: Int = plane.pixelStride
         val rowStride: Int = plane.rowStride
         val rowPadding: Int = rowStride - pixelStride * projectionReader.imageReader.width
-        var bitmapImage = Bitmap.createBitmap(
+        val bitmapImage = Bitmap.createBitmap(
             projectionReader.imageReader.width + rowPadding / pixelStride,
             projectionReader.imageReader.height,
             Bitmap.Config.ARGB_8888
         )
         val buffer = plane.buffer
-        buffer.rewind() // java.lang.RuntimeException: Buffer not large enough for pixels
+        buffer.rewind()
+        // java.lang.RuntimeException: Buffer not large enough for pixels
 
         bitmapImage.copyPixelsFromBuffer(buffer)
-
-        Log.d(
-            TAG,
-            "${bitmapImage.width}, ${bitmapImage.height} $screenWidth, $screenHeight, $rowPadding, $rowStride"
-        )
-
-
-//        if (screenWidth > screenHeight) { // Landscape, need to rotate
-//            val matrix = Matrix()
-//            matrix.postRotate(90F)
-//            bitmapImage = Bitmap.createBitmap(
-//                bitmapImage, 0, 0, bitmapImage.width, bitmapImage.height, matrix, true
-//            )
-//        }
-
-
         // java.lang.IllegalStateException: maxImages (3) has already been acquired,
         // call #close before acquiring more.
         image.close()
-
         return bitmapImage
-
-
-//       buffer: ByteBuffer = image.planes[0].buffer
-//        val bytes = ByteArray(buffer.capacity())
-//        buffer[bytes]
-//        val bitmapImage = Bitmap.createBitmap(image.width, image.height, Bitmap.Config.ARGB_8888)
-//
-//
-//        return bitmapImage
     }
 
 
     companion object {
-
-
         private fun matchPictures(screenshot: Bitmap, target: Bitmap): Int {
             val sourceMat = bitmapToGrayScaleMat(screenshot)
             val targetMat = bitmapToGrayScaleMat(target)
@@ -158,7 +118,8 @@ class ImageParser(
 
             return when {
                 mmr.maxVal > 0.75 -> Point(
-                    mmr.maxLoc.x + template.width(), mmr.maxLoc.y + template.height()
+                    mmr.maxLoc.x + template.width() / 2,
+                    mmr.maxLoc.y + template.height() / 2,
                 )
 
                 else -> null

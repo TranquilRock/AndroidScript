@@ -8,7 +8,7 @@ package com.tranquilrock.androidscript.core
 
 object Command {
     const val EXIT = "Exit"
-    const val EXIST = "Exist"
+    const val IF_EXIST = "IfExist"
     const val LOG = "Log"
     const val JUMP_TO = "JumpTo"
     const val WAIT = "Wait"
@@ -29,8 +29,8 @@ object Command {
     const val COMPARE = "Compare"
 
     private const val strFormat = "([A-Za-z0-9_-]*)"
-    private const val imgFormat =  strFormat // "$strFormat.(jpg|png)"
-    private const val scriptFormat = "$strFormat.txt"
+    private const val imgFormat = strFormat // "$strFormat.(jpg|png)"
+    private const val scriptFormat = strFormat // "$strFormat.txt"
     private const val varFormat = "\\$$strFormat"
     private const val intFormat = "[0-9-]*"
     private const val floatFormat = "[0-9.]*"
@@ -42,7 +42,7 @@ object Command {
 
     val COMMAND_LIST = arrayOf(
         EXIT,
-        EXIST,
+        IF_EXIST,
         LOG,
         JUMP_TO,
         WAIT,
@@ -62,9 +62,16 @@ object Command {
         SWIPE,
         COMPARE,
     )
+
+    val ASSIGN_COMMAND = arrayOf(
+        ADD,
+        SUBTRACT,
+        VAR,
+    )
+
     val COMMAND_FORMATS = arrayOf(
         EXIT,
-        "$EXIST $imgFormat",
+        "$IF_EXIST $imgFormat",
         "$LOG $anyFormat",
         "$JUMP_TO $intVarFormat",
         "$WAIT $intVarFormat",
@@ -91,7 +98,7 @@ object Command {
             EXIT
         ),
         listOf(
-          EXIST, listOf("EditText", "Image")
+            IF_EXIST, listOf("EditText", "Image")
         ),
         listOf(
             LOG, listOf("EditText", "Info")
@@ -156,7 +163,7 @@ object Command {
     )
 
     private val L0_COMMAND_LIST = listOf(EXIT)
-    private val L1_COMMAND_LIST = listOf(EXIST, LOG, JUMP_TO, WAIT, CALL, TAG, RETURN)
+    private val L1_COMMAND_LIST = listOf(IF_EXIST, LOG, JUMP_TO, WAIT, CALL, TAG, RETURN)
     private val L2_COMMAND_LIST = listOf(
         CLICK_PIC, CLICK, CALL_ARG, IF_GREATER, IF_SMALLER, IF_EQUAL, ADD, SUBTRACT, VAR
     )

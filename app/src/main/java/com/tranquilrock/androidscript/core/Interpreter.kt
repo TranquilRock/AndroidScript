@@ -1,6 +1,5 @@
 package com.tranquilrock.androidscript.core
 
-import android.graphics.Bitmap
 import android.util.Log
 import com.tranquilrock.androidscript.App
 import com.tranquilrock.androidscript.service.ClickService
@@ -40,12 +39,22 @@ class Interpreter(
                 rootRawCode.add(Command.JUMP_TO + " 0")
             } else {
                 // Replace block typeNum with block name
-                rootRawCode.add(Command.CALL + " " + block.joinToString(" "))
+                if (block.size == 1) {
+                    rootRawCode.add(Command.CALL + " " + block.joinToString(" "))
+                } else {
+                    rootRawCode.add(Command.CALL_ARG + " " + block.joinToString(" "))
+                }
             }
         }
-        Code(rootRawCode).run {
-            scriptCode[ROOT_RAW_CODE_KEY] = this
-            loadAllCodeRecursive(this, scriptCode, resourceReader)
+        try {
+            Code(rootRawCode).run {
+                scriptCode[ROOT_RAW_CODE_KEY] = this
+                loadAllCodeRecursive(this, scriptCode, resourceReader)
+            }
+        } catch (e: Code.InvalidCodeException) {
+            e.printStackTrace()
+            scriptCode = HashMap()
+            Log.e(TAG, "Code invalid, cleanup map.")
         }
     }
 
@@ -70,19 +79,17 @@ class Interpreter(
         while (runningFlag && (pc < scriptCode[fileName]!!.codes.size)) {
             val command = scriptCode[fileName]!!.codes[pc]
             val parameters = command.copyOfRange(1, command.size)
+            Log.d(TAG, "$pc  '${command.joinToString("' '")}'")
             varsSubstitution(localVar, command[0], parameters)
             //=====================================================
-            Log.d(TAG, "$pc  ${command.joinToString(" ")}")
             when (command[0]) {
                 Command.EXIT -> {
                     runningFlag = false
                     return 1
                 }
 
-                Command.EXIST -> {
-                    localVar["\$R"] =
-                        if (imageParser.exist(resourceReader.getImage(parameters[0]))) "1"
-                        else "0"
+                Command.IF_EXIST -> if (!imageParser.exist(resourceReader.getImage(parameters[0]))) {
+                    pc++
                 }
 
                 Command.LOG -> board.announce(parameters[0])
@@ -124,7 +131,7 @@ class Interpreter(
                     pc++
                 }
 
-                Command.IF_EQUAL -> if (parameters[0].toInt() != parameters[1].toInt()) { //Failed, skip next line
+                Command.IF_EQUAL -> if (parameters[0] != parameters[1]) { //Failed, skip next line
                     pc++
                 }
 
@@ -205,17 +212,19 @@ class Interpreter(
         private fun varsSubstitution(
             localNameValMap: MutableMap<String, String>, command: String, parameters: Array<String>
         ) {
-            Log.d(TAG, command + " '" + parameters.joinToString("' '") + "'")
-            // Exit Has No Arg
-            if (parameters.isNotEmpty() && parameters[0].startsWith("$") // Only left value is assigned.
-                && command != Command.VAR && command != "Subtract" && command != "Add"
-            ) {
-                parameters[0] = localNameValMap[parameters[0]]!!
-            }
-            for (z in 1 until parameters.size) {
-                if (parameters[z][0] == '$') { //There might be Var command, that should replace $V
-                    parameters[z] = localNameValMap[parameters[z]]!!
+            try {
+                if (command !in Command.ASSIGN_COMMAND && parameters.isNotEmpty() && parameters[0].startsWith("$")) {
+                    // The first Variable of ASSIGN_COMMAND is preserved.
+                    parameters[0] = localNameValMap[parameters[0]]!!
                 }
+                for (z in 1 until parameters.size) {
+                    if (parameters[z].startsWith("$")) {
+                        parameters[z] = localNameValMap[parameters[z]]!!
+                    }
+                }
+            } catch (e: NullPointerException){
+                e.printStackTrace()
+                Log.e(TAG, "$command No such parameter: ${parameters.joinToString { " " }}")
             }
         }
 
@@ -223,7 +232,7 @@ class Interpreter(
             val localVariables = HashMap<String, String>()
             localVariables["\$R"] = "0" // $R stores commands' return value.
             for (arg in args) {
-                localVariables["$$localVariables.size"] = arg
+                localVariables["$${localVariables.size}"] = arg
             }
             return localVariables
         }

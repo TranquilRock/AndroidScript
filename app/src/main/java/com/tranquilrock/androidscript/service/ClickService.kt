@@ -8,8 +8,6 @@ import android.graphics.Path
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Toast
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class ClickService : AccessibilityService() {
 
@@ -37,7 +35,7 @@ class ClickService : AccessibilityService() {
             lineTo((x + 1).toFloat(), (y + 1).toFloat())
         }
         susDispatch(
-            GestureDescription.Builder().addStroke(StrokeDescription(path, 0, 1000)).build()
+            GestureDescription.Builder().addStroke(StrokeDescription(path, 0, 300)).build()
         )
     }
 
@@ -66,7 +64,7 @@ class ClickService : AccessibilityService() {
                 },
                 null,
             )
-        } ?: Log.e(TAG, "NOT ONNNNNNN!!!!")// throw OffException()
+        } ?: Log.e(TAG, "NOT ON!!!!")
     }
 
     companion object {
@@ -75,8 +73,6 @@ class ClickService : AccessibilityService() {
         var clicker: ClickService? = null
             private set
     }
-
-    class OffException : Exception("AccessibilityService Not On!")
 
     /**
      * AccessibilityEvent Callback, as all events got filtered, will not be called.

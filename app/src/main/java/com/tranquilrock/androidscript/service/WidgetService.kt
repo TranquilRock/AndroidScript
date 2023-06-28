@@ -175,15 +175,10 @@ class WidgetService : Service(), ProjectionReader {
                 } else ({
                     intent.getSerializableExtra(BLOCK_META_KEY)!!
                 }) as Array<Array<Any>>
-            val imageParser = ImageParser(this, windowManager)
+            val imageParser = ImageParser(this)
             val resourceReader = ResourceReader(applicationContext, scriptType)
             interpreter = Interpreter(
-                blockData,
-                blockMeta,
-                resourceReader,
-                clicker,
-                imageParser,
-                statusBulletin
+                blockData, blockMeta, resourceReader, clicker, imageParser, statusBulletin
             )
         } catch (e: NullPointerException) {
             Log.e(TAG, "No intent extra!")

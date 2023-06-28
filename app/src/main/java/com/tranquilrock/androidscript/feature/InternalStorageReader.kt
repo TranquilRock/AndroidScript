@@ -37,22 +37,6 @@ interface InternalStorageReader {
         ) && FileName.isNotEmpty()
     }
 
-    private fun getScriptFolder(context: Context, scriptType: String): File {
-        return context.getDir(scriptType, Context.MODE_PRIVATE)
-    }
-
-    private fun getScriptFile(context: Context, scriptType: String, fileName: String): File {
-        return File(getScriptFolder(context, scriptType), fileName + SCRIPT_FILE_TYPE)
-    }
-
-    private fun getCodeFile(context: Context, scriptType: String, fileName: String): File {
-        return File(getScriptFolder(context, scriptType), fileName + CODE_FILE_TYPE)
-    }
-
-    private fun getImageFile(context: Context, scriptType: String, fileName: String): File {
-        return File(getScriptFolder(context, scriptType), fileName + IMAGE_FILE_TYPE)
-    }
-
 
     fun getMetadata(context: Context, scriptType: String): Array<Array<Any>> {
         return Gson().fromJson(
@@ -135,7 +119,7 @@ interface InternalStorageReader {
     ): List<String> {
         val file = getCodeFile(context, scriptType, fileName)
         if (!file.exists()) throw FileNotFoundException()
-        return file.readLines()
+        return file.readLines().filter { it.isNotEmpty() && !it.startsWith("//") }
     }
 
 
@@ -149,7 +133,10 @@ interface InternalStorageReader {
     }
 
     fun getImage(context: Context, scriptType: String, fileName: String): Bitmap {
-        return BitmapFactory.decodeStream(getImageFile(context, scriptType, fileName).inputStream())
+        val fileInputStream = getImageFile(context, scriptType, fileName).inputStream()
+        val image = BitmapFactory.decodeStream(fileInputStream)
+        fileInputStream.close()
+        return image
     }
 
     fun testOnlyInitBasic(context: Context) {
@@ -158,7 +145,25 @@ interface InternalStorageReader {
             Command.BASIC_META
         )
 
-        File(getScriptFolder(context, BASIC_SCRIPT_TYPE), META_FILE).bufferedWriter()
-            .use { out -> out.write(data) }
+        val bufferWriter =
+            File(getScriptFolder(context, BASIC_SCRIPT_TYPE), META_FILE).bufferedWriter()
+        bufferWriter.use { out -> out.write(data) }
+        bufferWriter.close()
+    }
+
+    private fun getScriptFolder(context: Context, scriptType: String): File {
+        return context.getDir(scriptType, Context.MODE_PRIVATE)
+    }
+
+    private fun getScriptFile(context: Context, scriptType: String, fileName: String): File {
+        return File(getScriptFolder(context, scriptType), fileName + SCRIPT_FILE_TYPE)
+    }
+
+    private fun getCodeFile(context: Context, scriptType: String, fileName: String): File {
+        return File(getScriptFolder(context, scriptType), fileName + CODE_FILE_TYPE)
+    }
+
+    private fun getImageFile(context: Context, scriptType: String, fileName: String): File {
+        return File(getScriptFolder(context, scriptType), fileName + IMAGE_FILE_TYPE)
     }
 }
