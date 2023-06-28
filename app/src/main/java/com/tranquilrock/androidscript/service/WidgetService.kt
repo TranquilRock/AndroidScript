@@ -21,15 +21,13 @@ import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.activity.Menu
 import com.tranquilrock.androidscript.activity.editor.EditActivity.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.core.Interpreter
-import com.tranquilrock.androidscript.feature.InternalStorageReader
 import com.tranquilrock.androidscript.feature.ProjectionReader
 import com.tranquilrock.androidscript.service.ClickService.Companion.clicker
+import com.tranquilrock.androidscript.utils.ResourceReader
 import com.tranquilrock.androidscript.utils.ImageParser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.Integer.max
@@ -172,10 +170,11 @@ class WidgetService : Service(), ProjectionReader {
                     intent.getSerializableExtra(BLOCK_META_KEY)!!
                 }) as Array<Array<Any>>
             val imageParser = ImageParser(this, windowManager)
-
+            val resourceReader = ResourceReader(applicationContext, scriptType)
             interpreter = Interpreter(
                 blockData,
                 blockMeta,
+                resourceReader,
                 clicker,
                 imageParser,
                 statusBulletin

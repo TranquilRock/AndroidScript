@@ -1,9 +1,9 @@
 package com.tranquilrock.androidscript.core
 
-import android.graphics.Bitmap
 import android.util.Log
 import com.tranquilrock.androidscript.service.ClickService
 import com.tranquilrock.androidscript.service.WidgetService
+import com.tranquilrock.androidscript.utils.ResourceReader
 import com.tranquilrock.androidscript.utils.ImageParser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -13,15 +13,16 @@ import java.util.Vector
 /**
  * Class that handles block to code.
  * */
-@Suppress("unused")
 class Interpreter(
     blockData: ArrayList<ArrayList<String>>,
     blockMeta: Array<Array<Any>>,
+    private val resourceReader: ResourceReader,
     private val clicker: ClickService?,
     private val imageParser: ImageParser,
     private val board: WidgetService.Bulletin,
 ) {
 
+    private var runningFlag = false
     private var scriptCode: HashMap<String, Code> = HashMap()
 
     init {
@@ -39,25 +40,10 @@ class Interpreter(
         }
         Code(rootRawCode).run {
             scriptCode[ROOT_RAW_CODE_KEY] = this
-            loadAllCodeRecursive(this)
+            loadAllCodeRecursive(this, scriptCode, resourceReader)
         }
     }
 
-    /**
-     * Line TAGs are replaced here and stored in scriptCode mapping.
-     * */
-    private fun loadAllCodeRecursive(code: Code) {
-        for (dependency in code.dependency) {
-            if (!scriptCode.containsKey(dependency)) {
-                Code(mockRead(dependency)).run {
-                    scriptCode[dependency] = this
-                    loadAllCodeRecursive(this)
-                }
-            }
-        }
-    }
-
-    private var runningFlag = false
 
     /**
      * Script entry.
@@ -98,7 +84,7 @@ class Interpreter(
                 Command.TAG -> {}
                 Command.RETURN -> return parameters[0].toInt()
                 Command.CLICK_PIC -> {
-                    val tmp = mockReadImage(parameters[0])
+                    val tmp = resourceReader.getImage(parameters[0])
                     val target = imageParser.findLocTODO(tmp, parameters[1].toDouble())
                     if (target != null) {
                         Log.i(TAG, "Clicking Picture:" + target.x + " " + target.y)
@@ -159,7 +145,7 @@ class Interpreter(
 
                 Command.COMPARE -> {
                     localVar["\$R"] = imageParser.compare(
-                        mockReadImage(parameters[4]),
+                        resourceReader.getImage(parameters[4]),
                         parameters[0].toInt(),
                         parameters[1].toInt(),
                         parameters[2].toInt(),
@@ -177,22 +163,27 @@ class Interpreter(
 
     private suspend fun delay(millis: Long = 200L) = withContext(Dispatchers.IO) { sleep(millis) }
 
-    private fun mockRead(@Suppress("UNUSED_PARAMETER") fileName: String): List<String> = emptyList()
-    private fun mockReadImage(@Suppress("UNUSED_PARAMETER") fileName: String) =
-        Bitmap.createBitmap(0, 0, Bitmap.Config.ALPHA_8)
-
-//class ResourceReader(private applicationContext: Context): InternalStorageReader{
-//    fun readCode(fileName: String): File {
-//     return
-//    }
-//
-//}
     companion object {
         private const val ROOT_RAW_CODE_KEY = "ROOT_RAW_CODE"
         private val TAG = Interpreter::class.java.simpleName
 
-        //==================== Helper =======================
-        fun varsSubstitution(
+        /**
+         * Line TAGs are replaced here and stored in scriptCode mapping.
+         * */
+        private fun loadAllCodeRecursive(
+            code: Code, scriptCode: HashMap<String, Code>, resourceReader: ResourceReader
+        ) {
+            for (dependency in code.dependency) {
+                if (!scriptCode.containsKey(dependency)) {
+                    Code(resourceReader.getCode(dependency)).run {
+                        scriptCode[dependency] = this
+                        loadAllCodeRecursive(this, scriptCode, resourceReader)
+                    }
+                }
+            }
+        }
+
+        private fun varsSubstitution(
             localNameValMap: MutableMap<String, String>, command: String, parameters: Array<String>
         ) {
             Log.d(TAG, command + " '" + parameters.joinToString { "' '" } + "'")
@@ -209,7 +200,7 @@ class Interpreter(
             }
         }
 
-        fun initLocalVar(args: List<String>): HashMap<String, String> {
+        private fun initLocalVar(args: List<String>): HashMap<String, String> {
             val localVariables = HashMap<String, String>()
             localVariables["\$R"] = "0" // $R stores commands' return value.
             for (arg in args) {
