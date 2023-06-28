@@ -187,7 +187,7 @@ class Interpreter(
         return 0
     }
 
-    private suspend fun delay(millis: Long = 200L) = withContext(Dispatchers.IO) { sleep(millis) }
+    private suspend fun delay(millis: Long = 100L) = withContext(Dispatchers.IO) { sleep(millis) }
 
     companion object {
         private const val ROOT_RAW_CODE_KEY = "ROOT_RAW_CODE"
