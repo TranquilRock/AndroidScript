@@ -13,6 +13,7 @@ import android.widget.ListAdapter
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.service.WidgetService
 import org.opencv.android.OpenCVLoader
@@ -30,8 +31,6 @@ class Menu : AppCompatActivity() {
             finishAffinity()
         }
 
-        Log.d(TAG, filesDir.path)
-
         val listView = findViewById<ListView>(R.id.menu_entry_buttons)
         val values = arrayOf("BASIC", "FGO") // TODO replace with script type list?
         val listAdapter: ListAdapter = ArrayAdapter<Any?>(this, R.layout.menu_btn_format, values)
@@ -39,7 +38,7 @@ class Menu : AppCompatActivity() {
         listView.onItemClickListener = OnItemClickListener { parent, _, position, id ->
             val scriptType = parent.getItemAtPosition(position) as String
             val toSelectIntent = Intent(this, SelectActivity::class.java)
-            toSelectIntent.putExtra(SelectActivity.TYPE_KEY, scriptType)
+            toSelectIntent.putExtra(SCRIPT_TYPE_KEY, scriptType)
             startActivity(toSelectIntent)
         }
 

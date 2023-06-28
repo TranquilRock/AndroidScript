@@ -17,9 +17,12 @@ import android.util.Log
 import android.view.*
 import android.view.View.OnTouchListener
 import android.widget.TextView
+import com.tranquilrock.androidscript.App.Companion.BLOCK_DATA_KEY
+import com.tranquilrock.androidscript.App.Companion.BLOCK_META_KEY
+import com.tranquilrock.androidscript.App.Companion.MEDIA_PROJECTION_KEY
+import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.activity.Menu
-import com.tranquilrock.androidscript.activity.editor.EditActivity.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.core.Interpreter
 import com.tranquilrock.androidscript.feature.ProjectionReader
 import com.tranquilrock.androidscript.service.ClickService.Companion.clicker
@@ -206,19 +209,19 @@ class WidgetService : Service(), ProjectionReader {
         val navigateIntent = PendingIntent.getActivity(
             this, 0, Intent(this, Menu::class.java), PendingIntent.FLAG_IMMUTABLE
         )
-        val notificationBuilder = Notification.Builder(applicationContext, CHANNEL_ID).apply {
+        val notificationBuilder = Notification.Builder(applicationContext, NOTIFICATION_CHANNEL_ID).apply {
             setContentIntent(navigateIntent)
             setContentTitle(NOTIFICATION_CONTENT_TITLE)
             setContentText(NOTIFICATION_CONTENT_TEXT)
             setSmallIcon(R.drawable.ic_launcher_foreground)
         }
         val notificationChannel = NotificationChannel(
-            CHANNEL_ID, WidgetService::class.java.simpleName, NotificationManager.IMPORTANCE_HIGH
+            NOTIFICATION_CHANNEL_ID, WidgetService::class.java.simpleName, NotificationManager.IMPORTANCE_HIGH
         )
         getSystemService(NotificationManager::class.java).createNotificationChannel(
             notificationChannel
         )
-        startForeground(CHANNEL_ID.toInt(), notificationBuilder.build())
+        startForeground(NOTIFICATION_CHANNEL_ID.toInt(), notificationBuilder.build())
     }
 
     /**
@@ -347,11 +350,8 @@ class WidgetService : Service(), ProjectionReader {
     }
 
     companion object {
-        const val BLOCK_DATA_KEY = "BLOCK_DATA_KEY"
-        const val BLOCK_META_KEY = "BLOCK_META_KEY"
-        const val MEDIA_PROJECTION_KEY = "MEDIA_PROJECTION"
         private val TAG = WidgetService::class.java.simpleName
-        private const val CHANNEL_ID = "8763"
+        private const val NOTIFICATION_CHANNEL_ID = "8763"
         private const val NOTIFICATION_CONTENT_TITLE = "AndroidScript"
         private const val NOTIFICATION_CONTENT_TEXT = "Widget Running :)"
     }

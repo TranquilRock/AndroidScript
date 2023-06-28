@@ -8,7 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import com.google.gson.Gson
-import com.tranquilrock.androidscript.activity.SelectActivity
+import com.tranquilrock.androidscript.App.Companion.BASIC_SCRIPT_TYPE
 import com.tranquilrock.androidscript.core.Command
 import java.io.File
 import java.io.FileInputStream
@@ -17,6 +17,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
+import java.util.regex.Pattern
 
 
 interface InternalStorageReader {
@@ -26,7 +27,14 @@ interface InternalStorageReader {
         const val SCRIPT_FILE_TYPE = ".blc"
         const val IMAGE_FILE_TYPE = ".jpg"
         const val META_FILE = "meta.json"
+        private const val VALID_FILENAME_PATTERN = "([A-Za-z0-9_-]*)"
         private val TAG = InternalStorageReader::class.java.simpleName
+    }
+
+    fun isValidFileName(FileName: String): Boolean {
+        return Pattern.matches(
+            VALID_FILENAME_PATTERN, FileName
+        ) && FileName.isNotEmpty()
     }
 
     private fun getScriptFolder(context: Context, scriptType: String): File {
@@ -145,12 +153,12 @@ interface InternalStorageReader {
     }
 
     fun testOnlyInitBasic(context: Context) {
-        File(getScriptFolder(context, SelectActivity.basicType), META_FILE).delete()
+        File(getScriptFolder(context, BASIC_SCRIPT_TYPE), META_FILE).delete()
         val data = Gson().toJson(
             Command.BASIC_META
         )
 
-        File(getScriptFolder(context, SelectActivity.basicType), META_FILE).bufferedWriter()
+        File(getScriptFolder(context, BASIC_SCRIPT_TYPE), META_FILE).bufferedWriter()
             .use { out -> out.write(data) }
     }
 }

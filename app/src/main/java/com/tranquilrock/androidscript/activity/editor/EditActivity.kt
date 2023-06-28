@@ -25,11 +25,13 @@ import com.tranquilrock.androidscript.activity.editor.component.BlockAdapter
 import com.tranquilrock.androidscript.activity.editor.component.ButtonAdapter
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import com.tranquilrock.androidscript.App.Companion.BLOCK_DATA_KEY
+import com.tranquilrock.androidscript.App.Companion.BLOCK_META_KEY
+import com.tranquilrock.androidscript.App.Companion.MEDIA_PROJECTION_KEY
+import com.tranquilrock.androidscript.App.Companion.SCRIPT_NAME_KEY
+import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.feature.PermissionRequester
 import com.tranquilrock.androidscript.service.WidgetService
-import com.tranquilrock.androidscript.service.WidgetService.Companion.BLOCK_DATA_KEY
-import com.tranquilrock.androidscript.service.WidgetService.Companion.BLOCK_META_KEY
-import com.tranquilrock.androidscript.service.WidgetService.Companion.MEDIA_PROJECTION_KEY
 
 class EditActivity : AppCompatActivity(), InternalStorageReader, PermissionRequester {
     private lateinit var blockView: RecyclerView
@@ -122,7 +124,5 @@ class EditActivity : AppCompatActivity(), InternalStorageReader, PermissionReque
 
     companion object {
         private val TAG = EditActivity::class.java.simpleName
-        const val SCRIPT_TYPE_KEY = "SCRIPT_TYPE"
-        const val SCRIPT_NAME_KEY = "SCRIPT_NAME"
     }
 }
