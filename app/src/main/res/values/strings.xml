@@ -86,4 +86,6 @@
     <string name="basic_portrait">通用腳本(直向)</string>
     <string name="block_name">Title</string>
     <string name="title_activity_edit">EditActivity</string>
+    <string name="toggle_portrait">Portrait</string>
+    <string name="toggle_landscape">LandScape</string>
 </resources>

@@ -15,25 +15,32 @@
             android:gravity="center"
             android:orientation="vertical">
 
-            <!--            <Button-->
-            <!--                android:layout_width="wrap_content"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_marginEnd="5pt"-->
-            <!--                android:id="@+id/start_floating"-->
-            <!--                android:text="@string/StartFloatingWidget" />-->
+            <ToggleButton
+                android:id="@+id/toggle_orientation"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3pt"
+                android:layout_marginEnd="5pt"
+                android:textOff="@string/toggle_portrait"
+                android:textOn="@string/toggle_landscape" />
+
             <Button
                 android:id="@+id/save_file"
-                android:layout_width="wrap_content"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="3pt"
                 android:layout_marginEnd="5pt"
-                android:text="@string/Save" />
+                android:text="@string/Save"
+                android:textColor="#5E35B1" />
 
             <Button
                 android:id="@+id/start_service"
-                android:layout_width="wrap_content"
+                android:layout_width="110dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="3pt"
                 android:layout_marginEnd="5pt"
-                android:text="@string/StartService" />
+                android:text="@string/StartService"
+                android:textColor="#5E35B1" />
 
 
         </LinearLayout>

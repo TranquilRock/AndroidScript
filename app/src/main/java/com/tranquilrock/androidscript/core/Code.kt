@@ -25,6 +25,7 @@ data class Code(val codes: Vector<Array<String>>, val dependency: Vector<String>
                 }
             }
             if (!valid) {
+                // TODO do not let it crash.
                 throw InvalidCodeException("Invalid code \"$line\"")
             }
         }

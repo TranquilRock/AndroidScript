@@ -1,6 +1,8 @@
 package com.tranquilrock.androidscript.core
 
+import android.graphics.Bitmap
 import android.util.Log
+import com.tranquilrock.androidscript.App
 import com.tranquilrock.androidscript.service.ClickService
 import com.tranquilrock.androidscript.service.WidgetService
 import com.tranquilrock.androidscript.utils.ResourceReader
@@ -29,12 +31,15 @@ class Interpreter(
         val rootRawCode = Vector<String>()
 
         for (block in blockData) {
-            if (blockMeta[0][0] as String == "Exit") { // Check if basic TODO change this
-                block[0] = blockMeta[block[0].toInt()][0] as String
+            val blockName = blockMeta[block[0].toInt()][0] as String
+            block[0] = blockName
+
+            if (resourceReader.scriptType == App.BASIC_SCRIPT_TYPE) {
                 rootRawCode.add(block.joinToString(" "))
+            } else if (blockName == "DoAgain") {
+                rootRawCode.add(Command.JUMP_TO + " 0")
             } else {
                 // Replace block typeNum with block name
-                block[0] = blockMeta[block[0].toInt()][0] as String
                 rootRawCode.add(Command.CALL + " " + block.joinToString(" "))
             }
         }
@@ -74,8 +79,15 @@ class Interpreter(
                     return 1
                 }
 
+                Command.EXIST -> {
+                    localVar["\$R"] =
+                        if (imageParser.exist(resourceReader.getImage(parameters[0]))) "1"
+                        else "0"
+                }
+
                 Command.LOG -> board.announce(parameters[0])
-                Command.JUMP_TO -> pc = parameters[0].toInt() - 1 // One-based to zero-based
+                Command.JUMP_TO -> pc =
+                    parameters[0].toInt() - 1 // Zero-based, -1 to cancel ++ below.
                 Command.WAIT -> delay(parameters[0].toLong())
                 Command.CALL -> localVar["\$R"] =
                     execute(parameters[0], emptyList(), depth + 1).toString()
@@ -85,7 +97,7 @@ class Interpreter(
                 Command.RETURN -> return parameters[0].toInt()
                 Command.CLICK_PIC -> {
                     val tmp = resourceReader.getImage(parameters[0])
-                    val target = imageParser.findLocTODO(tmp, parameters[1].toDouble())
+                    val target = imageParser.findLocation(tmp, parameters[1].toDouble())
                     if (target != null) {
                         Log.i(TAG, "Clicking Picture:" + target.x + " " + target.y)
                         clicker?.click(target.x.toInt(), target.y.toInt())
@@ -109,6 +121,10 @@ class Interpreter(
                 }
 
                 Command.IF_SMALLER -> if (parameters[0].toInt() >= parameters[1].toInt()) { //Failed, skip next line
+                    pc++
+                }
+
+                Command.IF_EQUAL -> if (parameters[0].toInt() != parameters[1].toInt()) { //Failed, skip next line
                     pc++
                 }
 
@@ -153,7 +169,10 @@ class Interpreter(
                     ).toString() // similarity
                 }
 
-                else -> throw RuntimeException("Cannot Recognize $command in $fileName")
+                else -> {
+                    runningFlag = false
+                    Log.e(TAG, "Cannot Recognize $command in $fileName")
+                }
             }
             pc++
             delay()
@@ -188,7 +207,7 @@ class Interpreter(
         ) {
             Log.d(TAG, command + " '" + parameters.joinToString("' '") + "'")
             // Exit Has No Arg
-            if (parameters.isNotEmpty() && parameters[0][0] == '$' // Only left value is assigned.
+            if (parameters.isNotEmpty() && parameters[0].startsWith("$") // Only left value is assigned.
                 && command != Command.VAR && command != "Subtract" && command != "Add"
             ) {
                 parameters[0] = localNameValMap[parameters[0]]!!

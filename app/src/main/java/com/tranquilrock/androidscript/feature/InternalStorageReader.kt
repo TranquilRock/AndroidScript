@@ -25,7 +25,7 @@ interface InternalStorageReader {
     companion object {
         const val CODE_FILE_TYPE = ".txt"
         const val SCRIPT_FILE_TYPE = ".blc"
-        const val IMAGE_FILE_TYPE = ".jpg"
+        const val IMAGE_FILE_TYPE = ".png"
         const val META_FILE = "meta.json"
         private const val VALID_FILENAME_PATTERN = "([A-Za-z0-9_-]*)"
         private val TAG = InternalStorageReader::class.java.simpleName

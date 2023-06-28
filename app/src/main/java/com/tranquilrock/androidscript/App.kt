@@ -15,7 +15,7 @@ class App : Application() {
         const val BASIC_SCRIPT_TYPE = "BASIC"
         const val SCRIPT_TYPE_KEY = "SCRIPT_TYPE"
         const val SCRIPT_NAME_KEY = "SCRIPT_NAME"
-
+        const val ORIENTATION_KEY = "PROJECTION_ORIENTATION"
     }
 
     override fun onCreate() {

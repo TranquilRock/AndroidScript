@@ -20,6 +20,7 @@ import android.widget.TextView
 import com.tranquilrock.androidscript.App.Companion.BLOCK_DATA_KEY
 import com.tranquilrock.androidscript.App.Companion.BLOCK_META_KEY
 import com.tranquilrock.androidscript.App.Companion.MEDIA_PROJECTION_KEY
+import com.tranquilrock.androidscript.App.Companion.ORIENTATION_KEY
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.activity.Menu
@@ -51,6 +52,7 @@ class WidgetService : Service(), ProjectionReader {
     private lateinit var interpreter: Interpreter
     private lateinit var statusBulletin: Bulletin
 
+    override var isLandscape: Boolean = false
     private lateinit var scriptType: String
 
     private var job: Job? = null
@@ -143,6 +145,7 @@ class WidgetService : Service(), ProjectionReader {
         createNotificationChannel()
 
         try {
+            isLandscape = intent.getBooleanExtra(ORIENTATION_KEY, false)
             scriptType = intent.getStringExtra(SCRIPT_TYPE_KEY)!!
             val projectionIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 intent.getParcelableExtra(MEDIA_PROJECTION_KEY, Intent::class.java)!!
@@ -209,14 +212,17 @@ class WidgetService : Service(), ProjectionReader {
         val navigateIntent = PendingIntent.getActivity(
             this, 0, Intent(this, Menu::class.java), PendingIntent.FLAG_IMMUTABLE
         )
-        val notificationBuilder = Notification.Builder(applicationContext, NOTIFICATION_CHANNEL_ID).apply {
-            setContentIntent(navigateIntent)
-            setContentTitle(NOTIFICATION_CONTENT_TITLE)
-            setContentText(NOTIFICATION_CONTENT_TEXT)
-            setSmallIcon(R.drawable.ic_launcher_foreground)
-        }
+        val notificationBuilder =
+            Notification.Builder(applicationContext, NOTIFICATION_CHANNEL_ID).apply {
+                setContentIntent(navigateIntent)
+                setContentTitle(NOTIFICATION_CONTENT_TITLE)
+                setContentText(NOTIFICATION_CONTENT_TEXT)
+                setSmallIcon(R.drawable.ic_launcher_foreground)
+            }
         val notificationChannel = NotificationChannel(
-            NOTIFICATION_CHANNEL_ID, WidgetService::class.java.simpleName, NotificationManager.IMPORTANCE_HIGH
+            NOTIFICATION_CHANNEL_ID,
+            WidgetService::class.java.simpleName,
+            NotificationManager.IMPORTANCE_HIGH
         )
         getSystemService(NotificationManager::class.java).createNotificationChannel(
             notificationChannel
