@@ -49,10 +49,10 @@ class EditActivity : AppCompatActivity(), InternalStorageReader, PermissionReque
         scriptClass = intent.getStringExtra(SCRIPT_TYPE_KEY)!!
         fileName = intent.getStringExtra(SCRIPT_NAME_KEY)!!
 
-        blockMeta = getScriptMetadata(this, scriptClass).also {
+        blockMeta = getMetadata(this, scriptClass).also {
             Log.d(TAG, "Metadata: $it")
         }
-        blockData = getScriptData(this, scriptClass, fileName).also {
+        blockData = getScript(this, scriptClass, fileName).also {
             Log.d(TAG, "Block data: $it")
         }
 
@@ -87,7 +87,7 @@ class EditActivity : AppCompatActivity(), InternalStorageReader, PermissionReque
         }
 
         findViewById<View>(R.id.save_file).setOnClickListener {
-            saveScriptFile(this, scriptClass, fileName, blockData)
+            saveScript(this, scriptClass, fileName, blockData)
             Toast.makeText(
                 this,
                 "File Saved",

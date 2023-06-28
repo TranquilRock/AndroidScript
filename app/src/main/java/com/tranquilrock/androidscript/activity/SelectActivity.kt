@@ -65,7 +65,7 @@ open class SelectActivity : AppCompatActivity(), InternalStorageReader {
             textViewDialogBox.text = getString(R.string.select_activity__invalid_name)
         } else {
             textViewDialogBox.text = ""
-            if (!createScriptFile(this, scriptType, fileName)) {
+            if (!createScript(this, scriptType, fileName)) {
                 textViewDialogBox.text = getString(R.string.select_activity__file_exists)
             }
 
