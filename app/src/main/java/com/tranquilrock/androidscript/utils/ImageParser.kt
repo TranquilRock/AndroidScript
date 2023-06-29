@@ -28,10 +28,11 @@ class ImageParser(
 
     suspend fun exist(Target: Bitmap): Boolean {
         val screen = getScreenShotBitmap() ?: return false
-        return matchPictures(screen, Target) > 50
+        return matchPictures(screen, Target) > 70 // TODO verify threshold.
     }
 
     suspend fun compare(Target: Bitmap, x1: Int, y1: Int, x2: Int, y2: Int): Int {
+
         val screen = getScreenShotBitmap()
         if (screen == null || x1 > x2 || y1 > y2 || x2 > screen.width || y2 > screen.height) {
             Log.w(TAG, "Compare:: ImageSize too small")
@@ -48,8 +49,7 @@ class ImageParser(
         findLocation(getScreenShotBitmap(), target, resizeRatio)
 
     private suspend fun getScreenShotBitmap(): Bitmap? {
-        val image = projectionReader.screenShot()
-        image ?: return null
+        val image = projectionReader.screenShot() ?: return null
 
         Log.d(TAG, "getScreenShotBitmap " + image.width + " " + image.height)
         val plane = image.planes[0]
