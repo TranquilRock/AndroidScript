@@ -17,7 +17,6 @@ import com.tranquilrock.androidscript.App.Companion.BASIC_SCRIPT_TYPE
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_NAME_KEY
 import com.tranquilrock.androidscript.R
-import com.tranquilrock.androidscript.activity.editor.EditActivity
 import com.tranquilrock.androidscript.feature.InternalStorageUser
 
 

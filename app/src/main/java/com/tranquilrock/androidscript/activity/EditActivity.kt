@@ -7,7 +7,7 @@
  *      ...
  * ]
  * */
-package com.tranquilrock.androidscript.activity.editor
+package com.tranquilrock.androidscript.activity
 
 import android.content.Intent
 import android.media.projection.MediaProjectionManager
@@ -20,8 +20,8 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.tranquilrock.androidscript.feature.InternalStorageUser
-import com.tranquilrock.androidscript.activity.editor.component.BlockAdapter
-import com.tranquilrock.androidscript.activity.editor.component.ButtonAdapter
+import com.tranquilrock.androidscript.component.editor.BlockAdapter
+import com.tranquilrock.androidscript.component.editor.ButtonAdapter
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.activity.result.contract.ActivityResultContracts

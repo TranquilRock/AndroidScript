@@ -50,7 +50,7 @@
             android:windowSoftInputMode="adjustResize"
             tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".activity.editor.EditActivity"
+            android:name=".activity.EditActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="false"
             android:screenOrientation="portrait"

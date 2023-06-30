@@ -1,4 +1,4 @@
-package com.tranquilrock.androidscript.activity.editor.component
+package com.tranquilrock.androidscript.component.editor
 
 interface Updater {
     fun swap(id1: Int, id2: Int)

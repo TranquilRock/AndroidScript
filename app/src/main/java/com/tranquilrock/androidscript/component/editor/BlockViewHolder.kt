@@ -3,7 +3,7 @@
  * Each VH has its own input list.
  * blockData contains blocks data, where blockData[0] is the title.
  * */
-package com.tranquilrock.androidscript.activity.editor.component
+package com.tranquilrock.androidscript.component.editor
 
 import android.text.Editable
 import android.text.TextWatcher

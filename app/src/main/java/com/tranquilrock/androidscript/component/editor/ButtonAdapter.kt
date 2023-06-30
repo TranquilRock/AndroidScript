@@ -1,4 +1,4 @@
-package com.tranquilrock.androidscript.activity.editor.component
+package com.tranquilrock.androidscript.component.editor
 
 
 import android.view.LayoutInflater
