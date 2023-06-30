@@ -8,6 +8,7 @@ package com.tranquilrock.androidscript.core
 
 object Command {
     const val EXIT = "Exit"
+    const val IF_EXIST = "IfExist"
     const val LOG = "Log"
     const val JUMP_TO = "JumpTo"
     const val WAIT = "Wait"
@@ -19,6 +20,7 @@ object Command {
     const val CALL_ARG = "CallArg"
     const val IF_GREATER = "IfGreater"
     const val IF_SMALLER = "IfSmaller"
+    const val IF_EQUAL = "IfEqual"
     const val ADD = "Add"
     const val SUBTRACT = "Subtract"
     const val VAR = "Var"
@@ -27,8 +29,8 @@ object Command {
     const val COMPARE = "Compare"
 
     private const val strFormat = "([A-Za-z0-9_-]*)"
-    private const val imgFormat = "$strFormat.(jpg|png)"
-    private const val scriptFormat = "$strFormat.txt"
+    private const val imgFormat = strFormat // "$strFormat.(jpg|png)"
+    private const val scriptFormat = strFormat // "$strFormat.txt"
     private const val varFormat = "\\$$strFormat"
     private const val intFormat = "[0-9-]*"
     private const val floatFormat = "[0-9.]*"
@@ -40,6 +42,7 @@ object Command {
 
     val COMMAND_LIST = arrayOf(
         EXIT,
+        IF_EXIST,
         LOG,
         JUMP_TO,
         WAIT,
@@ -51,6 +54,7 @@ object Command {
         CALL_ARG,
         IF_GREATER,
         IF_SMALLER,
+        IF_EQUAL,
         ADD,
         SUBTRACT,
         VAR,
@@ -58,8 +62,16 @@ object Command {
         SWIPE,
         COMPARE,
     )
+
+    val ASSIGN_COMMAND = arrayOf(
+        ADD,
+        SUBTRACT,
+        VAR,
+    )
+
     val COMMAND_FORMATS = arrayOf(
         EXIT,
+        "$IF_EXIST $imgFormat",
         "$LOG $anyFormat",
         "$JUMP_TO $intVarFormat",
         "$WAIT $intVarFormat",
@@ -71,6 +83,7 @@ object Command {
         "$CALL_ARG $scriptFormat $anyFormat",
         "$IF_GREATER $intVarFormat $intVarFormat",
         "$IF_SMALLER $intVarFormat $intVarFormat",
+        "$IF_EQUAL $intVarFormat $intVarFormat",
         "$ADD $varFormat $intVarFormat",
         "$SUBTRACT $varFormat $intVarFormat",
         "$VAR $varFormat $intVarFloatFormat",
@@ -79,19 +92,87 @@ object Command {
         "$COMPARE $intVarFormat $intVarFormat $intVarFormat $intVarFormat $imgVarFormat"
     )
 
+    /** CALL & CALL_ARG are not exposed. */
+    val BASIC_META = listOf(
+        listOf(
+            EXIT
+        ),
+        listOf(
+            IF_EXIST, listOf("EditText", "Image")
+        ),
+        listOf(
+            LOG, listOf("EditText", "Info")
+        ),
+        listOf(
+            JUMP_TO, listOf("EditText", "LineNum")
+        ),
+        listOf(
+            WAIT, listOf("EditText", "Millis")
+        ),
+        listOf(
+            TAG, listOf("EditText", "\$Name")
+        ),
+        listOf(
+            RETURN, listOf("EditText", "Value")
+        ),
+        listOf(
+            CLICK_PIC, listOf("EditText", "Image"), listOf("EditText", "Ratio"),
+        ),
+        listOf(
+            CLICK, listOf("EditText", "x"), listOf("EditText", "y"),
+        ),
+        listOf(
+            IF_GREATER, listOf("EditText", "var1"), listOf("EditText", "var2"),
+        ),
+        listOf(
+            IF_SMALLER, listOf("EditText", "var1"), listOf("EditText", "var2"),
+        ),
+        listOf(
+            IF_EQUAL, listOf("EditText", "var1"), listOf("EditText", "var2"),
+        ),
+        listOf(
+            ADD, listOf("EditText", "\$Name"), listOf("EditText", "Value"),
+        ),
+        listOf(
+            SUBTRACT, listOf("EditText", "\$Name"), listOf("EditText", "Value"),
+        ),
+        listOf(
+            VAR, listOf("EditText", "\$Name"), listOf("EditText", "value"),
+        ),
+        listOf(
+            CHECK,
+            listOf("EditText", "x"),
+            listOf("EditText", "y"),
+            listOf("EditText", "Color"),
+        ),
+        listOf(
+            SWIPE,
+            listOf("EditText", "x1"),
+            listOf("EditText", "y1"),
+            listOf("EditText", "x2"),
+            listOf("EditText", "y2"),
+        ),
+        listOf(
+            COMPARE,
+            listOf("EditText", "x1"),
+            listOf("EditText", "y1"),
+            listOf("EditText", "x2"),
+            listOf("EditText", "y2"),
+            listOf("EditText", "Image"),
+        ),
+    )
 
     private val L0_COMMAND_LIST = listOf(EXIT)
-    private val L1_COMMAND_LIST = listOf(LOG, JUMP_TO, WAIT, CALL, TAG, RETURN)
+    private val L1_COMMAND_LIST = listOf(IF_EXIST, LOG, JUMP_TO, WAIT, CALL, TAG, RETURN)
     private val L2_COMMAND_LIST = listOf(
-        CLICK_PIC, CLICK, CALL_ARG, IF_GREATER, IF_SMALLER, ADD, SUBTRACT, VAR
+        CLICK_PIC, CLICK, CALL_ARG, IF_GREATER, IF_SMALLER, IF_EQUAL, ADD, SUBTRACT, VAR
     )
     private val L3_COMMAND_LIST = listOf(CHECK)
     private val L4_COMMAND_LIST = listOf(SWIPE)
     private val L5_COMMAND_LIST = listOf(COMPARE)
 
     val ALL_COMMAND_LIST =
-        L0_COMMAND_LIST + L1_COMMAND_LIST + L2_COMMAND_LIST +
-                L3_COMMAND_LIST + L4_COMMAND_LIST + L5_COMMAND_LIST
+        L0_COMMAND_LIST + L1_COMMAND_LIST + L2_COMMAND_LIST + L3_COMMAND_LIST + L4_COMMAND_LIST + L5_COMMAND_LIST
 
     fun getCommandLength(Command: String): Int {
         return when (Command) {

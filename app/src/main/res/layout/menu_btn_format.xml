@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="150dp"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:background="@drawable/abc_btn_default_mtrl_shape"
+    android:fontFamily="sans-serif-medium"
+    android:gravity="center"
+    android:maxWidth="88dp"
+    android:minHeight="48dp"
+    android:textAppearance="?android:attr/textAppearanceButton"
+    android:textColor="?android:attr/textColorSecondary"
+    android:textSize="20sp" />

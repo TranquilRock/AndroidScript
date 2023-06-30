@@ -5,10 +5,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tranquilrock.androidscript.R
+import java.util.Collections
 
 class ButtonAdapter(
-    private val blockMeta: List<Array<*>>,
-    private val blockData: MutableList<MutableList<String>>,
+    private val blockMeta: Array<Array<Any>>,
+    private val blockData: ArrayList<ArrayList<String>>,
     private val onInsert: Updater
 ) : RecyclerView.Adapter<ButtonViewHolder>() {
 
@@ -26,9 +27,7 @@ class ButtonAdapter(
             button.text = blockMeta[position][0] as CharSequence?
             button.setOnClickListener {
                 blockData.add(
-                    MutableList(
-                        blockMeta[position].size
-                    ) { "" }.apply {
+                    ArrayList<String>(Collections.nCopies(blockMeta[position].size, "")).apply {
                         // TODO change data to be add
                         this[0] = position.toString()
                     }

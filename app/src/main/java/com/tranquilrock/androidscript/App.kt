@@ -9,11 +9,17 @@ import android.util.Log
 
 class App : Application() {
     companion object {
-        const val TAG = "App"
+        const val BLOCK_DATA_KEY = "BLOCK_DATA_KEY"
+        const val BLOCK_META_KEY = "BLOCK_META_KEY"
+        const val MEDIA_PROJECTION_KEY = "MEDIA_PROJECTION"
+        const val BASIC_SCRIPT_TYPE = "BASIC"
+        const val SCRIPT_TYPE_KEY = "SCRIPT_TYPE"
+        const val SCRIPT_NAME_KEY = "SCRIPT_NAME"
+        const val ORIENTATION_KEY = "PROJECTION_ORIENTATION"
     }
 
     override fun onCreate() {
         super.onCreate()
-        Log.d(TAG, "onCreate")
+        Log.d(packageName, "onCreate")
     }
 }

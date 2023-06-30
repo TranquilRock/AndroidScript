@@ -8,8 +8,6 @@ import android.graphics.Path
 import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Toast
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 class ClickService : AccessibilityService() {
 
@@ -31,48 +29,42 @@ class ClickService : AccessibilityService() {
         super.onDestroy()
     }
 
-    suspend fun click(x: Int, y: Int) {
+    fun click(x: Int, y: Int) {
         val path = Path().apply {
             moveTo((x - 1).toFloat(), (y - 1).toFloat())
             lineTo((x + 1).toFloat(), (y + 1).toFloat())
         }
         susDispatch(
-            GestureDescription.Builder()
-                .addStroke(StrokeDescription(path, 0, 1000))
-                .build()
+            GestureDescription.Builder().addStroke(StrokeDescription(path, 0, 300)).build()
         )
     }
 
-    suspend fun swipe(x1: Int, y1: Int, x2: Int, y2: Int) {
+    fun swipe(x1: Int, y1: Int, x2: Int, y2: Int) {
         val path = Path().apply {
             moveTo(x1.toFloat(), y1.toFloat())
             lineTo(x2.toFloat(), y2.toFloat())
         }
         susDispatch(
-            GestureDescription.Builder()
-                .addStroke(StrokeDescription(path, 0, 1000))
-                .build()
+            GestureDescription.Builder().addStroke(StrokeDescription(path, 0, 1000)).build()
         )
     }
 
-    private suspend fun susDispatch(gestureDescription: GestureDescription) {
+    private fun susDispatch(gestureDescription: GestureDescription) {
         clicker?.run {
-            suspendCoroutine<Unit?> { continuation ->
-                dispatchGesture(
-                    gestureDescription,
-                    object : GestureResultCallback() {
-                        override fun onCompleted(gestureDescription: GestureDescription?) =
-                            continuation.resume(null)
+            dispatchGesture(
+                gestureDescription,
+                object : GestureResultCallback() {
+                    override fun onCompleted(gestureDescription: GestureDescription?) {
+                        Log.d(TAG, "Completed: $gestureDescription")
+                    }
 
-                        override fun onCancelled(gestureDescription: GestureDescription?) {
-                            Log.i(TAG, "Cancelled: $gestureDescription")
-                            continuation.resume(null)
-                        }
-                    },
-                    null,
-                )
-            }
-        } ?: throw OffException()
+                    override fun onCancelled(gestureDescription: GestureDescription?) {
+                        Log.d(TAG, "Cancelled: $gestureDescription")
+                    }
+                },
+                null,
+            )
+        } ?: Log.e(TAG, "NOT ON!!!!")
     }
 
     companion object {
@@ -81,8 +73,6 @@ class ClickService : AccessibilityService() {
         var clicker: ClickService? = null
             private set
     }
-
-    class OffException : Exception("AccessibilityService Not On!")
 
     /**
      * AccessibilityEvent Callback, as all events got filtered, will not be called.

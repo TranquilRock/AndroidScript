@@ -12,12 +12,15 @@ import android.widget.EditText
 import android.widget.Spinner
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.tranquilrock.androidscript.App.Companion.BASIC_SCRIPT_TYPE
+import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
+import com.tranquilrock.androidscript.App.Companion.SCRIPT_NAME_KEY
 import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.activity.editor.EditActivity
-import java.util.regex.Pattern
+import com.tranquilrock.androidscript.feature.InternalStorageReader
 
 
-open class SelectActivity : AppCompatActivity(), UseInternalStorage {
+open class SelectActivity : AppCompatActivity(), InternalStorageReader {
 
     private lateinit var editTextNewName: EditText
     private lateinit var textViewDialogBox: TextView
@@ -44,7 +47,7 @@ open class SelectActivity : AppCompatActivity(), UseInternalStorage {
             openFile(editTextNewName.text.toString())
         }
 
-        scriptType = intent.extras?.getString(TYPE_KEY) ?: basicType
+        scriptType = intent.extras?.getString(SCRIPT_TYPE_KEY) ?: BASIC_SCRIPT_TYPE
 
         // TODO Remove this
         testOnlyInitBasic(this)
@@ -64,13 +67,13 @@ open class SelectActivity : AppCompatActivity(), UseInternalStorage {
             textViewDialogBox.text = getString(R.string.select_activity__invalid_name)
         } else {
             textViewDialogBox.text = ""
-            if (!createScriptFile(this, scriptType, fileName)) {
+            if (!createScript(this, scriptType, fileName)) {
                 textViewDialogBox.text = getString(R.string.select_activity__file_exists)
             }
 
             val goToEditIndent = Intent(this, EditActivity::class.java).apply {
-                putExtra(EditActivity.SCRIPT_TYPE_KEY, scriptType)
-                putExtra(EditActivity.SCRIPT_NAME_KEY, fileName)
+                putExtra(SCRIPT_TYPE_KEY, scriptType)
+                putExtra(SCRIPT_NAME_KEY, fileName)
             }
             startActivity(goToEditIndent)
         }
@@ -78,14 +81,6 @@ open class SelectActivity : AppCompatActivity(), UseInternalStorage {
 
     companion object {
         private val TAG = SelectActivity::class.java.simpleName
-        private const val VALID_FILENAME_PATTERN = "([A-Za-z0-9_-]*)"
-        const val basicType = "BASIC"
-        const val TYPE_KEY = "TYPE"
-
-        fun isValidFileName(FileName: String): Boolean {
-            return Pattern.matches(
-                VALID_FILENAME_PATTERN, FileName
-            ) && FileName.isNotEmpty()
-        }
+       
     }
 }
