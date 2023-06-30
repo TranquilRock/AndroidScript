@@ -88,4 +88,5 @@
     <string name="title_activity_edit">EditActivity</string>
     <string name="toggle_portrait">Portrait</string>
     <string name="toggle_landscape">LandScape</string>
+    <string name="select_activity__manage_resource">MANAGE</string>
 </resources>
