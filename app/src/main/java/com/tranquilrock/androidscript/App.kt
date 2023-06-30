@@ -6,6 +6,8 @@ package com.tranquilrock.androidscript
 
 import android.app.Application
 import android.util.Log
+import kotlin.system.exitProcess
+
 
 class App : Application() {
     companion object {
@@ -21,5 +23,10 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         Log.d(packageName, "onCreate")
+        Thread.setDefaultUncaughtExceptionHandler { _, e ->
+            e.printStackTrace()
+            // Do not restart automatically
+            exitProcess(1)
+        }
     }
 }

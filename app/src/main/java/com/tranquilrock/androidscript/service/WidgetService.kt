@@ -36,7 +36,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.Integer.max
 import java.lang.Integer.min
-import java.lang.NullPointerException
 import kotlin.math.abs
 
 
@@ -144,47 +143,41 @@ class WidgetService : Service(), ProjectionReader {
 
         createNotificationChannel()
 
-        try {
-            isLandscape = intent.getBooleanExtra(ORIENTATION_KEY, false)
-            scriptType = intent.getStringExtra(SCRIPT_TYPE_KEY)!!
-            val projectionIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getParcelableExtra(MEDIA_PROJECTION_KEY, Intent::class.java)!!
-            } else {
-                intent.getParcelableExtra(MEDIA_PROJECTION_KEY)!!
-            }
-            Handler(Looper.getMainLooper()).post {
-                mediaProjection =
-                    getSystemService(MediaProjectionManager::class.java).getMediaProjection(
-                        RESULT_OK, projectionIntent
-                    )
-                setupProjection()
-            }
-
-            val blockData: ArrayList<ArrayList<String>> =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    intent.getSerializableExtra(
-                        BLOCK_DATA_KEY, ArrayList<ArrayList<String>>()::class.java
-                    )!!
-                } else ({
-                    intent.getSerializableExtra(BLOCK_DATA_KEY)!!
-                }) as ArrayList<ArrayList<String>>
-
-            val blockMeta: Array<Array<Any>> =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    intent.getSerializableExtra(BLOCK_META_KEY, Array<Array<Any>>::class.java)!!
-                } else ({
-                    intent.getSerializableExtra(BLOCK_META_KEY)!!
-                }) as Array<Array<Any>>
-            val imageParser = ImageParser(this)
-            val resourceReader = ResourceReader(applicationContext, scriptType)
-            interpreter = Interpreter(
-                blockData, blockMeta, resourceReader, clicker, imageParser, statusBulletin
-            )
-        } catch (e: NullPointerException) {
-            Log.e(TAG, "No intent extra!")
-            e.printStackTrace()
-            stopSelf()
+        isLandscape = intent.getBooleanExtra(ORIENTATION_KEY, false)
+        scriptType = intent.getStringExtra(SCRIPT_TYPE_KEY)!!
+        val projectionIntent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(MEDIA_PROJECTION_KEY, Intent::class.java)!!
+        } else {
+            intent.getParcelableExtra(MEDIA_PROJECTION_KEY)!!
         }
+        Handler(Looper.getMainLooper()).post {
+            mediaProjection =
+                getSystemService(MediaProjectionManager::class.java).getMediaProjection(
+                    RESULT_OK, projectionIntent
+                )
+            setupProjection()
+        }
+
+        val blockData: ArrayList<ArrayList<String>> =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getSerializableExtra(
+                    BLOCK_DATA_KEY, ArrayList<ArrayList<String>>()::class.java
+                )!!
+            } else ({
+                intent.getSerializableExtra(BLOCK_DATA_KEY)!!
+            }) as ArrayList<ArrayList<String>>
+
+        val blockMeta: Array<Array<Any>> =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                intent.getSerializableExtra(BLOCK_META_KEY, Array<Array<Any>>::class.java)!!
+            } else ({
+                intent.getSerializableExtra(BLOCK_META_KEY)!!
+            }) as Array<Array<Any>>
+        val imageParser = ImageParser(this)
+        val resourceReader = ResourceReader(applicationContext, scriptType)
+        interpreter = Interpreter(
+            blockData, blockMeta, resourceReader, clicker, imageParser, statusBulletin
+        )
 
         return super.onStartCommand(intent, flags, startId)
     }

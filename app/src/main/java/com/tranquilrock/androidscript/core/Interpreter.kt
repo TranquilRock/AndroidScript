@@ -65,8 +65,13 @@ class Interpreter(
     suspend fun run() {
         board.announce("Running")
         runningFlag = true
-        execute(ROOT_RAW_CODE_KEY, emptyList(), 0)
-        board.announce("IDLE")
+        try {
+            execute(ROOT_RAW_CODE_KEY, emptyList(), 0)
+            board.announce("IDLE")
+        } catch (e: NumberFormatException) {
+            Log.e(TAG, "Execute:: Wrong format!")
+            board.announce("Error!")
+        }
     }
 
     private suspend fun execute(
@@ -213,7 +218,10 @@ class Interpreter(
             localNameValMap: MutableMap<String, String>, command: String, parameters: Array<String>
         ) {
             try {
-                if (command !in Command.ASSIGN_COMMAND && parameters.isNotEmpty() && parameters[0].startsWith("$")) {
+                if (command !in Command.ASSIGN_COMMAND && parameters.isNotEmpty() && parameters[0].startsWith(
+                        "$"
+                    )
+                ) {
                     // The first Variable of ASSIGN_COMMAND is preserved.
                     parameters[0] = localNameValMap[parameters[0]]!!
                 }
@@ -222,7 +230,7 @@ class Interpreter(
                         parameters[z] = localNameValMap[parameters[z]]!!
                     }
                 }
-            } catch (e: NullPointerException){
+            } catch (e: NullPointerException) {
                 e.printStackTrace()
                 Log.e(TAG, "$command No such parameter: ${parameters.joinToString { " " }}")
             }
