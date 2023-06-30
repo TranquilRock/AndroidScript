@@ -2,9 +2,9 @@ package com.tranquilrock.androidscript.utils
 
 import android.content.Context
 import android.graphics.Bitmap
-import com.tranquilrock.androidscript.feature.InternalStorageReader
+import com.tranquilrock.androidscript.feature.InternalStorageUser
 
-class ResourceReader(private val context: Context, val scriptType: String) : InternalStorageReader {
+class ResourceReader(private val context: Context, val scriptType: String) : InternalStorageUser {
 
     private val imageCache: HashMap<String, Bitmap> = HashMap()
 
@@ -20,6 +20,4 @@ class ResourceReader(private val context: Context, val scriptType: String) : Int
         }
         return image
     }
-
-    fun saveImage(fileName: String, data: Bitmap) = saveImage(context, scriptType, fileName, data)
 }

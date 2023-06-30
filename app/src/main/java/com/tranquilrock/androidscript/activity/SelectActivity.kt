@@ -1,6 +1,7 @@
-/** Activity to select compiler, block editor, ..so on.
- * The files will not be reachable by users directly.
- * /data/user/0/com.tranquilrock.androidscript/app_BASIC
+/**
+ * Activity to select or create script files(.blc).
+ * The files will not be reachable from users directly.
+ * Data will be stored in `/data/user/0/com.tranquilrock.androidscript/app_BASIC`
  * */
 package com.tranquilrock.androidscript.activity
 
@@ -17,10 +18,10 @@ import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_NAME_KEY
 import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.activity.editor.EditActivity
-import com.tranquilrock.androidscript.feature.InternalStorageReader
+import com.tranquilrock.androidscript.feature.InternalStorageUser
 
 
-open class SelectActivity : AppCompatActivity(), InternalStorageReader {
+open class SelectActivity : AppCompatActivity(), InternalStorageUser {
 
     private lateinit var editTextNewName: EditText
     private lateinit var textViewDialogBox: TextView
@@ -48,9 +49,6 @@ open class SelectActivity : AppCompatActivity(), InternalStorageReader {
         }
 
         scriptType = intent.extras?.getString(SCRIPT_TYPE_KEY) ?: BASIC_SCRIPT_TYPE
-
-        // TODO Remove this
-        testOnlyInitBasic(this)
     }
 
     override fun onResume() {
@@ -77,10 +75,5 @@ open class SelectActivity : AppCompatActivity(), InternalStorageReader {
             }
             startActivity(goToEditIndent)
         }
-    }
-
-    companion object {
-        private val TAG = SelectActivity::class.java.simpleName
-       
     }
 }

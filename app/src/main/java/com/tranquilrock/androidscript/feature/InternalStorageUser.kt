@@ -20,15 +20,17 @@ import java.io.ObjectOutputStream
 import java.util.regex.Pattern
 
 
-interface InternalStorageReader {
+interface InternalStorageUser {
 
     companion object {
         const val CODE_FILE_TYPE = ".txt"
         const val SCRIPT_FILE_TYPE = ".blc"
         const val IMAGE_FILE_TYPE = ".png"
         const val META_FILE = "meta.json"
+        private const val SCRIPT_FOLDER_PREFIX = "app_"
+        private const val CODE_COMMENT_PREFIX = "//"
         private const val VALID_FILENAME_PATTERN = "([A-Za-z0-9_-]*)"
-        private val TAG = InternalStorageReader::class.java.simpleName
+        private val TAG = InternalStorageUser::class.java.simpleName
     }
 
     fun isValidFileName(FileName: String): Boolean {
@@ -37,6 +39,9 @@ interface InternalStorageReader {
         ) && FileName.isNotEmpty()
     }
 
+    fun getMetaFile(context: Context, scriptType: String): File {
+        return File(getScriptFolder(context, scriptType), META_FILE)
+    }
 
     fun getMetadata(context: Context, scriptType: String): Array<Array<Any>> {
         return Gson().fromJson(
@@ -57,6 +62,16 @@ interface InternalStorageReader {
      * */
     fun deleteScript(context: Context, scriptType: String, fileName: String): Boolean {
         return getScriptFile(context, scriptType, fileName).delete()
+    }
+
+
+    /**
+     * List all script files inside folder.
+     * */
+    fun getScriptTypeList(context: Context): List<String> {
+        return context.dataDir?.list()?.filter { dirName ->
+            dirName.startsWith(SCRIPT_FOLDER_PREFIX)
+        }?.map { a -> a.removePrefix(SCRIPT_FOLDER_PREFIX) } ?: emptyList()
     }
 
     /**
@@ -82,8 +97,8 @@ interface InternalStorageReader {
                 close()
             }
         } catch (e: IOException) {
-            Log.w(TAG, "saveScriptData Failed!!!!!!")
             e.printStackTrace()
+            Log.e(TAG, "saveScript:: writeObject error")
         }
     }
 
@@ -95,19 +110,25 @@ interface InternalStorageReader {
     ): ArrayList<ArrayList<String>> {
 
         val file = getScriptFile(context, scriptType, fileName)
-        if (!file.exists()) throw FileNotFoundException()
+        if (!file.exists()) {
+            Log.e(TAG, "getScript:: No such file!")
+            return ArrayList()
+        }
 
         var data: ArrayList<ArrayList<String>>? = null
 
-        if (file.length() > 0L) {
+        if (file.length() > 0L) { // File is empty on new create.
             try {
                 ObjectInputStream(FileInputStream(file)).run {
                     data = readObject() as? ArrayList<ArrayList<String>>
                     close()
                 }
-            } catch (e: Exception) {
+            } catch (e: IOException) {
                 e.printStackTrace()
-                Log.w(TAG, "getScriptData Failed!!!!!!")
+                Log.e(TAG, "getScript:: readObject error")
+            } catch (e: ClassNotFoundException) {
+                e.printStackTrace()
+                Log.e(TAG, "getScript:: Wrong script format!!")
             }
         }
 
@@ -118,17 +139,27 @@ interface InternalStorageReader {
         context: Context, scriptType: String, fileName: String
     ): List<String> {
         val file = getCodeFile(context, scriptType, fileName)
-        if (!file.exists()) throw FileNotFoundException()
-        return file.readLines().filter { it.isNotEmpty() && !it.startsWith("//") }
+        return if (file.exists()) {
+            file.readLines().filter { it.isNotEmpty() && !it.startsWith(CODE_COMMENT_PREFIX) }
+        } else {
+            Log.e(TAG, "getCode:: No such code file!")
+            emptyList()
+        }
     }
 
 
     fun saveImage(context: Context, scriptType: String, fileName: String, bitmap: Bitmap) {
         val file = getImageFile(context, scriptType, fileName)
-        FileOutputStream(file).run {
-            bitmap.compress(Bitmap.CompressFormat.PNG, 90, this)
-            flush()
-            close()
+        file.createNewFile()
+        try {
+            FileOutputStream(file).run {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 90, this)
+                flush()
+                close()
+            }
+        } catch (e: FileNotFoundException) {
+            e.printStackTrace()
+            Log.e(TAG, "saveImage:: FileNot found!")
         }
     }
 
@@ -139,17 +170,6 @@ interface InternalStorageReader {
         return image
     }
 
-    fun testOnlyInitBasic(context: Context) {
-        File(getScriptFolder(context, BASIC_SCRIPT_TYPE), META_FILE).delete()
-        val data = Gson().toJson(
-            Command.BASIC_META
-        )
-
-        val bufferWriter =
-            File(getScriptFolder(context, BASIC_SCRIPT_TYPE), META_FILE).bufferedWriter()
-        bufferWriter.use { out -> out.write(data) }
-        bufferWriter.close()
-    }
 
     private fun getScriptFolder(context: Context, scriptType: String): File {
         return context.getDir(scriptType, Context.MODE_PRIVATE)
