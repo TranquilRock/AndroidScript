@@ -7,6 +7,7 @@ package com.tranquilrock.androidscript.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
@@ -27,6 +28,7 @@ open class SelectActivity : AppCompatActivity(), InternalStorageUser {
     private lateinit var spinnerFileList: Spinner
     private lateinit var buttonLoad: View
     private lateinit var buttonCreate: View
+    private lateinit var buttonManage: View
 
     private lateinit var scriptType: String
     private lateinit var availableFile: List<String>
@@ -39,12 +41,16 @@ open class SelectActivity : AppCompatActivity(), InternalStorageUser {
         spinnerFileList = findViewById(R.id.select_file_list)
         buttonLoad = findViewById(R.id.select_load)
         buttonCreate = findViewById(R.id.select_create)
+        buttonManage = findViewById(R.id.select_manage)
 
         buttonLoad.setOnClickListener {
             openFile(spinnerFileList.selectedItem?.toString())
         }
         buttonCreate.setOnClickListener {
             openFile(editTextNewName.text.toString())
+        }
+        buttonManage.setOnClickListener {
+            startActivity(Intent(this, ManageActivity::class.java))
         }
 
         scriptType = intent.extras?.getString(SCRIPT_TYPE_KEY) ?: BASIC_SCRIPT_TYPE
