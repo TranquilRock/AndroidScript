@@ -30,6 +30,7 @@ class BlockViewHolder(private val view: View, private val blockDef: Array<Any>, 
 
      fun onBind(order: Updater, blockData: ArrayList<ArrayList<String>>) {
         for ((index, id) in inputIds.withIndex()) {
+            @Suppress("UNCHECKED_CAST") // Block Def must be [String, List, List, ...]
             Input(
                 view.findViewById(id),
                 blockDef[index + 1] as List<String>,

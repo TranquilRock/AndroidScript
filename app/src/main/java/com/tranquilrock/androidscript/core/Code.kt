@@ -48,24 +48,6 @@ data class Code(val codes: Vector<Array<String>>, val dependency: Vector<String>
         }
     }
 
-    companion object {
-        fun isValid(RawCode: List<String>): Boolean {
-            for (line in RawCode) {
-                var valid = false
-                for (format in Command.COMMAND_FORMATS) {
-                    if (format.let { Pattern.matches(it, line) }) {
-                        valid = true
-                        break
-                    }
-                }
-                if (!valid) {
-                    return false
-                }
-            }
-            return true
-        }
-    }
-
     class InvalidCodeException(s: String) : Exception() {
         init {
             Log.d(InvalidCodeException::class.java.simpleName, s)

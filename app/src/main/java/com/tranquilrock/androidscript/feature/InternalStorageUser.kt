@@ -8,8 +8,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import com.google.gson.Gson
-import com.tranquilrock.androidscript.App.Companion.BASIC_SCRIPT_TYPE
-import com.tranquilrock.androidscript.core.Command
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -66,6 +64,7 @@ interface InternalStorageUser {
     /**
      * Delete a script file under folder, return whether the operation succeeded.
      * */
+    @Suppress("unused") // Will be used in MANAGE
     fun deleteScript(context: Context, scriptType: String, fileName: String): Boolean {
         return getScriptFile(context, scriptType, fileName).delete()
     }
@@ -111,6 +110,7 @@ interface InternalStorageUser {
     /**
      * Serialize back the blockData object.
      * */
+    @Suppress("UNCHECKED_CAST") // Uncheck for serialization
     fun getScript(
         context: Context, scriptType: String, fileName: String
     ): ArrayList<ArrayList<String>> {
@@ -126,7 +126,7 @@ interface InternalStorageUser {
         if (file.length() > 0L) { // File is empty on new create.
             try {
                 ObjectInputStream(FileInputStream(file)).run {
-                    data = readObject() as? ArrayList<ArrayList<String>>
+                    data = readObject() as ArrayList<ArrayList<String>>
                     close()
                 }
             } catch (e: IOException) {

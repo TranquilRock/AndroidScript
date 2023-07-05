@@ -158,7 +158,8 @@ class WidgetService : Service(), ProjectionReader {
             setupProjection()
         }
 
-        val blockData: ArrayList<ArrayList<String>> =
+        // Uncheck for serialization
+        @Suppress("UNCHECKED_CAST") val blockData: ArrayList<ArrayList<String>> =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 intent.getSerializableExtra(
                     BLOCK_DATA_KEY, ArrayList<ArrayList<String>>()::class.java
@@ -167,7 +168,8 @@ class WidgetService : Service(), ProjectionReader {
                 intent.getSerializableExtra(BLOCK_DATA_KEY)!!
             }) as ArrayList<ArrayList<String>>
 
-        val blockMeta: Array<Array<Any>> =
+        // Uncheck for serialization
+        @Suppress("UNCHECKED_CAST") val blockMeta: Array<Array<Any>> =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 intent.getSerializableExtra(BLOCK_META_KEY, Array<Array<Any>>::class.java)!!
             } else ({

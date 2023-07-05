@@ -50,7 +50,7 @@ class Menu : AppCompatActivity(), InternalStorageUser {
                 this@Menu, R.layout.menu_button, getScriptTypeList(this@Menu)
             )
             adapter = listAdapter
-            onItemClickListener = OnItemClickListener { parent, _, position, id ->
+            onItemClickListener = OnItemClickListener { parent, _, position, _ ->
                 val scriptType = parent.getItemAtPosition(position) as String
                 val toSelectIntent = Intent(this@Menu, SelectActivity::class.java)
                 toSelectIntent.putExtra(SCRIPT_TYPE_KEY, scriptType)

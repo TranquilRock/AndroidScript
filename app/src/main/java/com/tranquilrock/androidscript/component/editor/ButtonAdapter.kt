@@ -40,8 +40,4 @@ class ButtonAdapter(
     override fun getItemCount(): Int {
         return blockMeta.size
     }
-
-    companion object {
-        private val TAG = ButtonAdapter::class.java.simpleName
-    }
 }
