@@ -45,37 +45,37 @@ class BlockAdapter(
             0 -> {
                 view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.basic_zero_var_format, parent, false)
-                return BlockViewHolder.ZeroVH(view, blockDef)
+                return BlockZeroVH(view, blockDef)
             }
 
             1 -> {
                 view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.basic_one_var_format, parent, false)
-                return BlockViewHolder.OneVH(view, blockDef)
+                return BlockOneVH(view, blockDef)
             }
 
             2 -> {
                 view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.basic_two_var_format, parent, false)
-                return BlockViewHolder.TwoVH(view, blockDef)
+                return BlockTwoVH(view, blockDef)
             }
 
             3 -> {
                 view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.basic_three_var_format, parent, false)
-                return BlockViewHolder.ThreeVH(view, blockDef)
+                return BlockThreeVH(view, blockDef)
             }
 
             4 -> {
                 view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.basic_four_var_format, parent, false)
-                return BlockViewHolder.FourVH(view, blockDef)
+                return BlockFourVH(view, blockDef)
             }
 
             5 -> {
                 view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.basic_five_var_format, parent, false)
-                return BlockViewHolder.FiveVH(view, blockDef)
+                return BlockFiveVH(view, blockDef)
             }
         }
         throw RuntimeException("$TAG Block!")

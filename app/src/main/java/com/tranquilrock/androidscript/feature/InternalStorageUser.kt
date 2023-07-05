@@ -17,6 +17,7 @@ import java.io.FileOutputStream
 import java.io.IOException
 import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
+import java.lang.NullPointerException
 import java.util.regex.Pattern
 
 
@@ -44,10 +45,15 @@ interface InternalStorageUser {
     }
 
     fun getMetadata(context: Context, scriptType: String): Array<Array<Any>> {
-        return Gson().fromJson(
-            File(getScriptFolder(context, scriptType), META_FILE).readText(),
-            Array<Array<Any>>::class.java
-        )
+        return try {
+            Gson().fromJson(
+                File(getScriptFolder(context, scriptType), META_FILE).readText(),
+                Array<Array<Any>>::class.java
+            )
+        } catch (e: NullPointerException) {
+            e.printStackTrace()
+            emptyArray()
+        }
     }
 
     /**

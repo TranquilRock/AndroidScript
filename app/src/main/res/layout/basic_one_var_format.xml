@@ -1,6 +1,5 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -32,8 +31,7 @@
             card_view:layout_constraintEnd_toStartOf="@id/buttons"
             card_view:layout_constraintStart_toEndOf="@id/Title"
             card_view:layout_constraintTop_toTopOf="parent">
-
-            <EditText
+            <include layout="@layout/input"
                 android:id="@+id/OneVarInput"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -41,7 +39,6 @@
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/buttons"
