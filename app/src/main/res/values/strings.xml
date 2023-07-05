@@ -26,6 +26,10 @@
     <string name="select_activity__manage_resource">MANAGE</string>
     <string name="input_edit_text_hint">Input</string>
     <string name="manage_add_image">Add Image</string>
+    <string name="floating_widget_icon">Icon</string>
+    <string name="floating_widget_stop">Stop</string>
+    <string name="floating_widget_run">Run</string>
+    <string name="floating_widget_close">Close</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>
