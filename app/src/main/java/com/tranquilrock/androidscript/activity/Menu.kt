@@ -47,7 +47,7 @@ class Menu : AppCompatActivity(), InternalStorageUser {
 
         findViewById<ListView>(R.id.menu_entry_buttons).run {
             val listAdapter: ListAdapter = ArrayAdapter<Any?>(
-                this@Menu, R.layout.menu_btn_format, getScriptTypeList(this@Menu)
+                this@Menu, R.layout.menu_button, getScriptTypeList(this@Menu)
             )
             adapter = listAdapter
             onItemClickListener = OnItemClickListener { parent, _, position, id ->

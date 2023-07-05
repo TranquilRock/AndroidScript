@@ -33,8 +33,9 @@
             card_view:layout_constraintStart_toEndOf="@id/Title"
             card_view:layout_constraintTop_toTopOf="parent">
 
-            <EditText
+            <include
                 android:id="@+id/FiveVarInputLeftUp"
+                layout="@layout/edit_component_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -44,8 +45,9 @@
                 card_view:layout_constraintTop_toTopOf="parent" />
 
 
-            <EditText
+            <include
                 android:id="@+id/FiveVarInputRightUp"
+                layout="@layout/edit_component_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -58,13 +60,14 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="10sp"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@id/inputs1"
-            android:layout_marginEnd="10sp">
+            card_view:layout_constraintTop_toBottomOf="@id/inputs1">
 
-            <EditText
+            <include
                 android:id="@+id/FiveVarInputLeftBottom"
+                layout="@layout/edit_component_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -73,8 +76,9 @@
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
+            <include
                 android:id="@+id/FiveVarInputRightBottom"
+                layout="@layout/edit_component_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -83,8 +87,9 @@
                 card_view:layout_constraintEnd_toStartOf="@id/FiveVarInputLast"
                 card_view:layout_constraintStart_toEndOf="@id/FiveVarInputLeftBottom" />
 
-            <EditText
+            <include
                 android:id="@+id/FiveVarInputLast"
+                layout="@layout/edit_component_input"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
@@ -94,42 +99,9 @@
                 card_view:layout_constraintStart_toEndOf="@id/FiveVarInputRightBottom" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <include
             android:id="@+id/buttons"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintTop_toTopOf="parent">
-
-            <ImageButton
-                android:id="@+id/btn_up"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:contentDescription="@string/btn_up"
-                card_view:layout_constraintEnd_toStartOf="@id/btn_down"
-                card_view:layout_constraintTop_toTopOf="@id/btn_del"
-                card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24" />
-
-            <ImageButton
-                android:id="@+id/btn_down"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:contentDescription="@string/btn_down"
-                card_view:layout_constraintEnd_toStartOf="@id/btn_del"
-                card_view:layout_constraintTop_toTopOf="@id/btn_del"
-                card_view:srcCompat="@drawable/ic_baseline_arrow_drop_down_24" />
-
-            <ImageButton
-                android:id="@+id/btn_del"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_marginEnd="3dp"
-                android:contentDescription="@string/btn_del"
-                card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintTop_toTopOf="parent"
-                card_view:srcCompat="@drawable/ic_close_white_24dp" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
+            layout="@layout/edit_component_switch" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

@@ -5,8 +5,6 @@
  * */
 package com.tranquilrock.androidscript.component.editor
 
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.View.GONE
@@ -14,42 +12,49 @@ import android.view.View.VISIBLE
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
-import android.widget.CompoundButton
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Spinner
 import android.widget.TextView
 import android.widget.ToggleButton
 import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.tranquilrock.androidscript.R
 
-abstract class BlockViewHolder(protected var view: View, val blockDef: Array<*>) :
+class BlockViewHolder(private val view: View, private val blockDef: Array<Any>, private val inputIds: List<Int>) :
     RecyclerView.ViewHolder(
         view
     ) {
 
-    lateinit var inputs: List<View>
-    lateinit var title: TextView
+//    lateinit var inputIds: List<Int>
 
-    open fun onBind(order: Updater, blockData: ArrayList<ArrayList<String>>) {
-        (view.findViewById(R.id.btn_up) as ImageButton).setOnClickListener {
+     fun onBind(order: Updater, blockData: ArrayList<ArrayList<String>>) {
+        for ((index, id) in inputIds.withIndex()) {
+            Input(
+                view.findViewById(id),
+                blockDef[index + 1] as List<String>,
+                blockData,
+                this,
+                index + 1
+            )
+        }
+
+        view.findViewById<ImageButton>(R.id.btn_up).setOnClickListener {
             order.swap(
                 adapterPosition - 1, adapterPosition
             )
         }
-        (view.findViewById(R.id.btn_down) as ImageButton).setOnClickListener {
+        view.findViewById<ImageButton>(R.id.btn_down).setOnClickListener {
             order.swap(
                 adapterPosition, adapterPosition + 1
             )
         }
-        (view.findViewById(R.id.btn_del) as ImageButton).setOnClickListener {
+        view.findViewById<ImageButton>(R.id.btn_del).setOnClickListener {
             order.delete(
                 adapterPosition
             )
         }
-        title = view.findViewById(R.id.Title)
+        view.findViewById<TextView>(R.id.Title).text = blockDef[0] as CharSequence?
     }
 
     class Input(
@@ -145,20 +150,5 @@ abstract class BlockViewHolder(protected var view: View, val blockDef: Array<*>)
     companion object {
         private val regex = Regex("[^A-Za-z0-9]")
         val TAG: String = BlockViewHolder::class.java.simpleName
-        fun getTextWatcher(
-            blockData: ArrayList<ArrayList<String>>, index: Int, blockViewHolder: BlockViewHolder
-        ): TextWatcher {
-            return object : TextWatcher {
-                override fun beforeTextChanged(
-                    s: CharSequence, start: Int, count: Int, after: Int
-                ) {
-                }
-
-                override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-                override fun afterTextChanged(s: Editable) {
-                    blockData[blockViewHolder.adapterPosition][index] = s.toString()
-                }
-            }
-        }
     }
 }

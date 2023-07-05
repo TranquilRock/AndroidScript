@@ -87,7 +87,7 @@ class WidgetService : Service(), ProjectionReader {
         Log.d(TAG, "onCreate")
 
         layoutInflater = getSystemService(LayoutInflater::class.java)
-        widgetView = layoutInflater.inflate(R.layout.floating_widget_layout, null)
+        widgetView = layoutInflater.inflate(R.layout.floating_widget, null)
         collapsedView = widgetView.findViewById(R.id.collapse_view)
         expandedView = widgetView.findViewById(R.id.expanded_container)
         statusBulletin = Bulletin(widgetView.findViewById(R.id.stateToast))

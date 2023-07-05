@@ -18,7 +18,7 @@ class ButtonAdapter(
         viewType: Int
     ): ButtonViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.button_item, parent, false)
+            .inflate(R.layout.edit_button, parent, false)
         return ButtonViewHolder(view, view.findViewById(R.id.button_item))
     }
 
