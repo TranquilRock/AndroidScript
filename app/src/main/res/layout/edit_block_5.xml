@@ -11,92 +11,86 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:background="#373780">
+
 
         <TextView
             android:id="@+id/Title"
             android:layout_width="wrap_content"
-            android:layout_height="43dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
             android:gravity="center_vertical"
             android:text="@string/block_name"
             android:textColor="#FFF"
-            android:textSize="16sp"
+            android:textSize="20sp"
+            card_view:layout_constraintBottom_toTopOf="@id/input"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/inputs1"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+        <include
+            android:id="@+id/Five1"
+            layout="@layout/edit_component_input"
+            android:layout_width="100dp"
+            android:layout_height="50dp"
+            android:textSize="20sp"
+            card_view:layout_constraintBottom_toTopOf="@id/input"
             card_view:layout_constraintEnd_toStartOf="@id/buttons"
             card_view:layout_constraintStart_toEndOf="@id/Title"
-            card_view:layout_constraintTop_toTopOf="parent">
+            card_view:layout_constraintTop_toTopOf="parent" />
 
-            <include
-                android:id="@+id/FiveVarInputLeftUp"
-                layout="@layout/edit_component_input"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:textSize="16sp"
-                card_view:layout_constraintEnd_toStartOf="@id/FiveVarInputRightUp"
-                card_view:layout_constraintStart_toStartOf="parent"
-                card_view:layout_constraintTop_toTopOf="parent" />
-
-
-            <include
-                android:id="@+id/FiveVarInputRightUp"
-                layout="@layout/edit_component_input"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:textSize="16sp"
-                card_view:layout_constraintBaseline_toBaselineOf="@id/FiveVarInputLeftUp"
-                card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintStart_toEndOf="@id/FiveVarInputLeftUp" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
+            android:id="@+id/input"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="10sp"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@id/inputs1">
+            card_view:layout_constraintTop_toBottomOf="@id/Five1">
 
             <include
-                android:id="@+id/FiveVarInputLeftBottom"
+                android:id="@+id/Five2"
                 layout="@layout/edit_component_input"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:textSize="16sp"
-                card_view:layout_constraintEnd_toStartOf="@id/FiveVarInputRightBottom"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:textSize="20sp"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toStartOf="@id/Five3"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
 
             <include
-                android:id="@+id/FiveVarInputRightBottom"
+                android:id="@+id/Five3"
                 layout="@layout/edit_component_input"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:textSize="16sp"
-                card_view:layout_constraintBaseline_toBaselineOf="@id/FiveVarInputLeftBottom"
-                card_view:layout_constraintEnd_toStartOf="@id/FiveVarInputLast"
-                card_view:layout_constraintStart_toEndOf="@id/FiveVarInputLeftBottom" />
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:textSize="20sp"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toStartOf="@id/Five4"
+                card_view:layout_constraintStart_toEndOf="@id/Five2"
+                card_view:layout_constraintTop_toTopOf="parent" />
 
             <include
-                android:id="@+id/FiveVarInputLast"
+                android:id="@+id/Five4"
                 layout="@layout/edit_component_input"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:textSize="16sp"
-                card_view:layout_constraintBaseline_toBaselineOf="@id/FiveVarInputLeftBottom"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:textSize="20sp"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toStartOf="@id/Five5"
+                card_view:layout_constraintStart_toEndOf="@id/Five3"
+                card_view:layout_constraintTop_toTopOf="parent" />
+
+            <include
+                android:id="@+id/Five5"
+                layout="@layout/edit_component_input"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:textSize="20sp"
+                card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toEndOf="parent"
-                card_view:layout_constraintStart_toEndOf="@id/FiveVarInputRightBottom" />
+                card_view:layout_constraintStart_toEndOf="@id/Five4"
+                card_view:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include

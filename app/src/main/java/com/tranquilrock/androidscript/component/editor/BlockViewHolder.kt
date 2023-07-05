@@ -74,7 +74,7 @@ class BlockViewHolder(private val view: View, private val blockDef: Array<Any>, 
             editText.visibility = GONE
             toggleButton.visibility = GONE
             when (inputDef[0]) {
-                "Spinner" -> {
+                "Spinner" -> { // TODO replace data with file list?
                     if (inputDef.size < 2) Log.e(
                         TAG, "Spinner def error, ${inputDef.joinToString { " " }}"
                     )

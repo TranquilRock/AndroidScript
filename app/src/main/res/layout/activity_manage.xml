@@ -9,9 +9,10 @@
 
     <Button
         android:id="@+id/manage_add"
-        android:layout_width="100dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:text="1234" />
+        android:text="@string/manage_add_image"
+        android:textColor="#5E35B1" />
 </LinearLayout>

@@ -22,7 +22,7 @@
     <Spinner
         android:id="@+id/select_file_list"
         android:layout_width="200dp"
-        android:layout_height="47dp" />
+        android:layout_height="48dp" />
 
     <Button
         android:id="@+id/select_load"
@@ -31,14 +31,18 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:text="@string/select_activity__load" />
+        android:text="@string/select_activity__load"
+        android:textColor="#5E35B1" />
 
     <EditText
         android:id="@+id/select_new_name"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:autofillHints="NewFile"
         android:hint="@string/select_activity__script_name"
+        android:inputType="text"
+        android:minHeight="48dp"
         android:text="" />
 
     <Button
@@ -47,12 +51,15 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:text="@string/select_activity__create" />
+        android:text="@string/select_activity__create"
+        android:textColor="#5E35B1" />
+
     <Button
         android:id="@+id/select_manage"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
-        android:text="@string/select_activity__manage_resource" />
+        android:text="@string/select_activity__manage_resource"
+        android:textColor="#5E35B1" />
 </LinearLayout>

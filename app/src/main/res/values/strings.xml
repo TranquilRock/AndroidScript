@@ -18,13 +18,14 @@
     <string name="btn_down">Down</string>
     <string name="btn_del">Delete</string>
     <string name="btn_up">Up</string>
-    <string name="Save">儲存/載入</string>
-    <string name="StartService">啟動服務</string>
+    <string name="Save">Save</string>
+    <string name="StartService">Start</string>
     <string name="block_name">Title</string>
     <string name="toggle_portrait">Portrait</string>
     <string name="toggle_landscape">LandScape</string>
     <string name="select_activity__manage_resource">MANAGE</string>
     <string name="input_edit_text_hint">Input</string>
+    <string name="manage_add_image">Add Image</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>

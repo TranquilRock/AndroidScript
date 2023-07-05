@@ -17,32 +17,43 @@
             android:id="@+id/Title"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:gravity="center_vertical"
             android:text="@string/block_name"
             android:textColor="#FFF"
-            android:textSize="16sp"
-            android:gravity="center_vertical"
+            android:textSize="20sp"
+            card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toTopOf="parent"
-            card_view:layout_constraintBottom_toBottomOf="parent"/>
+            card_view:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toStartOf="@id/buttons"
             card_view:layout_constraintStart_toEndOf="@id/Title"
             card_view:layout_constraintTop_toTopOf="parent">
-            <include layout="@layout/edit_component_input"
+
+            <include
                 android:id="@+id/OneVarInput"
+                layout="@layout/edit_component_input"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="16sp"
+                android:textSize="20sp"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
             android:id="@+id/buttons"
-            layout="@layout/edit_component_switch" />
+            layout="@layout/edit_component_switch"
+            card_view:layout_constraintBottom_toBottomOf="parent"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toEndOf="@id/input"
+            card_view:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

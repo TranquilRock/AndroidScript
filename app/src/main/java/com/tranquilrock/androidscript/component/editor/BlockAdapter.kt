@@ -68,19 +68,19 @@ class BlockAdapter(
             ),
             Pair(
                 R.layout.edit_block_4, listOf(
-                    R.id.FourVarInputLeftUp,
-                    R.id.FourVarInputRightUp,
-                    R.id.FourVarInputLeftBottom,
-                    R.id.FourVarInputRightBottom
+                    R.id.Four1,
+                    R.id.Four2,
+                    R.id.Four3,
+                    R.id.Four4
                 )
             ),
             Pair(
                 R.layout.edit_block_5, listOf(
-                    R.id.FiveVarInputLeftUp,
-                    R.id.FiveVarInputRightUp,
-                    R.id.FiveVarInputLeftBottom,
-                    R.id.FiveVarInputRightBottom,
-                    R.id.FiveVarInputLast
+                    R.id.Five1,
+                    R.id.Five2,
+                    R.id.Five3,
+                    R.id.Five4,
+                    R.id.Five5
                 )
             ),
         )
