@@ -14,7 +14,7 @@ import com.tranquilrock.androidscript.feature.InternalStorageUser
 import java.io.FileNotFoundException
 import java.io.IOException
 
-// TODO
+// TODO recycler view to list images with remove button
 class ManageActivity : AppCompatActivity(), InternalStorageUser {
 
     override fun onCreate(savedInstanceState: Bundle?) {

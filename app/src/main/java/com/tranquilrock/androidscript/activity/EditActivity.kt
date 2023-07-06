@@ -102,17 +102,17 @@ class EditActivity : AppCompatActivity(), InternalStorageUser, PermissionRequest
 
         blockView.run {
             layoutManager = LinearLayoutManager(this@EditActivity)
+            adapter = BlockAdapter(blockMeta, blockData)
             addItemDecoration(
                 DividerItemDecoration(
                     this@EditActivity, DividerItemDecoration.VERTICAL
                 )
             )
-            adapter = BlockAdapter(blockMeta, blockData)
         }
 
         buttonView.run {
             layoutManager = GridLayoutManager(this@EditActivity, 2)
-            buttonView.adapter = ButtonAdapter(
+            adapter = ButtonAdapter(
                 blockMeta,
                 blockData,
                 (blockView.adapter as BlockAdapter).onOrderChange,
