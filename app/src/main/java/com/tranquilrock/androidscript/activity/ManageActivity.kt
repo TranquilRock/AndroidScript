@@ -27,7 +27,7 @@ class ManageActivity : AppCompatActivity(), InternalStorageUser {
 
     private fun imageChooser() {
         val i = Intent()
-        i.type = "image/*"
+        i.type = "image/png"
         i.action = Intent.ACTION_GET_CONTENT
         launchSomeActivity.launch(i)
     }

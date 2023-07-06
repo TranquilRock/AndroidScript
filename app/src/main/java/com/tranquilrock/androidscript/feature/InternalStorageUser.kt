@@ -14,6 +14,8 @@ import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.lang.NullPointerException
 import java.util.regex.Pattern
+import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
 
 /**
  * Interface to declare that the class will access internal storage for this application.
@@ -38,6 +40,31 @@ interface InternalStorageUser {
         return Pattern.matches(
             VALID_FILENAME_PATTERN, FileName
         ) && FileName.isNotEmpty()
+    }
+
+    /**
+     * Unzip file into APP's dataDir
+     */
+    @Throws(IOException::class)
+    fun unzip(context: Context, zipInputStream: ZipInputStream) {
+        var zipEntry: ZipEntry
+        var readLen: Int
+        val readBuffer = ByteArray(8192)
+        while (true) {
+            zipEntry = zipInputStream.nextEntry ?: return
+            val file = File(context.dataDir, zipEntry.name)
+            val dir = if (zipEntry.isDirectory) file else file.parentFile
+            if (!dir.isDirectory && !dir.mkdirs()) throw FileNotFoundException(
+                "Failed to ensure directory: " + dir.absolutePath
+            )
+            if (zipEntry.isDirectory) continue
+            if (!(zipEntry.name.let { it.endsWith(CODE_FILE_TYPE) || it.endsWith(IMAGE_FILE_TYPE) })) continue
+            FileOutputStream(file).use { out ->
+                while (zipInputStream.read(readBuffer).also { readLen = it } != -1) {
+                    out.write(readBuffer, 0, readLen)
+                }
+            }
+        }
     }
 
     // =============================================================================================

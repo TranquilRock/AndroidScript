@@ -21,9 +21,9 @@
 
     <Button
         android:id="@+id/menu_download"
-        android:layout_width="150dp"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:text="@string/menu_download"
+        android:text="@string/menu_upload"
         android:textColor="#5E35B1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"

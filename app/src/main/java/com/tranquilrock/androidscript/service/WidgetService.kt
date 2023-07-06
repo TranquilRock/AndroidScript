@@ -23,7 +23,7 @@ import com.tranquilrock.androidscript.App.Companion.MEDIA_PROJECTION_KEY
 import com.tranquilrock.androidscript.App.Companion.ORIENTATION_KEY
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.R
-import com.tranquilrock.androidscript.activity.Menu
+import com.tranquilrock.androidscript.activity.MenuActivity
 import com.tranquilrock.androidscript.core.Interpreter
 import com.tranquilrock.androidscript.feature.ProjectionReader
 import com.tranquilrock.androidscript.service.ClickService.Companion.clicker
@@ -192,7 +192,7 @@ class WidgetService : Service(), ProjectionReader {
      * */
     private fun createNotificationChannel() {
         val navigateIntent = PendingIntent.getActivity(
-            this, 0, Intent(this, Menu::class.java), PendingIntent.FLAG_IMMUTABLE
+            this, 0, Intent(this, MenuActivity::class.java), PendingIntent.FLAG_IMMUTABLE
         )
         val notificationBuilder =
             Notification.Builder(applicationContext, NOTIFICATION_CHANNEL_ID).apply {
