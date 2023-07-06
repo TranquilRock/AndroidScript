@@ -8,7 +8,7 @@ import com.tranquilrock.androidscript.R
 import java.util.Collections
 
 class ButtonAdapter(
-    private val blockMeta: Array<Array<Any>>,
+    private val blockMeta: Array<Pair<String, List<List<String>>>>,
     private val blockData: ArrayList<ArrayList<String>>,
     private val onInsert: Updater
 ) : RecyclerView.Adapter<ButtonViewHolder>() {
@@ -24,10 +24,10 @@ class ButtonAdapter(
 
     override fun onBindViewHolder(holder: ButtonViewHolder, position: Int) {
         holder.run {
-            button.text = blockMeta[position][0] as CharSequence?
+            button.text = blockMeta[position].first
             button.setOnClickListener {
                 blockData.add(
-                    ArrayList<String>(Collections.nCopies(blockMeta[position].size, "")).apply {
+                    ArrayList<String>(Collections.nCopies(blockMeta[position].second.size + 1, "")).apply {
                         // TODO change data to be add
                         this[0] = position.toString()
                     }

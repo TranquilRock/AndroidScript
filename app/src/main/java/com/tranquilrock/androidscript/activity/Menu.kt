@@ -1,6 +1,3 @@
-/**
- * App Menu, read available script types and create buttons.
- */
 package com.tranquilrock.androidscript.activity
 
 import android.content.Intent
@@ -12,35 +9,19 @@ import android.widget.ListAdapter
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
-import com.tranquilrock.androidscript.App.Companion.BASIC_SCRIPT_TYPE
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.R
-import com.tranquilrock.androidscript.core.Command
 import com.tranquilrock.androidscript.service.WidgetService
 import com.tranquilrock.androidscript.feature.InternalStorageUser
-import org.opencv.android.OpenCVLoader
 
+/**
+ * App Menu, provide download and read available script types then create buttons.
+ */
 class Menu : AppCompatActivity(), InternalStorageUser {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
-
-
-
-        getMetaFile(this, BASIC_SCRIPT_TYPE).run {
-            /* Initialize BASIC */
-            if (createNewFile()) {
-                val data = Gson().toJson(
-                    Command.BASIC_META
-                )
-                bufferedWriter().run {
-                    use { out -> out.write(data) }
-                    close()
-                }
-            }
-        }
 
         findViewById<ListView>(R.id.menu_entry_buttons).run {
             val listAdapter: ListAdapter = ArrayAdapter<Any?>(
@@ -56,13 +37,15 @@ class Menu : AppCompatActivity(), InternalStorageUser {
         }
 
         findViewById<View>(R.id.menu_download).setOnClickListener {
-            Toast.makeText(this, "NotReadyYet", Toast.LENGTH_SHORT).show()
             // TODO add download button
+            Toast.makeText(this, "NotReadyYet", Toast.LENGTH_SHORT).show()
         }
     }
 
+    /**
+     * Avoid multiple service instance, stop service on resume.
+     */
     override fun onResume() {
-        /* Stop service to avoid duplicate service coexists. */
         super.onResume()
         stopService(Intent(this, WidgetService::class.java))
     }

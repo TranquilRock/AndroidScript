@@ -3,7 +3,11 @@ package com.tranquilrock.androidscript
 import android.app.Application
 import android.util.Log
 import android.widget.Toast
+import com.google.gson.Gson
+import com.tranquilrock.androidscript.core.Command
 import org.opencv.android.OpenCVLoader
+import java.io.File
+import java.lang.IllegalStateException
 import kotlin.system.exitProcess
 
 /**
@@ -24,18 +28,27 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        Log.d(packageName, "onCreate")
 
         if (!OpenCVLoader.initDebug()) {
             Toast.makeText(this, "OpenCV Not Loaded!!!", Toast.LENGTH_LONG).show()
             Log.e(packageName, "OpenCV Failed to Load.")
-            exitProcess(1)
+            throw IllegalStateException("OpenCV Missing")
         }
 
-        Log.d(packageName, "onCreate")
-        Thread.setDefaultUncaughtExceptionHandler { _, e ->
-            e.printStackTrace()
-            Log.e(packageName, "Unhandled Error Occurred.")
-            exitProcess(2)
+        /**
+         * Initialize BASIC's meta If not Exist
+         */
+        File(getDir(BASIC_SCRIPT_TYPE, MODE_PRIVATE), "meta.json").run {
+            if (createNewFile()) {
+                val data = Gson().toJson(
+                    Command.BASIC_META
+                )
+                bufferedWriter().run {
+                    use { out -> out.write(data) }
+                    close()
+                }
+            }
         }
     }
 }

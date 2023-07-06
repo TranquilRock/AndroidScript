@@ -18,8 +18,8 @@ import java.util.regex.Pattern
 /**
  * Interface to declare that the class will access internal storage for this application.
  * The path is:
- *  1. /data/user/0/com.tranquilrock.androidscript/files/app_*
- *  2. /data/data/com.tranquilrock.androidscript/files/app_*
+ *  1. /data/user/0/com.tranquilrock.androidscript/app_*
+ *  2. /data/data/com.tranquilrock.androidscript/app_*
  */
 interface InternalStorageUser {
 
@@ -40,15 +40,12 @@ interface InternalStorageUser {
         ) && FileName.isNotEmpty()
     }
 
-    fun getMetaFile(context: Context, scriptType: String): File {
-        return File(getScriptFolder(context, scriptType), META_FILE)
-    }
-
-    fun getMetadata(context: Context, scriptType: String): Array<Array<Any>> {
+    // =============================================================================================
+    fun getMetadata(context: Context, scriptType: String): Array<Pair<String, List<List<String>>>> {
         return try {
             Gson().fromJson(
                 File(getScriptFolder(context, scriptType), META_FILE).readText(),
-                Array<Array<Any>>::class.java
+                arrayOf(Pair("", listOf(emptyList<String>())))::class.java
             )
         } catch (e: NullPointerException) {
             e.printStackTrace()
@@ -56,21 +53,7 @@ interface InternalStorageUser {
         }
     }
 
-    /**
-     * Creates script files under folder, return whether the operation succeeded.
-     * */
-    fun createScript(context: Context, scriptType: String, fileName: String): Boolean {
-        return getScriptFile(context, scriptType, fileName).createNewFile()
-    }
-
-    /**
-     * Delete a script file under folder, return whether the operation succeeded.
-     * */
-    @Suppress("unused") // Will be used in MANAGE
-    fun deleteScript(context: Context, scriptType: String, fileName: String): Boolean {
-        return getScriptFile(context, scriptType, fileName).delete()
-    }
-
+    // =============================================================================================
 
     /**
      * List all script files inside folder.
@@ -90,6 +73,16 @@ interface InternalStorageUser {
         }?.map { a -> a.removeSuffix(SCRIPT_FILE_TYPE) } ?: emptyList()
     }
 
+    // =============================================================================================
+
+    /**
+     * Creates script files under folder, return whether the operation succeeded.
+     * */
+    fun createScript(context: Context, scriptType: String, fileName: String): Boolean {
+        return getScriptFile(context, scriptType, fileName).createNewFile()
+    }
+
+
     /**
      * Serialize the blockData object and save.
      * */
@@ -108,6 +101,15 @@ interface InternalStorageUser {
             Log.e(TAG, "saveScript:: writeObject error")
         }
     }
+
+    /**
+     * Delete a script file under folder, return whether the operation succeeded.
+     * */
+    @Suppress("unused") // Will be used in MANAGE
+    fun deleteScript(context: Context, scriptType: String, fileName: String): Boolean {
+        return getScriptFile(context, scriptType, fileName).delete()
+    }
+
 
     /**
      * Serialize back the blockData object.
@@ -143,6 +145,9 @@ interface InternalStorageUser {
         return data ?: ArrayList()
     }
 
+
+    // =============================================================================================
+
     fun getCode(
         context: Context, scriptType: String, fileName: String
     ): List<String> {
@@ -155,6 +160,7 @@ interface InternalStorageUser {
         }
     }
 
+    // =============================================================================================
 
     fun saveImage(context: Context, scriptType: String, fileName: String, bitmap: Bitmap) {
         val file = getImageFile(context, scriptType, fileName)
@@ -178,6 +184,7 @@ interface InternalStorageUser {
         return image
     }
 
+    // =============================================================================================
 
     private fun getScriptFolder(context: Context, scriptType: String): File {
         return context.getDir(scriptType, Context.MODE_PRIVATE)

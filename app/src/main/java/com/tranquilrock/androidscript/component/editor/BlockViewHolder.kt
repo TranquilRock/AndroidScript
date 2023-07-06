@@ -21,25 +21,22 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.tranquilrock.androidscript.R
 
-class BlockViewHolder(private val view: View, private val blockDef: Array<Any>, private val inputIds: List<Int>) :
-    RecyclerView.ViewHolder(
-        view
-    ) {
+class BlockViewHolder(
+    private val view: View,
+    private val blockName: String,
+    private val blockDef: List<List<String>>,
+    private val inputIds: List<Int>
+) : RecyclerView.ViewHolder(
+    view
+) {
 
-//    lateinit var inputIds: List<Int>
-
-     fun onBind(order: Updater, blockData: ArrayList<ArrayList<String>>) {
+    fun onBind(order: Updater, blockData: ArrayList<ArrayList<String>>) {
         for ((index, id) in inputIds.withIndex()) {
-            @Suppress("UNCHECKED_CAST") // Block Def must be [String, List, List, ...]
             Input(
-                view.findViewById(id),
-                blockDef[index + 1] as List<String>,
-                blockData,
-                this,
-                index + 1
+                view.findViewById(id), blockDef[index], blockData, this, index + 1
+                // The index of BlockData should be offset by one, as the first is block type number.
             )
         }
-
         view.findViewById<ImageButton>(R.id.btn_up).setOnClickListener {
             order.swap(
                 adapterPosition - 1, adapterPosition
@@ -55,7 +52,7 @@ class BlockViewHolder(private val view: View, private val blockDef: Array<Any>, 
                 adapterPosition
             )
         }
-        view.findViewById<TextView>(R.id.Title).text = blockDef[0] as CharSequence?
+        view.findViewById<TextView>(R.id.Title).text = blockName
     }
 
     class Input(

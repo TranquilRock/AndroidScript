@@ -1,14 +1,3 @@
-/**
- * UI for editing scripts.
- * This will read from scriptClass.meta to get blocks and buttons definition, for example:
- * [
- *      Pair("Exit", []),
- *      Pair("Call", ["EditText", "Placeholder"]),
- *      ...
- * ]
- *  will be stored as:
- *  [{"first":"Exit","second":[]},{"first":"Call","second":["EditText", "Placeholder"]}]
- * */
 package com.tranquilrock.androidscript.activity
 
 import android.content.Intent
@@ -36,12 +25,23 @@ import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.feature.PermissionRequester
 import com.tranquilrock.androidscript.service.WidgetService
 
+/**
+ * UI for editing scripts.
+ * This will read from scriptClass.meta to get blocks and buttons definition, for example:
+ * [
+ *      Pair("Exit", []),
+ *      Pair("Call", ["EditText", "Placeholder"]),
+ *      ...
+ * ]
+ *  will be stored as:
+ *  [{"first":"Exit","second":[]},{"first":"Call","second":["EditText", "Placeholder"]}]
+ * */
 class EditActivity : AppCompatActivity(), InternalStorageUser, PermissionRequester {
     private lateinit var toggleOrientation: ToggleButton
     private lateinit var blockView: RecyclerView
     private lateinit var buttonView: RecyclerView
     private lateinit var blockData: ArrayList<ArrayList<String>>
-    private lateinit var blockMeta: Array<Array<Any>>
+    private lateinit var blockMeta: Array<Pair<String, List<List<String>>>>
     private lateinit var fileName: String
     private lateinit var scriptClass: String
 

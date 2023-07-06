@@ -30,7 +30,6 @@ open class SelectActivity : AppCompatActivity(), InternalStorageUser {
     private lateinit var buttonManage: View
 
     private lateinit var scriptType: String
-    private lateinit var availableFile: List<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,9 +56,9 @@ open class SelectActivity : AppCompatActivity(), InternalStorageUser {
 
     override fun onResume() {
         super.onResume()
-        availableFile = getScriptList(this, scriptType)
-        spinnerFileList.adapter =
-            ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, availableFile)
+        spinnerFileList.adapter = ArrayAdapter(
+            this, android.R.layout.simple_spinner_dropdown_item, getScriptList(this, scriptType)
+        )
     }
 
     private fun openFile(fileName: String?) {
@@ -73,11 +72,11 @@ open class SelectActivity : AppCompatActivity(), InternalStorageUser {
                 textViewDialogBox.text = getString(R.string.select_activity__file_exists)
             }
 
-            val goToEditIndent = Intent(this, EditActivity::class.java).apply {
+            val goToEditIntent = Intent(this, EditActivity::class.java).apply {
                 putExtra(SCRIPT_TYPE_KEY, scriptType)
                 putExtra(SCRIPT_NAME_KEY, fileName)
             }
-            startActivity(goToEditIndent)
+            startActivity(goToEditIntent)
         }
     }
 }
