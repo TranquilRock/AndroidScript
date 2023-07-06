@@ -1,8 +1,3 @@
-/**
- * Activity to select or create script files(.blc).
- * The files will not be reachable from users directly.
- * Data will be stored in `/data/user/0/com.tranquilrock.androidscript/app_BASIC`
- * */
 package com.tranquilrock.androidscript.activity
 
 import android.content.Intent
@@ -19,7 +14,9 @@ import com.tranquilrock.androidscript.App.Companion.SCRIPT_NAME_KEY
 import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.feature.InternalStorageUser
 
-
+/**
+ * Activity for selecting script files or to enter file manager.
+ * */
 open class SelectActivity : AppCompatActivity(), InternalStorageUser {
 
     private lateinit var editTextNewName: EditText

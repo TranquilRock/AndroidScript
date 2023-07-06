@@ -54,10 +54,10 @@ class BlockAdapter(
         private val BLOCK_VIEWS_RID = listOf(
             Pair(R.layout.edit_block_0, emptyList()),
             Pair(R.layout.edit_block_1, listOf(R.id.OneVarInput)),
-            Pair(R.layout.edit_block_2, listOf(R.id.TwoVarLeftInput, R.id.TwoVarRightInput)),
+            Pair(R.layout.edit_block_2, listOf(R.id.Two1, R.id.Two2)),
             Pair(
                 R.layout.edit_block_3, listOf(
-                    (R.id.ThreeVarInputLeft), (R.id.ThreeVarInputMiddle), (R.id.ThreeVarInputRight)
+                    (R.id.Three1), (R.id.Three2), (R.id.Three3)
                 )
             ),
             Pair(

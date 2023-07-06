@@ -15,8 +15,7 @@ import java.util.Vector
  * Class that handles block to code.
  * */
 class Interpreter(
-    blockData: ArrayList<ArrayList<String>>,
-    blockMeta: Array<Array<Any>>,
+    blockData: Array<Array<String>>,
     private val resourceReader: ResourceReader,
     private val clicker: ClickService?,
     private val imageParser: ImageParser,
@@ -32,11 +31,9 @@ class Interpreter(
          * Transform block data to raw code, according to block metadata.
          * */
         for (block in blockData) {
-            val blockName = blockMeta[block[0].toInt()][0] as String
-            block[0] = blockName
             if (resourceReader.scriptType == App.BASIC_SCRIPT_TYPE) {
                 rootRawCode.add(block.joinToString(" "))
-            } else if (blockName == "DoAgain") {
+            } else if (block[0] == "DoAgain") {
                 rootRawCode.add(Command.JUMP_TO + " 0")
             } else {
                 // Replace block typeNum with block name

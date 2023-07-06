@@ -41,22 +41,54 @@ interface InternalStorageUser {
     }
 
     // =============================================================================================
-    fun getMetadata(context: Context, scriptType: String): Array<Pair<String, List<List<String>>>> {
-        return try {
+    /**
+     * Read meta data then add resource list to spinner.
+     */
+    fun getMetadata(
+        context: Context, scriptType: String
+    ): Array<Pair<String, List<List<String>>>> {
+        val data = try {
             Gson().fromJson(
                 File(getScriptFolder(context, scriptType), META_FILE).readText(),
-                arrayOf(Pair("", listOf(emptyList<String>())))::class.java
+                arrayOf(Pair("", mutableListOf(listOf<String>())))::class.java
             )
         } catch (e: NullPointerException) {
             e.printStackTrace()
             emptyArray()
         }
+
+        for ((_, block) in data) {
+            for (i in block.indices) {
+                if (block[i][0] == "Spinner") {
+                    block[i] = block[i].plus(
+                        when (block[i][1]) {
+                            "Image" -> getImageList(context, scriptType)
+                            else -> emptyList()
+                        }
+                    )
+                    if (block[i].size < 3) {
+                        Log.e(TAG, "Spinner no options!!")
+                    }
+                }
+            }
+        }
+
+        return arrayOf(*data)
     }
 
     // =============================================================================================
 
     /**
-     * List all script files inside folder.
+     * List all image files inside script type folder.
+     * */
+    fun getImageList(context: Context, scriptType: String): List<String> {
+        return getScriptFolder(context, scriptType).list()?.filter { filename ->
+            filename.endsWith(IMAGE_FILE_TYPE)
+        }?.map { a -> a.removeSuffix(IMAGE_FILE_TYPE) } ?: emptyList()
+    }
+
+    /**
+     * List all script types.
      * */
     fun getScriptTypeList(context: Context): List<String> {
         return context.dataDir?.list()?.filter { dirName ->

@@ -14,7 +14,7 @@ import com.tranquilrock.androidscript.feature.InternalStorageUser
 import java.io.FileNotFoundException
 import java.io.IOException
 
-
+// TODO
 class ManageActivity : AppCompatActivity(), InternalStorageUser {
 
     override fun onCreate(savedInstanceState: Bundle?) {

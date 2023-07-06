@@ -16,8 +16,8 @@ import com.tranquilrock.androidscript.component.editor.ButtonAdapter
 import android.widget.Toast
 import android.widget.ToggleButton
 import androidx.activity.result.contract.ActivityResultContracts
+import com.google.gson.Gson
 import com.tranquilrock.androidscript.App.Companion.BLOCK_DATA_KEY
-import com.tranquilrock.androidscript.App.Companion.BLOCK_META_KEY
 import com.tranquilrock.androidscript.App.Companion.MEDIA_PROJECTION_KEY
 import com.tranquilrock.androidscript.App.Companion.ORIENTATION_KEY
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_NAME_KEY
@@ -121,11 +121,14 @@ class EditActivity : AppCompatActivity(), InternalStorageUser, PermissionRequest
     }
 
     private fun startWidgetService(data: Intent) {
+        val blockCopy =
+            Gson().fromJson(Gson().toJson(blockData), Array<Array<String>>::class.java).forEach {
+                it[0] = blockMeta[it[0].toInt()].first
+            }
         val startServiceIntent = Intent(this, WidgetService::class.java).apply {
             putExtra(SCRIPT_TYPE_KEY, scriptClass)
             putExtra(MEDIA_PROJECTION_KEY, data)
-            putExtra(BLOCK_DATA_KEY, blockData)
-            putExtra(BLOCK_META_KEY, blockMeta)
+            putExtra(BLOCK_DATA_KEY, Gson().toJson(blockCopy))
             putExtra(ORIENTATION_KEY, toggleOrientation.isChecked)
         }
 

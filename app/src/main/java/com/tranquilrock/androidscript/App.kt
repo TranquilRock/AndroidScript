@@ -18,7 +18,6 @@ import kotlin.system.exitProcess
 class App : Application() {
     companion object {
         const val BLOCK_DATA_KEY = "BLOCK_DATA_KEY"
-        const val BLOCK_META_KEY = "BLOCK_META_KEY"
         const val MEDIA_PROJECTION_KEY = "MEDIA_PROJECTION"
         const val BASIC_SCRIPT_TYPE = "BASIC"
         const val SCRIPT_TYPE_KEY = "SCRIPT_TYPE"
@@ -30,6 +29,9 @@ class App : Application() {
         super.onCreate()
         Log.d(packageName, "onCreate")
 
+        /**
+         * Assert OpenCV Loaded.
+         */
         if (!OpenCVLoader.initDebug()) {
             Toast.makeText(this, "OpenCV Not Loaded!!!", Toast.LENGTH_LONG).show()
             Log.e(packageName, "OpenCV Failed to Load.")
@@ -37,7 +39,7 @@ class App : Application() {
         }
 
         /**
-         * Initialize BASIC's meta If not Exist
+         * Initialize BASIC's meta If NOT EXIST.
          */
         File(getDir(BASIC_SCRIPT_TYPE, MODE_PRIVATE), "meta.json").run {
             if (createNewFile()) {

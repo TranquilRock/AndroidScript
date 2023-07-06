@@ -34,37 +34,43 @@
             android:layout_height="wrap_content"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintStart_toStartOf="@id/Title"
+            card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toBottomOf="@id/buttons">
 
             <include
-                android:id="@+id/ThreeVarInputLeft"
+                android:id="@+id/Three1"
                 layout="@layout/edit_component_input"
-                android:layout_width="0dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toStartOf="@id/Three2"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="parent" />
 
             <include
-                android:id="@+id/ThreeVarInputMiddle"
+                android:id="@+id/Three2"
                 layout="@layout/edit_component_input"
-                android:layout_width="0dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10sp"
                 android:textSize="20sp"
-                card_view:layout_constraintBaseline_toBaselineOf="@id/ThreeVarInputLeft"
-                card_view:layout_constraintStart_toEndOf="@id/ThreeVarInputLeft" />
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toStartOf="@id/Three3"
+                card_view:layout_constraintStart_toEndOf="@id/Three1"
+                card_view:layout_constraintTop_toTopOf="parent" />
 
             <include
-                android:id="@+id/ThreeVarInputRight"
+                android:id="@+id/Three3"
                 layout="@layout/edit_component_input"
-                android:layout_width="0dp"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10sp"
                 android:textSize="20sp"
-                card_view:layout_constraintBaseline_toBaselineOf="@id/ThreeVarInputLeft"
-                card_view:layout_constraintStart_toEndOf="@id/ThreeVarInputMiddle" />
+                card_view:layout_constraintBottom_toBottomOf="parent"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintStart_toEndOf="@id/Three2"
+                card_view:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
