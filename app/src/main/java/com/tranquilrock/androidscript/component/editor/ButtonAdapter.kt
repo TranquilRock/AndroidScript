@@ -1,4 +1,4 @@
-package com.tranquilrock.androidscript.activity.editor.component
+package com.tranquilrock.androidscript.component.editor
 
 
 import android.view.LayoutInflater
@@ -8,7 +8,7 @@ import com.tranquilrock.androidscript.R
 import java.util.Collections
 
 class ButtonAdapter(
-    private val blockMeta: Array<Array<Any>>,
+    private val blockMeta: Array<Pair<String, List<List<String>>>>,
     private val blockData: ArrayList<ArrayList<String>>,
     private val onInsert: Updater
 ) : RecyclerView.Adapter<ButtonViewHolder>() {
@@ -18,16 +18,16 @@ class ButtonAdapter(
         viewType: Int
     ): ButtonViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.button_item, parent, false)
+            .inflate(R.layout.edit_button, parent, false)
         return ButtonViewHolder(view, view.findViewById(R.id.button_item))
     }
 
     override fun onBindViewHolder(holder: ButtonViewHolder, position: Int) {
         holder.run {
-            button.text = blockMeta[position][0] as CharSequence?
+            button.text = blockMeta[position].first
             button.setOnClickListener {
                 blockData.add(
-                    ArrayList<String>(Collections.nCopies(blockMeta[position].size, "")).apply {
+                    ArrayList<String>(Collections.nCopies(blockMeta[position].second.size + 1, "")).apply {
                         // TODO change data to be add
                         this[0] = position.toString()
                     }
@@ -39,9 +39,5 @@ class ButtonAdapter(
 
     override fun getItemCount(): Int {
         return blockMeta.size
-    }
-
-    companion object {
-        private val TAG = ButtonAdapter::class.java.simpleName
     }
 }

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    card_view:layout_constraintEnd_toEndOf="parent"
+    card_view:layout_constraintTop_toTopOf="parent">
+
+    <ImageButton
+        android:id="@+id/btn_up"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="1dp"
+        android:contentDescription="@string/btn_up"
+        card_view:layout_constraintBottom_toBottomOf="parent"
+        card_view:layout_constraintEnd_toStartOf="@id/btn_down"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintTop_toTopOf="parent"
+        card_view:srcCompat="@drawable/ic_baseline_arrow_drop_up_24" />
+
+    <ImageButton
+        android:id="@+id/btn_down"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="1dp"
+        android:contentDescription="@string/btn_down"
+        card_view:layout_constraintBottom_toBottomOf="parent"
+        card_view:layout_constraintEnd_toStartOf="@id/btn_del"
+        card_view:layout_constraintStart_toEndOf="@id/btn_up"
+        card_view:layout_constraintTop_toTopOf="parent"
+        card_view:srcCompat="@drawable/ic_baseline_arrow_drop_down_24" />
+
+    <ImageButton
+        android:id="@+id/btn_del"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_margin="1dp"
+        android:backgroundTint="#E1B3B3"
+        android:contentDescription="@string/btn_del"
+        card_view:layout_constraintBottom_toBottomOf="parent"
+        card_view:layout_constraintEnd_toEndOf="parent"
+        card_view:layout_constraintStart_toEndOf="@id/btn_down"
+        card_view:layout_constraintTop_toTopOf="parent"
+        card_view:srcCompat="@drawable/ic_close_white_24dp" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

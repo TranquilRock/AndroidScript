@@ -1,11 +1,7 @@
-/** App Menu
- * The display shall be updated, this is the placeholder version.
- */
 package com.tranquilrock.androidscript.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
@@ -16,44 +12,41 @@ import androidx.appcompat.app.AppCompatActivity
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.service.WidgetService
-import org.opencv.android.OpenCVLoader
+import com.tranquilrock.androidscript.feature.InternalStorageUser
 
-
-class Menu : AppCompatActivity() {
+/**
+ * App Menu, provide download and read available script types then create buttons.
+ */
+class Menu : AppCompatActivity(), InternalStorageUser {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
 
-        if (!OpenCVLoader.initDebug()) {
-            Toast.makeText(this, "OpenCV Not Loaded!!!", Toast.LENGTH_LONG).show()
-            // This app should not run without OpenCV.
-            finishAffinity()
-        }
-
-        val listView = findViewById<ListView>(R.id.menu_entry_buttons)
-        val values = arrayOf("BASIC", "FGO") // TODO replace with script type list?
-        val listAdapter: ListAdapter = ArrayAdapter<Any?>(this, R.layout.menu_btn_format, values)
-        listView.adapter = listAdapter
-        listView.onItemClickListener = OnItemClickListener { parent, _, position, id ->
-            val scriptType = parent.getItemAtPosition(position) as String
-            val toSelectIntent = Intent(this, SelectActivity::class.java)
-            toSelectIntent.putExtra(SCRIPT_TYPE_KEY, scriptType)
-            startActivity(toSelectIntent)
+        findViewById<ListView>(R.id.menu_entry_buttons).run {
+            val listAdapter: ListAdapter = ArrayAdapter<Any?>(
+                this@Menu, R.layout.menu_button, getScriptTypeList(this@Menu)
+            )
+            adapter = listAdapter
+            onItemClickListener = OnItemClickListener { parent, _, position, _ ->
+                val scriptType = parent.getItemAtPosition(position) as String
+                val toSelectIntent = Intent(this@Menu, SelectActivity::class.java)
+                toSelectIntent.putExtra(SCRIPT_TYPE_KEY, scriptType)
+                startActivity(toSelectIntent)
+            }
         }
 
         findViewById<View>(R.id.menu_download).setOnClickListener {
-            Log.d(TAG, "Not implement yet!")
             // TODO add download button
+            Toast.makeText(this, "NotReadyYet", Toast.LENGTH_SHORT).show()
         }
     }
 
+    /**
+     * Avoid multiple service instance, stop service on resume.
+     */
     override fun onResume() {
         super.onResume()
         stopService(Intent(this, WidgetService::class.java))
-    }
-
-    companion object {
-        private val TAG = Menu::class.java.simpleName
     }
 }

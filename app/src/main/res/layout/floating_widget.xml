@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root_container"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/collapse_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="3dp"
+            android:src="@mipmap/ic_launcher_round"
+            tools:ignore="ContentDescription,ImageContrastCheck" />
+
+    </RelativeLayout>
+
+    <!--   View while view is expanded   -->
+    <LinearLayout
+        android:id="@+id/expanded_container"
+        android:layout_width="300dp"
+        android:layout_height="60dp"
+        android:background="@color/floating_widget_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:padding="5dp"
+        android:visibility="visible">
+
+        <ImageView
+            android:id="@+id/floating_widget_image_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="@string/floating_widget_icon"
+            android:src="@mipmap/ic_launcher"
+            tools:ignore="ImageContrastCheck" />
+
+
+        <!--  Stop Script  -->
+        <ImageView
+            android:id="@+id/stop_script"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/floating_widget_stop"
+            android:padding="3dp"
+            android:src="@drawable/ic_baseline_stop_24" />
+
+        <!--  Run Script  -->
+        <ImageView
+            android:id="@+id/run_script"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/floating_widget_run"
+            android:padding="3dp"
+            android:src="@drawable/ic_baseline_play_arrow_24" />
+
+        <!--  ImageView to Open Activity  -->
+        <ImageView
+            android:id="@+id/open_activity_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/floating_widget_close"
+            android:padding="3dp"
+            android:src="@drawable/ic_close_black_24dp" />
+
+        <TextView
+            android:id="@+id/stateToast"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:padding="10dp"
+            android:text="@string/state"
+            android:textColor="#455A64" />
+
+    </LinearLayout>
+</FrameLayout>

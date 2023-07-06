@@ -32,8 +32,10 @@
         <!-- Activity -->
         <activity
             android:name=".activity.Menu"
+            android:configChanges="orientation|keyboardHidden"
             android:exported="true"
-            android:screenOrientation="locked">
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,15 +44,25 @@
         </activity>
         <activity
             android:name=".activity.SelectActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:exported="false"
-            android:screenOrientation="locked"
-            android:windowSoftInputMode="adjustResize" />
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="LockedOrientationActivity" />
         <activity
-            android:name=".activity.editor.EditActivity"
+            android:name=".activity.EditActivity"
+            android:configChanges="orientation|keyboardHidden"
             android:exported="false"
-            android:screenOrientation="locked"
-            android:windowSoftInputMode="adjustResize" />
-
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="LockedOrientationActivity" />
+        <activity
+            android:name=".activity.ManageActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize"
+            tools:ignore="LockedOrientationActivity" />
         <!-- Service -->
         <service
             android:name=".service.WidgetService"

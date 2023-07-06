@@ -1,12 +1,20 @@
-/*
- * https://developer.android.com/reference/android/app/Application
- * Holds the global application state.
- */
 package com.tranquilrock.androidscript
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
+import com.google.gson.Gson
+import com.tranquilrock.androidscript.core.Command
+import org.opencv.android.OpenCVLoader
+import java.io.File
+import java.lang.IllegalStateException
+import kotlin.system.exitProcess
 
+/**
+ * Application's global states.
+ *
+ * Handles OpenCV check and setup the default exception handler.
+ */
 class App : Application() {
     companion object {
         const val BLOCK_DATA_KEY = "BLOCK_DATA_KEY"
@@ -21,5 +29,26 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         Log.d(packageName, "onCreate")
+
+        if (!OpenCVLoader.initDebug()) {
+            Toast.makeText(this, "OpenCV Not Loaded!!!", Toast.LENGTH_LONG).show()
+            Log.e(packageName, "OpenCV Failed to Load.")
+            throw IllegalStateException("OpenCV Missing")
+        }
+
+        /**
+         * Initialize BASIC's meta If not Exist
+         */
+        File(getDir(BASIC_SCRIPT_TYPE, MODE_PRIVATE), "meta.json").run {
+            if (createNewFile()) {
+                val data = Gson().toJson(
+                    Command.BASIC_META
+                )
+                bufferedWriter().run {
+                    use { out -> out.write(data) }
+                    close()
+                }
+            }
+        }
     }
 }

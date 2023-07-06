@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:input="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="100dp"
+    android:layout_height="50dp"
+    android:orientation="horizontal"
+    android:textSize="20sp">
+
+    <EditText
+        android:id="@+id/input_edit_text"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:autofillHints=""
+        android:hint="@string/input_edit_text_hint"
+        android:inputType="text"
+        android:visibility="gone"
+        input:layout_constraintStart_toStartOf="parent"
+        input:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/input_toggle_button"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:visibility="gone"
+        input:layout_constraintStart_toStartOf="parent"
+        input:layout_constraintTop_toTopOf="parent"
+        tools:ignore="VisualLintBounds" />
+
+    <Spinner
+        android:id="@+id/input_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        input:layout_constraintStart_toStartOf="parent"
+        input:layout_constraintTop_toTopOf="parent"
+        tools:ignore="VisualLintBounds" />
+</LinearLayout>

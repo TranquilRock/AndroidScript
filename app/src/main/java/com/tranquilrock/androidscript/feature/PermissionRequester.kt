@@ -9,6 +9,13 @@ import android.provider.Settings
 import com.tranquilrock.androidscript.BuildConfig
 import com.tranquilrock.androidscript.service.ClickService
 
+/**
+ * Interface to declare the class to be the permission requester for this app.
+ *
+ * Request two permissions:
+ *  1. Draw Overlays
+ *  2. Accessibility Service
+ */
 interface PermissionRequester {
 
     companion object {
