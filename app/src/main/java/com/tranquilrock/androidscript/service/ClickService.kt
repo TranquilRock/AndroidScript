@@ -9,6 +9,11 @@ import android.util.Log
 import android.view.accessibility.AccessibilityEvent
 import android.widget.Toast
 
+/**
+ * The accessibility service stub for gesture dispatcher.
+ *
+ * As AccessibilityService CANNOT be bind, we use singleton here to perform clicks.
+ */
 class ClickService : AccessibilityService() {
 
     public override fun onServiceConnected() {

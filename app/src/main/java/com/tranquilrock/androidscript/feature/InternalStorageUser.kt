@@ -1,6 +1,3 @@
-/* Gather activities' FILE read write here.
- * /data/user/0/com.tranquilrock.androidscript/files
- * */
 package com.tranquilrock.androidscript.feature
 
 import android.content.Context
@@ -18,7 +15,12 @@ import java.io.ObjectOutputStream
 import java.lang.NullPointerException
 import java.util.regex.Pattern
 
-
+/**
+ * Interface to declare that the class will access internal storage for this application.
+ * The path is:
+ *  1. /data/user/0/com.tranquilrock.androidscript/files/app_*
+ *  2. /data/data/com.tranquilrock.androidscript/files/app_*
+ */
 interface InternalStorageUser {
 
     companion object {

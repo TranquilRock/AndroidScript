@@ -38,7 +38,11 @@ import java.lang.Integer.max
 import java.lang.Integer.min
 import kotlin.math.abs
 
-
+/**
+ * The floating widget that overlay other apps.
+ *
+ * This service launch coroutines to execute interpreters.
+ */
 class WidgetService : Service(), ProjectionReader {
 
     private lateinit var widgetView: View
@@ -175,7 +179,7 @@ class WidgetService : Service(), ProjectionReader {
             } else ({
                 intent.getSerializableExtra(BLOCK_META_KEY)!!
             }) as Array<Array<Any>>
-        val imageParser = ImageParser(this)
+        val imageParser = ImageParser(this.imageReader)
         val resourceReader = ResourceReader(applicationContext, scriptType)
         interpreter = Interpreter(
             blockData, blockMeta, resourceReader, clicker, imageParser, statusBulletin

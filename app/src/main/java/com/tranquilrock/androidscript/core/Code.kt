@@ -7,9 +7,14 @@ import android.util.Log
 import java.util.*
 import java.util.regex.Pattern
 
+
+/**
+ * Code data class to parse code file into string, the tags will be replaced here.
+ * */
 @Parcelize
 data class Code(val codes: Vector<Array<String>>, val dependency: Vector<String>) : Parcelable {
 
+    @Throws(InvalidCodeException::class)
     constructor(rawCode: List<String>) : this(Vector<Array<String>>(), Vector<String>()) {
         for (line in rawCode) {
             var valid = false
@@ -29,12 +34,14 @@ data class Code(val codes: Vector<Array<String>>, val dependency: Vector<String>
             }
         }
 
-        // Replace TAGs with line numbers.
+        /**
+         * Replace TAGs with line numbers.
+         */
         val tagToLineCount: HashMap<String, String> = HashMap()
 
         for (i in 0 until codes.size) {
             val command = codes[i]
-            if (command[0] == "Tag") {
+            if (command[0] == Command.TAG) {
                 tagToLineCount[command[1]] = i.toString()
             }
         }

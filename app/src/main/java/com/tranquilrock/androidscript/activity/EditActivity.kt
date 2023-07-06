@@ -2,10 +2,12 @@
  * UI for editing scripts.
  * This will read from scriptClass.meta to get blocks and buttons definition, for example:
  * [
- *      ["Exit"],
- *      ["Call", ["EditText", "Placeholder"]],
+ *      Pair("Exit", []),
+ *      Pair("Call", ["EditText", "Placeholder"]),
  *      ...
  * ]
+ *  will be stored as:
+ *  [{"first":"Exit","second":[]},{"first":"Call","second":["EditText", "Placeholder"]}]
  * */
 package com.tranquilrock.androidscript.activity
 

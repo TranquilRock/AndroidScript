@@ -1,11 +1,12 @@
-/* Lists all fundamental commands here.
- * Suppress Unused and Visibility for future use.
- */
 @file:Suppress("unused", "MemberVisibilityCanBePrivate")
 
 package com.tranquilrock.androidscript.core
 
-
+/**
+ * Lists all fundamental commands here.
+ *
+ * Suppress Unused and Visibility for future use.
+ */
 object Command {
     const val EXIT = "Exit"
     const val IF_EXIST = "IfExist"
@@ -94,71 +95,74 @@ object Command {
 
     /** CALL & CALL_ARG are not exposed. */
     val BASIC_META = listOf(
-        listOf(
-            EXIT
+        Pair(
+            EXIT, emptyList()
         ),
-        listOf(
-            IF_EXIST, listOf("EditText", "Image")
+        Pair(
+            IF_EXIST, listOf(listOf("EditText", "Image"))
         ),
-        listOf(
-            LOG, listOf("EditText", "Info")
+        Pair(
+            LOG, listOf(listOf("EditText", "Info"))
         ),
-        listOf(
-            JUMP_TO, listOf("EditText", "LineNum")
+        Pair(
+            JUMP_TO, listOf(listOf("EditText", "LineNum"))
         ),
-        listOf(
-            WAIT, listOf("EditText", "Millis")
+        Pair(
+            WAIT, listOf(listOf("EditText", "Millis"))
         ),
-        listOf(
-            TAG, listOf("EditText", "\$Name")
+        Pair(
+            TAG, listOf(listOf("EditText", "\$Name"))
         ),
-        listOf(
-            RETURN, listOf("EditText", "Value")
+        Pair(
+            RETURN, listOf(listOf("EditText", "Value"))
         ),
-        listOf(
-            CLICK_PIC, listOf("EditText", "Image"), listOf("EditText", "Ratio"),
+        Pair(
+            CLICK_PIC, listOf(listOf("EditText", "Image"), listOf("EditText", "Ratio"))
         ),
-        listOf(
-            CLICK, listOf("EditText", "x"), listOf("EditText", "y"),
+        Pair(
+            CLICK, listOf(listOf("EditText", "x"), listOf("EditText", "y"))
         ),
-        listOf(
-            IF_GREATER, listOf("EditText", "var1"), listOf("EditText", "var2"),
+        Pair(
+            IF_GREATER, listOf(listOf("EditText", "var1"), listOf("EditText", "var2"))
         ),
-        listOf(
-            IF_SMALLER, listOf("EditText", "var1"), listOf("EditText", "var2"),
+        Pair(
+            IF_SMALLER, listOf(listOf("EditText", "var1"), listOf("EditText", "var2"))
         ),
-        listOf(
-            IF_EQUAL, listOf("EditText", "var1"), listOf("EditText", "var2"),
+        Pair(
+            IF_EQUAL, listOf(listOf("EditText", "var1"), listOf("EditText", "var2"))
         ),
-        listOf(
-            ADD, listOf("EditText", "\$Name"), listOf("EditText", "Value"),
+        Pair(
+            ADD, listOf(listOf("EditText", "\$Name"), listOf("EditText", "Value"))
         ),
-        listOf(
-            SUBTRACT, listOf("EditText", "\$Name"), listOf("EditText", "Value"),
+        Pair(
+            SUBTRACT, listOf(listOf("EditText", "\$Name"), listOf("EditText", "Value"))
         ),
-        listOf(
-            VAR, listOf("EditText", "\$Name"), listOf("EditText", "value"),
+        Pair(
+            VAR, listOf(listOf("EditText", "\$Name"), listOf("EditText", "value"))
         ),
-        listOf(
-            CHECK,
-            listOf("EditText", "x"),
-            listOf("EditText", "y"),
-            listOf("EditText", "Color"),
+        Pair(
+            CHECK, listOf(
+                listOf("EditText", "x"),
+                listOf("EditText", "y"),
+                listOf("EditText", "Color"),
+            )
         ),
-        listOf(
-            SWIPE,
-            listOf("EditText", "x1"),
-            listOf("EditText", "y1"),
-            listOf("EditText", "x2"),
-            listOf("EditText", "y2"),
+        Pair(
+            SWIPE, listOf(
+                listOf("EditText", "x1"),
+                listOf("EditText", "y1"),
+                listOf("EditText", "x2"),
+                listOf("EditText", "y2"),
+            )
         ),
-        listOf(
-            COMPARE,
-            listOf("EditText", "x1"),
-            listOf("EditText", "y1"),
-            listOf("EditText", "x2"),
-            listOf("EditText", "y2"),
-            listOf("EditText", "Image"),
+        Pair(
+            COMPARE, listOf(
+                listOf("EditText", "x1"),
+                listOf("EditText", "y1"),
+                listOf("EditText", "x2"),
+                listOf("EditText", "y2"),
+                listOf("EditText", "Image"),
+            )
         ),
     )
 

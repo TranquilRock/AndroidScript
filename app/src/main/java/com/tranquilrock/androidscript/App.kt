@@ -1,14 +1,16 @@
-/*
- * https://developer.android.com/reference/android/app/Application
- * Holds the global application state.
- */
 package com.tranquilrock.androidscript
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
+import org.opencv.android.OpenCVLoader
 import kotlin.system.exitProcess
 
-
+/**
+ * Application's global states.
+ *
+ * Handles OpenCV check and setup the default exception handler.
+ */
 class App : Application() {
     companion object {
         const val BLOCK_DATA_KEY = "BLOCK_DATA_KEY"
@@ -22,11 +24,18 @@ class App : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
+        if (!OpenCVLoader.initDebug()) {
+            Toast.makeText(this, "OpenCV Not Loaded!!!", Toast.LENGTH_LONG).show()
+            Log.e(packageName, "OpenCV Failed to Load.")
+            exitProcess(1)
+        }
+
         Log.d(packageName, "onCreate")
         Thread.setDefaultUncaughtExceptionHandler { _, e ->
             e.printStackTrace()
-            // Do not restart automatically
-            exitProcess(1)
+            Log.e(packageName, "Unhandled Error Occurred.")
+            exitProcess(2)
         }
     }
 }

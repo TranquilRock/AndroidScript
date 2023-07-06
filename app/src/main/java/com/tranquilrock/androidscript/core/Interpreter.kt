@@ -25,14 +25,15 @@ class Interpreter(
 
     private var runningFlag = false
     private var scriptCode: HashMap<String, Code> = HashMap()
+    private val rootRawCode = Vector<String>()
 
     init {
-        val rootRawCode = Vector<String>()
-
+        /**
+         * Transform block data to raw code, according to block metadata.
+         * */
         for (block in blockData) {
             val blockName = blockMeta[block[0].toInt()][0] as String
             block[0] = blockName
-
             if (resourceReader.scriptType == App.BASIC_SCRIPT_TYPE) {
                 rootRawCode.add(block.joinToString(" "))
             } else if (blockName == "DoAgain") {
@@ -46,21 +47,25 @@ class Interpreter(
                 }
             }
         }
+
+        /**
+         * Load the code files recursively and add to file mapping.
+         */
         try {
             Code(rootRawCode).run {
                 scriptCode[ROOT_RAW_CODE_KEY] = this
-                loadAllCodeRecursive(this, scriptCode, resourceReader)
+                loadAllCodeRecursive(this)
             }
         } catch (e: Code.InvalidCodeException) {
-            e.printStackTrace()
             scriptCode = HashMap()
+            e.printStackTrace()
             Log.e(TAG, "Code invalid, cleanup map.")
         }
     }
 
 
     /**
-     * Script entry.
+     * The interpreter entry point.
      * */
     suspend fun run() {
         board.announce("Running")
@@ -74,17 +79,51 @@ class Interpreter(
         }
     }
 
+    /**
+     * Add code files to mapping recursively.
+     *
+     * @param code A parsed code file.
+     * @throws Code.InvalidCodeException when code does not conform certain pattern,
+     *  please refers to `Command.kt`.
+     * */
+    @Throws(Code.InvalidCodeException::class)
+    private fun loadAllCodeRecursive(code: Code) {
+        for (dependency in code.dependency) {
+            if (!scriptCode.containsKey(dependency)) {
+                Code(resourceReader.getCode(dependency)).run {
+                    scriptCode[dependency] = this
+                    loadAllCodeRecursive(this)
+                }
+            }
+        }
+    }
+
+    /**
+     * The core of interpreter, map code to kotlin instructions to perform actions.
+     */
     private suspend fun execute(
         fileName: String,
         args: List<String>,
         depth: Int,
     ): Int { // The return value will be used by CALL && CALL_ARG
-        val localVar = initLocalVar(args)
-        var pc = 0
+
+        /**
+         * Initializes the local variable mapping.
+         */
+        val localVar = HashMap<String, String>()
+        localVar["\$R"] = "0" // $R stores commands' return value.
+        for (arg in args) {
+            localVar["$${localVar.size}"] = arg
+        }
+
+        /**
+         * Main loop.
+         */
+        var pc = 0 // Program Counter
         while (runningFlag && (pc < scriptCode[fileName]!!.codes.size)) {
             val command = scriptCode[fileName]!!.codes[pc]
             val parameters = command.copyOfRange(1, command.size)
-            Log.d(TAG, "$pc  '${command.joinToString("' '")}'")
+            Log.d(TAG, "$pc  '$depth ${command.joinToString("' '")}'")
             varsSubstitution(localVar, command[0], parameters)
             //=====================================================
             when (command[0]) {
@@ -199,21 +238,8 @@ class Interpreter(
         private val TAG = Interpreter::class.java.simpleName
 
         /**
-         * Line TAGs are replaced here and stored in scriptCode mapping.
-         * */
-        private fun loadAllCodeRecursive(
-            code: Code, scriptCode: HashMap<String, Code>, resourceReader: ResourceReader
-        ) {
-            for (dependency in code.dependency) {
-                if (!scriptCode.containsKey(dependency)) {
-                    Code(resourceReader.getCode(dependency)).run {
-                        scriptCode[dependency] = this
-                        loadAllCodeRecursive(this, scriptCode, resourceReader)
-                    }
-                }
-            }
-        }
-
+         * Substitute variables within statement, except the variable assign parts.
+         */
         private fun varsSubstitution(
             localNameValMap: MutableMap<String, String>, command: String, parameters: Array<String>
         ) {
@@ -235,15 +261,5 @@ class Interpreter(
                 Log.e(TAG, "$command No such parameter: ${parameters.joinToString { " " }}")
             }
         }
-
-        private fun initLocalVar(args: List<String>): HashMap<String, String> {
-            val localVariables = HashMap<String, String>()
-            localVariables["\$R"] = "0" // $R stores commands' return value.
-            for (arg in args) {
-                localVariables["$${localVariables.size}"] = arg
-            }
-            return localVariables
-        }
-
     }
 }

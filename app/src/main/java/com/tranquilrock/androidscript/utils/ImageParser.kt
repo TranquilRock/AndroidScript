@@ -1,6 +1,7 @@
 package com.tranquilrock.androidscript.utils
 
 import android.graphics.Bitmap
+import android.media.ImageReader
 import android.util.Log
 import com.tranquilrock.androidscript.feature.ProjectionReader
 import org.opencv.android.Utils
@@ -17,9 +18,13 @@ import org.opencv.imgproc.Imgproc
 import kotlin.math.abs
 import kotlin.math.max
 
-
+/**
+ * Wraps image parsing algorithms and functionality for interpreter.
+ *
+ * @param imageReader the reader created based on MediaProjection
+ */
 class ImageParser(
-    private val projectionReader: ProjectionReader
+    private val imageReader: ImageReader
 ) {
 
     suspend fun checkScreenColor(x: Int, y: Int, color: Int): Boolean =
@@ -49,16 +54,16 @@ class ImageParser(
         findLocation(getScreenShotBitmap(), target, resizeRatio)
 
     private suspend fun getScreenShotBitmap(): Bitmap? {
-        val image = projectionReader.screenShot() ?: return null
+        val image = imageReader.acquireLatestImage() ?: return null
 
         Log.d(TAG, "getScreenShotBitmap " + image.width + " " + image.height)
         val plane = image.planes[0]
         val pixelStride: Int = plane.pixelStride
         val rowStride: Int = plane.rowStride
-        val rowPadding: Int = rowStride - pixelStride * projectionReader.imageReader.width
+        val rowPadding: Int = rowStride - pixelStride * imageReader.width
         val bitmapImage = Bitmap.createBitmap(
-            projectionReader.imageReader.width + rowPadding / pixelStride,
-            projectionReader.imageReader.height,
+            imageReader.width + rowPadding / pixelStride,
+            imageReader.height,
             Bitmap.Config.ARGB_8888
         )
         val buffer = plane.buffer

@@ -27,10 +27,7 @@ class Menu : AppCompatActivity(), InternalStorageUser {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
 
-        if (!OpenCVLoader.initDebug()) {
-            Toast.makeText(this, "OpenCV Not Loaded!!!", Toast.LENGTH_LONG).show()
-            finishAffinity()
-        }
+
 
         getMetaFile(this, BASIC_SCRIPT_TYPE).run {
             /* Initialize BASIC */
