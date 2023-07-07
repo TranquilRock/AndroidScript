@@ -25,13 +25,13 @@
         android:layout_margin="1dp"
         android:contentDescription="@string/btn_down"
         card_view:layout_constraintBottom_toBottomOf="parent"
-        card_view:layout_constraintEnd_toStartOf="@id/btn_del"
+        card_view:layout_constraintEnd_toStartOf="@id/manage_delete"
         card_view:layout_constraintStart_toEndOf="@id/btn_up"
         card_view:layout_constraintTop_toTopOf="parent"
         card_view:srcCompat="@drawable/ic_baseline_arrow_drop_down_24" />
 
     <ImageButton
-        android:id="@+id/btn_del"
+        android:id="@+id/manage_delete"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_margin="1dp"

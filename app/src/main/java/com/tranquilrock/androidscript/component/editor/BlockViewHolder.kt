@@ -50,7 +50,7 @@ class BlockViewHolder(
                 adapterPosition, adapterPosition + 1
             )
         }
-        view.findViewById<ImageButton>(R.id.btn_del).setOnClickListener {
+        view.findViewById<ImageButton>(R.id.manage_delete).setOnClickListener {
             order.delete(
                 adapterPosition
             )
