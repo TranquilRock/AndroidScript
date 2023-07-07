@@ -57,12 +57,11 @@ interface InternalStorageUser {
         while (true) {
             zipEntry = zipInputStream.nextEntry ?: break
 
-            if (!zipEntry.name.startsWith("app_") || !(zipEntry.name.let {
+            if (!zipEntry.name.startsWith(SCRIPT_FOLDER_PREFIX) || !(zipEntry.name.let {
                     it.endsWith(CODE_FILE_TYPE) || it.endsWith(
                         IMAGE_FILE_TYPE
-                    )
+                    ) || it.endsWith(META_FILE)
                 })) continue
-            Log.d(TAG, zipEntry.name)
 
             File(context.dataDir, zipEntry.name).run {
                 if (zipEntry.isDirectory) {
