@@ -1,52 +1,51 @@
 package com.tranquilrock.androidscript.activity
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.ImageDecoder
-import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
+import android.webkit.MimeTypeMap
+import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import com.tranquilrock.androidscript.R
+import com.tranquilrock.androidscript.App
+import com.tranquilrock.androidscript.databinding.ActivityManageBinding
 import com.tranquilrock.androidscript.feature.InternalStorageUser
-import java.io.FileNotFoundException
-import java.io.IOException
+import com.tranquilrock.androidscript.feature.InternalStorageUser.Companion.IMAGE_FILE_TYPE
 
 // TODO recycler view to list images with remove button
 class ManageActivity : AppCompatActivity(), InternalStorageUser {
 
+    private lateinit var binding: ActivityManageBinding
+    private lateinit var scriptClass: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_manage)
-        findViewById<Button>(R.id.manage_add).setOnClickListener {
-            imageChooser()
+        binding = ActivityManageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        binding.manageAdd.setOnClickListener {
+            Intent().run {
+                type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(IMAGE_FILE_TYPE)
+                action = Intent.ACTION_GET_CONTENT
+                uploadImage.launch(this)
+            }
         }
+
+        scriptClass = intent.getStringExtra(App.SCRIPT_TYPE_KEY)!!
     }
 
-    private fun imageChooser() {
-        val i = Intent()
-        i.type = "image/png"
-        i.action = Intent.ACTION_GET_CONTENT
-        launchSomeActivity.launch(i)
-    }
-
-    private var launchSomeActivity = registerForActivityResult (
+    private var uploadImage = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result: ActivityResult ->
         if (result.resultCode == RESULT_OK) {
-            val data = result.data
-            if (data != null && data.data != null) {
-                val selectedImageUri = data.data
-                saveImage(this, "FGO", "a", getImage(selectedImageUri!!))
-            }
+            result.data?.data?.run {
+                saveImage(
+                    this@ManageActivity, scriptClass, "a", getImage(this@ManageActivity, this)
+                )
+                Toast.makeText(this@ManageActivity, "File Uploaded!", Toast.LENGTH_SHORT).show()
+            } ?: Toast.makeText(this@ManageActivity, "File Failed!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this@ManageActivity, "No File Selected!", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    @Throws(FileNotFoundException::class, IOException::class)
-    fun getImage(uri: Uri): Bitmap {
-        val source = ImageDecoder.createSource(this.contentResolver, uri)
-        return ImageDecoder.decodeBitmap(source)
     }
 }

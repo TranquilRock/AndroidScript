@@ -3,6 +3,8 @@ package com.tranquilrock.androidscript.feature
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.net.Uri
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
@@ -176,6 +178,7 @@ interface InternalStorageUser {
      * Serialize back the blockData object.
      * */
     @Suppress("UNCHECKED_CAST") // Uncheck for serialization
+    @Throws(IOException::class)
     fun getScript(
         context: Context, scriptType: String, fileName: String
     ): ArrayList<ArrayList<String>> {
@@ -237,6 +240,10 @@ interface InternalStorageUser {
             Log.e(TAG, "saveImage:: FileNot found!")
         }
     }
+
+    @Throws(FileNotFoundException::class, IOException::class)
+    fun getImage(context: Context, uri: Uri): Bitmap =
+        ImageDecoder.decodeBitmap(ImageDecoder.createSource(context.contentResolver, uri))
 
     fun getImage(context: Context, scriptType: String, fileName: String): Bitmap {
         val fileInputStream = getImageFile(context, scriptType, fileName).inputStream()

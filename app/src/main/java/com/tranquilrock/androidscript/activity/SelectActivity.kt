@@ -22,8 +22,6 @@ import com.tranquilrock.androidscript.feature.InternalStorageUser
 open class SelectActivity : AppCompatActivity(), InternalStorageUser {
 
     private lateinit var binding: ActivitySelectBinding
-
-
     private lateinit var scriptType: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
