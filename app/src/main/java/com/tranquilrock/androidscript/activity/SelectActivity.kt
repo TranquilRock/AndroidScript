@@ -12,6 +12,8 @@ import com.tranquilrock.androidscript.App.Companion.BASIC_SCRIPT_TYPE
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_NAME_KEY
 import com.tranquilrock.androidscript.R
+import com.tranquilrock.androidscript.databinding.ActivityMenuBinding
+import com.tranquilrock.androidscript.databinding.ActivitySelectBinding
 import com.tranquilrock.androidscript.feature.InternalStorageUser
 
 /**
@@ -19,32 +21,23 @@ import com.tranquilrock.androidscript.feature.InternalStorageUser
  * */
 open class SelectActivity : AppCompatActivity(), InternalStorageUser {
 
-    private lateinit var editTextNewName: EditText
-    private lateinit var textViewDialogBox: TextView
-    private lateinit var spinnerFileList: Spinner
-    private lateinit var buttonLoad: View
-    private lateinit var buttonCreate: View
-    private lateinit var buttonManage: View
+    private lateinit var binding: ActivitySelectBinding
+
 
     private lateinit var scriptType: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_select)
-        editTextNewName = findViewById(R.id.select_new_name)
-        textViewDialogBox = findViewById(R.id.select_dialog_box)
-        spinnerFileList = findViewById(R.id.select_file_list)
-        buttonLoad = findViewById(R.id.select_load)
-        buttonCreate = findViewById(R.id.select_create)
-        buttonManage = findViewById(R.id.select_manage)
+        binding = ActivitySelectBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        buttonLoad.setOnClickListener {
-            openFile(spinnerFileList.selectedItem?.toString())
+        binding.selectLoad.setOnClickListener {
+            openFile(binding.selectFileList.selectedItem?.toString())
         }
-        buttonCreate.setOnClickListener {
-            openFile(editTextNewName.text.toString())
+        binding.selectCreate.setOnClickListener {
+            openFile(binding.selectNewName.text.toString())
         }
-        buttonManage.setOnClickListener {
+        binding.selectManage.setOnClickListener {
             startActivity(Intent(this, ManageActivity::class.java))
         }
 
@@ -53,20 +46,20 @@ open class SelectActivity : AppCompatActivity(), InternalStorageUser {
 
     override fun onResume() {
         super.onResume()
-        spinnerFileList.adapter = ArrayAdapter(
+        binding.selectFileList.adapter = ArrayAdapter(
             this, android.R.layout.simple_spinner_dropdown_item, getScriptList(this, scriptType)
         )
     }
 
     private fun openFile(fileName: String?) {
         if (fileName.isNullOrBlank() || fileName.isEmpty()) {
-            textViewDialogBox.text = getString(R.string.select_activity__name_empty)
+            binding.selectDialogBox.text = getString(R.string.select_activity__name_empty)
         } else if (!isValidFileName(fileName)) {
-            textViewDialogBox.text = getString(R.string.select_activity__invalid_name)
+            binding.selectDialogBox.text = getString(R.string.select_activity__invalid_name)
         } else {
-            textViewDialogBox.text = ""
+            binding.selectDialogBox.text = ""
             if (!createScript(this, scriptType, fileName)) {
-                textViewDialogBox.text = getString(R.string.select_activity__file_exists)
+                binding.selectDialogBox.text = getString(R.string.select_activity__file_exists)
             }
 
             val goToEditIntent = Intent(this, EditActivity::class.java).apply {

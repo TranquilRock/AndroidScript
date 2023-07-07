@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -71,6 +72,7 @@ interface InternalStorageUser {
     /**
      * Read meta data then add resource list to spinner.
      */
+    @Throws(JsonSyntaxException::class)
     fun getMetadata(
         context: Context, scriptType: String
     ): Array<Pair<String, List<List<String>>>> {
