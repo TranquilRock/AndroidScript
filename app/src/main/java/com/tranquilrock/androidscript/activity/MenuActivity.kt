@@ -70,20 +70,13 @@ class MenuActivity : AppCompatActivity(), InternalStorageUser {
     ) { result: ActivityResult ->
         if (result.resultCode == RESULT_OK) {
             result.data?.data?.run {
-                // Not needed: Check filename, removed as content provider restrict the types.
-//                contentResolver.query(this, null, null, null, null)?.run {
-//                    val nameIndex = getColumnIndex(OpenableColumns.DISPLAY_NAME)
-//                    moveToFirst()
-//                    val fileName = getString(nameIndex)
-//                    close()
-//                    if (!fileName.endsWith(SCRIPT_UPLOAD_TYPE)) return@registerForActivityResult
-//                } ?: return@registerForActivityResult
-
                 unzip(
                     this@MenuActivity, ZipInputStream(contentResolver.openInputStream(this))
                 )
                 Toast.makeText(this@MenuActivity, "File Uploaded!", Toast.LENGTH_SHORT).show()
             } ?: Toast.makeText(this@MenuActivity, "File Failed!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(this, "No File Selected!", Toast.LENGTH_SHORT).show()
         }
     }
 

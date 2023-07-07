@@ -45,7 +45,7 @@ class ManageActivity : AppCompatActivity(), InternalStorageUser {
                 Toast.makeText(this@ManageActivity, "File Uploaded!", Toast.LENGTH_SHORT).show()
             } ?: Toast.makeText(this@ManageActivity, "File Failed!", Toast.LENGTH_SHORT).show()
         } else {
-            Toast.makeText(this@ManageActivity, "No File Selected!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "No File Selected!", Toast.LENGTH_SHORT).show()
         }
     }
 }
