@@ -1,11 +1,7 @@
 package com.tranquilrock.androidscript.activity
 
 import android.content.Intent
-import android.database.Cursor
 import android.os.Bundle
-import android.provider.MediaStore
-import android.provider.OpenableColumns
-import android.util.Log
 import android.webkit.MimeTypeMap
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
@@ -18,6 +14,7 @@ import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.databinding.ActivityMenuBinding
 import com.tranquilrock.androidscript.feature.InternalStorageUser
+import com.tranquilrock.androidscript.feature.InternalStorageUser.Companion.SCRIPT_UPLOAD_EXTENSION
 import com.tranquilrock.androidscript.service.WidgetService
 import java.util.zip.ZipInputStream
 
@@ -37,7 +34,7 @@ class MenuActivity : AppCompatActivity(), InternalStorageUser {
 
         binding.menuDownload.setOnClickListener {
             Intent().run {
-                type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(SCRIPT_UPLOAD_TYPE)
+                type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(SCRIPT_UPLOAD_EXTENSION)
                 action = Intent.ACTION_GET_CONTENT
                 uploadZip.launch(this)
             }
@@ -78,9 +75,5 @@ class MenuActivity : AppCompatActivity(), InternalStorageUser {
         } else {
             Toast.makeText(this, "No File Selected!", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    companion object {
-        const val SCRIPT_UPLOAD_TYPE = "zip"
     }
 }

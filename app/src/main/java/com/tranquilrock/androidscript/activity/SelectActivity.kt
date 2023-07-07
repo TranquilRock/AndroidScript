@@ -2,17 +2,12 @@ package com.tranquilrock.androidscript.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.tranquilrock.androidscript.App.Companion.BASIC_SCRIPT_TYPE
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_NAME_KEY
 import com.tranquilrock.androidscript.R
-import com.tranquilrock.androidscript.databinding.ActivityMenuBinding
 import com.tranquilrock.androidscript.databinding.ActivitySelectBinding
 import com.tranquilrock.androidscript.feature.InternalStorageUser
 
@@ -36,7 +31,11 @@ open class SelectActivity : AppCompatActivity(), InternalStorageUser {
             openFile(binding.selectNewName.text.toString())
         }
         binding.selectManage.setOnClickListener {
-            startActivity(Intent(this, ManageActivity::class.java))
+            startActivity(Intent(this, ManageActivity::class.java).apply {
+                putExtra(
+                    SCRIPT_TYPE_KEY, scriptType
+                )
+            })
         }
 
         scriptType = intent.extras?.getString(SCRIPT_TYPE_KEY) ?: BASIC_SCRIPT_TYPE

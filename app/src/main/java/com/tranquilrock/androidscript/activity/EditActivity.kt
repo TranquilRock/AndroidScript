@@ -5,17 +5,13 @@ import android.media.projection.MediaProjectionManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import com.tranquilrock.androidscript.R
-import android.view.View
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.tranquilrock.androidscript.feature.InternalStorageUser
 import com.tranquilrock.androidscript.component.editor.BlockAdapter
 import com.tranquilrock.androidscript.component.editor.ButtonAdapter
 import android.widget.Toast
-import android.widget.ToggleButton
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
@@ -25,7 +21,6 @@ import com.tranquilrock.androidscript.App.Companion.ORIENTATION_KEY
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_NAME_KEY
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.databinding.ActivityEditBinding
-import com.tranquilrock.androidscript.databinding.ActivitySelectBinding
 import com.tranquilrock.androidscript.feature.PermissionRequester
 import com.tranquilrock.androidscript.service.WidgetService
 import java.io.IOException

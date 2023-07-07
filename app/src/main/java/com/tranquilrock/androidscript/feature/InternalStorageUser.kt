@@ -29,6 +29,8 @@ import java.util.zip.ZipInputStream
 interface InternalStorageUser {
 
     companion object {
+        const val SCRIPT_UPLOAD_EXTENSION = "zip"
+        const val IMAGE_UPLOAD_EXTENSION = "png"
         const val CODE_FILE_TYPE = ".txt"
         const val SCRIPT_FILE_TYPE = ".blc"
         const val IMAGE_FILE_TYPE = ".png"

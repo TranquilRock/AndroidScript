@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.tranquilrock.androidscript.App
 import com.tranquilrock.androidscript.databinding.ActivityManageBinding
 import com.tranquilrock.androidscript.feature.InternalStorageUser
-import com.tranquilrock.androidscript.feature.InternalStorageUser.Companion.IMAGE_FILE_TYPE
+import com.tranquilrock.androidscript.feature.InternalStorageUser.Companion.IMAGE_UPLOAD_EXTENSION
 
 // TODO recycler view to list images with remove button
 class ManageActivity : AppCompatActivity(), InternalStorageUser {
@@ -25,7 +25,7 @@ class ManageActivity : AppCompatActivity(), InternalStorageUser {
 
         binding.manageAdd.setOnClickListener {
             Intent().run {
-                type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(IMAGE_FILE_TYPE)
+                type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(IMAGE_UPLOAD_EXTENSION)
                 action = Intent.ACTION_GET_CONTENT
                 uploadImage.launch(this)
             }
