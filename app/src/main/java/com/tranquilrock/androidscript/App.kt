@@ -8,7 +8,6 @@ import com.tranquilrock.androidscript.core.Command
 import org.opencv.android.OpenCVLoader
 import java.io.File
 import java.lang.IllegalStateException
-import kotlin.system.exitProcess
 
 /**
  * Application's global states.
