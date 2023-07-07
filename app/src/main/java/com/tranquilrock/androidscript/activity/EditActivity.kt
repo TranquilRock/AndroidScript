@@ -53,16 +53,16 @@ class EditActivity : AppCompatActivity(), InternalStorageUser, PermissionRequest
         scriptClass = intent.getStringExtra(SCRIPT_TYPE_KEY)!!
         fileName = intent.getStringExtra(SCRIPT_NAME_KEY)!!
 
-        try{
+        try {
             blockMeta = getMetadata(this, scriptClass)
-        } catch (e: JsonSyntaxException){
+        } catch (e: JsonSyntaxException) {
             e.printStackTrace()
             Log.e(TAG, "Meta file format error!")
         }
 
-        try{
+        try {
             blockData = getScript(this, scriptClass, fileName)
-        }catch (e: IOException){
+        } catch (e: IOException) {
             e.printStackTrace()
             Log.e(TAG, "Reading block file error!")
         }
@@ -128,10 +128,11 @@ class EditActivity : AppCompatActivity(), InternalStorageUser, PermissionRequest
     }
 
     private fun startWidgetService(data: Intent) {
-        val blockCopy =
-            Gson().fromJson(Gson().toJson(blockData), Array<Array<String>>::class.java).forEach {
-                it[0] = blockMeta[it[0].toInt()].first
-            }
+        val blockCopy = Gson().fromJson(Gson().toJson(blockData), Array<Array<String>>::class.java)
+        blockCopy.forEach {
+            it[0] = blockMeta[it[0].toInt()].first
+        }
+
         val startServiceIntent = Intent(this, WidgetService::class.java).apply {
             putExtra(SCRIPT_TYPE_KEY, scriptClass)
             putExtra(MEDIA_PROJECTION_KEY, data)
@@ -143,7 +144,7 @@ class EditActivity : AppCompatActivity(), InternalStorageUser, PermissionRequest
         finishAffinity()
     }
 
-    companion object{
+    companion object {
         val TAG: String = EditActivity::class.java.simpleName
     }
 }

@@ -28,18 +28,14 @@ class App : Application() {
         super.onCreate()
         Log.d(packageName, "onCreate")
 
-        /**
-         * Assert OpenCV Loaded.
-         */
+        /** Assert OpenCV Loaded. */
         if (!OpenCVLoader.initDebug()) {
             Toast.makeText(this, "OpenCV Not Loaded!!!", Toast.LENGTH_LONG).show()
             Log.e(packageName, "OpenCV Failed to Load.")
             throw IllegalStateException("OpenCV Missing")
         }
 
-        /**
-         * Initialize BASIC's meta If NOT EXIST.
-         */
+        /** Initialize BASIC's meta If NOT EXIST. */
         File(getDir(BASIC_SCRIPT_TYPE, MODE_PRIVATE), "meta.json").run {
             if (createNewFile()) {
                 val data = Gson().toJson(

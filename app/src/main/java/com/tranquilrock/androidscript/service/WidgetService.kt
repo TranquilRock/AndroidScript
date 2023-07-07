@@ -160,11 +160,10 @@ class WidgetService : Service(), ProjectionReader {
                     RESULT_OK, projectionIntent
                 )
             setupProjection()
-            val blockData =
 
-                Gson().fromJson(
-                    intent.getStringExtra(BLOCK_DATA_KEY)!!, Array<Array<String>>::class.java
-                )
+            val blockData = Gson().fromJson(
+                intent.getStringExtra(BLOCK_DATA_KEY)!!, Array<Array<String>>::class.java
+            )
 
 
             val imageParser = ImageParser(this.imageReader)

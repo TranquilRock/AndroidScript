@@ -50,23 +50,30 @@ interface InternalStorageUser {
     /**
      * Unzip file into APP's dataDir
      */
-    @Throws(IOException::class)
     fun unzip(context: Context, zipInputStream: ZipInputStream) {
         var zipEntry: ZipEntry
         var readLen: Int
         val readBuffer = ByteArray(8192)
         while (true) {
-            zipEntry = zipInputStream.nextEntry ?: return
-            val file = File(context.dataDir, zipEntry.name)
-            val dir = if (zipEntry.isDirectory) file else file.parentFile
-            if (!dir.isDirectory && !dir.mkdirs()) throw FileNotFoundException(
-                "Failed to ensure directory: " + dir.absolutePath
-            )
-            if (zipEntry.isDirectory) continue
-            if (!(zipEntry.name.let { it.endsWith(CODE_FILE_TYPE) || it.endsWith(IMAGE_FILE_TYPE) })) continue
-            FileOutputStream(file).use { out ->
-                while (zipInputStream.read(readBuffer).also { readLen = it } != -1) {
-                    out.write(readBuffer, 0, readLen)
+            zipEntry = zipInputStream.nextEntry ?: break
+
+            if (!zipEntry.name.startsWith("app_") || !(zipEntry.name.let {
+                    it.endsWith(CODE_FILE_TYPE) || it.endsWith(
+                        IMAGE_FILE_TYPE
+                    )
+                })) continue
+            Log.d(TAG, zipEntry.name)
+
+            File(context.dataDir, zipEntry.name).run {
+                if (zipEntry.isDirectory) {
+                    mkdirs()
+                } else {
+                    parentFile!!.mkdirs()
+                    FileOutputStream(this).use { out ->
+                        while (zipInputStream.read(readBuffer).also { readLen = it } != -1) {
+                            out.write(readBuffer, 0, readLen)
+                        }
+                    }
                 }
             }
         }
