@@ -31,6 +31,7 @@
     <string name="floating_widget_run">Run</string>
     <string name="floating_widget_close">Close</string>
     <string name="image_resource">Image Resource</string>
+    <string name="manage_script_title">Script File: %1$s</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>

@@ -10,7 +10,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="155dp"
+        android:layout_height="wrap_content"
         android:background="#5A5AAD">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -53,19 +53,15 @@
         <ImageView
             android:id="@+id/manage_image"
             android:layout_width="match_parent"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="20dp"
+            android:contentDescription="@string/image_resource"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintTop_toBottomOf="@id/manage_info"
-            android:contentDescription="@string/image_resource" />
-        <!--        <include-->
-        <!--            android:id="@+id/buttons"-->
-        <!--            layout="@layout/edit_component_switch"-->
-        <!--            card_view:layout_constraintBottom_toBottomOf="parent"-->
-        <!--            card_view:layout_constraintEnd_toEndOf="parent"-->
-        <!--            card_view:layout_constraintStart_toEndOf="@id/"-->
-        <!--            card_view:layout_constraintTop_toTopOf="parent" />-->
+            card_view:layout_constraintTop_toBottomOf="@id/manage_info" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

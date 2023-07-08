@@ -1,16 +1,21 @@
 package com.tranquilrock.androidscript.activity
 
 import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.webkit.MimeTypeMap
 import android.widget.Toast
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.tranquilrock.androidscript.App
+import com.tranquilrock.androidscript.component.manage.ManageAdapter
 import com.tranquilrock.androidscript.databinding.ActivityManageBinding
 import com.tranquilrock.androidscript.feature.InternalStorageUser
 import com.tranquilrock.androidscript.feature.InternalStorageUser.Companion.IMAGE_UPLOAD_EXTENSION
+import com.tranquilrock.androidscript.utils.ResourceRemover
 
 // TODO recycler view to list images with remove button
 class ManageActivity : AppCompatActivity(), InternalStorageUser {
@@ -32,6 +37,28 @@ class ManageActivity : AppCompatActivity(), InternalStorageUser {
         }
 
         scriptClass = intent.getStringExtra(App.SCRIPT_TYPE_KEY)!!
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // TODO on item add instead of all from scratch?
+        val data = mutableListOf<Pair<String, Bitmap?>>()
+        for (script in getScriptList(this, scriptClass)) {
+            data.add(Pair(script, null))
+        }
+        for (imageName in getImageList(this, scriptClass)) {
+            data.add(Pair(imageName, getImage(this, scriptClass, imageName)))
+        }
+
+        binding.manageResourceGrid.run {
+            layoutManager = LinearLayoutManager(this@ManageActivity)
+            adapter = ManageAdapter(data, ResourceRemover(this@ManageActivity, scriptClass))
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@ManageActivity, DividerItemDecoration.VERTICAL
+                )
+            )
+        }
     }
 
     private var uploadImage = registerForActivityResult(

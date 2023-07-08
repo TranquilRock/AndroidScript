@@ -1,6 +1,7 @@
 package com.tranquilrock.androidscript.component.manage
 
 import android.graphics.Bitmap
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +12,8 @@ import com.tranquilrock.androidscript.utils.ResourceRemover
 import java.lang.RuntimeException
 
 class ManageAdapter(
-    private val data: List<Pair<String, Bitmap?>>, private val resourceRemover: ResourceRemover
+    private val data: MutableList<Pair<String, Bitmap?>>,
+    private val resourceRemover: ResourceRemover
 ) : RecyclerView.Adapter<ManageViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ManageViewHolder {
@@ -20,7 +22,7 @@ class ManageAdapter(
                 ManageResourceBlockBinding.inflate(
                     LayoutInflater.from(
                         parent.context
-                    )
+                    ), parent, false
                 )
             )
 
@@ -28,29 +30,35 @@ class ManageAdapter(
                 ManageScriptBlockBinding.inflate(
                     LayoutInflater.from(
                         parent.context
-                    )
+                    ), parent, false
                 )
             )
 
             else -> throw RuntimeException("Impossible")
         }
-
     }
 
     override fun getItemCount(): Int = data.size
 
     override fun onBindViewHolder(holder: ManageViewHolder, position: Int) {
-        holder.display(data[position].first,
-            data[position].second,
-            when (getItemViewType(position)) {
-                1 -> View.OnClickListener { resourceRemover.removeImage(data[position].first) }
-                0 -> View.OnClickListener {
-                    resourceRemover.removeImage(
-                        data[position].first
-                    )
-                }
-                else -> View.OnClickListener { }
-            })
+        val (fileName, image) = data[position]
+        when (getItemViewType(position)) {
+            1 -> holder.display(
+                fileName, image
+            ) {
+                data.removeAt(holder.adapterPosition)
+                resourceRemover.removeImage(fileName)
+                notifyItemRemoved(holder.adapterPosition)
+            }
+
+            0 -> holder.display(
+                fileName, null
+            ) {
+                data.removeAt(holder.adapterPosition)
+                resourceRemover.removeScript(fileName)
+                notifyItemRemoved(holder.adapterPosition)
+            }
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
