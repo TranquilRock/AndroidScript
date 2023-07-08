@@ -32,7 +32,8 @@ class BlockViewHolder(
 ) : RecyclerView.ViewHolder(
     view
 ) {
-
+    // TODO, this should be done in adapter?
+    // TODO view binding
     fun onBind(order: Updater, blockData: ArrayList<ArrayList<String>>) {
         for ((index, id) in inputIds.withIndex()) {
             Input(

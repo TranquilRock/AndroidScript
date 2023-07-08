@@ -176,7 +176,6 @@ interface InternalStorageUser {
     /**
      * Delete a script file under folder, return whether the operation succeeded.
      * */
-    @Suppress("unused") // Will be used in MANAGE
     fun deleteScript(context: Context, scriptType: String, fileName: String): Boolean {
         return getScriptFile(context, scriptType, fileName).delete()
     }
@@ -258,6 +257,11 @@ interface InternalStorageUser {
         val image = BitmapFactory.decodeStream(fileInputStream)
         fileInputStream.close()
         return image
+    }
+
+
+    fun deleteImage(context: Context, scriptType: String, fileName: String): Boolean {
+        return getImageFile(context, scriptType, fileName).delete()
     }
 
     // =============================================================================================
