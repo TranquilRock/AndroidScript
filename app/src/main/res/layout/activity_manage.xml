@@ -20,7 +20,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/manage_resource_grid"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="500dp"
         android:layout_gravity="center"
         app:layout_constraintBottom_toTopOf="@id/manage_add"
         app:layout_constraintEnd_toEndOf="parent"
