@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">AndroidScript</string>
-    <string name="menu_download">Download</string>
+    <string name="menu_upload">Upload Script Zip</string>
     <string name="select_activity__invalid_name">Alpha-numeric characters and underscores</string>
     <string name="select_activity__file_exists">File created!!!</string>
     <string name="select_activity__name_empty">Filename cannot be empty!</string>
@@ -30,6 +30,8 @@
     <string name="floating_widget_stop">Stop</string>
     <string name="floating_widget_run">Run</string>
     <string name="floating_widget_close">Close</string>
+    <string name="image_resource">Image Resource</string>
+    <string name="manage_script_title">Script File: %1$s</string>
     <!-- Strings used for fragments for navigation -->
 
 </resources>

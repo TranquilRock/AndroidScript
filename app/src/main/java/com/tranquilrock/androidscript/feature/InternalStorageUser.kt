@@ -3,8 +3,11 @@ package com.tranquilrock.androidscript.feature
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
+import android.net.Uri
 import android.util.Log
 import com.google.gson.Gson
+import com.google.gson.JsonSyntaxException
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -14,6 +17,8 @@ import java.io.ObjectInputStream
 import java.io.ObjectOutputStream
 import java.lang.NullPointerException
 import java.util.regex.Pattern
+import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
 
 /**
  * Interface to declare that the class will access internal storage for this application.
@@ -24,6 +29,8 @@ import java.util.regex.Pattern
 interface InternalStorageUser {
 
     companion object {
+        const val SCRIPT_UPLOAD_EXTENSION = "zip"
+        const val IMAGE_UPLOAD_EXTENSION = "png"
         const val CODE_FILE_TYPE = ".txt"
         const val SCRIPT_FILE_TYPE = ".blc"
         const val IMAGE_FILE_TYPE = ".png"
@@ -40,23 +47,87 @@ interface InternalStorageUser {
         ) && FileName.isNotEmpty()
     }
 
+    /**
+     * Unzip file into APP's dataDir
+     */
+    fun unzip(context: Context, zipInputStream: ZipInputStream) {
+        var zipEntry: ZipEntry
+        var readLen: Int
+        val readBuffer = ByteArray(8192)
+        while (true) {
+            zipEntry = zipInputStream.nextEntry ?: break
+
+            if (!zipEntry.name.startsWith(SCRIPT_FOLDER_PREFIX) || !(zipEntry.name.let {
+                    it.endsWith(CODE_FILE_TYPE) || it.endsWith(
+                        IMAGE_FILE_TYPE
+                    ) || it.endsWith(META_FILE)
+                })) continue
+
+            File(context.dataDir, zipEntry.name).run {
+                if (zipEntry.isDirectory) {
+                    mkdirs()
+                } else {
+                    parentFile!!.mkdirs()
+                    FileOutputStream(this).use { out ->
+                        while (zipInputStream.read(readBuffer).also { readLen = it } != -1) {
+                            out.write(readBuffer, 0, readLen)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     // =============================================================================================
-    fun getMetadata(context: Context, scriptType: String): Array<Pair<String, List<List<String>>>> {
-        return try {
+    /**
+     * Read meta data then add resource list to spinner.
+     */
+    @Throws(JsonSyntaxException::class)
+    fun getMetadata(
+        context: Context, scriptType: String
+    ): Array<Pair<String, List<List<String>>>> {
+        val data = try {
             Gson().fromJson(
                 File(getScriptFolder(context, scriptType), META_FILE).readText(),
-                arrayOf(Pair("", listOf(emptyList<String>())))::class.java
+                arrayOf(Pair("", mutableListOf(listOf<String>())))::class.java
             )
         } catch (e: NullPointerException) {
             e.printStackTrace()
             emptyArray()
         }
+
+        for ((_, block) in data) {
+            for (i in block.indices) {
+                if (block[i][0] == "Spinner") {
+                    block[i] = block[i].plus(
+                        when (block[i][1]) {
+                            "Image" -> getImageList(context, scriptType)
+                            else -> emptyList()
+                        }
+                    )
+                    if (block[i].size < 3) {
+                        Log.e(TAG, "Spinner no options!!")
+                    }
+                }
+            }
+        }
+
+        return arrayOf(*data)
     }
 
     // =============================================================================================
 
     /**
-     * List all script files inside folder.
+     * List all image files inside script type folder.
+     * */
+    fun getImageList(context: Context, scriptType: String): List<String> {
+        return getScriptFolder(context, scriptType).list()?.filter { filename ->
+            filename.endsWith(IMAGE_FILE_TYPE)
+        }?.map { a -> a.removeSuffix(IMAGE_FILE_TYPE) } ?: emptyList()
+    }
+
+    /**
+     * List all script types.
      * */
     fun getScriptTypeList(context: Context): List<String> {
         return context.dataDir?.list()?.filter { dirName ->
@@ -72,6 +143,7 @@ interface InternalStorageUser {
             filename.endsWith(SCRIPT_FILE_TYPE)
         }?.map { a -> a.removeSuffix(SCRIPT_FILE_TYPE) } ?: emptyList()
     }
+
 
     // =============================================================================================
 
@@ -105,7 +177,6 @@ interface InternalStorageUser {
     /**
      * Delete a script file under folder, return whether the operation succeeded.
      * */
-    @Suppress("unused") // Will be used in MANAGE
     fun deleteScript(context: Context, scriptType: String, fileName: String): Boolean {
         return getScriptFile(context, scriptType, fileName).delete()
     }
@@ -115,6 +186,7 @@ interface InternalStorageUser {
      * Serialize back the blockData object.
      * */
     @Suppress("UNCHECKED_CAST") // Uncheck for serialization
+    @Throws(IOException::class)
     fun getScript(
         context: Context, scriptType: String, fileName: String
     ): ArrayList<ArrayList<String>> {
@@ -177,11 +249,20 @@ interface InternalStorageUser {
         }
     }
 
+    @Throws(FileNotFoundException::class, IOException::class)
+    fun getImage(context: Context, uri: Uri): Bitmap =
+        ImageDecoder.decodeBitmap(ImageDecoder.createSource(context.contentResolver, uri))
+
     fun getImage(context: Context, scriptType: String, fileName: String): Bitmap {
         val fileInputStream = getImageFile(context, scriptType, fileName).inputStream()
         val image = BitmapFactory.decodeStream(fileInputStream)
         fileInputStream.close()
         return image
+    }
+
+
+    fun deleteImage(context: Context, scriptType: String, fileName: String): Boolean {
+        return getImageFile(context, scriptType, fileName).delete()
     }
 
     // =============================================================================================

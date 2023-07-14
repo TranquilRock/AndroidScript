@@ -5,10 +5,12 @@
  * */
 package com.tranquilrock.androidscript.component.editor
 
+import android.graphics.Color
 import android.util.Log
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
@@ -21,6 +23,7 @@ import androidx.core.widget.doAfterTextChanged
 import androidx.recyclerview.widget.RecyclerView
 import com.tranquilrock.androidscript.R
 
+
 class BlockViewHolder(
     private val view: View,
     private val blockName: String,
@@ -29,7 +32,8 @@ class BlockViewHolder(
 ) : RecyclerView.ViewHolder(
     view
 ) {
-
+    // TODO, this should be done in adapter?
+    // TODO view binding
     fun onBind(order: Updater, blockData: ArrayList<ArrayList<String>>) {
         for ((index, id) in inputIds.withIndex()) {
             Input(
@@ -47,7 +51,7 @@ class BlockViewHolder(
                 adapterPosition, adapterPosition + 1
             )
         }
-        view.findViewById<ImageButton>(R.id.btn_del).setOnClickListener {
+        view.findViewById<ImageButton>(R.id.manage_delete).setOnClickListener {
             order.delete(
                 adapterPosition
             )
@@ -78,11 +82,21 @@ class BlockViewHolder(
                     )
 
                     spinner.visibility = VISIBLE
-                    spinner.adapter = ArrayAdapter(
+                    spinner.adapter = object : ArrayAdapter<String>(
                         view.context,
                         android.R.layout.simple_spinner_item,
                         inputDef.subList(1, inputDef.size)
-                    )
+                    ) {
+                        override fun isEnabled(position: Int) = position > 0
+                        override fun getDropDownView(
+                            position: Int, convertView: View?, parent: ViewGroup
+                        ): View {
+                            val view = super.getDropDownView(position, convertView, parent)
+                            (view as TextView).setTextColor(if (position == 0) Color.GRAY else Color.BLACK)
+                            return view
+                        }
+                    }
+
                     spinner.onItemSelectedListener = object : OnItemSelectedListener {
                         override fun onItemSelected(
                             parent: AdapterView<*>?, view: View?, position: Int, id: Long

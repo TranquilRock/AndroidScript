@@ -38,7 +38,7 @@
             <include
                 android:id="@+id/OneVarInput"
                 layout="@layout/edit_component_input"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:textSize="20sp"
                 card_view:layout_constraintBottom_toBottomOf="parent"

@@ -31,7 +31,7 @@
 
         <!-- Activity -->
         <activity
-            android:name=".activity.Menu"
+            android:name=".activity.MenuActivity"
             android:configChanges="orientation|keyboardHidden"
             android:exported="true"
             android:screenOrientation="portrait"

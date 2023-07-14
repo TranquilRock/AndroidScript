@@ -17,13 +17,13 @@ import android.util.Log
 import android.view.*
 import android.view.View.OnTouchListener
 import android.widget.TextView
+import com.google.gson.Gson
 import com.tranquilrock.androidscript.App.Companion.BLOCK_DATA_KEY
-import com.tranquilrock.androidscript.App.Companion.BLOCK_META_KEY
 import com.tranquilrock.androidscript.App.Companion.MEDIA_PROJECTION_KEY
 import com.tranquilrock.androidscript.App.Companion.ORIENTATION_KEY
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.R
-import com.tranquilrock.androidscript.activity.Menu
+import com.tranquilrock.androidscript.activity.MenuActivity
 import com.tranquilrock.androidscript.core.Interpreter
 import com.tranquilrock.androidscript.feature.ProjectionReader
 import com.tranquilrock.androidscript.service.ClickService.Companion.clicker
@@ -160,31 +160,18 @@ class WidgetService : Service(), ProjectionReader {
                     RESULT_OK, projectionIntent
                 )
             setupProjection()
+
+            val blockData = Gson().fromJson(
+                intent.getStringExtra(BLOCK_DATA_KEY)!!, Array<Array<String>>::class.java
+            )
+
+
+            val imageParser = ImageParser(this.imageReader)
+            val resourceReader = ResourceReader(applicationContext, scriptType)
+            interpreter = Interpreter(
+                blockData, resourceReader, clicker, imageParser, statusBulletin
+            )
         }
-
-        // Uncheck for serialization
-        @Suppress("UNCHECKED_CAST") val blockData: ArrayList<ArrayList<String>> =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getSerializableExtra(
-                    BLOCK_DATA_KEY, ArrayList<ArrayList<String>>()::class.java
-                )!!
-            } else ({
-                intent.getSerializableExtra(BLOCK_DATA_KEY)!!
-            }) as ArrayList<ArrayList<String>>
-
-        // Uncheck for serialization
-        @Suppress("UNCHECKED_CAST") val blockMeta: Array<Array<Any>> =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                intent.getSerializableExtra(BLOCK_META_KEY, Array<Array<Any>>::class.java)!!
-            } else ({
-                intent.getSerializableExtra(BLOCK_META_KEY)!!
-            }) as Array<Array<Any>>
-        val imageParser = ImageParser(this.imageReader)
-        val resourceReader = ResourceReader(applicationContext, scriptType)
-        interpreter = Interpreter(
-            blockData, blockMeta, resourceReader, clicker, imageParser, statusBulletin
-        )
-
         return super.onStartCommand(intent, flags, startId)
     }
 
@@ -204,7 +191,7 @@ class WidgetService : Service(), ProjectionReader {
      * */
     private fun createNotificationChannel() {
         val navigateIntent = PendingIntent.getActivity(
-            this, 0, Intent(this, Menu::class.java), PendingIntent.FLAG_IMMUTABLE
+            this, 0, Intent(this, MenuActivity::class.java), PendingIntent.FLAG_IMMUTABLE
         )
         val notificationBuilder =
             Notification.Builder(applicationContext, NOTIFICATION_CHANNEL_ID).apply {

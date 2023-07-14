@@ -1,54 +1,41 @@
-/**
- * Activity to select or create script files(.blc).
- * The files will not be reachable from users directly.
- * Data will be stored in `/data/user/0/com.tranquilrock.androidscript/app_BASIC`
- * */
 package com.tranquilrock.androidscript.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Spinner
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.tranquilrock.androidscript.App.Companion.BASIC_SCRIPT_TYPE
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_NAME_KEY
 import com.tranquilrock.androidscript.R
+import com.tranquilrock.androidscript.databinding.ActivitySelectBinding
 import com.tranquilrock.androidscript.feature.InternalStorageUser
 
-
+/**
+ * Activity for selecting script files or to enter file manager.
+ * */
 open class SelectActivity : AppCompatActivity(), InternalStorageUser {
 
-    private lateinit var editTextNewName: EditText
-    private lateinit var textViewDialogBox: TextView
-    private lateinit var spinnerFileList: Spinner
-    private lateinit var buttonLoad: View
-    private lateinit var buttonCreate: View
-    private lateinit var buttonManage: View
-
+    private lateinit var binding: ActivitySelectBinding
     private lateinit var scriptType: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_select)
-        editTextNewName = findViewById(R.id.select_new_name)
-        textViewDialogBox = findViewById(R.id.select_dialog_box)
-        spinnerFileList = findViewById(R.id.select_file_list)
-        buttonLoad = findViewById(R.id.select_load)
-        buttonCreate = findViewById(R.id.select_create)
-        buttonManage = findViewById(R.id.select_manage)
+        binding = ActivitySelectBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        buttonLoad.setOnClickListener {
-            openFile(spinnerFileList.selectedItem?.toString())
+        binding.selectLoad.setOnClickListener {
+            openFile(binding.selectFileList.selectedItem?.toString())
         }
-        buttonCreate.setOnClickListener {
-            openFile(editTextNewName.text.toString())
+        binding.selectCreate.setOnClickListener {
+            openFile(binding.selectNewName.text.toString())
         }
-        buttonManage.setOnClickListener {
-            startActivity(Intent(this, ManageActivity::class.java))
+        binding.selectManage.setOnClickListener {
+            startActivity(Intent(this, ManageActivity::class.java).apply {
+                putExtra(
+                    SCRIPT_TYPE_KEY, scriptType
+                )
+            })
         }
 
         scriptType = intent.extras?.getString(SCRIPT_TYPE_KEY) ?: BASIC_SCRIPT_TYPE
@@ -56,20 +43,20 @@ open class SelectActivity : AppCompatActivity(), InternalStorageUser {
 
     override fun onResume() {
         super.onResume()
-        spinnerFileList.adapter = ArrayAdapter(
+        binding.selectFileList.adapter = ArrayAdapter(
             this, android.R.layout.simple_spinner_dropdown_item, getScriptList(this, scriptType)
         )
     }
 
     private fun openFile(fileName: String?) {
         if (fileName.isNullOrBlank() || fileName.isEmpty()) {
-            textViewDialogBox.text = getString(R.string.select_activity__name_empty)
+            binding.selectDialogBox.text = getString(R.string.select_activity__name_empty)
         } else if (!isValidFileName(fileName)) {
-            textViewDialogBox.text = getString(R.string.select_activity__invalid_name)
+            binding.selectDialogBox.text = getString(R.string.select_activity__invalid_name)
         } else {
-            textViewDialogBox.text = ""
+            binding.selectDialogBox.text = ""
             if (!createScript(this, scriptType, fileName)) {
-                textViewDialogBox.text = getString(R.string.select_activity__file_exists)
+                binding.selectDialogBox.text = getString(R.string.select_activity__file_exists)
             }
 
             val goToEditIntent = Intent(this, EditActivity::class.java).apply {
