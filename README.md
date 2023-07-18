@@ -1,9 +1,20 @@
 # AndroidScript
 
-## UNDER ACTIVE REVISION
+## Public Script Download
 
-- The old version has multiple issues, and thus we need an extensive revision.
+- FGO
+  - [Demo (Youtube)](https://www.youtube.com/watch?v=SkbWy6nC3Pk)
+  - [Traditional Chinese Server, Pixel 4XL](https://drive.google.com/file/d/1Pp1JePjrvx-k3f_xJJxG6STwUp4j1MZP/view?usp=drive_link)
 
+## v3.0.0-alpha released :)
+
+- Tested manually
+- Future works and TODOs
+  - MVVM design pattern
+  - Repository/Room DAO instead of raw file accesses
+  - Direct download feature
+  - Manual/ User Guide
+  
 ## Notes for developers
 
 ### For the sdk path, you should have a file `local.properties` in the root folder, for example:
