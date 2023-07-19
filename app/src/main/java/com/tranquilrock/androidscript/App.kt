@@ -15,7 +15,17 @@ import java.lang.IllegalStateException
  * Handles OpenCV check and setup the default exception handler.
  */
 class App : Application() {
+
     companion object {
+        const val META_FILE = "meta.json"
+
+        const val SCRIPT_UPLOAD_EXTENSION = "zip"
+        const val IMAGE_UPLOAD_EXTENSION = "png"
+
+        const val CODE_FILE_TYPE = ".txt"
+        const val SCRIPT_FILE_TYPE = ".blc"
+        const val IMAGE_FILE_TYPE = ".png"
+
         const val BLOCK_DATA_KEY = "BLOCK_DATA_KEY"
         const val MEDIA_PROJECTION_KEY = "MEDIA_PROJECTION"
         const val BASIC_SCRIPT_TYPE = "BASIC"
@@ -36,8 +46,8 @@ class App : Application() {
         }
 
         /** Initialize BASIC's meta If NOT EXIST. */
-        File(getDir(BASIC_SCRIPT_TYPE, MODE_PRIVATE), "meta.json").run {
-            if (createNewFile()) {
+        File(getDir(BASIC_SCRIPT_TYPE, MODE_PRIVATE), META_FILE).run {
+            if (createNewFile()) { // Write Basic meta if not exist
                 val data = Gson().toJson(
                     Command.BASIC_META
                 )

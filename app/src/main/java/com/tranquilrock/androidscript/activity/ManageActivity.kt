@@ -11,13 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.tranquilrock.androidscript.App
+import com.tranquilrock.androidscript.App.Companion.IMAGE_UPLOAD_EXTENSION
 import com.tranquilrock.androidscript.component.manage.ManageAdapter
 import com.tranquilrock.androidscript.databinding.ActivityManageBinding
 import com.tranquilrock.androidscript.feature.InternalStorageUser
-import com.tranquilrock.androidscript.feature.InternalStorageUser.Companion.IMAGE_UPLOAD_EXTENSION
 import com.tranquilrock.androidscript.utils.ResourceRemover
 
-// TODO recycler view to list images with remove button
 class ManageActivity : AppCompatActivity(), InternalStorageUser {
 
     private lateinit var binding: ActivityManageBinding

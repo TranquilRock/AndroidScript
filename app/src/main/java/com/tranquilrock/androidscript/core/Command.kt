@@ -39,7 +39,7 @@ object Command {
     private const val floatVarFormat = "($floatFormat||$varFormat)"
     private const val imgVarFormat = "($imgFormat||$varFormat)"
     private const val intVarFloatFormat = "($intFormat||$varFormat||$floatFormat)"
-    private const val anyFormat = "[a-zA-Z.0-9 $]*"
+    private const val anyFormat = "[a-zA-Z.0-9 $-]*"
 
     val COMMAND_LIST = arrayOf(
         EXIT,
@@ -84,7 +84,7 @@ object Command {
         "$CALL_ARG $scriptFormat $anyFormat",
         "$IF_GREATER $intVarFormat $intVarFormat",
         "$IF_SMALLER $intVarFormat $intVarFormat",
-        "$IF_EQUAL $intVarFormat $intVarFormat",
+        "$IF_EQUAL $varFormat $anyFormat",
         "$ADD $varFormat $intVarFormat",
         "$SUBTRACT $varFormat $intVarFormat",
         "$VAR $varFormat $intVarFloatFormat",

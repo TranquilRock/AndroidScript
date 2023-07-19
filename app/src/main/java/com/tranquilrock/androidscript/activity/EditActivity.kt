@@ -24,6 +24,7 @@ import com.tranquilrock.androidscript.databinding.ActivityEditBinding
 import com.tranquilrock.androidscript.feature.PermissionRequester
 import com.tranquilrock.androidscript.service.WidgetService
 import java.io.IOException
+import java.lang.Exception
 
 /**
  * UI for editing scripts.
@@ -62,6 +63,7 @@ class EditActivity : AppCompatActivity(), InternalStorageUser, PermissionRequest
 
         try {
             blockData = getScript(this, scriptClass, fileName)
+            Log.d(TAG, blockData.toString())
         } catch (e: IOException) {
             e.printStackTrace()
             Log.e(TAG, "Reading block file error!")
@@ -107,15 +109,20 @@ class EditActivity : AppCompatActivity(), InternalStorageUser, PermissionRequest
             ).show()
         }
 
-        binding.editCodeGrid.run {
-            layoutManager = LinearLayoutManager(this@EditActivity)
-            adapter = BlockAdapter(blockMeta, blockData)
-            addItemDecoration(
-                DividerItemDecoration(
-                    this@EditActivity, DividerItemDecoration.VERTICAL
+        try {
+            binding.editCodeGrid.run {
+                layoutManager = LinearLayoutManager(this@EditActivity)
+                adapter = BlockAdapter(blockMeta, blockData)
+                addItemDecoration(
+                    DividerItemDecoration(
+                        this@EditActivity, DividerItemDecoration.VERTICAL
+                    )
                 )
-            )
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
         }
+
 
         binding.editButtonGrid.run {
             layoutManager = GridLayoutManager(this@EditActivity, 2)

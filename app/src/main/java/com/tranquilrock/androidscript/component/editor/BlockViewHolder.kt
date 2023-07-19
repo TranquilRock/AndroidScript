@@ -113,7 +113,7 @@ class BlockViewHolder(
                     if (blockData[blockViewHolder.adapterPosition][index] !in inputDef) {
                         blockData[blockViewHolder.adapterPosition][index] = inputDef[1]
                     }
-                    spinner.setSelection(inputDef.indexOf(blockData[blockViewHolder.adapterPosition][index]))
+                    spinner.setSelection(inputDef.indexOf(blockData[blockViewHolder.adapterPosition][index]) - 1)
                 }
 
                 "EditText" -> {

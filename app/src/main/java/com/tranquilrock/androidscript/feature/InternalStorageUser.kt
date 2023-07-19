@@ -8,6 +8,10 @@ import android.net.Uri
 import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
+import com.tranquilrock.androidscript.App.Companion.CODE_FILE_TYPE
+import com.tranquilrock.androidscript.App.Companion.IMAGE_FILE_TYPE
+import com.tranquilrock.androidscript.App.Companion.META_FILE
+import com.tranquilrock.androidscript.App.Companion.SCRIPT_FILE_TYPE
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileNotFoundException
@@ -29,12 +33,7 @@ import java.util.zip.ZipInputStream
 interface InternalStorageUser {
 
     companion object {
-        const val SCRIPT_UPLOAD_EXTENSION = "zip"
-        const val IMAGE_UPLOAD_EXTENSION = "png"
-        const val CODE_FILE_TYPE = ".txt"
-        const val SCRIPT_FILE_TYPE = ".blc"
-        const val IMAGE_FILE_TYPE = ".png"
-        const val META_FILE = "meta.json"
+
         private const val SCRIPT_FOLDER_PREFIX = "app_"
         private const val CODE_COMMENT_PREFIX = "//"
         private const val VALID_FILENAME_PATTERN = "([A-Za-z0-9_-]*)"

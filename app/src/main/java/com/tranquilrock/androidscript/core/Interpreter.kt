@@ -73,6 +73,9 @@ class Interpreter(
         } catch (e: NumberFormatException) {
             Log.e(TAG, "Execute:: Wrong format!")
             board.announce("Error!")
+        } catch (e: NullPointerException){
+            Log.e(TAG, "Execute:: Code Not Found")
+            board.announce("Error!")
         }
     }
 
