@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.tranquilrock.androidscript.R
+import java.lang.Exception
 import java.util.Collections
 
 
@@ -35,6 +36,7 @@ class BlockAdapter(
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BlockViewHolder {
+        Log.d("??", blockMeta[viewType].second.toString())
         val blockDef = blockMeta[viewType].second
         assert(blockDef.size < BLOCK_VIEWS_RID.size) { Log.e(TAG, "Block $blockMeta too long!") }
         val (layoutId, inputIds) = BLOCK_VIEWS_RID[blockDef.size]

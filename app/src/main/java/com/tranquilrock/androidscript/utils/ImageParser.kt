@@ -3,7 +3,6 @@ package com.tranquilrock.androidscript.utils
 import android.graphics.Bitmap
 import android.media.ImageReader
 import android.util.Log
-import com.tranquilrock.androidscript.feature.ProjectionReader
 import org.opencv.android.Utils
 import org.opencv.core.Core
 import org.opencv.core.CvException
@@ -27,16 +26,16 @@ class ImageParser(
     private val imageReader: ImageReader
 ) {
 
-    suspend fun checkScreenColor(x: Int, y: Int, color: Int): Boolean =
+    fun checkScreenColor(x: Int, y: Int, color: Int): Boolean =
         checkColor(getScreenShotBitmap(), x, y, color)
 
 
-    suspend fun exist(Target: Bitmap): Boolean {
+    fun exist(Target: Bitmap): Boolean {
         val screen = getScreenShotBitmap() ?: return false
         return matchPictures(screen, Target) > 70 // TODO verify threshold.
     }
 
-    suspend fun compare(Target: Bitmap, x1: Int, y1: Int, x2: Int, y2: Int): Int {
+    fun compare(Target: Bitmap, x1: Int, y1: Int, x2: Int, y2: Int): Int {
 
         val screen = getScreenShotBitmap()
         if (screen == null || x1 > x2 || y1 > y2 || x2 > screen.width || y2 > screen.height) {
@@ -50,10 +49,10 @@ class ImageParser(
         )
     }
 
-    suspend fun findLocation(target: Bitmap?, resizeRatio: Double): Point? =
+    fun findLocation(target: Bitmap?, resizeRatio: Double): Point? =
         findLocation(getScreenShotBitmap(), target, resizeRatio)
 
-    private suspend fun getScreenShotBitmap(): Bitmap? {
+    private fun getScreenShotBitmap(): Bitmap? {
         val image = imageReader.acquireLatestImage() ?: return null
 
         Log.d(TAG, "getScreenShotBitmap " + image.width + " " + image.height)

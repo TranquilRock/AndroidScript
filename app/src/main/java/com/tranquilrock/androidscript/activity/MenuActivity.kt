@@ -11,10 +11,10 @@ import androidx.activity.result.ActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.tranquilrock.androidscript.App.Companion.SCRIPT_TYPE_KEY
+import com.tranquilrock.androidscript.App.Companion.SCRIPT_UPLOAD_EXTENSION
 import com.tranquilrock.androidscript.R
 import com.tranquilrock.androidscript.databinding.ActivityMenuBinding
 import com.tranquilrock.androidscript.feature.InternalStorageUser
-import com.tranquilrock.androidscript.feature.InternalStorageUser.Companion.SCRIPT_UPLOAD_EXTENSION
 import com.tranquilrock.androidscript.service.WidgetService
 import java.util.zip.ZipInputStream
 
